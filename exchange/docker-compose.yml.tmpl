@@ -1,0 +1,117 @@
+version: '3'
+
+###
+### VOLUMES
+###
+
+volumes:
+  ${EXCHANGEDB_VOLUME_NAME}:
+  ${CSSDB_VOLUME_NAME}:
+
+###
+### NETWORKS
+###
+
+networks:
+  ${HZN_NETWORK}:
+    driver: ${HZN_NETWORK_DRIVER}
+
+###
+### SERVICES
+###
+
+services:
+  ##
+  ## agbot
+  ##
+  agbot:
+    image: ${AGBOT_CONTAINER_IMAGE}:${AGBOT_CONTAINER_TAG}
+    container_name: ${AGBOT_CONTAINER_NAME}
+    privileged: true
+    networks:
+      ${HZN_NETWORK}:
+        aliases: 
+          - ${HZN_NAMESPACE}-agbot-${EXCHANGE_AGBOT_NAME}
+    restart: always
+    ports:
+      - ${AGBOT_PORT}:${AGBOT_PORT}
+    volumes:
+      - ${AGBOT_KEYS_DIR}:/certs
+      - ${AGBOT_CONFIG_FILE}:/etc/horizon/anax.json
+      - ${HZN_PUBLICKEY_FILE}:/etc/horizon/trust/mtn-publicKey.pem
+      - ${HZN_CACERTS_FILE}:/etc/horizon/trust/horizon.pem
+      - ${CSSDB_VOLUME_NAME}:/var/wiotp-edge/persist
+      - ${AGBOT_POLICY_DIR}:/etc/agbot/policy.d
+      - ${AGBOT_COLONUS_DIR}:/var/horizon
+    environment:
+      - AGBOT_NAME=${EXCHANGE_AGBOT_NAME}
+      - CSS_URL=${CSS_URL}
+      - EXCH_APP_HOST=${EXCHANGE_URL}
+      - EXCH_ROOTPW=${EXCHANGE_PASSWORD}
+      - HZN_AGBOT_API=${AGBOT_URL}
+      - HZN_DISABLE_IPTABLES_MANIPULATION=true
+  ##
+  ## exchange-api
+  ##
+  exchange-api:
+    image:  ${EXCHANGE_CONTAINER_IMAGE}:${EXCHANGE_CONTAINER_TAG}
+    container_name: ${EXCHANGE_CONTAINER_NAME}
+    ports:
+      - ${EXCHANGE_PORT}:8080
+    networks:
+      ${HZN_NETWORK}:
+        aliases: 
+          - ${HZN_NAMESPACE}-exchange-api
+    volumes:
+      - ${EXCHANGE_CONFIG_FILE}:/etc/horizon/exchange/config.json
+  ##
+  ## exchange-db
+  ##
+  exchange-db:
+    image: ${EXCHANGEDB_CONTAINER_IMAGE}:${EXCHANGEDB_CONTAINER_TAG}
+    container_name: ${EXCHANGEDB_CONTAINER_NAME}
+    restart: always
+    volumes:
+      - ${EXCHANGEDB_VOLUME_NAME}:/var/lib/postgresql/data
+    networks:
+      ${HZN_NETWORK}:
+        aliases:
+          - ${HZN_NAMESPACE}-exchange-db
+    environment:
+      - POSTGRES_DB=${EXCHANGEDB_DATABASE}
+      - POSTGRES_USER=${EXCHANGEDB_USER}
+  ##
+  ## css
+  ##
+  css-api:
+    image: ${CSS_CONTAINER_IMAGE}:${CSS_CONTAINER_TAG}
+    container_name: ${CSS_CONTAINER_NAME}
+    restart: always
+    ports:
+      - ${CSS_PORT}:${CSS_PORT}
+    networks:
+      ${HZN_NETWORK}:
+        aliases:
+          - ${HZN_NAMESPACE}-css-api
+    volumes:
+      - ${CSS_CONFIG_DIR}:/etc/edge-sync-service
+      - ${CSS_KEYS_DIR}:/certs
+      - ${CSSDB_VOLUME_NAME}:/var/wiotp-edge/persist
+    environment:
+      - HZN_EXCHANGE_URL=${EXCHANGE_URL}
+      - HZN_EXCHANGE_CA_CERT=/certs/domain.crt
+  ##
+  ## css-db
+  ##
+  css-db:
+    image: ${CSSDB_CONTAINER_IMAGE}:${CSSDB_CONTAINER_TAG}
+    container_name: ${CSSDB_CONTAINER_NAME}
+    restart: always
+    volumes:
+      - ${CSSDB_VOLUME_NAME}:/var/wiotp-edge/persist
+    ports:
+      - 27017:27017
+    networks:
+      ${HZN_NETWORK}:
+        aliases:
+          - ${HZN_NAMESPACE}-css-db

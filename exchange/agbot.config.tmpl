@@ -1,0 +1,45 @@
+{
+    "AgreementBot": {
+        "DBPath": "${EXCHANGEDB_DATABASE}",
+        "Postgresql": {
+            "Host": "${EXCHANGEDB_CONTAINER_NAME}",
+            "Port": "${EXCHANGEDB_PORT}",
+            "User": "${EXCHANGEDB_USER}",
+            "Password": "${EXCHANGEDB_PASSWORD}",
+            "DBName": "${EXCHANGEDB_DATABASE}",
+            "SSLMode": "disable"
+        },
+        "Partitions": "part0",
+        "TxLostDelayTolerationSeconds": 120,
+        "AgreementWorkers": 5,
+        "ProtocolTimeoutS": 120,
+        "AgreementTimeoutS": 600,
+        "NoDataIntervalS": 300,
+        "ActiveAgreementsURL": "",
+        "ActiveAgreementsUser": "",
+        "ActiveAgreementsPW": "",
+        "PolicyPath": "/etc/agbot/policy.d/",
+        "NewContractIntervalS": 10,
+        "ProcessGovernanceIntervalS": 10,
+        "IgnoreContractWithAttribs": "ethereum_account",
+        "ExchangeURL": "${EXCHANGE_URL}",
+        "ExchangeId": "${EXCHANGE_ORGANIZATION}/${EXCHANGE_AGBOT_NAME}",
+        "ExchangeToken":"${EXCHANGE_AGBOT_TOKEN}",
+        "ExchangeVersionCheckIntervalM":1,
+        "ExchangeHeartbeat": 60,
+        "ActiveDeviceTimeoutS": 180,
+        "DefaultWorkloadPW": "bogus-password",
+        "MessageKeyPath": ".colonus",
+        "APIListen": "0.0.0.0:${AGBOT_PORT}",
+        "PurgeArchivedAgreementHours": 1,
+        "CheckUpdatedPolicyS": 15,
+        "CSSURL": "${CSS_URL}",
+        "CSSSSLCert": "/certs/css.crt",
+        "MMSGarbageCollectionInterval": 20
+    },
+    "ArchSynonyms": {
+        "x86_64": "amd64",
+        "armhf": "arm",
+        "aarch64": "arm64"
+    }
+}

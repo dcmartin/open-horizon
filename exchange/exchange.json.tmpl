@@ -1,0 +1,47 @@
+{
+  "api": {
+    "limits": {
+      "maxNodes": 10000,
+      "maxAgbots": 1000,
+      "maxAgreements": 0,
+      "maxMessagesInMailbox": 10000,
+      "maxResources": 1000,
+      "maxServices": 1000,
+      "maxPatterns": 1000,
+      "maxBusinessPolicies": 5000
+    },
+    "defaults": {
+      "pattern": {
+        "missing_heartbeat_interval": 1800,
+        "check_agreement_status": 1800
+      },
+      "businessPolicy": {
+        "missing_heartbeat_interval": 1800,
+        "check_agreement_status": 1800
+      }
+    },
+    "db": {
+      "driverClass": "org.postgresql.Driver",
+      "jdbcUrl": "jdbc:postgresql://${POSTGRES_HOSTNAME}:${POSTGRES_PORT}/${POSTGRES_DATABASE}",
+      "user": "${POSTGRES_USER}",
+      "password": "${POSTGRES_PASSWORD}",
+      "minPoolSize": 1,
+      "acquireIncrement": 1,
+      "maxPoolSize": 50,
+      "memoryDb": false
+    },
+    "smtp": {
+      "host": "${EXCHANGE_SMTP_HOST}",
+      "user": "${EXCHANGE_SMTP_ADDRESS}",
+      "password": "${EXCHANGE_SMTP_PASSWORD}"
+    },
+    "logging": {
+      "level": "${EXCHANGE_LOG_LEVEL}"
+    },
+    "root": {
+      "password": "${EXCHANGE_PASSWORD_ENCODED}",
+      "email": "",
+      "frontEndHeader": ""
+    }
+  }
+}

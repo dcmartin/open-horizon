@@ -1,0 +1,75 @@
+{
+  "horizon": {
+    "hostname": "exchange.dcmartin.com",
+    "namespace": "oh",
+    "network": {
+      "name": "hznnet",
+      "driver": "bridge"
+    },
+    "identity": {
+      "comp": "dcmsrtin.com",
+      "user": "dcmartin",
+      "name": "exchange.dcmartin.com",
+      "subj": ""
+    },
+    "root": "root"
+  },
+  "services": {
+    "agbot": {
+      "name": "agbot",
+      "image": "openhorizon/amd64_agbot",
+      "tag": "2.23.17",
+      "stable": "2.23.13",
+      "port": 3091,
+      "listen": "http",
+      "bot": {
+        "name": "agbot1",
+        "token": "agbot1pw"
+      }
+    },
+    "css": {
+      "name": "css-api",
+      "image": "openhorizon/amd64_cloud-sync-service",
+      "tag": "1.0.12",
+      "port": 9443,
+      "transport": "http",
+      "listen": "http"
+    },
+    "exchange": {
+      "name": "exchange-api",
+      "image": "openhorizon/amd64_exchange-api",
+      "tag": "1.106.0",
+      "latest": "1.108.0",
+      "stable": "1.98.0",
+      "version": "v1",
+      "port": 3090,
+      "listen": "http",
+      "root": "root",
+      "log": "WARN",
+      "password": "Horizon-Rul3s",
+      "encoded": "$2a$10$Mh5kobwYwN2WE3LcKkpqzeBzV8phhuzZ/xHD2QRwt1uIswAWNpm7K",
+      "org": "dcmartin",
+      "admin": {
+        "username": "dcmartin",
+        "password": "whocares"
+      }
+    },
+    "cssdb": {
+      "name": "css-db",
+      "image": "mongo",
+      "tag": "4.0.6",
+      "database": "css-db",
+      "volume": "cssdb"
+    },
+    "exchangedb": {
+      "name": "exchange-db",
+      "image": "postgres",
+      "tag": "9",
+      "port": 5432,
+      "user": "admin",
+      "password": "",
+      "database": "exchange",
+      "volume": "exchangedb"
+    }
+  }
+}

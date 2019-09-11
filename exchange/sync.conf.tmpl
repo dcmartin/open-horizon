@@ -1,0 +1,16 @@
+TraceRootPath /tmp/trace
+TraceLevel TRACE
+ServerKey /certs/css.key
+ServerCertificate /certs/css.crt
+SecureListeningPort ${CSS_PORT}
+UnsecureListeningPort ${CSS_PORT}
+PersistenceRootPath /var/wiotp-edge/persist/
+NodeType CSS
+MongoAuthDbName d_edge
+MongoAddressCsv ${CSSDB_CONTAINER_NAME}:27017
+LogTraceDestination stdout,glog
+LogRootPath /tmp
+LogLevel TRACE
+ListeningType unsecure
+CommunicationProtocol ${CSS_TRANSPORT}
+OrgID ${HZN_ORGANIZATION}
