@@ -1,0 +1,47 @@
+{
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "ibm.sdr2msghub",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MSGHUB_API_KEY": "2R4iaggsRB3EUYLbCcVfTZaE0M0o67UMBlb7BWDsEnxoiX64"
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.startup",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+	"STARTUP_KAFKA_APIKEY": "${STARTUP_KAFKA_APIKEY}",
+	"STARTUP_HOST_USER": "${STARTUP_HOST_USER}",
+	"STARTUP_PERIOD": 600,
+        "LOGTO": "",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hal",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "HAL_PERIOD": 43200,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.wan",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "WAN_PERIOD": 14400,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    }
+  ]
+}

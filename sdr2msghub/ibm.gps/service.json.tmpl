@@ -1,0 +1,24 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "gps",
+  "description": "GPS location",
+  "documentation": "",
+  "url": "ibm.gps",
+  "version": "0.0.1",
+  "arch": "${BUILD_ARCH}",
+  "public": false,
+  "sharable": "exclusive",
+    "requiredServices": [],
+    "userInput": [],
+  "deployment": {
+    "services": {
+      "gps": {
+        "image": "${BUILD_FROM}"
+      }
+    }
+  },
+  "sync": true,
+  "tmpfs": {
+    "size": 8192000
+  }
+}

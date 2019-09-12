@@ -1,0 +1,18 @@
+{
+  "horizon": {
+    "exchange": {
+      "host": "exchange.dcmartin.com",
+      "protocol": "http",
+      "port": 3090,
+      "version": "v1",
+      "org": "dcmartin",
+      "user": "dcmartin",
+      "apikey": "whocares"
+    },
+    "css": {
+      "host": "exchange.dcmartin.com",
+      "protocol": "http",
+      "port": 9443
+    }
+  }
+}

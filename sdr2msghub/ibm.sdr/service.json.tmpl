@@ -1,0 +1,25 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "sdr",
+  "description": "software defined radio",
+  "documentation": "",
+  "url": "ibm.sdr",
+  "version": "0.0.1",
+  "arch": "${BUILD_ARCH}",
+  "public": false,
+  "sharable": "exclusive",
+    "requiredServices": [],
+    "userInput": [],
+  "deployment": {
+    "services": {
+      "sdr": {
+        "image": "${BUILD_FROM}",
+        "privileged": true
+      }
+    }
+  },
+  "sync": true,
+  "tmpfs": {
+    "size": 8192000
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "sdr2msghub",
+  "description": "SDR to Kafka",
+  "documentation": "",
+  "url": "ibm.sdr2msghub",
+  "version": "0.0.1",
+  "arch": "${BUILD_ARCH}",
+  "public": false,
+  "sharable": "singleton",
+    "requiredServices": [
+        {
+            "url": "ibm.gps",
+            "org": "${HZN_ORG_ID}",
+            "version": "0.0.1",
+            "arch": "${BUILD_ARCH}"
+        },
+        {
+            "url": "ibm.sdr",
+            "org": "${HZN_ORG_ID}",
+            "version": "0.0.1",
+            "arch": "${BUILD_ARCH}"
+        }
+    ],
+    "userInput": [
+        { "name": "VERBOSE", "label": "", "type": "string", "defaultValue": "0" },
+        { "name": "MSGHUB_TOPIC", "label": "", "type": "string", "defaultValue": "sdr-audio" },
+        { "name": "MSGHUB_API_KEY", "label": "", "type": "string", "defaultValue": "" },
+        { "name": "MSGHUB_BROKER_URL", "label": "", "type": "string", "defaultValue": "kafka05-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093" }
+    ],
+  "deployment": {
+    "services": {
+      "sdr2msghub": {
+        "image": "${BUILD_FROM}"
+      }
+    }
+  },
+  "sync": true,
+  "tmpfs": {
+    "size": 8192000
+  }
+}

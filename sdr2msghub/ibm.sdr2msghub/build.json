@@ -1,0 +1,15 @@
+{
+  "build_from": { 
+    "amd64": "openhorizon/amd64_sdr2msghub:0.0.4",
+    "arm": "openhorizon/arm_sdr2msghub:0.0.4",
+    "arm64": "openhorizon/arm64_sdr2msghub:0.0.4",
+    "386": null,
+    "ppc64": null,
+    "ppc64le": null,
+    "mips64": null,
+    "mips64le": null,
+    "s390x": null,
+    "mips": null,
+    "mipsle": null
+  }
+}

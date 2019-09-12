@@ -205,13 +205,13 @@ AGBOT_NAME=${EXCHANGE_AGBOT_NAME:-null}
 AGBOT_TOKEN=${EXCHANGE_AGBOT_TOKEN:-null}
 
 ## EXCHANGEDB
-if [ "${URL}" != "http://${CONTAINER_NAME}:${PORT}/${VERSION:-v1}" ]; then
+if [ "${EXCHANGE_DB_RESET:-false}" = 'true' ]; then
+  echo "Reseting database" &> /dev/stderr
+  exchange_db_reset "${ROOT}" "${PASSWORD}" "${URL}"
+else
   echo "Deleting existing organization: ${ORG:-null}; user: ${ADMIN_USER:-null}" &> /dev/stderr
   exchange_delete_org "${ROOT}" ${PASSWORD} ${URL} "${ORG}"
   exchange_delete_user "${ROOT}" ${PASSWORD} ${URL} "${ORG}" "${ADMIN_USER}" true "${ADMIN_PASSWORD}" "${ADMIN_EMAIL}"
-else
-  echo "Reseting database" &> /dev/stderr
-  exchange_db_reset "${ROOT}" "${PASSWORD}" "${URL}"
 fi
 
 ## ORG

@@ -1,0 +1,15 @@
+{
+  "build_from": { 
+    "amd64": "openhorizon/amd64_gps:2.0.5",
+    "arm": "openhorizon/arm_gps:2.0.5",
+    "arm64": "openhorizon/arm64_gps:2.0.5",
+    "386": null,
+    "ppc64": null,
+    "ppc64le": null,
+    "mips64": null,
+    "mips64le": null,
+    "s390x": null,
+    "mips": null,
+    "mipsle": null
+  }
+}
