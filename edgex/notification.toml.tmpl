@@ -1,0 +1,48 @@
+[Writable]
+ResendLimit = 2
+LogLevel = '${EDGEX_LOG_LEVEL}'
+
+[Service]
+BootTimeout = 30000
+ClientMonitor = 15000
+CheckInterval = '10s'
+Host = '${NOTIFICATION_SERVICE_HOST}'
+Port = ${NOTIFICATION_SERVICE_PORT}
+Protocol = '${NOTIFICATION_SERVICE_PROTOCOL}'
+MaxResultCount = 500000
+StartupMsg = 'This is the Support Notifications Microservice'
+Timeout = 5000
+
+[Registry]
+Host = '${EDGEX_REGISTRY_HOST}'
+Port = ${EDGEX_REGISTRY_PORT}
+Type = '${EDGEX_REGISTRY_TYPE}'
+
+[Logging]
+EnableRemote = ${EDGEX_LOG_REMOTE}
+File = './logs/edgex-support-notifications.log'
+
+[Clients]
+  [Clients.Logging]
+  Protocol = '${LOGGING_SERVICE_PROTOCOL}'
+  Host = '${LOGGING_SERVICE_HOST}'
+  Port = ${LOGGING_SERVICE_PORT}
+
+[Databases]
+  [Databases.Primary]
+  Host = '${DATABASE_PRIMARY_HOST}'
+  Name = 'notifications'
+  Password = ''
+  Port = ${DATABASE_PRIMARY_PORT}
+  Username = ''
+  Timeout = 5000
+  Type = '${DATABASE_PRIMARY_TYPE}'
+
+[Smtp]
+  Host = '${NOTIFICATION_SMTP_HOST}smtp.gmail.com'
+  Username = '${NOTIFICATION_SMTP_USERNAME}username@mail.example.com'
+  Password = '${NOTIFICATION_SMTP_PASSWORD}password'
+  Port = ${NOTIFICATION_SMTP_PORT}587
+  Sender = '${NOTIFICATION_SMTP_SENDER}jdoe@gmail.com'
+  EnableSelfSignedCert = ${NOTIFICATION_SMTP_ESSCERT}false
+  Subject = '${NOTIFICATION_SMTP_SUBJECT}EdgeX Notification'

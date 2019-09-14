@@ -1,0 +1,55 @@
+[Writable]
+DeviceUpdateLastConnected = false
+MetaDataCheck = false
+PersistData = true
+ServiceUpdateLastConnected = false
+ValidateCheck = false
+LogLevel = '${EDGEX_LOG_LEVEL}'
+
+[Service]
+BootTimeout = 30000
+ClientMonitor = 15000
+CheckInterval = '10s'
+Host = '${DATA_SERVICE_HOST}'
+Port = ${DATA_SERVICE_PORT}
+Protocol = '${DATA_SERVICE_PROTOCOL}'
+MaxResultCount = 50000
+StartupMsg = 'This is the Core Data Microservice'
+Timeout = 5000
+
+[Registry]
+Host = '${EDGEX_REGISTRY_HOST}'
+Port = ${EDGEX_REGISTRY_PORT}
+Type = '${EDGEX_REGISTRY_TYPE}'
+
+[Logging]
+EnableRemote = ${EDGEX_LOG_REMOTE}
+File = '/edgex/logs/edgex-core-data.log'
+
+[Clients]
+  [Clients.Metadata]
+  Protocol = '${METADATA_SERVICE_PROTOCOL}'
+  Host = '${METADATA_SERVICE_HOST}'
+  Port = ${METADATA_SERVICE_PORT}
+
+  [Clients.Logging]
+  Protocol = '${LOGGING_SERVICE_PROTOCOL}'
+  Host = '${LOGGING_SERVICE_HOST}'
+  Port = ${LOGGING_SERVICE_PORT}
+
+[Databases]
+  [Databases.Primary]
+  Host = '${DATABASE_PRIMARY_HOST}edgex-mongo'
+  Name = 'coredata'
+  Password = 'password'
+  Port = ${DATABASE_PRIMARY_PORT}
+  Username = 'core'
+  Timeout = 5000
+  Type = '${DATABASE_PRIMARY_TYPE}'
+
+[MessageQueue]
+Protocol = 'tcp'
+Host = '*'
+Port = 5563
+Type = 'zero'
+Topic = 'events'

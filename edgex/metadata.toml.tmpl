@@ -1,0 +1,56 @@
+[Writable]
+LogLevel = '${EDGEX_LOG_LEVEL}'
+EnableValueDescriptorManagement = false
+
+[Service]
+BootTimeout = 30000
+ClientMonitor = 15000
+CheckInterval = '10s'
+Host = '${METADATA_SERVICE_HOST}'
+Port = ${METADATA_SERVICE_PORT}
+Protocol = '${METADATA_SERVICE_PROTOCOL}'
+MaxResultCount = 50000
+StartupMsg = 'This is the EdgeX Core Metadata Microservice'
+Timeout = 5000
+
+[Registry]
+Host = '${EDGEX_REGISTRY_HOST}'
+Port = ${EDGEX_REGISTRY_PORT}
+Type = '${EDGEX_REGISTRY_TYPE}'
+
+[Logging]
+EnableRemote = ${EDGEX_LOG_REMOTE}
+File = '/edgex/logs/edgex-core-metadata.log'
+
+[Clients]
+  [Clients.Logging]
+  Protocol = '${LOGGING_SERVICE_PROTOCOL}'
+  Host = '${LOGGING_SERVICE_HOST}'
+  Port = ${LOGGING_SERVICE_PORT}
+  [Clients.Notifications]
+  Protocol = '${NOTIFICATION_SERVICE_PROTOCOL}
+  Host = '${NOTIFICATION_SERVICE_PROTOCOL}
+  Port = ${NOTIFICATION_SERVICE_PROTOCOL}
+  [Clients.CoreData]
+  Protocol = '${DATA_SERVICE_PROTOCOL}'
+  Host = '${DATA_SERVICE_HOST}'
+  Port = ${DATA_SERVICE_PORT}
+
+
+[Databases]
+  [Databases.Primary]
+  Host = '${DATABASE_PRIMARY_HOST}'
+  Name = 'metadata'
+  Password = 'password'
+  Port = ${DATABASE_PRIMARY_PORT}
+  Username = 'meta'
+  Timeout = 5000
+  Type = '${DATABASE_PRIMARY_TYPE}'
+
+[Notifications]
+Content = 'Device update: '
+Description = 'Metadata device notice'
+Label = 'metadata'
+PostDeviceChanges = true
+Sender = '${METADATA_SERVICE_HOST}'
+Slug = 'device-change-'

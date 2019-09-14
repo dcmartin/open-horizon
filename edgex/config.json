@@ -1,0 +1,259 @@
+{
+  "horizon": {
+    "exchange": {
+      "host": "exchange.dcmartin.com",
+      "port": 3090,
+      "protocol": "http",
+      "org": "",
+      "user": "",
+      "apikey": ""
+    }
+  },
+  "edgex": {
+    "command": {
+      "loglevel": "INFO",
+      "service": {
+        "boottimeout": 30000,
+        "clientmonitor": 15000,
+        "checkinterval": "10s",
+        "host": "localhost",
+        "port": 48082,
+        "protocol": "http",
+        "maxresultcount": 50000,
+        "startupmsg": "This is the EdgeX Core Command Microservice",
+        "timeout": 5000
+      },
+      "registry": {
+        "host": "localhost",
+        "port": 8500,
+        "type": "consul"
+      },
+      "clients": {
+        "logging": {
+          "protocol": "http",
+          "host": "localhost",
+          "port": 48061
+        },
+        "metadata": {
+          "protocol": "http",
+          "host": "localhost",
+          "port": 48081
+        }
+      },
+      "databases": {
+        "primary": {
+          "host": "localhost",
+          "name": "metadata",
+          "port": 27017,
+          "password": "password",
+          "type": "mongodb",
+          "username": "core"
+        }
+      }
+    },
+    "data": {
+      "loglevel": "INFO",
+      "DeviceUpdateLastConnected": false,
+      "MetaDataCheck": false,
+      "PersistData": true,
+      "ServiceUpdateLastConnected": false,
+      "ValidateCheck": false,
+      "service": {
+        "boottimeout": 30000,
+        "clientmonitor": 15000,
+        "checkinterval": "10s",
+        "host": "edgex-core-data",
+        "port": 48080,
+        "protocol": "http",
+        "maxresultcount": 50000,
+        "startupmsg": "This is the EdgeX Core Data Microservice",
+        "timeout": 5000
+      },
+      "registry": {
+        "host": "localhost",
+        "port": 8500,
+        "type": "consul"
+      },
+      "Logging": {
+        "EnableRemote": false,
+        "File": "/edgex/logs/edgex-core-data.log"
+      },
+      "clients": {
+        "logging": {
+          "protocol": "http",
+          "host": "edgex-support-logging",
+          "port": 48061
+        },
+        "metadata": {
+          "protocol": "http",
+          "host": "edgex-core-metadata",
+          "port": 48081
+        }
+      },
+      "databases": {
+        "primary": {
+          "host": "edgex-mongo",
+          "name": "coredata",
+          "password": "password",
+          "port": 27017,
+          "timeout": 5000,
+          "type": "mongodb",
+          "username": "core"
+        }
+      },
+      "MessageQueue": {
+        "Protocol": "tcp",
+        "Host": "*",
+        "Port": 5563,
+        "Type": "zero",
+        "Topic": "events"
+      }
+    },
+    "logging": {
+      "loglevel": "INFO",
+      "persistence": "database",
+      "service": {
+        "boottimeout": 30000,
+        "clientmonitor": 15000,
+        "checkinterval": "10s",
+        "host": "edgex-support-logging",
+        "port": 48061,
+        "protocol": "http",
+        "maxresultcount": 50000,
+        "startupmsg": "This is the EdgeX Support Logging Microservice",
+        "timeout": 5000
+      },
+      "registry": {
+        "host": "localhost",
+        "port": 8500,
+        "type": "consul"
+      },
+      "Logging": {
+        "EnableRemote": false,
+        "File": "/edgex/logs/edgex-support-logging.log"
+      },
+      "databases": {
+        "primary": {
+          "host": "edgex-mongo",
+          "name": "logging",
+          "password": "password",
+          "port": 27017,
+          "timeout": 5000,
+          "type": "mongodb",
+          "username": "logging"
+        }
+      }
+    },
+    "metadata": {
+      "loglevel": "INFO",
+      "EnableValueDescriptorManagement": false,
+      "service": {
+        "boottimeout": 30000,
+        "clientmonitor": 15000,
+        "checkinterval": "10s",
+        "host": "edgex-core-metadata",
+        "port": 48081,
+        "protocol": "http",
+        "maxresultcount": 50000,
+        "startupmsg": "This is the EdgeX Core Metadata Microservice",
+        "timeout": 5000
+      },
+      "registry": {
+        "host": "localhost",
+        "port": 8500,
+        "type": "consul"
+      },
+      "Logging": {
+        "EnableRemote": false,
+        "File": "/edgex/logs/edgex-core-metadata.log"
+      },
+      "clients": {
+        "logging": {
+          "protocol": "http",
+          "host": "edgex-support-logging",
+          "port": 48061
+        },
+        "notifications": {
+          "protocol": "http",
+          "host": "edge-support-notifications",
+          "port": 48060
+        },
+        "core_data": {
+          "protocol": "http",
+          "host": "localhost",
+          "port": 48080
+        }
+      },
+      "databases": {
+        "primary": {
+          "host": "edgex-mongo",
+          "name": "metadata",
+          "password": "password",
+          "port": 27017,
+          "timeout": 5000,
+          "type": "mongodb",
+          "username": "meta"
+        }
+      },
+      "notifications": {
+        "content": "Device update: ",
+        "description": "Metadata device notice",
+        "label": "metadata",
+        "postdevicechanges": true,
+        "sender": "edgex-core-metadata",
+        "slug": "device-change-"
+      }
+    },
+    "notification": {
+      "loglevel": "INFO",
+      "ResendLimit": 2,
+      "service": {
+        "boottimeout": 30000,
+        "clientmonitor": 15000,
+        "checkinterval": "10s",
+        "host": "edgex-core-metadata",
+        "port": 48060,
+        "protocol": "http",
+        "maxresultcount": 50000,
+        "startupmsg": "This is the EdgeX Core Metadata Microservice",
+        "timeout": 5000
+      },
+      "registry": {
+        "host": "localhost",
+        "port": 8500,
+        "type": "consul"
+      },
+      "Logging": {
+        "enableremote": false,
+        "file": "/edgex/logs/edgex-core-metadata.log"
+      },
+      "clients": {
+        "logging": {
+          "protocol": "http",
+          "host": "edgex-support-logging",
+          "port": 48061
+        }
+      },
+      "databases": {
+        "primary": {
+          "host": "edgex-mongo",
+          "name": "metadata",
+          "password": "password",
+          "port": 27017,
+          "timeout": 5000,
+          "type": "mongodb",
+          "username": "meta"
+        }
+      },
+      "smtp": {
+        "host": "smtp.gmail.com",
+        "username": "username@mail.example.com",
+        "password": "password",
+        "port": 587,
+        "sender": "jdoe@gmail.com",
+        "enableselfsignedcert": false,
+        "subject": "EdgeX Notification"
+      }
+    }
+  }
+}
