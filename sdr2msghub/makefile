@@ -91,27 +91,28 @@ ${KEYS}:
 
 pattern: ${ALL_SERVICES} ${PATTERN_JSON}
 	@echo "$$(date +%FT%TZ) publishing pattern: ${PATTERN_ID}"
-	export STARTUP_KAFKA_APIKEY=${STARTUP_KAFKA_APIKEY} \
+	@export STARTUP_KAFKA_APIKEY=${STARTUP_KAFKA_APIKEY} \
 	  STARTUP_HOST_USER=${STARTUP_HOST_USER} \
 	  HZN_ORG_ID=${HZN_ORG_ID} \
 	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
-	  && \
-          hzn exchange pattern publish \
-	    -o "${HZN_ORG_ID}" \
-	    -u ${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY} \
-	    -f ${PATTERN_JSON} \
-	    -p ${PATTERN_ID} \
-	    -k key.pem \
-	    -K key.pub
+	&& \
+        hzn exchange pattern publish \
+	  -o "${HZN_ORG_ID}" \
+	  -u ${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY} \
+	  -f ${PATTERN_JSON} \
+	  -p ${PATTERN_ID} \
+	  -k key.pem \
+	  -K key.pub
 
 ${ALL_SERVICES}: ${KEYS}
 	@echo "$$(date +%FT%TZ) publishing service: $@"
-	export \
+	@export \
 	  HZN_ORG_ID=${HZN_ORG_ID} \
 	  HZN_USER_ID=${HZN_USER_ID} \
 	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
 	  HZN_EXCHANGE_APIKEY=${HZN_EXCHANGE_APIKEY} \
-	  && ./publish.sh $@ ${KEYS}
+	&& \
+	./publish.sh $@ ${KEYS}
 
 # register a machine
 
