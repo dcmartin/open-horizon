@@ -101,10 +101,10 @@ default: ${EDGEX_CONFIG_FILES} ${DOCKER_COMPOSE} ${HORIZON_CONFIG_FILES}
 KEYS := key.pem key.pub
 
 ${KEYS}:
-        hzn key create $$(whoami) $$(hostname) -k key.pem -K key.pub
+	hzn key create $$(whoami) $$(hostname) -k key.pem -K key.pub
 
 publish: ${HZN_CONFIG_FILES} ${KEYS}
-        @echo "$$(date +%FT%TZ) publishing service"
+	@echo "$$(date +%FT%TZ) publishing service"
 	@export \
 	  HZN_ORG_ID=${HORIZON_EXCHANGE_ORG} \
 	  HZN_USER_ID=${HORIZON_EXCHANGE_USER} \
@@ -119,31 +119,31 @@ publish: ${HZN_CONFIG_FILES} ${KEYS}
 	    -k ${PRIVATE_KEY} \
 	    -K ${PUBLIC_KEY} \
 	    -f ${HORIZON_SERVICE_JSON}
-        @echo "$$(date +%FT%TZ) publishing pattern"
-        @export \
+	@echo "$$(date +%FT%TZ) publishing pattern"
+	@export \
 	  HZN_ORG_ID=${HORIZON_EXCHANGE_ORG} \
 	  HZN_USER_ID=${HORIZON_EXCHANGE_USER} \
 	  HZN_EXCHANGE_APIKEY=${HORIZON_EXCHANGE_USER} \
 	  HZN_EXCHANGE_URL=${HORIZON_EXCHANGE_URL} \
-        && \
-        hzn exchange pattern publish \
-          -o ${HORIZON_EXCHANGE_ORG} \
-          -u ${HORIZON_EXCHANGE_USER}:${HORIZON_EXCHANGE_APIKEY} \
-          -f ${HORIZON_PATTERN_JSON} \
-          -p 'edgex' \
-          -k key.pem \
-          -K key.pub
+	&& \
+	hzn exchange pattern publish \
+	  -o ${HORIZON_EXCHANGE_ORG} \
+	  -u ${HORIZON_EXCHANGE_USER}:${HORIZON_EXCHANGE_APIKEY} \
+	  -f ${HORIZON_PATTERN_JSON} \
+	  -p 'edgex' \
+	  -k key.pem \
+	  -K key.pub
 
 # register a machine
 
 ${MACHINE}: ${INPUT_JSON}
-        export \
-          HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
-          HZN_ORG_ID=${HZN_ORG_ID} \
-          HZN_USER_ID=${HZN_USER_ID} \
-          HZN_EXCHANGE_APIKEY=${HZN_EXCHANGE_APIKEY} \
-        && \
-          ./sh/make-machine.sh ${MACHINE} &> $@
+	export \
+	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
+	  HZN_ORG_ID=${HZN_ORG_ID} \
+	  HZN_USER_ID=${HZN_USER_ID} \
+	  HZN_EXCHANGE_APIKEY=${HZN_EXCHANGE_APIKEY} \
+	  && \
+	  ./sh/make-machine.sh ${MACHINE} &> $@
 
 ${HORIZON_CONFIG_FILES}: config.json makefile
 	@echo 'Making $@'
