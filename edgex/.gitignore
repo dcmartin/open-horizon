@@ -1,5 +1,6 @@
 *.pem
 *.pub
+docker-compose.yml
 horizon/userinput.json
 horizon/service.json
 horizon/pattern.json
