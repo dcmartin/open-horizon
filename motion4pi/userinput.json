@@ -1,0 +1,53 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.motion2mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "HZN_EXCHANGE_APIKEY": "${HZN_EXCHANGE_APIKEY}",
+        "MOTION_TIMEZONE": "America/Los_Angeles",
+        "MOTION_GROUP": "motion",
+        "MOTION_CLIENT": "",
+        "MOTION_POST_PICTURES": "center",
+        "MOTION_LOG_LEVEL": 6,
+        "MOTION_LOG_TYPE": "all",
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "username",
+        "MQTT_PASSWORD": "password",
+        "MQTT_PORT": 1883,
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_USERNAME": "username",
+        "MQTT_PASSWORD": "password",
+        "MQTT_PORT": 1883,
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.yolo4motion",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "username",
+        "MQTT_PASSWORD": "password",
+        "MQTT_PORT": 1883,
+        "MOTION_GROUP": "motion",
+        "MOTION_CLIENT": "+",
+        "YOLO4MOTION_CAMERA": "+",
+        "YOLO_CONFIG": "tiny",
+        "YOLO_ENTITY": "all",
+        "YOLO_SCALE": "none",
+        "DEBUG": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "label": "motion2mqtt",
+  "description": "motion2mqtt as a pattern",
+  "services": [
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.13" } ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.13" } ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.13" } ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "serviceArch": "arm61",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.mqtt",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    }
+  ]
+}
