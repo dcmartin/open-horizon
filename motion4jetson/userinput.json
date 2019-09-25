@@ -25,15 +25,36 @@
       "url": "com.github.dcmartin.open-horizon.mqtt",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
+        "MQTT_PORT": 1883,
         "MQTT_USERNAME": "username",
         "MQTT_PASSWORD": "password",
+        "LOG_LEVEL": "info"
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_USERNAME": "username",
+        "MQTT_PASSWORD": "password",
+        "MQTT_HOST": "mqtt",
         "MQTT_PORT": 1883,
+        "MQTT2MQTT_SUBSCRIBE": "+/+/+/event/end",
+        "MQTT2MQTT_PUBLISH": "",
+        "MQTT2MQTT_HOST": null,
+        "MQTT2MQTT_PORT": "1883",
+        "MQTT2MQTT_USERNAME": "username",
+        "MQTT2MQTT_PASSWORD": "password",
+        "MQTT2MQTT_PERIOD": "30",
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
         "DEBUG": false
       }
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.yolo4motion",
+      "url": "com.github.dcmartin.open-horizon.jetson-yolo4motion",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "MQTT_HOST": "mqtt",
@@ -41,12 +62,12 @@
         "MQTT_PASSWORD": "password",
         "MQTT_PORT": 1883,
         "MOTION_GROUP": "motion",
-        "MOTION_CLIENT": "+",
+        "MOTION_CLIENT": "",
         "YOLO4MOTION_CAMERA": "+",
-        "YOLO_CONFIG": "tiny",
+        "YOLO_CONFIG": "v3",
         "YOLO_ENTITY": "all",
         "YOLO_SCALE": "none",
-        "DEBUG": false
+        "LOG_LEVEL": "info"
       }
     }
   ]
