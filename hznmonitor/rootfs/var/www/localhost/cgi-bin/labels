@@ -1,0 +1,66 @@
+#!/bin/bash
+
+if [ -d "/tmpfs" ]; then TMPDIR="/tmpfs"; else TMPDIR="/tmp"; fi
+
+###
+###
+###
+
+TTL=900
+SECONDS=$(date +%s)
+DATE=$(echo "${SECONDS} / ${TTL} * ${TTL}" | bc)
+APP="${0##*/}"
+
+OUTPUT="${TMPDIR}/${APP}.$DATE.json"
+
+if [ ! -s "${OUTPUT}" ]; then
+  pidfile="${TMPDIR}/${APP}.pid"
+  if [ ! -s ${pidfile}  ]; then
+    echo "--- INFO $0 $$ -- making labels; output: ${OUTPUT}; pidfile: ${pidfile}" 2>&1 >> ${TMPDIR}/${APP}.log
+    ./bin/labels.sh "${OUTPUT}" ${pidfile} &
+    PID=$!
+  else
+    PID=$(cat ${pidfile})
+  fi
+  OUTPUTS=($(echo ${TMPDIR}/${APP}.*.json))
+else
+  echo "--- INFO $0 $$ -- using old outputs; output: ${OUTPUT}" 2>&1 >> ${TMPDIR}/${APP}.log
+  OUTPUTS=(${OUTPUT})
+fi
+
+NOUTPUTS=${#OUTPUTS[@]}
+if [ ${NOUTPUTS} -gt 0 ]; then
+  output=${OUTPUTS[0]}
+  if [ -s "${output}" ]; then
+    echo "--- INFO $0 $$ -- found old output; output: ${output}" 2>&1 >> ${TMPDIR}/${APP}.log
+    AGE=${output%.*} && AGE=${AGE##*.}
+    AGE=$((SECONDS-AGE))
+    OUTPUT=$(cat ${output})
+  else
+    echo "--- INFO $0 $$ -- no old output" 2>&1 >> ${TMPDIR}/${APP}.log
+    RETRY=30
+    OUTPUT='{"error":"not ready; PID '${PID:-none}'","retry":'${RETRY}'}'
+  fi
+  i=1; while [ ${i} -lt ${NOUTPUTS} ]; do
+    rm -f ${OUTPUTS[${i}]}
+    i=$((i+1))
+  done
+else
+  RETRY=60
+  OUTPUT='{"error":"service unavailable; PID '${PID:-none}'","retry":'${RETRY}'}'
+fi
+
+if [ ! -z "${RETRY:-}" ]; then
+#  echo 'HTTP/1.1 503 Service Unavailable'
+  echo "Retry-After: ${RETRY}"
+else
+#  echo 'HTTP/1.1 200 OK'
+  echo "Cache-Control: max-age=${TTL}"
+  echo "Age: ${AGE:-0}"
+fi
+
+## output
+echo "Access-Control-Allow-Origin: *"
+echo "Content-Type: application/json; charset=utf-8"
+echo ""
+echo "${OUTPUT}"

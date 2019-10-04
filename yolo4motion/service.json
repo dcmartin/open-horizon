@@ -1,0 +1,52 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "yolo4motion",
+  "description": "Listen to MQTT topic and run YOLO on image received",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo4motion/README.md",
+  "url": "com.github.dcmartin.open-horizon.yolo4motion",
+  "version": "0.0.4",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+  ],
+  "userInput": [
+    { "name": "MQTT_HOST", "label": "MQTT host", "type": "string", "defaultValue": "mqtt" },
+    { "name": "MQTT_PORT", "label": "MQTT port", "type": "int", "defaultValue": "1883" },
+    { "name": "MQTT_USERNAME", "label": "MQTT host", "type": "string", "defaultValue": "" },
+    { "name": "MQTT_PASSWORD", "label": "MQTT host", "type": "string", "defaultValue": "" },
+    { "name": "MOTION_GROUP", "label": "group for pub/sub", "type": "string", "defaultValue": "motion" },
+    { "name": "MOTION_CLIENT", "label": "client for subscription", "type": "string", "defaultValue": "+" },
+    { "name": "YOLO4MOTION_CAMERA", "label": "camera for subscription", "type": "string", "defaultValue": "+" },
+    { "name": "YOLO4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end" },
+    { "name": "YOLO4MOTION_TOPIC_PAYLOAD", "label": "image topic", "type": "string", "defaultValue": "image" },
+    { "name": "YOLO4MOTION_USE_MOCK", "label": "use mock data true/false", "type": "boolean", "defaultValue": "false" },
+    { "name": "YOLO4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
+    { "name": "YOLO_CONFIG", "label": "configuration: tiny, tiny-v3, v2, v3; default: tiny", "type": "string", "defaultValue": "tiny" },
+    { "name": "YOLO_ENTITY", "label": "entity to count", "type": "string", "defaultValue": "all" },
+    { "name": "YOLO_SCALE", "label": "size WIDTHxHEIGHT for image", "type": "string", "defaultValue": "none" },
+    { "name": "YOLO_THRESHOLD", "label": "threshold for detection", "type": "int", "defaultValue": "0.25" },
+    { "name": "YOLO_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "60" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug true/false", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "yolo4motion": {
+        "environment": [
+          "SERVICE_LABEL=yolo4motion",
+          "SERVICE_VERSION=0.0.4.5"
+        ],
+        "specific_ports": [],
+        "devices": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 81920000
+  }
+}

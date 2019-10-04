@@ -1,0 +1,16 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.cpu",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "CPU_PERIOD": 60,
+        "CPU_INTERVAL": 1,
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    }
+  ]
+}

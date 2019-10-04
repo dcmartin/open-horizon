@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Content-Type: application/json; charset=utf-8"
+echo "Access-Control-Allow-Origin: *"
+#echo "Cache-Control: no-cache"
+echo "Cache-Control: max-age=30"
+echo ""
+./bin/lsnodes.sh

@@ -19,68 +19,53 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
 ## things NOT TO change
 ##
 
-BASES := base-alpine base-ubuntu 
-SERVICES := cpu hal wan yolo apache-alpine apache-ubuntu hznmonitor hzncli mqtt yolo4motion mqtt2kafka herald fft noize 
-WIP := mqtt2mqtt record hotword 
-JETSONS := # jetson-jetpack jetson-cuda jetson-opencv jetson-yolo jetson-caffe jetson-digits
-PATTERNS := yolo2msghub hznsetup startup motion2mqtt
+SERVICES := base-alpine base-ubuntu cpu hal wan mqtt apache-ubuntu hznsetup hznmonitor yolo yolo-cuda yolo4motion yolo-cuda4motion mqtt2mqtt 
+PATTERNS := hznsetup startup motion motion+yolo motion+yolo-cuda
 MISC := setup sh doc
 
-ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP} ${JETSONS}
+ALL = $(SERVICES) $(PATTERNS)
 
 ##
 ## targets
 ##
-
-TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-publish service-verify service-test service-stop service-clean horizon
+CLEAN_TARGETS = clean realclean distclean 
+SERVICE_TARGETS = build push publish service-build service-push service-publish
+PATTERN_TARGETS = pattern-publish
+ALL_TARGETS = $(CLEAN_TARGETS) $(SERVICE_TARGETS) $(PATTERN_TARGETS)
 
 ## actual
 
-default: $(ALL)
+default: build
 
-$(ALL):
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
-	$(MAKE) TAG=${TAG} HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
+services: $(SERVICE_TARGETS)
 
-$(TARGETS):
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@ in ${ALL}""${NC}" &> /dev/stderr
-	@for dir in $(ALL); do \
+patterns: $(PATTERN_TARGETS)
+
+$(ALL_TARGETS):
+	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@""$(NC)" &> /dev/stderr
+	$(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
+
+$(SERVICE_TARGETS):
+	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@""$(NC)" &> /dev/stderr
+	@for dir in $(SERVICES); do \
+	  echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@ in $${dir}""$(NC)" &> /dev/stderr; \
 	  $(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-pattern-publish:
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- publishing $(PATTERNS)""${NC}" &> /dev/stderr
+$(PATTERN_TARGETS):
+	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- publishing $(PATTERNS)""$(NC)" &> /dev/stderr
 	@for dir in $(PATTERNS); do \
-	  $(MAKE) TAG=${TAG} HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
+	  echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@ in $${dir}""$(NC)" &> /dev/stderr; \
+	  $(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-pattern-validate: 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- validating $(PATTERNS)""${NC}" &> /dev/stderr
-	@for dir in $(PATTERNS); do \
-	  $(MAKE) TAG=${TAG} HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
-	done
-
-.PHONY: ${ALL} default all build run check stop push publish verify clean start test sync
-
-sync: ../beta .gitignore CLOC.md 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- synching ${ALL}""${NC}" &> /dev/stderr
-	@rsync -av makefile service.makefile .travis *.md .gitignore .travis.yml ../beta
-	export DIRS="${BASES} $(SERVICES) ${MISC} ${JETSONS} ${WIP}" && for dir in $${DIRS}; do \
-	  echo "$${dir}"; \
-	  rsync -av --info=name --exclude-from=./.gitignore $${dir}/ ../beta/$${dir}/ ; \
-	done
-	
-CLOC.md: .gitignore .
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- counting source code""${NC}" &> /dev/stderr
-	@cloc --md --exclude-list-file=.gitignore . > CLOC.md
-
-.PHONY:	${BASES} ${SERVICES} ${PATTERNS} ${JETSONS} ${MISC} ${WIP}
+.PHONY: $(ALL_TARGETS)
 
 ##
 ## COLORS
 ##
-MC=${LIGHT_BLUE}
-NC=${NO_COLOR}
+MC=$(LIGHT_BLUE)
+NC=$(NO_COLOR)
 
 NO_COLOR=\033[0m
 BLACK=\033[0;30m

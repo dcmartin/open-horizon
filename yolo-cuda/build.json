@@ -1,0 +1,17 @@
+{
+  "squash": false,
+  "build_from": {
+    "arm64": "nvcr.io/nvidia/l4t-base:r32.2.1",
+    "amd64": null,
+    "arm": null,
+    "386": null,
+    "ppc64": null,
+    "ppc64le": null,
+    "mips64": null,
+    "mips64le": null,
+    "s390x": null,
+    "mips": null,
+    "mipsle": null
+  },
+  "args": {}
+}

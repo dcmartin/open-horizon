@@ -1,0 +1,43 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "yolo",
+  "description": "Provide YOLO object recognition service",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo/README.md",
+  "url": "com.github.dcmartin.open-horizon.yolo",
+  "version": "0.0.8",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "YOLO_CONFIG", "label": "YOLO configuration type: tiny, v2, v3", "type": "string", "defaultValue": "tiny" },
+    { "name": "YOLO_ENTITY", "label": "entity to count", "type": "string", "defaultValue": "person" },
+    { "name": "YOLO_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
+    { "name": "YOLO_THRESHOLD", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "0.25" },
+    { "name": "YOLO_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "0" },
+    { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
+    { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "yolo": {
+        "environment": [
+          "SERVICE_LABEL=yolo",
+          "SERVICE_VERSION=0.0.8"
+        ],
+        "specific_ports": [],
+        "devices": [
+          "/dev/video0:/dev/video0"
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

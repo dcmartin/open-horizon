@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans" rel="stylesheet">
+<title>hznmonitor</title>
+</head>
+
+<!--
+STYLE PAGE
+--!>
+
+<style>
+
+body,table,p,td { 
+  font-family: 'IBM+Plex+Sans', sans-serif, serif;
+  font-size: 12px;
+}
+table {
+  border-collapse: collapse;
+}
+</style>
+
+<!--
+STYLE LOADER
+--!>
+
+<style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<!--
+STYLE TABS
+--!>
+
+<style>
+ /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+} 
+
+.tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+</style>
+
+<!--
+STYLE SLIDER
+--!>
+
+<style>
+.sliderwrapper {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 50%;
+  height: 15px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+</style>
+
+<!--
+STYLE TOOLTIP
+--!>
+
+<style>
+ /* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 0px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+} 
+</style>
+
+<!--
+PROCESS EXCHANGE
+--!>
+
+<script>
+var horizon_request = new XMLHttpRequest();
+horizon_request.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    var jobj = JSON.parse(this.responseText);
+    if (jobj != null) {
+      var str = '<table>';
+      str += '<tr><th align="right">Exchange:</th><td>' + jobj["url"] + '</td></tr>';
+      str += '<tr><th align="right">Organization:</th><td>' + jobj["org"] + '</td></tr>';
+      str += '<tr><th align="right">Message:</th><td>' + jobj["msg"] + '</td></tr>';
+      str += '<tr><th align="right">Number of users:</th><td>' + jobj["numberOfUsers"] + '</td></tr>';
+      str += '<tr><th align="right">Number of nodes:</th><td>' + jobj["numberOfNodes"] + '</td></tr>';
+      str += '<tr><th align="right">Number of node agreements:</th><td>' + jobj["numberOfNodeAgreements"] + '</td></tr>';
+      str += '<tr><th align="right">Number of node messages:</th><td>' + jobj["numberOfNodeMsgs"] + '</td></tr>';
+      str += '<tr><th align="right">Number of agbot agreements:</th><td>' + jobj["numberOfAgbotAgreements"] + '</td></tr>';
+      str += '<tr><th align="right">Number of agbot messages:</th><td>' + jobj["numberOfAgbotMsgs"] + '</td></tr>';
+      str += '<tr><th align="right">DB schema verison:</th><td>' + jobj["dbSchemaVersion"] + '</td></tr>';
+      str += '</table>';
+      horizon_output.innerHTML = str;
+      document.getElementById('exchange_url').innerHTML = jobj["url"];
+      document.getElementById('exchange_org').innerHTML = jobj["org"];
+    }
+  }
+}
+horizon_request.open("GET","/cgi-bin/exchange", true);
+horizon_request.send();
+</script>
+
+<!--
+PROCESS SERVICES
+--!>
+
+<script>
+var services_request = new XMLHttpRequest();
+services_request.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    var jobj = JSON.parse(this.responseText);
+    svcs = jobj["services"];
+    if (svcs.length > 0) {
+      var str = '<table border="1">';
+      svcs.forEach(function(item,index) {
+        str += '<tr valign="top"><td align="left">';
+        str += '<table>';
+        str += '<tr><td align="right"><b>Service:</b></td><td><a target="_blank" href="' + item.documentation + '"><b>' + item.label + '</b></a></td></tr>';
+        str += '<tr><td align="right">Last Status:</td><td>' + item.lastUpdated + '</td></tr>';
+        var now = new Date();
+        var then =  new Date(item.lastUpdated.replace("[UTC]",""));
+        var ago = Math.round((now - then)/1000);
+        str += '<tr><td align="right">Ago:</td><td>' + ago + '</td></tr>';
+        str += '<tr><td align="right">Owner:</td><td>' + item.owner + '</td></tr>';
+        str += '<tr><td align="right">Description:</td><td>' + item.description + '</td></tr>';
+        str += '<tr><td align="right">Architecture:</td><td>' + item.arch + '</td></tr>';
+        str += '<tr><td align="right">URL:</td><td>' + item.url + '</td></tr>';
+        str += '<tr><td align="right">ID:</td><td>' + item.id + '</td></tr>';
+        str += '<tr><td align="right">Public:</td><td>' + item.public + '</td></tr>';
+        str += '<tr><td align="right">Version:</td><td>' + item.version + '</td></tr>';
+        str += '<tr><td align="right">Shareable:</td><td>' + item.sharable + '</td></tr>';
+        str += '<tr><td align="right">Required services count:</td><td>' + item.requiredServices.length + '</td></tr>';
+        str += '<tr><td align="right">User input count:</td><td>' + item.userInput.length + '</td></tr>';
+        str += '</table>';
+        str += '</td><td>';
+        // required services
+        var reqsvcs = item["requiredServices"];
+        if (reqsvcs.length > 0) {
+          str += '<table><tr><th>URL</th><th>Org</th><th>Arch</th><th>Version</th></tr>';
+          reqsvcs.forEach(function(svc,index) {
+            str += '<tr valign="top"><td>' + svc["url"] + '</td><td>' + svc["org"] + '</td><td align="center">' + svc["arch"] + '</td><td align="center">' + svc["version"] + '</td></tr>' 
+          });
+          str += '</table>';
+        } else {
+          str += 'No Required Services';
+        }
+        str += '</td></tr>'
+      });
+      str += '</table>';
+      service_output.innerHTML = str;
+    } else {
+      // console.log("services_request: zero services");
+    }
+  } else {
+    // console.log("services_request: bad response; ready: " + this.readyState + "; status: " + this.status);
+  }
+}
+services_request.open("GET","/cgi-bin/services", true);
+services_request.send();
+</script>
+
+<!--
+PROCESS PATTERNS
+--!>
+
+<script>
+var patterns_request = new XMLHttpRequest();
+patterns_request.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    var jobj = JSON.parse(this.responseText);
+    if (jobj != null) {
+      pats = jobj["patterns"];
+      if (pats.length > 0) {
+        var str = '<table border="1">';
+        pats.forEach(function(pat,index) {
+          str += '<tr valign="top"><td align="left">';
+
+          str += '<table>';
+          str += '<tr><td align="right"><b>Pattern:</b></td><td><b>' + pat.id + '</b></td></tr>';
+          str += '<tr><td align="right">Last Updated:</td><td>' + pat.lastUpdated + '</td></tr>';
+          var now = new Date();
+          var then =  new Date(pat.lastUpdated.replace("[UTC]",""));
+          var ago = Math.round((now - then)/1000);
+          str += '<tr><td align="right">Ago:</td><td>' + ago + '</td></tr>';
+          str += '<tr><td align="right">Owner:</td><td>' + pat.owner + '</td></tr>';
+          str += '<tr><td align="right">Label:</td><td>' + pat.label + '</td></tr>';
+          str += '<tr><td align="right">Description:</td><td>' + pat.description + '</td></tr>';
+          str += '<tr><td align="right">Public:</td><td>' + pat.public + '</td></tr>';
+          str += '</table>';
+
+          str += '</td><td>';
+          svcs = pat["services"];
+          if (svcs != null) {
+            str += '<table><tr><th>URL</th><th>ORG</th><th>ARCH</th><th>Versions</th></tr>';
+            svcs.forEach(function(svc,index) {
+              str += '<tr valign="top"><td>' + svc["serviceUrl"] + '</td><td>' + svc["serviceOrgid"] + '</td><td>' + svc["serviceArch"] + '</td><td>';
+              vers = svc["serviceVersions"];
+              if (vers != null) {
+                str += '<table>';
+                vers.forEach(function(ver,index) {
+                  str += '<tr valign="top"><td>' + ver["version"] + '</td></tr>';
+                });
+                str += '</table>';
+              }
+              str += '</td></tr>'
+            });
+            str += '</table>';
+          } else {
+            str += '<i>No Services</i>'
+          }
+          str += '</td></tr>';
+        });
+        str += '</table>';
+        pattern_output.innerHTML = str;
+      } else {
+        // console.log("patterns_request: zero patterns");
+      }
+    } else {
+      // console.log("patterns_request: null response");
+    }
+  } else {
+    // console.log("patterns_request: bad response; ready: " + this.readyState + "; status: " + this.status);
+  }
+}
+patterns_request.open("GET","/cgi-bin/patterns", true);
+patterns_request.send();
+</script>
+
+<!--
+PROCESS NODES
+--!>
+
+<script>
+function nodes_display() {
+  if (allNodes != null) {
+    if (allNodes["nodes"].length > 0) {
+      var str = '<table border="1">';
+      allNodes["nodes"].forEach(function(item,index) {
+	str += '<tr valign="top"><td align="left">';
+	str += '<table>'
+	str += '<tr id="' + item.name + '-state"><td align="right"><b>Node:</b></td><td><b><code>' + item.name + '</code></b></td></tr>';
+	// lastHeartbeat
+	var now = new Date();
+	var then =  new Date(item.lastHeartbeat.replace("[UTC]",""));
+	var ago = Math.round((now - then)/1000);
+	var when = '';
+
+	var days = Math.floor(ago/86400);
+	if (days > 0) {
+	  when += days + 'd'
+	}
+	ago -= days * 86400;
+	var hours = Math.floor(ago/3600);
+	if (hours > 0) {
+	  when += hours + 'h';
+	}
+	ago -= hours * 3600;
+	var mins = Math.floor(ago/60);
+	if (days == 0 && mins > 0) {
+	  when += mins + 'm'
+	}
+	ago -= mins * 60;
+	if (days == 0 && hours == 0) {
+	  when += ago + 's'
+	}
+	if (when.length == 0) {
+	  when = '<b>Error</b>'
+	}
+	str += '<tr><td align="right">Last Heartbeat:</td><td>' + item.lastHeartbeat;
+	str += ' (' + when + ')</td></tr>';
+
+	// lastUpdated
+	str += '<tr><td align="right">Last status:</td><td id="' + item.name + '-update"><i>None</i></td></tr>';
+	str += '<tr><td align="right">Pattern:</td><td>' + item.pattern + '</td></tr>';
+	str += '<tr><td align="right">Owner:</td><td>' + item.owner + '</td></tr>';
+	str += '<tr><td align="right">Service count:</td><td>' + item.registeredServices.length + '</td></tr>';
+	str += '<tr><td align="right">Msg end point:</td><td>' + item.msgEndPoint + '</td></tr>';
+	str += '</table>'
+	str += '</td><td>';
+	var svcs = item["registeredServices"];
+	if (svcs.length > 0) {
+	  str += '<table><tr><th>URL</th><th>Status</th><th>Properties</th></tr>';
+	  svcs.forEach(function(svc,index) {
+	    var sid = item.name + '/' + svc["url"];
+
+	    str += '<tr valign="top"><td>' + svc["url"] + '</td><td>' 
+	    str += '<div id="' + sid + '">' + '<i>No update</i>' + '</div>' + '</td><td>';
+	    props = svc["properties"];
+	    if (props.length > 0) {
+	      str += '<table>';
+	      props.forEach(function(prop,index) {
+		str += '<tr valign="top"><td>' + prop["name"] + '</td><td>' + prop["value"] + '</td></tr>';
+	      });
+	      str += '</table>';
+	    }
+	    str += '</td></tr>'
+	  });
+	  str += '</table>';
+	} else {
+	   str += '<i>No registered services</i>';
+	}
+	str += '</td></tr>'
+      });
+      str += '</table>';
+      node_output.innerHTML += str;
+
+      // add node status
+      allNodes["nodes"].forEach(function(item,index) {
+	var name = item["name"];
+	if (item['pattern'].length > 0 && name.length > 0) {
+	  var node_status = new XMLHttpRequest();
+
+	  node_status.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+	      var node_state = JSON.parse(this.responseText);
+
+	      if (node_state != null && node_state["error"] == null) {
+		var st = node_state["status"];
+		if (st != null) {
+		  var svcs = st["services"];
+		  if ( svcs.length > 0) {
+		    svcs.forEach(function(svc,index) {
+		      var str = '<table><tr><th>Version</th><th>Containers</th><th>State</th></tr>';
+		      var cs = svc["containerStatus"];
+
+		      str += '<tr><td>' + svc["version"] + '</td><td>' + cs.length + '</td><td>';
+		      if (cs != null) {
+			str += '<table>';
+			cs.forEach(function(c,index) {
+			  str += '<tr><td>' + c.state + '</td><tr>';
+			});
+			str += '</table>';
+		      }
+		      str += '</td></tr>';
+
+		      str += '</table>';
+		      // update service status
+		      var sid = name + '/' + svc["orgid"] + '/' + svc["serviceUrl"];
+		      var elem = document.getElementById(sid);
+		      if (elem != null) {
+			elem.innerHTML = str;
+		      } else {
+			// console.log('failed to find: ' + sid);
+		      }
+		      elem = document.getElementById(name + '-update');
+		      if (elem != null) {
+			var lastUpdated = st.lastUpdated;
+			if (lastUpdated != null) {
+			  var then =  new Date(lastUpdated.replace("[UTC]",""));
+			  var now = new Date();
+			  var ago = Math.round((now - then)/1000);
+			  var when = '';
+
+			  var days = Math.floor(ago/86400);
+			  if (days > 0) {
+			    when += days + 'd'
+			    ago -= days * 86400;
+			  }
+			  var hours = Math.floor(ago/3600);
+			  if (hours > 0) {
+			    when += hours + 'h';
+			    ago -= hours * 3600;
+			  }
+			  var mins = Math.floor(ago/60);
+			  if (days == 0 && mins > 0) {
+			    when += mins + 'm'
+			    ago -= mins * 60;
+			  }
+			  if (days == 0 && hours == 0) {
+			    when += ago + 's'
+			  }
+			  if (when.length == 0) {
+			    when = '<b>Error</b>'
+			  }
+			  elem.innerHTML = lastUpdated + ' (' + when + ')';
+			} else {
+			  // console.log('no lastUpdated: ' + name);
+			}
+		      } else {
+			// console.log('failed to find: ' + name + '-update');
+		      }
+		    });
+		  }
+		}
+	      } else {
+		//// console.log("nodes_request: " + node_state["error"] + ": " + name);
+	      }
+	    } else {
+	      // console.log("nodes_request: bad response; ready: " + this.readyState + '; status: ' + this.status);
+	    }
+	  }
+	  node_status.open("GET","/cgi-bin/status?node=" + name, true);
+	  node_status.send();
+	}
+      });
+    }
+  }
+}
+</script>
+
+<!--
+PROCESS LABELS
+--!>
+
+<script>
+var labels_request = new XMLHttpRequest();
+labels_request.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    var jobj = JSON.parse(this.responseText);
+
+    if (jobj["labels"] != null) {
+      var lbls = jobj["labels"];
+      var str = '<table border="1">';
+
+      lbls.forEach(function(lbl,index) {
+        str += '<tr><td valign="top"><b><code>' + lbl.label + '</code></b></td><td>';
+        var svcs = lbl["services"];
+        if (svcs.length > 0) {
+          str += '<table>';
+          svcs.forEach(function(svc,index) {
+            str += '<tr>';
+            str += '<td valign="top">';
+            str += '<table>';
+            console.log(svc["doc"]);
+            str += '<tr><td><a href="' + svc["doc"] + '">';
+            var urlencoded = svc["url"];
+            urlencoded = urlencoded.replace(/-/g,"_");
+            console.log(urlencoded);
+            str += '<img src="https://img.shields.io/badge/url-' + urlencoded + '-brown.svg"></a></td></tr>';
+            str += '<tr><td><img src="https://img.shields.io/badge/public-' + svc["public"] + '-orange.svg"></td></tr>';
+            str += '<tr><td><img src="https://img.shields.io/badge/shared-' + svc["shared"] + '-cyan.svg"></td></tr>';
+            str += '</table></td><td>';
+            var vers = svc["versions"];
+            if (vers.length > 0) {
+              str += '<table>';
+              vers.forEach(function(ver,index) {
+                str += '<tr><td valign="top"><img src="https://img.shields.io/badge/version-' + ver["version"] + '-yellow.svg"></td><td>'
+                var conts = ver["containers"];
+                if (conts.length > 0) {
+                  str += '<table>';
+                  conts.forEach(function(cont,index) {
+                    if (cont["image"] != null) {
+                      // start row
+                      str += '<tr>';
+                      // architecture
+                      var shield = '<img src="https://img.shields.io/badge/' + cont["arch"] + '-yes-green.svg">';
+                      str += '<td>' + shield + '</td>';
+                      // repo
+                      var repo = cont["image"].split('@')[0];
+                      // image
+                      var badge = '<img src="https://images.microbadger.com/badges/image/' + repo + '.svg">';
+                      var details = '<a href="https://microbadger.com/images/' + repo + '">' + badge + '</a>';
+                      str += '<td>' + details + '</td>';
+                      // ago
+                      var then =  new Date(cont["lastUpdated"].replace("[UTC]",""));
+                      var now = new Date();
+                      var days = Math.floor((now - then)/1000/86400);
+                      var ago = '<img src="https://img.shields.io/badge/age-';
+                      if (days > 0) {
+                        ago += days + '%20day(s)'
+                      }
+                      var hours = Math.floor((now - then)/1000/3600%24);
+                      if (hours > 0) {
+                        if (days > 0) {
+                          ago += ';%20';
+                        }
+                        ago += hours + '%20hour(s)'
+                      }
+                      var minutes = Math.floor((now - then)/1000%60);
+                      if (minutes > 0) {
+                        if (days > 0 || hours > 0) {
+                          ago += ';%20';
+                        }
+                        ago += minutes+ '%20min(s)'
+                      }
+                      ago += '-purple.svg">';
+                      str += '<td>' + ago + '</td>';
+                      // registry
+                      var pulls = '<img src="https://img.shields.io/docker/pulls/' + repo + '.svg">';
+                      var registry = '<a href="https://hub.docker.com/r/' + repo + '">' + pulls + '</a>';
+                      str += '<td>' + registry + '</td>';
+                      // end row
+                      str += '</tr>';
+                    } else {
+                      console.log('no image');
+                    }
+                  });
+                  str += '</table>'
+                } else {
+                  str += '<i>no containers</i>';
+                }
+                str += '</td></tr>'
+              });
+              str += '</table>';
+            } else {
+              str += '<i>no versions</i>';
+              console.log('no versions');
+            }
+            str += '</td></tr>'
+          });
+          str += '</table>';
+        } else {
+          str += '<i>no services</i>';
+          console.log('no services');
+        }
+        str += '</td></tr>'
+      });
+      str += '</table>';
+      label_output.innerHTML = str;
+    } else {
+      console.log("labels_request: zero labels");
+    }
+  } else {
+    console.log("labels_request: bad response; ready: " + this.readyState + '; status: ' + this.status);
+  }
+}
+labels_request.open("GET","/cgi-bin/labels", true);
+labels_request.send();
+</script>
+
+<!--
+ARRAY SELECT FUNCTION
+--!>
+
+<script>
+Array.prototype.select = function(test) {
+  var new_array = [];
+  for (var n = 0; n < this.length; n++) {
+    if (test(this[n])){
+      // console.log("select: " + this[n]["name"]);
+      new_array.push(this[n]);
+    }
+  }
+  return new_array;
+};
+</script>
+
+<!--
+MATRIX DISPLAY
+--!>
+
+<script>
+
+function matrix_select()
+{
+
+  // console.log("matrix_select: start");
+  document.getElementById("loading").style.display = "block";
+
+  var nodename = document.getElementById("nodename").value;
+  // restrict to nodes with regexp matching names
+  if (nodename.length > 0) {
+    theseNodes = allNodes.nodes.select(function(x) { if (x["name"].match(nodename)) return true });
+  } else {
+    theseNodes = allNodes.nodes;
+  }
+
+  // console.log("matrix_select: finish");
+  document.getElementById("loading").style.display = "none";
+}
+
+function matrix_display()
+{
+  if (theseNodes.length > 0) {
+    function toHex(d) { return(Number(d).toString(16).padStart(2, '0')) }
+    var agerange = document.getElementById("agerange").value;
+    var nodename = document.getElementById("nodename").value;
+
+    var node_count = theseNodes.length;
+    var node_show = Math.floor(node_count * agerange / 100);
+
+    if (node_show < 1 && node_count > 0) node_show = 1;
+
+    document.getElementById("node_count").innerHTML = node_count;
+    document.getElementById("node_show").innerHTML = node_show;
+
+    // specify & calculate
+    var NOTEXT = false;
+    var matrix_size = Math.ceil(Math.sqrt(node_show));
+    var cell_size = Math.floor(window.innerWidth*0.80/matrix_size);
+
+    if ( cell_size < 50 ) NOTEXT = true;
+    if ( cell_size > 100 ) cell_size = 100;
+
+    var cell_border = Math.floor(cell_size/3);
+    if ( cell_size < 4 ) { cell_size = 4; cell_border = 1; };
+
+    // decrement for interior cell_size
+    cell_size -= cell_border
+
+    // check for minimums and maximums
+
+    // DEBUG
+    console.log("nodes: count: " + node_count + "; match: " + nodename + "; show: " + node_show + "; size: " + cell_size + "; border: " + cell_border)
+
+    var now = new Date();
+    var newest = new Date(theseNodes[0].lastHeartbeat.replace("[UTC]",""));
+    var oldest = new Date(theseNodes[theseNodes.length-1].lastHeartbeat.replace("[UTC]",""));
+    var range = Math.abs(Math.round((now - oldest)/1000));
+    var node = null;
+
+    var str = '<table border="0"><tr>';
+    /// process theseNodes
+    for (var i=0; i < node_show; ) {
+      node = theseNodes[i];
+
+      // calculate age of node's lastHeartbeat
+      var then =  new Date(node.lastHeartbeat.replace("[UTC]",""));
+      var ago = Math.abs(Math.round((now - then)/1000));
+
+      // calculate color
+      var p = 1.0 - ago/range;
+      if ( p > 0.5 ) { red = 1.0 - 2.0 * (p - 0.5); green = 1.0; } else { red = 1.0; green = 2 * p; };
+      // weights from CCIR 601 specification
+      var rg = 0.2989;
+      var gg = 0.5870;
+      var bg = 0.1140;
+
+      var color = toHex(Math.floor(rg*red*255)) + toHex(Math.floor(gg*green*255))+ '00' ;
+
+      // change color to indicate no pattern
+      if (node.pattern.length == 0) {
+	// color = toHex(Math.floor(red*255)) + toHex(Math.floor(green*255))+ '00' ;
+      }
+
+      // produce string `when` for human
+      var when = '';
+      var days = Math.floor(ago/86400);
+      if (days > 0) {
+	when += days + 'd'
+      }
+      ago -= days * 86400;
+      var hours = Math.floor(ago/3600);
+      if (hours > 0) {
+	when += hours + 'h';
+      }
+      ago -= hours * 3600;
+      var mins = Math.floor(ago/60);
+      if (days == 0 && mins > 0) {
+	when += mins + 'm'
+      }
+      ago -= mins * 60;
+      if (days == 0 && hours == 0) {
+	when += ago + 's'
+      }
+      if (when.length == 0) {
+	when = '<b>Error</b>'
+      }
+
+      // DEBUG
+      // console.log("matrix: node: " + node.name + "; age: " + ago + "; percentage: " + p + "; color: " + color);
+
+      // cell 
+      str += '<td valign="middle" align="center" bgcolor="' + color + '"';
+      str += ' width="' + Math.round(cell_size+cell_border*2) + '"';
+      str += ' height="' + Math.round(cell_size+cell_border*2) + '">';
+
+      // contents
+      str += '<div class="tooltip">';
+      str += '<div id="' + node.name + '">';
+      str += '<a title="details for ' + node.name + '" href="#" onclick="gotoNodeByName(' + "'" + node.name + "'" + '); return false;">';
+      str += '<table><tr><td valign="middle" align="center" bgcolor="FFFFE0"';
+      str += ' width="' + cell_size + '" height="' + cell_size + '">';
+      // cell info
+      if ( NOTEXT != true) { str += when };
+      str += '</td></tr></table>';
+      str += '</a>';
+      str += '</div>';
+      str += '<span id="' + node.name + '-tooltip" class="tooltiptext">' + node.name;
+      str += '<br>LHB: ' + when;
+      if (node.pattern.length > 0) str += '<br>' + node.pattern.split("/")[1];
+      if (node.registeredServices.length > 0) {
+	var countServices = node.registeredServices.length;
+	var countAgreements = 0;
+
+	node.registeredServices.forEach(function(service,index) {
+	  if (service.numAgreements > 0) countAgreements += 1;
+	});
+	str += '<br>S: ' + countServices + '/ A: ' + countAgreements;
+      }
+      str += '</span></div>';
+
+      // finish cell
+      str += '</td>';
+      // increment count
+      i += 1;
+      // test for row
+      if (i % matrix_size == 0) str += '</tr>';
+    }
+    // fill in blank cells
+    var len = Math.round(matrix_size * matrix_size);
+    while ( i < len ) {
+      str += '<td bgcolor="DCDCDC" valign="middle" align="center"';
+      str += ' width="' + Math.round(cell_size+cell_border*2) + '"';
+      str += ' height="' + Math.round(cell_size+cell_border*2) + '">';
+      str += '</td>';
+      i += 1;
+      if ( i % matrix_size == 0 ) break;
+    }
+    str += '</tr>';
+    str += '</table>';
+    matrix_output.innerHTML = str;
+
+    /// process every theseNodes status
+    for (var j=0; j < node_show; j++) {
+      node = theseNodes[j];
+
+      var node_status = new XMLHttpRequest();
+      node_status.onreadystatechange = function() {
+	if (this.readyState == 4) {
+	  if (this.status == 200 && this.responseText != null) {
+	    var node_state = JSON.parse(this.responseText);
+	    var then = null;
+
+	    if (node_state != null && node_state["error"] == null && node_state["status"].lastUpdated != null) {
+	      var then = new Date(node_state["status"].lastUpdated.replace("[UTC]",""));
+	      var ago = Math.abs(Math.round((now - then)/1000));
+	      var seconds = ago;
+	      var node_name = node_state.name;
+
+	      // produce string `when` for human
+	      var when = '';
+	      var days = Math.floor(seconds/86400);
+	      if (days > 0) {
+		when += days + 'd'
+	      }
+	      seconds -= days * 86400;
+	      var hours = Math.floor(seconds/3600);
+	      if (hours > 0) {
+		when += hours + 'h';
+	      }
+	      seconds -= hours * 3600;
+	      var mins = Math.floor(seconds/60);
+	      if (days == 0 && mins > 0) {
+		when += mins + 'm'
+	      }
+	      seconds -= mins * 60;
+	      if (days == 0 && hours == 0) {
+		when += seconds + 's'
+	      }
+	      if (when.length == 0) {
+		when = '<b>Error</b>'
+	      }
+
+	      /// change the tooltip
+	      elem = document.getElementById(node_name + '-tooltip');
+
+	      // get the services count
+	      statusServicesCount = node_state.status.services.length;
+
+	      elem.innerHTML += '<br>LUD: ' + when;
+
+	      // get the services container status
+	      if (statusServicesCount > 0) {
+		var containerCount=0;
+		var runningCount=0;
+
+		node_state.status.services.forEach(function(service,index) {
+		  service.containerStatus.forEach(function(container, index) {
+		    if (container.state == "running") runningCount += 1; 
+		    containerCount += 1;
+		  });
+		});
+		elem.innerHTML += '<br> C: ' + containerCount + '; R: ' + runningCount;
+	      }
+
+	      // calculate color based on containers running
+	      var p = runningCount / containerCount;
+	      if ( p > 0.5 ) { red = 1.0 - 2.0 * (p - 0.5); green = 1.0; } else { red = 1.0; green = 2 * p; };
+	      var color = toHex(Math.floor(red*255)) + toHex(Math.floor(green*255)) + '00';
+
+	      // create the cell interior
+	      str = '<a title="details for ' + node_name + '" href="#" onclick="gotoNodeByName(' + "'" + node_name + "'" + '); return false;">';
+	      str += '<table><tr><td valign="middle" align="center" bgcolor="' + color + '"';
+	      str += ' width="' + cell_size + '" height="' + cell_size + '">';
+	      str += '</td></tr></table>';
+	      str += '</a>';
+
+	      // set the HTML
+	      var elem = document.getElementById(node_name);
+	      elem.innerHTML = str;
+	    }
+	  }
+	} else {
+	  // console.log("matrix_request: not ready");
+	}
+      }
+      node_status.open("GET","/cgi-bin/status?node=" + node.name, true);
+      node_status.send();
+    }
+  } else {
+    // console.log("matrix: no nodes");
+    matrix_output.innerHTML = "NO NODES";
+  }
+}
+</script>
+
+<!--
+DOWNLOAD NODES
+--!>
+
+<script>
+var allNodes = null;
+var theseNodes = null;
+var matrix_request = new XMLHttpRequest();
+matrix_request.onreadystatechange = function() {
+
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    allNodes = JSON.parse(this.responseText);
+
+    document.getElementById("node_total").innerHTML = allNodes["nodes"].length;
+
+    matrix_select();
+    matrix_display();
+    nodes_display();
+
+  } else {
+    // console.log("matrix_request: bad response; ready: " + this.readyState + '; status: ' + this.status);
+  }
+}         
+matrix_request.open("GET","/cgi-bin/nodes", true);
+matrix_request.send();
+</script>
+
+<!--
+HANDLE TABS
+--!>
+
+<script>
+function gotoNodeByName(name)
+{
+  console.log("gotoNodeByName(): node: " + name); 
+  var tc = document.getElementsByClassName("tabcontent"); for (var i = 0; i < tc.length; i++) { tc[i].style.display = "none"; } 
+  var tl = document.getElementsByClassName("tablinks"); for (var i = 0; i < tl.length; i++) { tl[i].className = tl[i].className.replace(" active", ""); } 
+  document.getElementById('nodes_tab').style.display = "block"; 
+  window.location.hash = name + '-state';
+}
+
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+} 
+</script>
+                    
+<!--
+MAIN BODY
+--!>
+
+<body onload=document.getElementById("defaultTab").click()>
+<h1>&#127981; <a href="https://github.com/dcmartin/open-horizon/blob/master/hznmonitor/README.md"><code>hznmonitor</code></a></h1>
+
+<table border="0">
+<tr>
+<td><b><code>EXCHANGE:</code></b></td><td><code><div id="exchange_url"></div></code></td>
+<td><b><code>ORGANIZATION:</code></b></td><td><code><div id="exchange_org"></div></code></td>
+</tr>
+</table>
+
+<hr>
+
+<div class="tab">           
+  <button class="tablinks" id="defaultTab" onclick="openTab(event, 'matrix_tab')">Matrix</button>
+  <button class="tablinks" onclick="openTab(event, 'labels_tab')">Catalog</button>
+  <button class="tablinks" onclick="openTab(event, 'nodes_tab')">Nodes</button>
+  <button class="tablinks" onclick="openTab(event, 'services_tab')">Services</button>
+  <button class="tablinks" onclick="openTab(event, 'patterns_tab')">Patterns</button>
+  <button class="tablinks" onclick="openTab(event, 'exchange_tab')">Exchange</button>
+</div>         
+                
+<div id="matrix_tab" class="tabcontent">
+
+<table border="0">
+<tr>
+<td><b><code>SHOWN:</code></b></td><td><code><div id="node_show"></div></code></td>
+<td><b><code>FOUND:</code></b></td><td><code><div id="node_count"></div></code></td>
+<td><b><code>TOTAL:</code></b></td><td><code><div id="node_total"></div></code></td>
+</tr>
+</table>
+<div id="sliderwrapper">
+<b><code>SEARCH:</code></b><input type="text" class="search" id="nodename" autocomplete="off" value=""></input>
+<b><code>RANGE:</code></b><input type="range" class="slider" id="agerange" min="1" max="100" step="1" value="100"></input>
+</div>
+
+<hr>
+
+<div id="matrix_output"></div>
+</div>
+
+<div id="nodes_tab" class="tabcontent"><div id="node_output"></div></div>
+<div id="labels_tab" class="tabcontent"><div id="label_output"></div></div>
+<div id="services_tab" class="tabcontent"><div id="service_output"></div></div>
+<div id="patterns_tab" class="tabcontent"><div id="pattern_output"></div></div>
+<div id="exchange_tab" class="tabcontent"><div id="horizon_output"></div></div>
+
+<div id="loading" class="loader"></div>
+
+</body>                  
+</html>
+
+<!--
+CONTROL SCRIPTS on globals
+--!>
+
+<script>
+var nodesearch = document.getElementById("nodename");
+nodesearch.onchange = function() {
+  matrix_select();
+  matrix_display();
+}
+
+var ageslider = document.getElementById("agerange");
+ageslider.oninput = function() {
+  matrix_display();
+}
+</script>

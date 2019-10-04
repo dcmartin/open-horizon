@@ -1,0 +1,34 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "hal",
+  "description": "Provides hardware abstraction layer as service",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/hal/README.md",
+  "url": "com.github.dcmartin.open-horizon.hal",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "HAL_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "60" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "hal": {
+        "environment": [
+          "SERVICE_LABEL=hal",
+          "SERVICE_VERSION=0.0.3"
+        ],
+        "image": null,
+        "specific_ports": [],
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

@@ -125,7 +125,7 @@ run: stop stop-service
 
 remove:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- remove: ${DOCKER_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	-@docker rm -f $(DOCKER_NAME) > /dev/null
+	@docker rm -f $(DOCKER_NAME) 2> /dev/null && echo "${DOCKER_NAME} remove" || true
 
 check:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- check: ${DOCKER_NAME}; tag: ${DOCKER_TAG}; URL: http://localhost:${DOCKER_PORT}""${NC}" > /dev/stderr
@@ -150,9 +150,9 @@ push: build # login
 
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
-build: Dockerfile build.json service.json rootfs Makefile remove
+build: Dockerfile build.json service.json rootfs Makefile
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}
+	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" # > ${BUILD_OUT}
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
@@ -194,12 +194,12 @@ service-stop: stop-service
 
 stop-service: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- stop-service: ${SERVICE_NAME}; directory: $(DIR)/""${NC}" > /dev/stderr
-	-@if [ -d "${DIR}" ]; then export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn dev service stop -d ${DIR} > /dev/null; fi
+	-@if [ -d "${DIR}" ]; then export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn dev service stop -d ${DIR} 2> /dev/null; fi
 	-@$(MAKE) DOCKER_NAME=$(DOCKER_NAME) stop > /dev/null
 
 stop:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- stop: ${DOCKER_NAME}""${NC}" > /dev/stderr
-	-@docker stop "${DOCKER_NAME}" > /dev/null
+	-@docker stop "${DOCKER_NAME}" 2> /dev/null
 
 ##
 ## TEST

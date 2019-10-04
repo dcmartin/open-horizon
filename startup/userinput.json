@@ -1,0 +1,53 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.startup",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+	"STARTUP_HOST_USER": "${USER}",
+	"STARTUP_PERIOD": 600,
+	"STARTUP_SYNC_PERIOD": 600,
+	"STARTUP_KAFKA_APIKEY": "",
+	"STARTUP_KAFKA_TOPIC": "startup",
+        "LOGTO": "",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.cpu",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "CPU_PERIOD": 60,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hal",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "HAL_PERIOD": 43200,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.wan",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "WAN_PERIOD": 14400,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    }
+  ]
+}

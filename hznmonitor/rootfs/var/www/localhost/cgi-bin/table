@@ -1,0 +1,55 @@
+#!/bin/bash
+
+if [ -d "/tmpfs" ]; then TMPDIR="/tmpfs"; else TMPDIR="/tmp"; fi
+
+###
+###
+###
+
+TTL=120
+SECONDS=$(date +%s)
+DATE=$(echo "${SECONDS} / ${TTL} * ${TTL}" | bc)
+
+OUTPUT="${TMPDIR}/${0##*/}.${DATE}.json"
+
+if [ ! -s "${OUTPUT}" ]; then
+  ./bin/table.sh "${OUTPUT}" &
+  OUTPUTS=($(echo ${TMPDIR}/${0##*/}.*.json))
+else
+  OUTPUTS=(${OUTPUT})
+fi
+
+NOUTPUTS=${#OUTPUTS[@]}
+if [ ${NOUTPUTS} -gt 0 ]; then
+  output=${OUTPUTS[0]}
+  if [ -s "${output}" ]; then
+    AGE=${output%.*} && AGE=${AGE##*.}
+    AGE=$((SECONDS-AGE))
+    OUTPUT=$(cat ${output})
+  else
+    RETRY=30
+    OUTPUT='{"error":"not ready","retry":'${RETRY}'}'
+  fi
+  i=1; while [ ${i} -lt ${NOUTPUTS} ]; do
+    rm -f ${OUTPUTS[${i}]}
+    i=$((i+1))
+  done
+else
+  RETRY=60
+  OUTPUT='{"error":"service unavailable","retry":'${RETRY}'}'
+fi
+
+if [ ! -z "${RETRY:-}" ]; then
+#  echo 'HTTP/1.1 503 Service Unavailable'
+  echo "Retry-After: ${RETRY}"
+else
+#  echo 'HTTP/1.1 200 OK'
+  echo "Cache-Control: max-age=${TTL}"
+  echo "Age: ${AGE:-0}"
+fi
+
+## output
+echo "Access-Control-Allow-Origin: *"
+echo "Content-Type: application/json; charset=utf-8"
+echo ""
+echo "${OUTPUT}"

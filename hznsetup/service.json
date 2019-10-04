@@ -1,0 +1,49 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "hznsetup",
+  "description": "setup nodes automatically",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/hznsetup/README.md",
+  "url": "com.github.dcmartin.open-horizon.hznsetup",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.hznmonitor", "org": "${HZN_ORG_ID}", "version": "0.0.1", "arch": null }
+  ],
+  "userInput": [
+    { "name": "HZNSETUP_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "https://alpha.edge-fabric.com/v1" },
+    { "name": "HZNSETUP_EXCHANGE_ORG", "label": "exchange organization", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_PATTERN", "label": "", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_APPROVE", "label": "", "type": "string", "defaultValue": "auto" },
+    { "name": "HZNSETUP_VENDOR", "label": "", "type": "string", "defaultValue": "any" },
+    { "name": "HZNSETUP_DB", "label": "", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_DB_USERNAME", "label": "", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_DB_PASSWORD", "label": "", "type": "string", "defaultValue": "" },
+    { "name": "HZNSETUP_BASENAME", "label": "", "type": "string", "defaultValue": "node-" },
+    { "name": "HZNSETUP_MASTER", "label": "", "type": "string", "defaultValue": ""},
+    { "name": "HZNSETUP_PORT", "label": "", "type": "int", "defaultValue": "3093" },
+    { "name": "HZNSETUP_PERIOD", "label": "seconds between watchdog checks", "type": "int", "defaultValue": "30" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "hznsetup": {
+        "environment": [
+          "SERVICE_LABEL=hznsetup",
+          "SERVICE_VERSION=0.0.1.3",
+          "SERVICE_PORT=3092"
+        ],
+        "specific_ports": [ { "HostPort": "3092:3092/tcp", "HostIP": "0.0.0.0" }, { "HostPort": "3093:3093/tcp", "HostIP": "0.0.0.0" } ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

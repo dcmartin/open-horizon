@@ -5,3 +5,6 @@ HZN_ORG_ID
 HZN_USER_ID
 HZN_EXCHANGE_URL
 HZN_FSS_CSSURL
+check.json
+build.*.out
+APIKEY

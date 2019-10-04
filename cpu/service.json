@@ -1,0 +1,37 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "cpu",
+  "description": "Provides hardware abstraction layer as service",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/cpu/README.md",
+  "url": "com.github.dcmartin.open-horizon.cpu",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "CPU_PERIOD", "label": "seconds between update", "type": "int", "defaultValue": "60" },
+    { "name": "CPU_INTERVAL", "label": "seconds between cpu testing", "type": "int", "defaultValue": "1" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "cpu": {
+        "environment": [
+          "SERVICE_LABEL=cpu",
+          "SERVICE_VERSION=0.0.3"
+        ],
+        "image": null,
+        "privileged": true,
+        "binds": [],
+        "devices": [],
+        "specific_ports": []
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

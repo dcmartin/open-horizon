@@ -1,0 +1,18 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_PERIOD": 30,
+        "MQTT_PORT": 1883,
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    }
+  ]
+}

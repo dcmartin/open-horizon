@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ ! -z "${QUERY_STRING:-}" ]; then
+  node=$(echo "$QUERY_STRING" | sed 's/.*node=\([^&]*\).*/\1/')
+  if [ "${node}" = "${QUERY_STRING}" ]; then node=; fi
+fi
+export QUERY_STRING "node=${node:-}"
+
+echo "Content-Type: application/json; charset=utf-8"
+echo "Access-Control-Allow-Origin: *"
+echo "Cache-Control: max-age=300"
+echo ""
+if [ ! -z "${node:-}" ]; then
+  output=$(./bin/status.sh "${node}")
+fi
+if [ ! -z "${output}" ]; then
+  echo "${output}"
+else
+  echo '{"org":"'${HZNMONITOR_EXCHANGE_ORG:-unknown}'","user":"'${HZNMONITOR_EXCHANGE_USER}'","url":"'${HZNMONITOR_EXCHANGE_URL:-unspecified}'","error":"not found","node":"'${node:-}'"}'
+fi

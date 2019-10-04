@@ -1,0 +1,44 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hznsetup",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "HZNSETUP_EXCHANGE_URL": "${HZN_EXCHANGE_URL}",
+        "HZNSETUP_EXCHANGE_ORG": "${HZN_ORG_ID}",
+        "HZNSETUP_EXCHANGE_APIKEY": "${HZN_EXCHANGE_APIKEY}",
+        "HZNSETUP_PATTERN": "",
+        "HZNSETUP_APPROVE": "auto",
+        "HZNSETUP_VENDOR": "any",
+        "HZNSETUP_BASENAME": "node-",
+        "HZNSETUP_PORT": 3093,
+        "HZNSETUP_PERIOD": 30,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hznmonitor",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "HZNMONITOR_EXCHANGE_URL": "${HZN_EXCHANGE_URL}",
+        "HZNMONITOR_EXCHANGE_ORG": "${HZN_ORG_ID}",
+        "HZNMONITOR_EXCHANGE_APIKEY": "${HZN_EXCHANGE_APIKEY}",
+        "HZNMONITOR_HOST": "${HZNMONITOR_HOST}",
+        "HZNMONITOR_MQTT_HOST": "${HZNMONITOR_MQTT_HOST}",
+        "HZNMONITOR_MQTT_USERNAME": "${HZNMONITOR_MQTT_USERNAME}",
+        "HZNMONITOR_MQTT_PASSWORD": "${HZNMONITOR_MQTT_PASSWORD}",
+        "HZNMONITOR_KAFKA_APIKEY": "${HZNMONITOR_KAFKA_APIKEY}",
+        "HZNMONITOR_KAFKA_TOPIC": "startup",
+        "HZNMONITOR_PERIOD": 1200,
+        "LOG_LEVEL": "info",
+        "LOGTO": "",
+        "DEBUG": false
+      }
+    }
+  ]
+}

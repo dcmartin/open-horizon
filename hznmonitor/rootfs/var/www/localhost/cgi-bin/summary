@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# process query (if any)
+if [ ! -z "${QUERY_STRING:-}" ]; then
+  node=$(echo "$QUERY_STRING" | sed 's/.*node=\([^&]*\).*/\1/')
+  if [ "${node}" = "${QUERY_STRING}" ]; then node=; fi
+fi
+
+# find activity 
+activity_json="${APACHE_LOG_DIR:-/var/www/logs}/activity.json"
+
+# start response
+echo "Content-Type: application/json; charset=utf-8"
+echo "Access-Control-Allow-Origin: *"
+echo "Cache-Control: max-age=300"
+echo ""
+
+# determine response
+if [ -s "${activity_json}" ]; then
+  size=$(wc -c ${activity_json} | awk '{ print $1 }')
+  count=$(jq '.startup.activity|length' ${activity_json})
+
+  if [ ! -z "${node:-}" ]; then
+    output=$(jq -c '.startup.activity[]|select(.id=="'${node}'")' ${activity_json})
+  else
+    output=$(jq -c '.' ${activity_json})
+  fi
+  if [ ! -z "${output}" ]; then
+    echo "${output}"
+  else
+    if [ ! -z "${node}" ]; then
+      echo '{"org":"'${HZNMONITOR_EXCHANGE_ORG:-unknown}'","user":"'${HZNMONITOR_EXCHANGE_USER}'","url":"'${HZNMONITOR_EXCHANGE_URL:-unspecified}'","error":"not found","node":"'${node:-}'"}'
+    else
+      echo '{"org":"'${HZNMONITOR_EXCHANGE_ORG:-unknown}'","user":"'${HZNMONITOR_EXCHANGE_USER}'","url":"'${HZNMONITOR_EXCHANGE_URL:-unspecified}'","error":"no output","file":"'${activity_json:-}'","size":'${size}',"count":'${count:-0}',"json":"'$(cat ${activity_json})'"}'
+    fi
+  fi
+else
+  echo '{"org":"'${HZNMONITOR_EXCHANGE_ORG:-unknown}'","user":"'${HZNMONITOR_EXCHANGE_USER}'","url":"'${HZNMONITOR_EXCHANGE_URL:-unspecified}'","error":"no activity","file":"'${activity_json:-}'"}'
+fi

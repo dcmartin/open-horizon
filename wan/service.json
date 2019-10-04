@@ -1,0 +1,34 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "wan",
+  "description": "Provide wide-area-network (WAN) information",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/wan/README.md",
+  "url": "com.github.dcmartin.open-horizon.wan",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "WAN_PERIOD", "label": "seconds between update", "type": "int", "defaultValue": "1800" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "wan": {
+        "environment": [
+          "SERVICE_LABEL=wan",
+          "SERVICE_VERSION=0.0.3"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ ! -z "${QUERY_STRING:-}" ]; then
+  pattern=$(echo "$QUERY_STRING" | sed 's/.*pattern=\([^&]*\).*/\1/')
+  if [ "${pattern}" = "${QUERY_STRING}" ]; then pattern=; fi
+fi
+export QUERY_STRING "pattern=${pattern:-}"
+
+echo "Content-Type: text/html"
+echo "Access-Control-Allow-Origin: *"
+echo "Cache-Control: no-cache"
+echo ""
+if [ ! -z "${pattern:-}" ]; then
+  output=$(./bin/pattern-nodes.sh ${pattern})
+else
+  output=$(./bin/pattern-nodes.sh)
+fi
+if [ ! -z "${output}" ]; then
+  echo "${output}"
+else
+  echo '{"org":"'${HZNMONITOR_EXCHANGE_ORG:-unknown}'","user":"'${HZNMONITOR_EXCHANGE_USER}'","url":"'${HZNMONITOR_EXCHANGE_URL:-unspecified}'","error":"not found","pattern":"'${pattern:-}'"}'
+fi
