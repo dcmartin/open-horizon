@@ -49,7 +49,7 @@ APIKEY := $(if $(wildcard ../HZN_EXCHANGE_APIKEY),$(shell cat ../HZN_EXCHANGE_AP
 
 ## docker
 DOCKER_REGISTRY ?= $(if $(wildcard ../DOCKER_REGISTRY),$(shell cat ../DOCKER_REGISTRY),$(if $(wildcard ../registry.json),$(shell jq -r '.registry' ../registry.json),))
-DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),DOCKER_NAMESPACE_UNDEFINED))
+DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),))
 DOCKER_REPOSITORY ?= $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY)/$(DOCKER_NAMESPACE),$(DOCKER_NAMESPACE))
 DOCKER_LOGIN := $(if $(wildcard ../DOCKER_LOGIN),$(shell cat ../DOCKER_LOGIN),$(if $(wildcard ../registry.json),token,))
 DOCKER_PASSWORD := $(if $(wildcard ../DOCKER_PASSWORD),$(shell cat ../DOCKER_PASSWORD),$(if $(wildcard ../registry.json),$(shell jq -r '.private' ../registry.json),))
@@ -88,7 +88,7 @@ TEST_NODE_NAMES ?= $(if $(wildcard TEST_TMP_MACHINES),$(shell egrep -v '^\#' TES
 
 default: build run check
 
-all: service-push service-publish service-verify pattern-publish pattern-validate
+all: service-push service-publish service-verify pattern-publish pattern-verify
 
 ##
 ## support
@@ -265,17 +265,16 @@ exchange-clean: ${DIR}
 ## PATTERNS
 ##
 
-pattern-test:
-	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && ./sh/pattern-test.sh 
+pattern.json:
+	@echo "${RED}>>> MAKE --" $$(date +%T) "-- not a Pattern; no pattern.json; skipping""${NC}" > /dev/stderr
 
 pattern-publish: ${APIKEY} pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-publish: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
 	@export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern publish -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) -f ${DIR}/pattern.json -p ${SERVICE_NAME} -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE}
 
-pattern-validate: pattern.json
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-validate: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
-	@export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern verify -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) --public-key-file ${PUBLIC_KEY_FILE} ${SERVICE_NAME}
-	@export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && FOUND=false && for pattern in $$(hzn exchange pattern list -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) | jq -r '.[]'); do if [ "$${pattern}" = "${HZN_ORG_ID}/${SERVICE_NAME}" ]; then found=true; break; fi; done && if [ -z $${found} ]; then echo "Did not find $(HZN_ORG_ID)/$(SERVICE_NAME)"; exit 1; else echo "Found pattern $${pattern}"; fi
+pattern-verify: pattern.json
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-verify: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
+	@export HZN_USER_ID=${HZN_USER_ID} HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern verify -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) --public-key-file ${PUBLIC_KEY_FILE} ${SERVICE_NAME}
 
 ##
 ## NODES
