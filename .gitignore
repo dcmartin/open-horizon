@@ -1,3 +1,5 @@
+*.key
+*.pem
 DOCKER_NAMESPACE
 HZNPKG_REPO
 HZN_EXCHANGE_APIKEY
@@ -8,3 +10,4 @@ HZN_FSS_CSSURL
 check.json
 build.*.out
 APIKEY
+horizon/
