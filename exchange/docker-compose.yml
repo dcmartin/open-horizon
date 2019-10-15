@@ -36,18 +36,18 @@ services:
     ports:
       - 3091:3091
     volumes:
-      - /home/dcmartin/GIT/old-horizon/exchange/certs:/certs
-      - /home/dcmartin/GIT/old-horizon/exchange/agbot/agbot.config:/etc/horizon/anax.json
-      - /home/dcmartin/GIT/old-horizon/exchange/publickey.pem:/etc/horizon/trust/mtn-publicKey.pem
-      - /home/dcmartin/GIT/old-horizon/exchange/cacerts.pem:/etc/horizon/trust/horizon.pem
+      - /home/dcmartin/GIT/open-horizon/exchange/certs:/certs
+      - /home/dcmartin/GIT/open-horizon/exchange/agbot/agbot.config:/etc/horizon/anax.json
+      - /home/dcmartin/GIT/open-horizon/exchange/publickey.pem:/etc/horizon/trust/mtn-publicKey.pem
+      - /home/dcmartin/GIT/open-horizon/exchange/cacerts.pem:/etc/horizon/trust/horizon.pem
       - cssdb:/var/wiotp-edge/persist
-      - /home/dcmartin/GIT/old-horizon/exchange/agbot/policy:/etc/agbot/policy.d
-      - /home/dcmartin/GIT/old-horizon/exchange/agbot/colonus:/var/horizon
+      - /home/dcmartin/GIT/open-horizon/exchange/agbot/policy:/etc/agbot/policy.d
+      - /home/dcmartin/GIT/open-horizon/exchange/agbot/colonus:/var/horizon
     environment:
       - AGBOT_NAME=agbot1
       - CSS_URL=http://exchange.dcmartin.com:9443
       - EXCH_APP_HOST=http://exchange.dcmartin.com:3090/v1
-      - EXCH_ROOTPW=ask4it
+      - EXCH_ROOTPW=Horizon-Rul3s
       - HZN_AGBOT_API=http://exchange.dcmartin.com:3091
       - HZN_DISABLE_IPTABLES_MANIPULATION=true
   ##
@@ -63,7 +63,7 @@ services:
         aliases: 
           - oh-exchange-api
     volumes:
-      - /home/dcmartin/GIT/old-horizon/exchange/exchange/exchange.json:/etc/horizon/exchange/config.json
+      - /home/dcmartin/GIT/open-horizon/exchange/exchange/exchange.json:/etc/horizon/exchange/config.json
   ##
   ## exchange-db
   ##
@@ -94,8 +94,8 @@ services:
         aliases:
           - oh-css-api
     volumes:
-      - /home/dcmartin/GIT/old-horizon/exchange/css:/etc/edge-sync-service
-      - /home/dcmartin/GIT/old-horizon/exchange/certs:/certs
+      - /home/dcmartin/GIT/open-horizon/exchange/css:/etc/edge-sync-service
+      - /home/dcmartin/GIT/open-horizon/exchange/certs:/certs
       - cssdb:/var/wiotp-edge/persist
     environment:
       - HZN_EXCHANGE_URL=http://exchange.dcmartin.com:3090/v1
