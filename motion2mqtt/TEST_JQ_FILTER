@@ -1,0 +1,1 @@
+.motion2mqtt.cpu=(.motion2mqtt.cpu?!=null)|.motion2mqtt.motion.event.base64=(.motion2mqtt.motion.event.base64?!=null)|.motion2mqtt.motion.image.base64=(.motion2mqtt.motion.image.base64?!=null)

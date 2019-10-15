@@ -1,0 +1,66 @@
+{
+  "label": "hznsetup",
+  "description": "hznsetup as a pattern",
+  "services": [
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "amd64",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm64",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "amd64",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceArch": "arm64",
+      "serviceVersions": [
+        {
+          "version": "0.1.0"
+        }
+      ]
+    }
+  ]
+}

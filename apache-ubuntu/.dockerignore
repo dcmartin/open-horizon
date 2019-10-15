@@ -8,3 +8,4 @@ build.*.out
 check.json
 userinput.sh
 service.json
+pattern.json

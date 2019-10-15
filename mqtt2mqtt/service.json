@@ -1,0 +1,47 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "mqtt2mqtt",
+  "description": "Relay (uni-directional) MQTT topics from one broker to another MQTT broker",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/mqtt2mqtt/README.md",
+  "url": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
+],
+  "userInput": [
+    { "name": "MQTT_HOST", "label": "host to use", "type": "string", "defaultValue": "mqtt" },
+    { "name": "MQTT_PORT", "label": "port number to use", "type": "int", "defaultValue": "1883" },
+    { "name": "MQTT_USERNAME", "label": "username for clients", "type": "string", "defaultValue": "" },
+    { "name": "MQTT_PASSWORD", "label": "password for clients", "type": "string", "defaultValue": "" },
+    { "name": "MQTT2MQTT_SUBSCRIBE", "label": "topic for event on MQTT", "type": "string", "defaultValue": "+/+/+/event/end" },
+    { "name": "MQTT2MQTT_PAYLOAD", "label": "extension to event topic for payload", "type": "string", "defaultValue": "sound" },
+    { "name": "MQTT2MQTT_PUBLISH", "label": "topic on which to public", "type": "string", "defaultValue": "" },
+    { "name": "MQTT2MQTT_HOST", "label": "host to send", "type": "string", "defaultValue": null },
+    { "name": "MQTT2MQTT_PORT", "label": "port number to use", "type": "int", "defaultValue": "1883" },
+    { "name": "MQTT2MQTT_USERNAME", "label": "username for clients", "type": "string", "defaultValue": "" },
+    { "name": "MQTT2MQTT_PASSWORD", "label": "password for clients", "type": "string", "defaultValue": "" },
+    { "name": "MQTT2MQTT_PERIOD", "label": "seconds between watchdog update", "type": "int", "defaultValue": "30" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "mqtt2mqtt": {
+        "environment": [
+          "SERVICE_LABEL=mqtt2mqtt",
+          "SERVICE_VERSION=0.1.0"
+        ],
+        "specific_ports": [ { "HostPort": "1881:80/tcp", "HostIP": "0.0.0.0" } ],
+        "image": null,
+        "privileged": false
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

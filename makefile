@@ -19,8 +19,8 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
 ## things NOT TO change
 ##
 
-SERVICES := base-alpine base-ubuntu cpu hal wan mqtt apache-ubuntu hznsetup hznmonitor yolo yolo-cuda yolo4motion yolo-cuda4motion mqtt2mqtt 
-PATTERNS := hznsetup startup motion motion+yolo motion+yolo-cuda
+SERVICES := base-alpine base-ubuntu cpu hal wan mqtt apache-ubuntu hznsetup hznmonitor yolo yolo4motion # yolo-cuda yolo4motion-cuda mqtt2mqtt 
+PATTERNS := hznsetup startup yolo4motion motion2mqtt motion2mqtt+yolo4motion
 MISC := setup sh doc
 
 ALL = $(SERVICES) $(PATTERNS)

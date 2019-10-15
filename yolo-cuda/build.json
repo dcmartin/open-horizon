@@ -2,7 +2,7 @@
   "squash": false,
   "build_from": {
     "arm64": "nvcr.io/nvidia/l4t-base:r32.2.1",
-    "amd64": null,
+    "amd64": "nvidia/cuda:10.1-cudnn7-runtime",
     "arm": null,
     "386": null,
     "ppc64": null,

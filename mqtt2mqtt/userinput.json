@@ -1,0 +1,37 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_HOST": "mqtt",
+        "MQTT_PORT": 1883,
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "MQTT2MQTT_HOST": "",
+        "MQTT2MQTT_PORT": 1883,
+        "MQTT2MQTT_USERNAME": "",
+        "MQTT2MQTT_PASSWORD": "",
+        "MQTT2MQTT_PUBLISH": "",
+        "MQTT2MQTT_PERIOD": 30,
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_PORT": 1883,
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "MQTT_PERIOD": 30,
+        "LOG_LEVEL": "info",
+        "DEBUG": true
+      }
+    }
+  ]
+}
