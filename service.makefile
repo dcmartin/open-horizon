@@ -24,19 +24,22 @@ IBM ?= $(shell ibmcloud account show | egrep "Account Owner" | sed 's/.*:[ ]*\([
 DIR ?= horizon
 TAG ?= $(if $(wildcard ../TAG),$(shell cat ../TAG),)
 
+## SERVICE
+SERVICE_JSON := $(if $(wildcard service.json),service.json,"/dev/null")
+
 ## SYNC
-SYNC_SERVICE := $(shell jq -r '.sync==true' service.json)
+SYNC_SERVICE := $(shell jq -r '.sync==true' $(SERVICE_JSON))
 
 ## SERVICE
-SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' service.json)
+SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
 SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),$(shell pwd -P | sed 's|.*/||'))
 SERVICE_NAME = $(if ${TAG},${SERVICE_LABEL}-${TAG},${SERVICE_LABEL})
-SERVICE_VERSION = $(shell jq -r '.version' service.json | envsubst)
+SERVICE_VERSION = $(shell jq -r '.version' $(SERVICE_JSON) | envsubst)
 SERVICE_TAG = "${HZN_ORG_ID}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
-SERVICE_URI := $(shell jq -r '.url' service.json | envsubst)
+SERVICE_URI := $(shell jq -r '.url' $(SERVICE_JSON) | envsubst)
 SERVICE_URL = $(if ${TAG},${SERVICE_URI}-${TAG},${SERVICE_URI})
-SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' service.json 2> /dev/null)
-SERVICE_VARIABLES := $(shell jq -r '.userInput[].name' service.json 2> /dev/null)
+SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' $(SERVICE_JSON) 2> /dev/null)
+SERVICE_VARIABLES := $(shell jq -r '.userInput[].name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=null).key' build.json 2> /dev/null)
 
 ## KEYS
@@ -62,8 +65,8 @@ DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
 DOCKER_TAG := $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
 
 ## ports
-DOCKER_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' service.json | sed 's/\([0-9]*\).*/\1/' | sed 's/null//')
-SERVICE_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' service.json | sed 's/[0-9]*[:]*\([0-9]*\).*/\1/' | sed 's/null//')
+DOCKER_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' $(SERVICE_JSON) | sed 's/\([0-9]*\).*/\1/' | sed 's/null//')
+SERVICE_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' $(SERVICE_JSON) | sed 's/[0-9]*[:]*\([0-9]*\).*/\1/' | sed 's/null//')
 SERVICE_PORT := $(if ${SERVICE_PORT},${SERVICE_PORT},$(if ${DOCKER_PORT},${DOCKER_PORT},80))
 DOCKER_PORT := $(if ${DOCKER_PORT},${DOCKER_PORT},$(shell echo "( $$$$ + 5000 ) % 32000 + 32000" | bc))
 
@@ -86,9 +89,8 @@ TEST_NODE_NAMES ?= $(if $(wildcard TEST_TMP_MACHINES),$(shell egrep -v '^\#' TES
 ## targets
 ##
 
-default: build run check
-
-all: service-push service-publish service-verify pattern-publish pattern-verify
+default:
+	@export MAKE=$(MAKE) && if [ -e 'service.json' ]; then $${MAKE} build run check; else $${MAKE} pattern-publish; fi
 
 ##
 ## support
@@ -99,13 +101,19 @@ $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE):
 
 ## development
 
-${DIR}: service.json userinput.json $(APIKEY)
+${DIR}:
 	@rm -fr ${DIR} && mkdir -p ${DIR} && export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_ORG_ID=${HZN_ORG_ID} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn dev service new -d ${DIR} # > /dev/null
-	@jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' service.json > ${DIR}/service.definition.json
+
+${DIR}/service.definition.json: ${SERVICE_JSON}
+	@jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) > ${DIR}/service.definition.json
+	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
+
+${DIR}/userinput.json: userinput.json
 	@export HZN_EXCHANGE_APIKEY=$(shell cat $(APIKEY)) SERVICE_URL=${SERVICE_URL} HZN_ORG_ID=${HZN_ORG_ID} && cat userinput.json | envsubst > ${DIR}/userinput.json
 	@./sh/checkvars.sh ${DIR}
-	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
-	-@export TAG=${TAG} HZN_ORG_ID=${HZN_ORG_ID} SERVICE_LABEL=${SERVICE_LABEL} SERVICE_VERSION=${SERVICE_VERSION} SERVICE_URL=${SERVICE_URL} && ./sh/fixpattern.sh ${DIR}
+
+${DIR}/pattern.json: pattern.json
+	-@export TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
 
 depend: $(APIKEY) ${DIR}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- fetching dependencies; service: ${SERVICE_LABEL}; dir: ${DIR}""${NC}" > /dev/stderr
@@ -150,7 +158,7 @@ push: build # login
 
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
-build: Dockerfile build.json service.json rootfs makefile
+build: Dockerfile build.json $(SERVICE_JSON) rootfs makefile
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
 	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" # > ${BUILD_OUT}
 
@@ -268,11 +276,11 @@ exchange-clean: ${DIR}
 pattern.json:
 	@echo "${RED}>>> MAKE --" $$(date +%T) "-- not a Pattern; no pattern.json; skipping""${NC}" > /dev/stderr
 
-pattern-publish: ${APIKEY} pattern.json
+pattern-publish: ${APIKEY} pattern.json horizon/pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-publish: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
 	@export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern publish -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) -f ${DIR}/pattern.json -p ${SERVICE_NAME} -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE}
 
-pattern-verify: pattern.json
+pattern-verify: pattern.json horizon/pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-verify: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
 	@export HZN_USER_ID=${HZN_USER_ID} HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern verify -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) --public-key-file ${PUBLIC_KEY_FILE} ${SERVICE_NAME}
 

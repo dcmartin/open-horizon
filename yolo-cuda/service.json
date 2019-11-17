@@ -1,20 +1,22 @@
 {
   "org": "${HZN_ORG_ID}",
-  "label": "jetson-yolo",
-  "description": "Provide YOLO on Jetson TX2 with OpenCV, CUDA, and JetPack",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-yolo/README.md",
-  "url": "com.github.dcmartin.open-horizon.jetson-yolo",
-  "version": "0.0.1",
+  "label": "yolo-cuda",
+  "description": "Provide YOLO microservice for hosts with operational nvidia-container-runtime as default Docker runtime; only amd64 and arm64",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo-cuda/README.md",
+  "url": "com.github.dcmartin.open-horizon.yolo-cuda",
+  "version": "0.1.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [],
   "userInput": [
-    { "name": "YOLO_CONFIG", "label": "YOLO configuration type: tiny, v2, v3", "type": "string", "defaultValue": "v3" },
-    { "name": "YOLO_ENTITY", "label": "entity to count", "type": "string", "defaultValue": "all" },
+    { "name": "YOLO_CONFIG", "label": "YOLO configuration type: tiny, v2, v3", "type": "string", "defaultValue": "tiny" },
+    { "name": "YOLO_ENTITY", "label": "entity to count", "type": "string", "defaultValue": "person" },
     { "name": "YOLO_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
     { "name": "YOLO_THRESHOLD", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "0.25" },
     { "name": "YOLO_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "0" },
+    { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
+    { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },
     { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
     { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
     { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
@@ -24,23 +26,13 @@
       "yolo": {
         "environment": [
           "SERVICE_LABEL=yolo",
-          "SERVICE_VERSION=0.0.1",
-          "LD_LIBRARY_PATH=:/usr/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu/tegra:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/root/opencv-3.4.1/build/lib"
+          "SERVICE_VERSION=0.1.0"
         ],
         "specific_ports": [],
         "image": null,
         "privileged": true,
-        "binds": [
-          "/usr/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu",
-          "/usr/local/cuda/lib64:/usr/local/cuda/lib64"
-        ],
+        "binds": [],
         "devices": [
-          "/dev/nvhost-ctrl",
-          "/dev/nvhost-ctrl-gpu",
-          "/dev/nvhost-prof-gpu",
-          "/dev/nvmap",
-          "/dev/nvhost-gpu",
-          "/dev/nvhost-as-gpu",
           "/dev/video0:/dev/video0"
         ]
       }

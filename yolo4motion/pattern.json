@@ -1,0 +1,42 @@
+{
+  "label": "yolo4motion",
+  "description": "YOLO listening for MQTT images from motion",
+  "services": [
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.startup",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo4motion",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    }
+  ]
+}

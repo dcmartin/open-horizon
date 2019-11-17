@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   ca-certificates \
   imagemagick \
   build-essential \
+  pkgconfig \
   git
 
 ###
