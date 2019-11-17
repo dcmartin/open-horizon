@@ -35,7 +35,7 @@ SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SE
 SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),$(shell pwd -P | sed 's|.*/||'))
 SERVICE_NAME = $(if ${TAG},${SERVICE_LABEL}-${TAG},${SERVICE_LABEL})
 SERVICE_VERSION = $(shell jq -r '.version' $(SERVICE_JSON) | envsubst)
-SERVICE_TAG = "${HZN_ORG_ID}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
+SERVICE_TAG = "${DOCKER_NAMESPACE}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
 SERVICE_URI := $(shell jq -r '.url' $(SERVICE_JSON) | envsubst)
 SERVICE_URL = $(if ${TAG},${SERVICE_URI}-${TAG},${SERVICE_URI})
 SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' $(SERVICE_JSON) 2> /dev/null)
@@ -52,7 +52,7 @@ APIKEY := $(if $(wildcard ../HZN_EXCHANGE_APIKEY),$(shell cat ../HZN_EXCHANGE_AP
 
 ## docker
 DOCKER_REGISTRY ?= $(if $(wildcard ../DOCKER_REGISTRY),$(shell cat ../DOCKER_REGISTRY),$(if $(wildcard ../registry.json),$(shell jq -r '.registry' ../registry.json),))
-DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),))
+DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
 DOCKER_REPOSITORY ?= $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY)/$(DOCKER_NAMESPACE),$(DOCKER_NAMESPACE))
 DOCKER_LOGIN := $(if $(wildcard ../DOCKER_LOGIN),$(shell cat ../DOCKER_LOGIN),$(if $(wildcard ../registry.json),token,))
 DOCKER_PASSWORD := $(if $(wildcard ../DOCKER_PASSWORD),$(shell cat ../DOCKER_PASSWORD),$(if $(wildcard ../registry.json),$(shell jq -r '.private' ../registry.json),))
