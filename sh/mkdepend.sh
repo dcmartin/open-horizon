@@ -69,7 +69,7 @@ if [ $(jq '.requiredServices?!=null' "${SERVICE}.json") == 'true' ]; then
       if [ ! -z "${REQDIR:-}" ] && [ -d "../${REQDIR:-}/horizon" ]; then
 	if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- found directory ${REQDIR}/horizon for ${ORG}/${ARCH}_${URL}:${VER}" &> /dev/stderr; fi
 	if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- hzn dev dependency fetch -d ${DIR}/ -p ../${REQDIR}/horizon -u "${HZN_EXCHANGE_USERAUTH:1:3}"" &> /dev/stderr; fi
-	hzn dev dependency fetch -d ${DIR}/ -p "../${REQDIR}/horizon" -u "${HZN_EXCHANGE_USERAUTH}" &> ${0##*/}.${ARCH}.${REQDIR}.out
+	HZN_EXCHANGE_USER_AUTH=${HZN_EXCHANGE_USERAUTH} hzn dev dependency fetch -d ${DIR}/ -p "../${REQDIR}/horizon" &> ${0##*/}.${ARCH}.${REQDIR}.out
         if [ $? != 0 ] || [ "${DEBUG:-}" == 'true' ]; then cat ${0##*/}.${ARCH}.${REQDIR}.out; fi
       else
 	if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- retrieving from exchange: ${ORG}/${ARCH}_${URL}:${VER}" &> /dev/stderr; fi

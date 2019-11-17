@@ -7,7 +7,7 @@ if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
 if [ -z "${MQTT_HOST:-}" ]; then MQTT_HOST='mqtt'; fi
 if [ -z "${MQTT_PORT:-}" ]; then MQTT_PORT=1883; fi
 if [ -z "${MOTION_GROUP:-}" ]; then MOTION_GROUP='motion'; fi
-if [ -z "${MOTION_CLIENT:-}" ]; then MOTION_CLIENT=$(hostname); fi
+if [ -z "${MOTION_CLIENT:-}" ]; then MOTION_CLIENT='+'; fi
 if [ -z "${YOLO4MOTION_CAMERA:-}" ]; then YOLO4MOTION_CAMERA='+'; fi
 if [ -z "${YOLO4MOTION_TOPIC_EVENT:-}" ]; then YOLO4MOTION_TOPIC_EVENT='event/end'; fi
 if [ -z "${YOLO4MOTION_TOPIC_PAYLOAD:-}" ]; then YOLO4MOTION_TOPIC_PAYLOAD='image'; fi
@@ -103,7 +103,7 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
   if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- publishing to ${MQTT_HOST} on topic: ${TOPIC}" &> /dev/stderr; fi
   jq -r '.image' "${IMAGE}" | base64 --decode > "${TMPDIR}/${0##*/}.$$.jpeg"
   mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${TOPIC}" -f "${TMPDIR}/${0##*/}.$$.jpeg"
-  rm -f ${JPEG_FILE}
+  rm -f ${JPEG_FILE} "${TMPDIR}/${0##*/}.$$.jpeg"
 
   # initiate output
   echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s)'|.event='"${REPLY}" > "${OUTPUT_FILE}"

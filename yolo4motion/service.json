@@ -20,7 +20,7 @@
     { "name": "MOTION_CLIENT", "label": "client for subscription", "type": "string", "defaultValue": "+" },
     { "name": "YOLO4MOTION_CAMERA", "label": "camera for subscription", "type": "string", "defaultValue": "+" },
     { "name": "YOLO4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end" },
-    { "name": "YOLO4MOTION_TOPIC_PAYLOAD", "label": "image topic", "type": "string", "defaultValue": "image" },
+    { "name": "YOLO4MOTION_TOPIC_PAYLOAD", "label": "image topic", "type": "string", "defaultValue": "image/end" },
     { "name": "YOLO4MOTION_USE_MOCK", "label": "use mock data true/false", "type": "boolean", "defaultValue": "false" },
     { "name": "YOLO4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
     { "name": "YOLO_CONFIG", "label": "configuration: tiny, tiny-v3, v2, v3; default: tiny", "type": "string", "defaultValue": "tiny" },

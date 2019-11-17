@@ -6,7 +6,9 @@
       "url": "com.github.dcmartin.open-horizon.yolo4motion",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
-	"MQTT_USERNAME": "username","MQTT_PASSWORD":"password"
+	"MQTT_HOST": "mqtt.dcmartin.com",
+	"MQTT_USERNAME": "username",
+	"MQTT_PASSWORD":"password"
       }
     }
   ]
