@@ -7,7 +7,6 @@
 ##
 
 HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID)
-HZN_USER_ID ?= $(if $(wildcard HZN_USER_ID),$(shell cat HZN_USER_ID),HZN_USER_ID)
 
 # tag this build environment
 TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
@@ -19,53 +18,68 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
 ## things NOT TO change
 ##
 
-SERVICES := base-alpine base-ubuntu cpu hal wan mqtt apache-ubuntu hznsetup hznmonitor yolo yolo4motion # yolo-cuda yolo4motion-cuda mqtt2mqtt 
-PATTERNS := hznsetup startup yolo4motion motion2mqtt motion2mqtt+yolo4motion
+BASES := base-alpine base-ubuntu 
+SERVICES := cpu hal wan yolo apache-alpine apache-ubuntu hznmonitor hzncli mqtt yolo4motion mqtt2kafka herald fft noize 
+WIP := mqtt2mqtt record hotword 
+JETSONS := # jetson-jetpack jetson-cuda jetson-opencv jetson-yolo jetson-caffe jetson-digits
+PATTERNS := yolo2msghub hznsetup startup motion2mqtt
 MISC := setup sh doc
 
-ALL = $(SERVICES) $(PATTERNS)
+ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP} ${JETSONS}
 
 ##
 ## targets
 ##
-CLEAN_TARGETS = clean realclean distclean 
-SERVICE_TARGETS = build push publish service-build service-push service-publish
-PATTERN_TARGETS = pattern-publish
-ALL_TARGETS = $(CLEAN_TARGETS) $(SERVICE_TARGETS) $(PATTERN_TARGETS)
+
+TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-publish service-verify service-test service-stop service-clean horizon
 
 ## actual
 
-default: build
+default: $(ALL)
 
-services: $(SERVICE_TARGETS)
+$(ALL):
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
+	$(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
 
-patterns: $(PATTERN_TARGETS)
-
-$(ALL_TARGETS):
-	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@""$(NC)" &> /dev/stderr
-	$(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
-
-$(SERVICE_TARGETS):
-	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@""$(NC)" &> /dev/stderr
-	@for dir in $(SERVICES); do \
-	  echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@ in $${dir}""$(NC)" &> /dev/stderr; \
-	  $(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
+$(TARGETS):
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@ in ${ALL}""${NC}" &> /dev/stderr
+	@for dir in $(ALL); do \
+	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-$(PATTERN_TARGETS):
-	@echo "$(MC)>>> MAKE --" $$(date +%T) "-- publishing $(PATTERNS)""$(NC)" &> /dev/stderr
+pattern-publish:
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- publishing $(PATTERNS)""${NC}" &> /dev/stderr
 	@for dir in $(PATTERNS); do \
-	  echo "$(MC)>>> MAKE --" $$(date +%T) "-- making $@ in $${dir}""$(NC)" &> /dev/stderr; \
-	  $(MAKE) TAG=$(TAG) HZN_USER_ID=$(HZN_USER_ID) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
+	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-.PHONY: $(ALL_TARGETS)
+pattern-validate: 
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- validating $(PATTERNS)""${NC}" &> /dev/stderr
+	@for dir in $(PATTERNS); do \
+	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
+	done
+
+.PHONY: ${ALL} default all build run check stop push publish verify clean start test sync
+
+sync: ../beta .gitignore CLOC.md 
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- synching ${ALL}""${NC}" &> /dev/stderr
+	@rsync -av makefile service.makefile .travis *.md .gitignore .travis.yml ../beta
+	export DIRS="${BASES} $(SERVICES) ${MISC} ${JETSONS} ${WIP}" && for dir in $${DIRS}; do \
+	  echo "$${dir}"; \
+	  rsync -av --info=name --exclude-from=./.gitignore $${dir}/ ../beta/$${dir}/ ; \
+	done
+	
+CLOC.md: .gitignore .
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- counting source code""${NC}" &> /dev/stderr
+	@cloc --md --exclude-list-file=.gitignore . > CLOC.md
+
+.PHONY:	${BASES} ${SERVICES} ${PATTERNS} ${JETSONS} ${MISC} ${WIP}
 
 ##
 ## COLORS
 ##
-MC=$(LIGHT_BLUE)
-NC=$(NO_COLOR)
+MC=${LIGHT_BLUE}
+NC=${NO_COLOR}
 
 NO_COLOR=\033[0m
 BLACK=\033[0;30m
