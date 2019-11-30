@@ -51,6 +51,7 @@ KEYS := $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE)
 APIKEY := $(if $(wildcard ../HZN_EXCHANGE_APIKEY),$(shell cat ../HZN_EXCHANGE_APIKEY > APIKEY && echo APIKEY),$(if $(wildcard ../apiKey.json),$(shell jq -r '.apiKey' ../apiKey.json > APIKEY && echo APIKEY),APIKEY_NOT_FOUND))
 
 ## docker
+DOCKER_RESTART ?= $(if $(wildcard ../DOCKER_RESTART),$(shell cat ../DOCKER_RESTART),'--restart=unless-stopped')
 DOCKER_REGISTRY ?= $(if $(wildcard ../DOCKER_REGISTRY),$(shell cat ../DOCKER_REGISTRY),$(if $(wildcard ../registry.json),$(shell jq -r '.registry' ../registry.json),))
 DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
 DOCKER_REPOSITORY ?= $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY)/$(DOCKER_NAMESPACE),$(DOCKER_NAMESPACE))
@@ -128,7 +129,7 @@ logs:
 
 run: stop stop-service remove
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- run: ${DOCKER_NAME}; port: ${DOCKER_PORT}:${SERVICE_PORT}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	@export DOCKER_PORT=$(DOCKER_PORT) SERVICE_PORT=$(SERVICE_PORT) && ./sh/docker-run.sh "$(DOCKER_NAME)" "$(DOCKER_TAG)"
+	@export DOCKER_RESTART=$(DOCKER_RESTART) DOCKER_PORT=$(DOCKER_PORT) SERVICE_PORT=$(SERVICE_PORT) && ./sh/docker-run.sh "$(DOCKER_NAME)" "$(DOCKER_TAG)"
 	@sleep 2
 
 remove:
