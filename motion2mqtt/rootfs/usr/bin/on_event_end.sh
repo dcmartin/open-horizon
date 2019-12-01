@@ -230,7 +230,7 @@ endif
 
 # PUBLISH 
 if ( -s "${IF}" ) then
-  set MQTT_TOPIC = "${MOTION_GROUP}/${MOTION_CLIENT}/${CN}/image"
+  set MQTT_TOPIC = "${MOTION_GROUP}/${MOTION_CLIENT}/${CN}/image/end"
   motion2mqtt_pub.sh -q 2 -r -t "${MQTT_TOPIC}" -f "${IF}"
   if ($?DEBUG) then
     set message = "sent file ${IF} to topic ${MQTT_TOPIC} at ${MQTT_HOST}"
