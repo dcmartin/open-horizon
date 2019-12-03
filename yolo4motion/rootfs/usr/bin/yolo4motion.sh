@@ -23,8 +23,61 @@ YOLO4MOTION_TOPIC="${MOTION_GROUP}/${MOTION_CLIENT}/${YOLO4MOTION_CAMERA}"
 source /usr/bin/yolo-tools.sh
 source /usr/bin/service-tools.sh
 
+## wait for image from device/camera and process
+process_yolo()
+{
+  local device=${1}
+  local camera=${2}
+  local iteration=${3}
+  local input_jpeg_file=$(mktemp)
+  local output_jpeg=$(mktemp)
+  local output_json=$(mktemp)
+  local input_image_topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}"
+  local output_image_topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
+  local output_json_topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
+
+
+  ## MOCK or NOT
+  if [ "${YOLO4MOTION_USE_MOCK:-}" == 'true' ]; then 
+    rm -f "${JPEG_FILE}"
+    touch "${JPEG_FILE}"
+  else
+    hzn.log.debug "Listening to ${MQTT_HOST} on topic: ${input_image_topic}"
+    mosquitto_sub ${MOSQUITTO_ARGS} -C 1 -t "${input_image_topic}"  > "${input_jpeg_file}"
+  fi
+
+  hzn.log.debug "Processing image: ${input_jpeg_file}"
+  yolo_json_file=$(yolo_process "${input_jpeg_file}" ${iteration})
+  hzn.log.debug "Processed image: ${input_jpeg_file}; result: ${yolo_json_file}"
+
+  # create JSON
+  echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s)'|.event='"${REPLY}" > ${output_json}
+
+  # add two files
+  jq -s add "${output_json}" "${yolo_json_file}" > "${output_json}.$$" && mv -f "${output_json}.$$" "${output_json}"
+
+  if [ ! -s "${output_json}" ]; then
+    hzn.log.error "Failed to add JSON: ${output_json} and ${yolo_json_file}"
+    exit 1
+  fi
+
+  # send annotated event back to MQTT
+  hzn.log.debug "Publishing JSON; topic: ${output_json_topic}; JSON: ${output_json}"
+  mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${output_json_topic}" -f "${output_json}"
+  # update status
+  service_update "${output_json}"
+
+  # extract JPEG from payload and publish annotated image to MQTT
+  jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
+  hzn.log.debug "Publishing JPEG: topic: ${output_image_topic}; JPEG: ${output_jpeg}"
+  mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${output_image_topic}" -f ${output_jpeg}
+
+  # cleanup
+  rm -f ${input_jpeg_file} ${output_jpeg} ${yolo_json_file} ${output_json}
+}
+
 ###
-### initialization
+### MAIN
 ###
 
 ## initialize horizon
@@ -37,10 +90,6 @@ CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debu
 
 ## initialize servive
 service_init ${CONFIG}
-
-###
-### MAIN
-###
 
 # configure YOLO
 yolo_config ${YOLO_CONFIG}
@@ -60,67 +109,34 @@ cd ${DARKNET}
 
 hzn.log.debug "listening to ${MQTT_HOST} on topic: ${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}"
 
+##
 # listen forever
+##
+
 mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}" | while read; do
 
   # test for null
-  if [ ! -z "${REPLY}" ]; then 
-    DATE=$(echo "${REPLY}" | jq -r '.date')
-    NOW=$(date +%s)
-    if [ $((NOW - DATE)) -gt ${YOLO4MOTION_TOO_OLD} ]; then echo "+++ WARN -- $0 $$ -- too old: ${REPLY}" &> /dev/stderr; continue; fi
-    DEVICE=$(echo "${REPLY}" | jq -r '.device')
-    CAMERA=$(echo "${REPLY}" | jq -r '.camera')
-    if [ -z "${DEVICE}" ] || [ -z "${CAMERA}" ] || [ "${DEVICE}" == 'null' ] || [ "${CAMERA}" == 'null' ]; then
-      # invalid payload
-      hzn.log.warn "invalid event; continuing:" $(echo "${REPLY}" | jq -c '.')
-      continue
-    fi
-  else
+  if [ -z "${REPLY}" ]; then 
     # null
+    hzn.log.debug "Zero-length payload; continuing"
+    continue
+  fi
+  DATE=$(echo "${REPLY}" | jq -r '.date')
+  NOW=$(date +%s)
+  if [ $((NOW - DATE)) -gt ${YOLO4MOTION_TOO_OLD} ]; then echo "+++ WARN -- $0 $$ -- too old: ${REPLY}" &> /dev/stderr; continue; fi
+
+  DEVICE=$(echo "${REPLY}" | jq -r '.device')
+  CAMERA=$(echo "${REPLY}" | jq -r '.camera')
+  if [ -z "${DEVICE}" ] || [ -z "${CAMERA}" ] || [ "${DEVICE}" == 'null' ] || [ "${CAMERA}" == 'null' ]; then
+    # invalid payload
+    hzn.log.warn "invalid event; continuing:" $(echo "${REPLY}" | jq -c '.')
     continue
   fi
 
-  # name image payload
-  JPEG_FILE="${OUTPUT_FILE%%.*}.jpeg"
+  hzn.log.debug "Received event from device: ${DEVICE}; camera: ${CAMERA}; JSON: ${REPLY}"
 
-  ## MOCK or NOT
-  if [ "${YOLO4MOTION_USE_MOCK:-}" == 'true' ]; then 
-    rm -f "${JPEG_FILE}"
-    touch "${JPEG_FILE}"
-  else 
-    # build image topic
-    TOPIC="${MOTION_GROUP}/${DEVICE}/${CAMERA}/${YOLO4MOTION_TOPIC_PAYLOAD}"
-    hzn.log.debug "listening to ${MQTT_HOST} on topic: ${TOPIC}"
-    # get image
-    mosquitto_sub ${MOSQUITTO_ARGS} -C 1 -t "${TOPIC}"  > "${JPEG_FILE}"
-  fi
-
+  # process YOLO
   if [ -z "${ITERATION:-}" ]; then ITERATION=0; else ITERATION=$((ITERATION+1)); fi
-  IMAGE=$(yolo_process "${JPEG_FILE}" "${ITERATION}")
+  output_json=$(process_yolo "${DEVICE}" "${CAMERA}" ${ITERATION})
 
-  # send annotated image back to MQTT
-  TOPIC="${MOTION_GROUP}/${DEVICE}/${CAMERA}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
-  if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- publishing to ${MQTT_HOST} on topic: ${TOPIC}" &> /dev/stderr; fi
-  jq -r '.image' "${IMAGE}" | base64 --decode > "${TMPDIR}/${0##*/}.$$.jpeg"
-  mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${TOPIC}" -f "${TMPDIR}/${0##*/}.$$.jpeg"
-  rm -f ${JPEG_FILE} "${TMPDIR}/${0##*/}.$$.jpeg"
-
-  # initiate output
-  echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s)'|.event='"${REPLY}" > "${OUTPUT_FILE}"
-
-  # add two files
-  if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- IMAGE: ${IMAGE}" $(jq -c '.image=(.image!=null)' ${IMAGE}) &> /dev/stderr; fi
-  jq -s add "${OUTPUT_FILE}" "${IMAGE}" > "${OUTPUT_FILE}.$$" && mv -f "${OUTPUT_FILE}.$$" "${OUTPUT_FILE}"
-  if [ -s "${OUTPUT_FILE}" ]; then
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- OUTPUT_FILE: ${OUTPUT_FILE}:" $(jq -c '.image=(.image!=null)|.names=(.names!=null)' "${OUTPUT_FILE}") &> /dev/stderr; fi
-    # update status
-    service_update "${OUTPUT_FILE}"
-    # send annotated event back to MQTT
-    TOPIC="${MOTION_GROUP}/${DEVICE}/${CAMERA}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- publishing to ${MQTT_HOST} on topic: ${TOPIC}" &> /dev/stderr; fi
-    mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${TOPIC}" -f "${TMPDIR}/${SERVICE_LABEL}.json"
-  else
-    if [ "${DEBUG:-}" == 'true' ]; then echo "*** ERROR -- $0 $$ -- failed to create OUTPUT_FILE" &> /dev/stderr; fi
-  fi
-  rm -f "${IMAGE}"
 done
