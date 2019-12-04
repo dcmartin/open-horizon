@@ -1,0 +1,2 @@
+# service versions agreement pattern
+.test.hzn=.hzn,.test.date=.date,.test.pattern=.hzn.pattern,.test.cpu=.cpu?!=null,.test.cpu=.cpu.percent,.test.hal=.hal?!=null,.test.hal.product=.hal.lshw.product,.test.wan=.wan?!=null,.test.wan.download=.wan.speedtest.download,.test.config=.config,.test.yolo.image=(.yolo2msghub.yolo.image?!=null),.test.yolo.mock=(.yolo2msghub.yolo.mock),.test.yolo.detected=(.yolo2msghub.yolo.detected)

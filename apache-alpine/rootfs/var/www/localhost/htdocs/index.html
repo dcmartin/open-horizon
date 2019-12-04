@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Apache Test</title>
+</head>
+
+<script>
+var test = new XMLHttpRequest();
+test.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200 && this.responseText != null) {
+    var jobj = JSON.parse(this.responseText);
+    if (jobj != null) {
+      config.innerHTML += '<hr>'
+      if (jobj["host"] != null) {
+        config.innerHTML += '<h2>' + jobj["host"] + '</h2>';
+        jobj["env"].forEach(function(item,index) { 
+          config.innerHTML += item.key + '=' + item.value + '<br>';
+        });
+        config.innerHTML += '<hr>';
+      }
+    }
+  }
+}
+test.open("GET","/cgi-bin/test", true);
+test.send();
+</script>
+
+<body>
+<h1>Apache Test</h1>
+<h2>Configuration</h2>
+<div id="config"></div>
+
+</body>
+</html>
