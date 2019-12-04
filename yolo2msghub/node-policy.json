@@ -1,0 +1,7 @@
+{
+  "properties": [ ],
+  "constraints": [
+    "com.github.dcmartin.open-horizon.startup == true",
+    "com.github.dcmartin.open-horizon.yolo2msghub == true"
+  ]
+}

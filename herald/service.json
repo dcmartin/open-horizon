@@ -1,0 +1,41 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "herald",
+  "description": "announces discoveries",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/herald/README.md",
+  "url": "com.github.dcmartin.open-horizon.herald",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "HERALD_ANNOUNCE", "label": "file containing information to announce", "type": "string", "defaultValue": "" },
+    { "name": "HERALD_PERIOD", "label": "seconds between update", "type": "int", "defaultValue": "30" },
+    { "name": "HERALD_PORT", "label": "port to communicate with herald", "type": "int", "defaultValue": "5960" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "herald": {
+        "environment": [
+          "SERVICE_LABEL=herald",
+          "SERVICE_VERSION=0.0.3",
+          "SERVICE_PORT=81"
+        ],
+        "specific_ports": [
+          { "HostPort": "81/tcp", "HostIP": "0.0.0.0" },
+          { "HostPort": "5960/tcp", "HostIP": "0.0.0.0" },
+          { "HostPort": "5959/udp", "HostIP": "0.0.0.0" }
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

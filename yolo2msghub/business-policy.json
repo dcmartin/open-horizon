@@ -1,0 +1,35 @@
+{
+  "label": "yolo2msghub",
+  "description": "business policy for yolo2msghub",
+  "service": {
+    "name": "yolo2msghub",
+    "org": "${HZN_ORG_ID}",
+    "arch": "amd64,arm64,arm",
+    "serviceVersions": [
+      {
+        "version": "0.0.1",
+        "priority":{}
+      }
+    ]
+  },
+  "properties": [
+    "com.github.dcmartin.open-horizon.yolo2msghub = true"
+  ],
+  "constraints": [
+    "com.github.dcmartin.open-horizon.startup == true",
+    "com.github.dcmartin.open-horizon.yolo2msghub == true"
+  ],
+  "userInput": [
+    {
+      "serviceOrgid": "${HZN_ORG_ID}",
+      "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "serviceVersionRange": "[0.0.0,INFINITY)",
+      "inputs": [
+        {
+          "name": "YOLO2MSGHUB_KAFKA_APIKEY",
+          "value": "${YOLO2MSGHUB_KAFKA_APIKEY}"
+        }
+      ]
+    }
+  ]
+}

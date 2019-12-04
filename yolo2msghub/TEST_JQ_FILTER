@@ -1,0 +1,3 @@
+.yolo2msghub.entity=(.yolo2msghub.yolo.entity)|.yolo2msghub.config=(.yolo2msghub.yolo.config)|.yolo2msghub.detected=(.yolo2msghub.yolo.detected)|.yolo2msghub.mock=(.yolo2msghub.yolo.mock)|.yolo2msghub.yolo=(.yolo2msghub.yolo?!=null)
+#
+.yolo2msghub.cpu=(.yolo2msghub.cpu?!=null)|.yolo2msghub.wan=(.yolo2msghub.wan?!=null)|.yolo2msghub.hal=(.yolo2msghub.hal?!=null)|.yolo2msghub.yolo=(.yolo2msghub.yolo?!=null)|.yolo2msghub.yolo.image=(.yolo2msghub.yolo.image?!=null)

@@ -1,0 +1,49 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "noize",
+  "description": "detect noise and record it",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/noize/README.md",
+  "url": "com.github.dcmartin.open-horizon.noize",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+  ],
+  "userInput": [
+    { "name": "NOIZE_GROUP", "label": "group for client", "type": "string", "defaultValue": "noize" },
+    { "name": "NOIZE_CLIENT", "label": "client identifier within group", "type": "string", "defaultValue": "" },
+    { "name": "NOIZE_START_SECONDS", "label": "number of seconds of noise to start", "type": "int", "defaultValue": "0.1" },
+    { "name": "NOIZE_START_LEVEL", "label": "percentage change from silence", "type": "float", "defaultValue": "1.0" },
+    { "name": "NOIZE_TRIM_DURATION", "label": "maximum size of sound clip in seconds", "type": "int", "defaultValue": "5" },
+    { "name": "NOIZE_THRESHOLD", "label": "threshold below this level will not be heard; in KHz", "type":"string","defaultValue": "" },
+    { "name": "NOIZE_THRESHOLD_TUNE", "label": "tune threshold automatically", "type":"boolean","defaultValue": "false" },
+    { "name": "NOIZE_LEVEL_TUNE", "label": "tune level automatically","type":"boolean", "defaultValue": "false" },
+    { "name": "NOIZE_AUDIO_DEVICE", "label": "identifier for device to use to capture audio", "type":"string","defaultValue": "" },
+    { "name": "NOIZE_SAMPLE_RATE", "label": "sampling rate", "type": "int", "defaultValue": "19200" },
+    { "name": "NOIZE_INCLUDE_WAV", "label": "include audio", "type": "boolean", "defaultValue": "true" },
+    { "name": "NOIZE_INCLUDE_PNG", "label": "include audio", "type": "boolean", "defaultValue": "true" },
+    { "name": "NOIZE_MOCK", "label": "use mock data", "type": "boolean", "defaultValue": "true" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "logging output; default to /tmp/noize.sh.log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "noize": {
+        "environment": [
+          "SERVICE_LABEL=noize",
+          "SERVICE_VERSION=0.0.1",
+          "SERVICE_PORT=80"
+        ],
+        "image": null,
+        "devices": [],
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 65536000
+  }
+}

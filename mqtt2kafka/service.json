@@ -1,0 +1,53 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "mqtt2kafka",
+  "description": "Route traffic from MQTT to Kafka",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/mqtt2kafka/README.md",
+  "url": "com.github.dcmartin.open-horizon.mqtt2kafka",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+  ],
+  "userInput": [
+    { "name": "MQTT2KAFKA_SUBSCRIBE", "label": "event topic", "type": "string", "defaultValue": "+/+/+/event/end" },
+    { "name": "MQTT2KAFKA_PAYLOAD", "label": "payload topic", "type": "string", "defaultValue": "image" },
+    { "name": "MQTT2KAFKA_PUBLISH", "label": "specific topic for all traffic; default MQTT topic", "type": "string", "defaultValue": "" },
+    { "name": "MQTT2KAFKA_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
+    { "name": "MQTT2KAFKA_APIKEY", "label": "message hub API key", "type": "string", "defaultValue": null },
+    { "name": "MQTT2KAFKA_ADMIN_URL", "label": "administrative URL", "type": "string", "defaultValue": "https://kafka-admin-prod02.messagehub.services.us-south.bluemix.net:443" },
+    { "name": "MQTT2KAFKA_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "kafka05-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093" },
+    { "name": "MQTT_HOST", "label": "IP or FQDN for mqtt host", "type": "string", "defaultValue": "mqtt" },
+    { "name": "MQTT_PORT", "label": "port number", "type": "int", "defaultValue": "1883" },
+    { "name": "MQTT_USERNAME", "label": "username", "type": "string", "defaultValue": "" },
+    { "name": "MQTT_PASSWORD", "label": "password", "type": "string", "defaultValue": "" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "mqtt2kafka": {
+        "environment": [
+          "SERVICE_LABEL=mqtt2kafka",
+          "SERVICE_VERSION=0.0.1.4",
+          "SERVICE_PORT=8083"
+        ],
+        "specific_ports": [
+          {
+            "HostPort": "8083:8083/tcp",
+            "HostIP": "0.0.0.0"
+          }
+        ],
+        "image": null,
+        "privileged": false
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "fft",
+  "description": "announces discoveries",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/fft/README.md",
+  "url": "com.github.dcmartin.open-horizon.fft",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+  ],
+  "userInput": [
+    { "name": "FFT_ANOMALY_TYPE", "label": "anomaly type; default: motor; options: butter,welch,motor", "type": "string", "defaultValue": "motor" },
+    { "name": "FFT_ANOMALY_LEVEL", "label": "anomaly level; default: 0.2; range: (0,1]", "type": "float", "defaultValue": "0.2" },
+    { "name": "FFT_ANOMALY_MOCK", "label": "generate mock anomaly; default: false", "type": "boolean", "defaultValue": "false" },
+    { "name": "FFT_INCLUDE_RAW", "label": "include raw results", "type": "boolean", "defaultValue": "false" },
+    { "name": "FFT_INCLUDE_WAV", "label": "include original audio", "type": "boolean", "defaultValue": "false" },
+    { "name": "FFT_INCLUDE_PNG", "label": "include image of output", "type": "boolean", "defaultValue": "false" },
+    { "name": "FFT_PERIOD", "label": "period in seconds to poll for new audio", "type": "int", "defaultValue": "5" },
+    { "name": "FFT_GROUP", "label": "database and group name for devices", "type": "string", "defaultValue": "fft" },
+    { "name": "FFT_DEVICE", "label": "name of device", "type": "string", "defaultValue": "" },
+    { "name": "MQTT_HOST", "label": "IP or FQDN for mqtt host", "type": "string", "defaultValue": "mqtt" },
+    { "name": "MQTT_PORT", "label": "port number", "type": "int", "defaultValue": "1883" },
+    { "name": "MQTT_USERNAME", "label": "username", "type": "string", "defaultValue": "" },
+    { "name": "MQTT_PASSWORD", "label": "password", "type": "string", "defaultValue": "" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "true" }
+  ],
+  "deployment": {
+    "services": {
+      "fft": {
+        "environment": [
+          "SERVICE_LABEL=fft",
+          "SERVICE_VERSION=0.0.1",
+          "SERVICE_PORT=9192"
+        ],
+        "specific_ports": [ { "HostPort": "9192/tcp", "HostIP": "0.0.0.0" } ],
+        "image": null
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 16384000
+  }
+}

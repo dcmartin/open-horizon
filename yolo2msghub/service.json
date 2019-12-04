@@ -1,0 +1,49 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "yolo2msghub",
+  "description": "Sends JSON payloads from yolo service to Kafka",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo2msghub/README.md",
+  "url": "com.github.dcmartin.open-horizon.yolo2msghub",
+  "version": "0.0.11",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+    { "url": "com.github.dcmartin.open-horizon.yolo", "org": "${HZN_ORG_ID}", "version": "0.0.8", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.hal", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.cpu", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+  ],
+  "userInput": [
+    { "name": "YOLO2MSGHUB_APIKEY", "label": "message hub API key", "type": "string", "defaultValue": null },
+    { "name": "YOLO2MSGHUB_ADMIN_URL", "label": "administrative URL", "type": "string", "defaultValue": "https://kafka-admin-prod02.messagehub.services.us-south.bluemix.net:443" },
+    { "name": "YOLO2MSGHUB_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "kafka05-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093" },
+    { "name": "YOLO2MSGHUB_PERIOD", "label": "update interval", "type": "int", "defaultValue": "30" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "yolo2msghub": {
+        "environment": [
+          "SERVICE_LABEL=yolo2msghub",
+          "SERVICE_VERSION=0.0.11.7",
+          "SERVICE_PORT=8587"
+        ],
+        "devices": null,
+        "binds": null,
+        "specific_ports": [
+          {
+            "HostPort": "8587/tcp",
+            "HostIP": "0.0.0.0"
+          }
+        ],
+        "image": null,
+        "privileged": false
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

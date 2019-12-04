@@ -1,0 +1,22 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.fft",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "FFT_INCLUDE_WAV": true,
+        "FFT_INCLUDE_PNG": true,
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "FFT_DEVICE": "",
+        "FFT_ANOMALY_MOCK": true,
+        "LOGTO": "/dev/stderr",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    }
+  ]
+}

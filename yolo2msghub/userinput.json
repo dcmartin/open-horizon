@@ -1,0 +1,47 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": { "YOLO2MSGHUB_APIKEY": "specify-api-key", "LOG_LEVEL": "info", "DEBUG": true }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.yolo",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": { "YOLO_ENTITY": "person", "YOLO_PERIOD": 60, "YOLO_CONFIG": "tiny" }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.cpu",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": { "CPU_PERIOD": 60 }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.wan",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": { "WAN_PERIOD": 900 }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hal",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": { "HAL_PERIOD": 1800 }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.startup",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+	"STARTUP_KAFKA_APIKEY": "${STARTUP_KAFKA_APIKEY}",
+	"STARTUP_HOST_USER": "${STARTUP_HOST_USER}",
+        "LOGTO": "",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    }
+  ]
+}
