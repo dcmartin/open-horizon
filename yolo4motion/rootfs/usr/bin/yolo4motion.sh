@@ -61,16 +61,16 @@ process_yolo()
     exit 1
   fi
 
+  # extract JPEG from payload and publish annotated image to MQTT
+  jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
+  hzn.log.debug "Publishing JPEG: topic: ${output_image_topic}; JPEG: ${output_jpeg}"
+  mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${output_image_topic}" -f ${output_jpeg}
+
   # send annotated event back to MQTT
   hzn.log.debug "Publishing JSON; topic: ${output_json_topic}; JSON: ${output_json}"
   mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${output_json_topic}" -f "${output_json}"
   # update status
   service_update "${output_json}"
-
-  # extract JPEG from payload and publish annotated image to MQTT
-  jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
-  hzn.log.debug "Publishing JPEG: topic: ${output_image_topic}; JPEG: ${output_jpeg}"
-  mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${output_image_topic}" -f ${output_jpeg}
 
   # cleanup
   rm -f ${input_jpeg_file} ${output_jpeg} ${yolo_json_file} ${output_json}

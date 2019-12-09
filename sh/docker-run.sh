@@ -124,5 +124,5 @@ else
  if [ "${DEBUG:-}" = true ]; then echo "+++ WARN -- $0 $$ -- no ports mapped" &> /dev/stderr; fi
 fi
 
-if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- docker run -d ${DOCKER_RESTART:-} --name ${DOCKER_NAME} ${OPTIONS} ${DOCKER_TAG}" &> /dev/stderr; fi
-docker run -d "${DOCKER_RESTART:-}" --name "${DOCKER_NAME}" ${OPTIONS} "${DOCKER_TAG}"
+if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- docker run -d --name ${DOCKER_NAME} ${OPTIONS} ${DOCKER_TAG}" &> /dev/stderr; fi
+docker run -d --name "${DOCKER_NAME}" ${OPTIONS} "${DOCKER_TAG}"
