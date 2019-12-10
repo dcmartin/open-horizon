@@ -125,4 +125,4 @@ else
 fi
 
 if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- docker run -d --name ${DOCKER_NAME} ${OPTIONS} ${DOCKER_TAG}" &> /dev/stderr; fi
-docker run -d --name "${DOCKER_NAME}" ${OPTIONS} "${DOCKER_TAG}"
+docker run --restart=unless-stopped -d --name "${DOCKER_NAME}" ${OPTIONS} "${DOCKER_TAG}"
