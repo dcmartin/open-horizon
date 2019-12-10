@@ -69,20 +69,6 @@ process_motion_event()
   yolo_json_file=$(process_yolo "${input_jpeg_file}")
 
   if [ -s "${yolo_json_file}" ]; then
-    local output_jpeg=$(mktemp)
-
-    # extract image
-    jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
-    if [ -s "${output_jpeg}" ]; then
-      local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
-
-      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
-      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
-      rm -f "${output_jpeg}"
-    else
-      hzn.log.error "Zero-length output JPEG file"
-    fi
-
     # add YOLO output to service_json_file
     jq -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
 
@@ -96,6 +82,21 @@ process_motion_event()
     else
       hzn.log.error "Failed to add JSON: ${service_json_file} and ${yolo_json_file}"
     fi
+
+    # extract image
+    local output_jpeg=$(mktemp)
+
+    jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
+    if [ -s "${output_jpeg}" ]; then
+      local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
+
+      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
+      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
+      rm -f "${output_jpeg}"
+    else
+      hzn.log.error "Zero-length output JPEG file"
+    fi
+
   else
     hzn.log.error "Zero-length output JSON file"
   fi
