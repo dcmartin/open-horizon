@@ -69,3 +69,4 @@ OUTPUT="${OUTPUT}""${SUBS}"'}'
 echo "${OUTPUT}" | jq -c '.' &> /dev/stderr
 
 if [ $? == 0 ]; then echo 'true'; exit 0; else echo 'false'; exit 1; fi
+
