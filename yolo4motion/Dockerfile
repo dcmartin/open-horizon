@@ -11,9 +11,13 @@ ENV \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
     TERM="xterm"
 
-RUN apt-get update && apt-get install -q -y --no-install-recommends \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive \
+  && \
+  apt-get update && apt-get install -q -y --no-install-recommends \
   bc \
   inotify-tools \
+  dateutils \
   mosquitto-clients
 
 # Copy usr

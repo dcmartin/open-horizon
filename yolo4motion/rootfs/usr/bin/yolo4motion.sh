@@ -170,11 +170,21 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
     hzn.log.debug "Bad date; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
     continue
   fi
-  # calculate ago
-  NOW=$(date +%s) && AGO=$((NOW - DATE))
+
+  # check timestamp
+  TIMEZONE=$(date +%Z)
+  TIMESTAMP=$(jq -r '.event.timestamp' "${PAYLOAD}")
+  hzn.log.debug "Timezone: ${TIMEZONE}; Timestamp: ${TIMESTAMP}"
+  TIMESTAMP=$(echo "${TIMESTAMP}" | dateutils.dconv -z ${TIMEZONE} -f %s)
+  hzn.log.debug "Timestamp: ${TIMESTAMP}"
+
+  # calculate ago and age
+  NOW=$(date +%s) && AGO=$((NOW - DATE)) && AGE=$((NOW - TIMESTAMP))
   if [ ${AGO} -gt ${YOLO4MOTION_TOO_OLD} ]; then 
-    hzn.log.warn "Too old; ${AGO} > ${YOLO4MOTION_TOO_OLD}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
+    hzn.log.warn "Too old; ${AGO} > ${YOLO4MOTION_TOO_OLD}; AGE: ${AGE}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
     continue
+  else
+    hzn.log.debug "AGO: ${AGO}; AGE: ${AGE}"
   fi
 
   # check device and camera
