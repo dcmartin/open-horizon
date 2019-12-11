@@ -17,11 +17,13 @@ YOLO_NAMES="${DARKNET}/data/coco.names"
 
 yolo_init() 
 {
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","threshold":'${YOLO_THRESHOLD}',"services":'"${SERVICES:-null}"'}}'
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","threshold":'${YOLO_THRESHOLD}',"services":'"${SERVICES:-null}"'}'
   # get names of entities that can be detected
   if [ -s "${YOLO_NAMES}" ]; then
-    if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- processing ${YOLO_NAMES}" &> /dev/stderr; fi
+    hzn.log.debug "Processing ${YOLO_NAMES}"
     NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${YOLO_NAMES}" | sed 's|""|","|g')']'
   fi
   if [ -z "${NAMES:-}" ]; then NAMES='["person"]'; fi
@@ -31,7 +33,8 @@ yolo_init()
 
 yolo_config()
 {
-  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG -- $0 $$ -- YOLO config: ${1}" &> /dev/stderr; fi
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
   case ${1} in
     tiny|tiny-v2)
       DARKNET_WEIGHTS="${DARKNET_TINYV2_WEIGHTS_URL}"
@@ -58,20 +61,22 @@ yolo_config()
       YOLO_DATA="${DARKNET_V3_DATA}"
     ;;
     *)
-      if [ "${DEBUG:-}" == 'true' ]; then echo "+++ WARN -- $0 $$ -- invalid YOLO_CONFIG: ${1}" &> /dev/stderr; fi
+      hzn.log.error "Invalid YOLO_CONFIG: ${1}"
     ;;
   esac
   if [ ! -s "${YOLO_WEIGHTS}" ]; then
-    if [ "${DEBUG:-}" == 'true' ]; then echo "+++ WARN -- $0 $$ -- YOLO config: ${1}; updating ${YOLO_WEIGHTS} from ${DARKNET_WEIGHTS}" &> /dev/stderr; fi
+    hzn.log.debug "YOLO config: ${1}; updating ${YOLO_WEIGHTS} from ${DARKNET_WEIGHTS}"
     curl -fsSL ${DARKNET_WEIGHTS} -o ${YOLO_WEIGHTS}
     if [ ! -s "${YOLO_WEIGHTS}" ]; then
-      if [ "${DEBUG:-}" == 'true' ]; then echo "*** ERROR -- $0 $$ -- YOLO config: ${1}; failed to download: ${DARKNET_WEIGHTS}" &> /dev/stderr; fi
+      hzn.log.error "YOLO config: ${1}; failed to download: ${DARKNET_WEIGHTS}"
     fi
   fi
 }
 
 yolo_process()
 {
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
   PAYLOAD="${1}"
   ITERATION="${2}"
   OUTPUT='{}'
@@ -81,9 +86,9 @@ yolo_process()
     MOCKS=( dog giraffe kite eagle horses person scream )
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}" &> /dev/stderr; fi
+    hzn.log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
     MOCK="${MOCKS[${MOCK_INDEX}]}"
-    if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- MOCK image: ${MOCK}" &> /dev/stderr; fi
+    hzn.log.debug "MOCK image: ${MOCK}"
     cp -f "data/${MOCK}.jpg" ${PAYLOAD}
     # update output to be mock
     OUTPUT=$(echo "${OUTPUT}" | jq '.mock="'${MOCK}'"')
@@ -95,21 +100,21 @@ yolo_process()
   else
     mv -f "${PAYLOAD}" "${JPEG}"
   fi
-  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }') &> /dev/stderr; fi
+  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
 
   # get image information
   INFO=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
-  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- INFO: ${INFO}" &> /dev/stderr; fi
+  hzn.log.debug "JPEG: ${JPEG}; info: ${INFO}"
   OUTPUT=$(echo "${OUTPUT}" | jq '.info='"${INFO}")
 
   ## do YOLO
-  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- DARKNET: ./darknet detector test ${YOLO_DATA} ${YOLO_CFG_FILE} ${YOLO_WEIGHTS} ${JPEG} -thresh ${YOLO_THRESHOLD}" &> /dev/stderr; fi
+  hzn.log.debug "DARKNET: ./darknet detector test ${YOLO_DATA} ${YOLO_CFG_FILE} ${YOLO_WEIGHTS} ${JPEG} -thresh ${YOLO_THRESHOLD}"
   ./darknet detector test "${YOLO_DATA}" "${YOLO_CFG_FILE}" "${YOLO_WEIGHTS}" "${JPEG}" -thresh "${YOLO_THRESHOLD}" > "${OUT}" 2> "${TMPDIR}/darknet.$$.out"
   # extract processing time in seconds
   TIME=$(cat "${OUT}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
   if [ -z "${TIME}" ]; then TIME=0; fi
   OUTPUT=$(echo "${OUTPUT}" | jq '.time="'${TIME}'"')
-  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- TIME: ${TIME}" &> /dev/stderr; fi
+  hzn.log.debug "TIME: ${TIME}"
   # test for output
   if [ -s "${OUT}" ]; then
     TOTAL=0
@@ -119,7 +124,7 @@ yolo_process()
 	cat "${OUT}" | tr '\n' '\t' | sed 's/.*Predicted in \([^ ]*\) seconds. */time: \1/' | tr '\t' '\n' | tail +2 > "${OUT}.$$"
 	FOUND=$(cat "${OUT}.$$" | awk -F: '{ print $1 }' | sort | uniq)
 	if [ ! -z "${FOUND}" ]; then
-	  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- detected:" $(echo "${FOUND}" | fmt -1000) &> /dev/stderr; fi
+	  hzn.log.debug "Detected:" $(echo "${FOUND}" | fmt -1000)
 	  JSON=
 	  for F in ${FOUND}; do
 	    if [ -z "${JSON:-}" ]; then JSON='['; else JSON="${JSON}"','; fi
@@ -132,7 +137,7 @@ yolo_process()
 	  if [ -z "${JSON}" ]; then JSON='null'; else JSON="${JSON}"']'; fi
 	  DETECTED="${JSON}"
 	else
-	  if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- detected nothing" &> /dev/stderr; fi
+	  hzn.log.debug "Detected nothing"
 	  DETECTED='null'
 	fi
 	;;
@@ -147,7 +152,7 @@ yolo_process()
     OUTPUT=$(echo "${OUTPUT}" | jq '.count='${TOTAL}'|.detected='"${DETECTED}"'|.time='${TIME})
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
-    if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG $0 $$ -- darknet failed:" $(cat "${TMPDIR}/darknet.$$.out") &> /dev/stderr; fi
+    hzn.log.debug "darknet failed:" $(cat "${TMPDIR}/darknet.$$.out")
     OUTPUT=$(echo "${OUTPUT}" | jq '.count=0|.detected=null|.time=0')
   fi
 
