@@ -69,32 +69,28 @@ process_motion_event()
   yolo_json_file=$(process_yolo "${input_jpeg_file}")
 
   if [ -s "${yolo_json_file}" ]; then
-    # add YOLO output to service_json_file
-    jq -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
 
+    # extract image
+    local output_jpeg=$(mktemp)
+    jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
+    if [ -s "${output_jpeg}" ]; then
+      local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
+      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
+      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
+    else
+      hzn.log.error "Zero-length output JPEG file"
+    fi
+    rm -f "${output_jpeg}"
+
+    # combine YOLO output with service configuration file
+    jq -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
     # test for success
     if [ -s "${service_json_file}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
-
-      # send annotated event back to MQTT
       hzn.log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
       mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
     else
       hzn.log.error "Failed to add JSON: ${service_json_file} and ${yolo_json_file}"
-    fi
-
-    # extract image
-    local output_jpeg=$(mktemp)
-
-    jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
-    if [ -s "${output_jpeg}" ]; then
-      local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
-
-      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
-      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
-      rm -f "${output_jpeg}"
-    else
-      hzn.log.error "Zero-length output JPEG file"
     fi
 
   else
