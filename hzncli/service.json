@@ -1,0 +1,40 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "hzncli",
+  "description": "Provides hardware abstraction layer as service",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/hzncli/README.md",
+  "url": "com.github.dcmartin.open-horizon.hzncli",
+  "version": "0.0.3",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "HZNCLI_PERIOD", "label": "seconds between update", "type": "int", "defaultValue": "60" },
+    { "name": "HZN_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "https://alpha.edge-fabric.com/v1" },
+    { "name": "HZN_ORG_ID", "label": "exchange server", "type": "string", "defaultValue": "" },
+    { "name": "HZN_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "hzncli": {
+        "environment": [
+          "SERVICE_LABEL=hzncli",
+          "SERVICE_VERSION=0.0.3"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  },
+  "ports": {
+    "80/tcp": 8588
+  }
+}
