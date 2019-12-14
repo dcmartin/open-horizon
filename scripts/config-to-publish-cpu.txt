@@ -1,0 +1,15 @@
+GD=~/gitdir
+cd $GD/open-horizon
+export DOCKER_NAMESPACE=dcmartin
+export HZN_ORG_ID=dcmartin
+docker login
+hzn key create ${HZN_ORG_ID} $(whoami)@$(hostname)
+mv -f *.key ${HZN_ORG_ID}.key
+mv -f *.pem ${HZN_ORG_ID}.pem
+cd base-alpine
+make service-build
+cd ../cpu
+make service-build
+make service-test
+make service-publish
+make service-clean

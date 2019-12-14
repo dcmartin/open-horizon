@@ -1,0 +1,151 @@
+{
+  "default": {
+    "exchange": "alpha",
+    "machine": "rpi3",
+    "network": null,
+    "configuration": null,
+    "pattern": null,
+    "token": null,
+    "keys": null
+  },
+  "setup": "horizon",
+  "vendor": "rpi",
+  "discover": false,
+  "tokens": [ 
+    { "id":"token-1", "value": "nowisthetimeforallgoodmen" }, 
+    { "id":"token-2", "value": "longerpasswordsarebetter" },
+    { "id": "none" }
+  ],
+  "networks": [
+    { "id": "default", "dhcp": "dynamic", "ssid": "TEST", "password": "0123456789" },
+    { "id": "site-1", "dhcp": "dynamic", "ssid": "%%NETWORK_SSID%%", "password": "%%NETWORK_PASSWORD%%" },
+    { "id": "none" }
+  ],
+  "patterns": [
+    { "id": "cpu-pattern", "name": "cpu2msghub", "org": "IBM", "url": "github.com.open-horizon.examples.cpu2msghub" },
+    { "id": "sdr-pattern", "name": "sdr2msghub", "org": "IBM", "url": "github.com.open-horizon.examples.sdr2msghub" },
+    { "id": "yolo-pattern", "name": "yolo2msghub", "org": "github@dcmartin.com", "url": "com.github.dcmartin.open-horizon.yolo2msghub" },
+    { "id": "motion-pattern", "name": "motion2mqtt", "org": "github@dcmartin.com", "url": "com.github.dcmartin.open-horizon.motion2mqtt" },
+    { "id": "yolo-pattern-beta", "name": "yolo2msghub-beta", "org": "github@dcmartin.com", "url": "com.github.dcmartin.open-horizon.yolo2msghub-beta" },
+    { "id": "motion-pattern-beta", "name": "motion2mqtt-beta", "org": "github@dcmartin.com", "url": "com.github.dcmartin.open-horizon.motion2mqtt-beta" },
+    { "id": "none" }
+  ],
+  "setups": [
+    { "id": "horizon", "path": "hzn-install.sh", "url": "http://ibm.biz/horizon-setup" },
+    { "id": "hassio", "path": "hassio-install.sh", "url": "http://ibm.biz/hassio-setup" },
+    { "id": "none" }
+  ],
+  "vendors": [
+    { "id":"rpi", "tag": "Raspberry Pi Foundation" },
+    { "id":"vbox", "tag": "Oracle VirtualBox virtual NIC" },
+    { "id":"nvidia", "tag": "Nvidia" },
+    { "id": "none" }
+  ],
+  "configurations": [
+    {
+      "id": "cpuconf",
+      "pattern": "cpu2msghub",
+      "exchange": "alpha",
+      "network": "none",
+      "variables": [
+        { "key": "MSGHUB_API_KEY", "value": null }
+      ],
+      "public_key": null,
+      "private_key": null,
+      "nodes": [
+        { "id": "rpi-1", "machine": "rpi3", "device": "test-cpu-1", "token": null },
+        { "id": "rpi-7", "machine": "rpi3", "device": "test-cpu-4", "token": null },
+        { "id": "rpi-9", "machine": "rpi3", "device": "test-cpu-5", "token": null },
+        { "id": "rpi-13", "machine": "rpi3", "device": "test-cpu-7", "token": null },
+        { "id": "rpi-15", "machine": "rpi3", "device": "test-cpu-8", "token": null },
+        { "id": "rpi-17", "machine": "rpi3", "device": "test-cpu-9", "token": null }
+      ]
+    },
+    {
+      "id": "sdrconf",
+      "pattern": "sdr2msghub",
+      "exchange": "alpha",
+      "network": "none",
+      "variables": [ { "key": "MSGHUB_API_KEY", "value": null } ],
+      "public_key": null,
+      "private_key": null,
+      "nodes": [
+        { "id": "rpi-6", "machine": "rpi3", "device": "test-sdr-3", "token": null },
+        { "id": "rpi-10", "machine": "rpi3", "device": "test-sdr-5", "token": null },
+        { "id": "rpi-12", "machine": "rpi3", "device": "test-sdr-6", "token": null },
+        { "id": "rpi-14", "machine": "rpi3", "device": "test-sdr-7", "token": null },
+        { "id": "rpi-16", "machine": "rpi3", "device": "test-sdr-8", "token": null },
+        { "id": "rpi-18", "machine": "rpi3", "device": "test-sdr-9", "token": null }
+      ]
+    },
+    {
+      "id": "yoloconf",
+      "pattern": "yolo2msghub",
+      "exchange": "alpha",
+      "network": "none",
+      "variables": [ { "key": "YOLO2MSGHUB_APIKEY", "value": null } ],
+      "public_key": null,
+      "private_key": null,
+      "nodes": [
+      ]
+    },
+    { "id": "motionconf", 
+      "pattern": "motion-pattern",
+      "exchange": "alpha",
+      "network": "site-1",
+      "variables": [
+        { "key": "MOTION_TIMZONE", "value": "GMT" },
+        { "key": "MOTION_DEVICE_DB", "value": "motion" },
+        { "key": "MOTION_POST_PICTURES", "value": "center" },
+        { "key": "MOTION_DEVICE_NAME", "value": "" },
+        { "key": "MOTION_MQTT_HOST", "value": "mqtt" },
+        { "key": "MOTION_MQTT_USERNAME", "value": "" },
+        { "key": "MOTION_MQTT_PASSWORD", "value": "" },
+        { "key": "HZN_EXCHANGE_APIKEY", "value": null }
+      ],
+      "public_key": null,
+      "private_key": null,
+      "nodes": [
+        { "id": "rpi-2", "machine": "rpi3", "device": "test-sdr-1", "token": null },
+        { "id": "rpi-3", "machine": "rpi3", "device": "test-cpu-6", "token": null },
+        { "id": "rpi-4", "machine": "rpi3", "device": "test-sdr-4", "token": null },
+        { "id": "rpi-5", "machine": "rpi3", "device": "test-cpu-3", "token": null },
+        { "id": "rpi-8", "machine": "rpi3", "device": "test-cpu-2", "token": null },
+        { "id": "tx2-1", "machine": "tx2", "device": "test-motion-1", "token": null }
+      ]
+    },
+    { "id": "none" }
+  ],
+  "machines": [
+    { "id": "rpi3", "arch": "armhf", "distribution": "raspbian-stretch-lite" },
+    { "id": "rpi2", "arch": "arm32", "distribution": "raspbian-stretch-lite" },
+    { "id": "tx2", "arch": "aarch64", "distribution": "tx2-18.04" },
+    { "id": "u1804", "arch": "amd64", "distribution": "ubuntu-18.04" },
+    { "id": "u1810", "arch": "amd64", "distribution": "ubuntu-18.10" }
+  ],
+  "distributions": [
+    { "id": "ubuntu-18.04", "client": { "hostname": "[^ ]*", "sudo": "password", "username": "root", "password": "toor" } },
+    { "id": "ubuntu-18.10", "client": { "hostname": "[^ ]*", "sudo": "password", "username": "root", "password": "toor" } },
+    { "id": "ubuntu-16.04", "client": { "hostname": "[^ ]*", "sudo": "password", "username": "root", "password": "toor" } },
+    { "id": "tx2-18.04", "client": { "hostname": "jetson-[^ ]*", "sudo": "password", "username": "nvidia", "password": "nvidia" } },
+    { "id": "raspbian-stretch-lite", "client": { "hostname": "raspberrypi", "sudo": "silent", "username": "pi", "password": "raspberry" },"url":"http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-11-15/2018-11-13-raspbian-stretch-lite.zip" }
+  ],
+  "exchanges": [
+    { "id": "none" },
+    {
+      "id": "staging",
+      "org": "%%HORIZON_ORG%%",
+      "url": "https://stg.edge-fabric.com/v1",
+      "username": "%%HORIZON_STAGING_USERNAME%%",
+      "password": "%%HORIZON_STAGING_PASSWORD"
+    },
+    {
+      "id": "alpha",
+      "org": "%%IBM_CLOUD_LOGIN_EMAIL%%",
+      "url": "https://alpha.edge-fabric.com/v1",
+      "username": "${HZN_USER_ID:-iamapikey}",
+      "password": "%%HORIZON_EXCHANGE_APIKEY%%"
+    }
+  ],
+  "nodes": null
+}

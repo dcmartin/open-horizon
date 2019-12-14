@@ -1,0 +1,45 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "apache",
+  "description": "Apache Web server",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/apache-ubuntu/README.md",
+  "url": "com.github.dcmartin.open-horizon.apache-ubuntu",
+  "version": "0.1.0",
+  "arch": null,
+  "public": false,
+  "sharable": "multiple",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "APACHE_CONF", "label": "", "type": "string", "defaultValue": "/etc/apache2/httpd.conf" },
+    { "name": "APACHE_HTDOCS", "label": "", "type": "string", "defaultValue": "/var/www/localhost/htdocs" },
+    { "name": "APACHE_CGIBIN", "label": "", "type": "string", "defaultValue": "/var/www/localhost/cgi-bin" },
+    { "name": "APACHE_HOST", "label": "", "type": "string", "defaultValue": "localhost" },
+    { "name": "APACHE_PORT", "label": "", "type": "int", "defaultValue": "8888" },
+    { "name": "APACHE_ADMIN", "label": "", "type": "string", "defaultValue": "root@localhost.local" },
+    { "name": "APACHE_PERIOD", "label": "", "type": "int", "defaultValue": "30" },
+    { "name": "APACHE_LOG_LEVEL", "label": "specify apache logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" }
+  ],
+  "deployment": {
+    "services": {
+      "apache": {
+        "environment": [
+          "SERVICE_LABEL=apache",
+          "SERVICE_VERSION=0.1.0",
+          "SERVICE_PORT=8080"
+        ],
+        "specific_ports": [
+          { "HostPort": "8080:8080/tcp", "HostIP": "0.0.0.0" },
+          { "HostPort": "8888:8888/tcp", "HostIP": "0.0.0.0" }
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

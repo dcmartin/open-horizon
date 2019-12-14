@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# prerequisites
+if [ -z $(command -v expect) ]; then
+  apt install -y expect &> /apt.log
+fi
+if [ -z $(command -v socat) ]; then
+  apt install -y socat &> /apt.log
+fi
+
+# install horizon
+if [ -z $(command -v hzn) ]; then
+  # probably should have a checksum or just re-retrieve every time; could be corrupted
+  if [ ! -s "/%%HORIZON_SCRIPT%%" ]; then
+    wget -qO "/%%HORIZON_SCRIPT%%" "%%HORIZON_SETUP_URL%%" 
+  fi
+  bash "/%%HORIZON_SCRIPT%%" &> /horizon.log
+fi
+
+DEVICE_NAME=$(hzn node list | jq -r '.name?')
+if [ -z "${DEVICE_NAME}" ] || [ "${DEVICE_NAME}" == 'null' ]; then
+  echo "+++ WARN: $(date) -- node list has no name; broadcasting horizon node id" >> /horizon.log 2>&1
+  ./socat-node-id.sh
+else
+  echo "--- INFO: $(date) -- horizon node created; device name: ${DEVICE_NAME}" 2>&1
+fi
+
+## SSH
+SSH=~%%CLIENT_USERNAME%%/.ssh
+KEYS="${SSH}/authorized_keys"
+
+if [ -s /ssh.pub ] && [ ! -s "${KEYS}" ]; then
+  ## add authorized public key
+  mkdir -p ${SSH}
+  mv /ssh.pub ${SSH}/authorized_keys
+  chown -R %%CLIENT_USERNAME%% ${SSH}
+  chmod 600 ${SSH}/authorized_keys
+  # build expect script
+  echo 'spawn passwd %%CLIENT_USERNAME%%' > /passwd.exp
+  echo 'for {} 1 {} { expect {' >> /passwd.exp
+  echo '  "Enter new UNIX password:" { send "%%DEVICE_TOKEN%%\r" }' >> /passwd.exp
+  echo '  "Retype new UNIX password:" { send "%%DEVICE_TOKEN%%\r" }' >> /passwd.exp
+  echo '  "password updated successfully" { send_user "changed" ; exit }}}' >> /passwd.exp
+  # change password
+  RESULT=$(expect -f /passwd.exp | egrep "changed")
+  if [ "${RESULT}" != "changed" ]; then
+    # report failure
+    echo "*** ERROR: $(date) -- could not change passwd" >> /horizon.log 2>&1
+  else
+    # report success
+    echo "${RESULT}"
+    # change sshd rules
+    echo 'ChallengeResponseAuthentication no' > /sshd_config
+    echo 'PasswordAuthentication no' >> /sshd_config
+    echo 'UsePAM no' >> /sshd_config
+    mv /sshd_config /etc/ssh/sshd_config
+    /etc/init.d/ssh restart &> /dev/null
+  fi
+elif [ -s "${KEYS}" ]; then
+  echo "+++ WARN: $(date) -- SSH already configured" >> /horizon.log 2>&1
+elif [ ! -s "/ssh.pub" ]; then
+  echo "*** ERROR: $(date) -- no authorized key in /ssh.pub" >> /horizon.log 2>&1
+fi
+
+## change hostname
+if [ -n "${DEVICE_NAME}" ] && [ "${DEVICE_NAME}" != 'null' ]; then
+  if [ $(cat /etc/hostname) != "${DEVICE_NAME}" ]; then
+    echo "${DEVICE_NAME}" > /etc/hostname
+    sed -i 's|\(.*\)%%CLIENT_HOSTNAME%%|\1'"${DEVICE_NAME}"' %%CLIENT_HOSTNAME%%|' /etc/hosts
+    hostname "${DEVICE_NAME}"
+  fi
+else
+  echo "+++ WARN: $(date) -- no device name specified" >> /horizon.log 2>&1
+fi
+
+exit 0

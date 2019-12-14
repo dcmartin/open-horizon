@@ -1,0 +1,9 @@
+cd ~/gitdir/open-horizon
+ls -al apiKey.json 
+export DOCKER_HUB_ID=dcmsjc
+docker login
+export HZN_ORG_ID=dcmartin
+hzn key create ${HZN_ORG_ID} $(whoami)@$(hostname)
+mv -f *.key ${HZN_ORG_ID}.key
+mv -f *.pem ${HZN_ORG_ID}.pem
+make service-publish

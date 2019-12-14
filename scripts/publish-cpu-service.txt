@@ -1,0 +1,14 @@
+cd ~/gitdir/open-horizon/cpu
+export DOCKER_HUB_ID=dcmsjc
+make build
+docker login
+make push
+make service-push
+cd ~/gitdir/open-horizon
+export HZN_ORG_ID=dcmartin
+hzn key create ${HZN_ORG_ID} $(whoami)@$(hostname)
+mv -f *.key ${HZN_ORG_ID}.key
+mv -f *.pem ${HZN_ORG_ID}.pem
+ls -al apiKey.json 
+cd ~/gitdir/open-horizon/cpu
+make service-publish

@@ -1,0 +1,5 @@
+spawn passwd pi
+for {} 1 {} { expect {
+  "Enter new UNIX password:" { send "null\r" }
+  "Retype new UNIX password:" { send "null\r" }
+  "password updated successfully" { send_user "changed" ; exit }}}

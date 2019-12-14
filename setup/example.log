@@ -1,0 +1,70 @@
+[13:24:08] 24 % ./init-devices.sh 
+--- INFO: executing: ./init-devices.sh horizon.json 192.168.1.0/24
+--- INFO: scanning network 192.168.1.0/24
+Password:
+--- INFO: found 90 devices on LAN 192.168.1.0/24
++++ WARN: no nodes in configuration
+--- INFO: total of 11 nodes in configuration horizon.json
+--- INFO: rpi-1: FOUND at MAC: B8:27:EB:01:E6:05; IP 192.168.1.35
+pi@192.168.1.35: Permission denied (publickey,password).
+*** ERROR: rpi-1 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-2: FOUND at MAC: B8:27:EB:14:51:15; IP 192.168.1.219
+--- INFO: rpi-2: SECURITY configured {"id":"sdrconf","token":"null","device":"test-sdr-1"}
+--- INFO: rpi-2: SOFTWARE installing http://ibm.biz/horizon-setup
+--- INFO: rpi-2: EXCHANGE configuring
+--- INFO: rpi-2: EXCHANGE succeeded; sudo systemctl restart horizon || false
+--- INFO: rpi-2: EXCHANGE configured: "alpha"
+--- INFO: rpi-2: PATTERN configuring
+--- INFO: rpi-2: PATTERN configured "github.com.open-horizon.examples.sdr2msghub"
+--- INFO: rpi-2: configuring NETWORK
+--- INFO: rpi-2: NETWORK configured {"ssid":"CABIN","password":"4082685470"}
+--- INFO: rpi-3: FOUND at MAC: B8:27:EB:25:F0:52; IP 192.168.1.180
+--- INFO: rpi-3: SECURITY configured {"id":"cpuconf","token":"null","device":"test-cpu-2"}
+--- INFO: rpi-3: SOFTWARE installing http://ibm.biz/horizon-setup
+--- INFO: rpi-3: EXCHANGE configuring
+--- INFO: rpi-3: EXCHANGE succeeded; sudo systemctl restart horizon || false
+--- INFO: rpi-3: EXCHANGE configured: "alpha"
+--- INFO: rpi-3: PATTERN configuring
+--- INFO: rpi-3: PATTERN configured "github.com.open-horizon.examples.cpu2msghub"
+--- INFO: rpi-3: configuring NETWORK
+--- INFO: rpi-3: NETWORK configured {"ssid":"CABIN","password":"4082685470"}
+--- INFO: rpi-4: FOUND at MAC: B8:27:EB:51:A7:48; IP 192.168.1.38
+pi@192.168.1.38: Permission denied (publickey,password).
+*** ERROR: rpi-4 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-5: FOUND at MAC: B8:27:EB:68:17:FB; IP 192.168.1.167
+--- INFO: rpi-5: SECURITY configured {"id":"cpuconf","token":"null","device":"test-cpu-3"}
+--- INFO: rpi-5: SOFTWARE installing http://ibm.biz/horizon-setup
+--- INFO: rpi-5: EXCHANGE configuring
+--- INFO: rpi-5: EXCHANGE succeeded; sudo systemctl restart horizon || false
+--- INFO: rpi-5: EXCHANGE configured: "alpha"
+--- INFO: rpi-5: PATTERN configuring
+--- INFO: rpi-5: PATTERN configured "github.com.open-horizon.examples.cpu2msghub"
+--- INFO: rpi-5: configuring NETWORK
+--- INFO: rpi-5: NETWORK configured {"ssid":"CABIN","password":"4082685470"}
+--- INFO: rpi-6: FOUND at MAC: B8:27:EB:7B:F9:FB; IP 192.168.1.41
+pi@192.168.1.41: Permission denied (publickey,password).
+*** ERROR: rpi-6 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-7: FOUND at MAC: B8:27:EB:90:6F:4A; IP 192.168.1.36
+pi@192.168.1.36: Permission denied (publickey,password).
+*** ERROR: rpi-7 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-8: FOUND at MAC: B8:27:EB:A2:6F:D9; IP 192.168.1.47
+pi@192.168.1.47: Permission denied (publickey,password).
+*** ERROR: rpi-8 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-9: FOUND at MAC: B8:27:EB:BD:1D:F3; IP 192.168.1.37
+pi@192.168.1.37: Permission denied (publickey,password).
+*** ERROR: rpi-9 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-10: FOUND at MAC: B8:27:EB:D0:95:AD; IP 192.168.1.34
+pi@192.168.1.34: Permission denied (publickey,password).
+*** ERROR: rpi-10 SSH failed; consider reflashing; continuing...
+--- INFO: rpi-11: FOUND at MAC: B8:27:EB:ED:F0:55; IP 192.168.1.220
+--- INFO: rpi-11: SECURITY configured {"id":"cpuconf","token":"null","device":"test-cpu-6"}
+--- INFO: rpi-11: SOFTWARE installing http://ibm.biz/horizon-setup
+--- INFO: rpi-11: EXCHANGE configuring
+--- INFO: rpi-11: EXCHANGE succeeded; sudo systemctl restart horizon || false
+--- INFO: rpi-11: EXCHANGE configured: "alpha"
+--- INFO: rpi-11: PATTERN configuring
+--- INFO: rpi-11: PATTERN configured "github.com.open-horizon.examples.cpu2msghub"
+--- INFO: rpi-11: configuring NETWORK
+--- INFO: rpi-11: NETWORK configured {"ssid":"CABIN","password":"4082685470"}
+[{"node":"test-sdr-1","mac":"B8:27:EB:14:51:15","exchange":"alpha","pattern":"github.com.open-horizon.examples.sdr2msghub"},{"node":"test-cpu-2","mac":"B8:27:EB:25:F0:52","exchange":"alpha","pattern":"github.com.open-horizon.examples.cpu2msghub"},{"node":"test-cpu-3","mac":"B8:27:EB:68:17:FB","exchange":"alpha","pattern":"github.com.open-horizon.examples.cpu2msghub"},{"node":"test-cpu-6","mac":"B8:27:EB:ED:F0:55","exchange":"alpha","pattern":"github.com.open-horizon.examples.cpu2msghub"}]
+[13:44:51] 25 %

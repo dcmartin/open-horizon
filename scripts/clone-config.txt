@@ -1,0 +1,13 @@
+GD=~/gitdir
+rm -fr $GD/open-horizon
+mkdir -p $GD
+cd $GD
+git clone http://github.com/dcmartin/open-horizon
+cd $GD/open-horizon
+cp -f ~/apiKey.json ./apiKey.json 
+export DOCKER_NAMESPACE=dcmartin
+export HZN_ORG_ID=dcmartin
+docker login
+hzn key create ${HZN_ORG_ID} $(whoami)@$(hostname)
+mv -f *.key ${HZN_ORG_ID}.key
+mv -f *.pem ${HZN_ORG_ID}.pem

@@ -1,0 +1,5 @@
+export DOCKER_NAMESPACE=dcmsjc
+export HZN_ORG_ID=dcmartin
+cd ~/gitdir/open-horizon/yolo2msghub
+make service-publish
+make pattern-publish

@@ -1,0 +1,32 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "jetson-cuda",
+  "description": "Provide CUDA on Jetson TX2 with JetPack v 2.3.3",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-cuda/README.md",
+  "url": "com.github.dcmartin.open-horizon.jetson-cuda",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "jetson-cuda": {
+        "environment": [
+          "SERVICE_LABEL=jetson-cuda",
+          "SERVICE_VERSION=0.0.1"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

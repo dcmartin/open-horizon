@@ -1,0 +1,11 @@
+GD=~/gitdir
+rm -fr $GD/open-horizon
+mkdir -p $GD
+cd $GD
+git clone http://github.com/dcmartin/open-horizon
+cd $GD/open-horizon
+export DOCKER_NAMESPACE=dcmartin
+echo "${DOCKER_NAMESPACE}" > DOCKER_NAMESPACE
+export HZN_ORG_ID=dcmartin
+echo "${HZN_ORG_ID}" > HZN_ORG_ID
+make

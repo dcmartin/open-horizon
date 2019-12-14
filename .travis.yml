@@ -1,0 +1,187 @@
+## set notifications
+notifications:
+  slack:
+    secure: cI0ItIgiIlcCx8Qec+BbV6t0yWHY7XgK2UEmYDNyZJhvW1lfBAANyZsgEu4JOgVTmqfENypltXjCczL5u0n6kRQx+WAMyrsPB4PHOt/mMB6yIyIjZRopPi18nfnIfxaZZSizLCGRstGIk6OhTrV06udTk7jwhQjZokj7LWZdY45mIgWtrT1Igu9yP9gHkFveEpi4UjI0DcWstNAJw55jhrC9gkfeeO9BeDoBs/Uyd87mtblD9sT5uWRz88d80fwRIQoaNR+M/41TJWRrNGqgmwf5yq/pXlGU34w/OM8OL1QxURC38ZMAtuH1QDFtwKCtTmfdEpeDjcdXqqeQWkq0DLh/0vFXtuYgb9/1GTYfpTl++Fp6PKOkENWln7S3SjnvE2YcDiMUu4kdtKAv6KZexclmmvUTqQh+NySvFR4H9lA/tBJDSGT2tNABvPq84TZY8E8HCL4IcMgncZ7uWPX7r1w1CD954mIQEzyS2U/USRjjd0O4/JYHDMUayMU1Z+iB1HRvS6Xw8gVwUm0GNpxm60YBI32XW+oKVV6viAJ9kptxFaogv18sqkfyhSMkmrsVRoLhnhW929+jIZVktvGYLcbfYK4bksmD7TMF2XTY7ZrFNm6spS2rec53mfmneqtkCiI8vRH7ntmCuFmkbv+fS4MviSLxIRPXWbrXwPHp/Os=
+  email:
+    recipients:
+    - dcmartin@me.com
+    on_success: change
+    on_failure: always
+## this is going to take sudo powers
+sudo: true
+## and it's done using bash
+language: bash
+## it needs docker
+services: 
+  - docker
+## and use xenial; open horizon package is xenial for production; bionic only for LA
+dist: xenial
+## addons required to act
+addons:
+  apt:
+    update: true
+    sources:
+    - sourceline: deb [arch=amd64,armhf,arm64,ppc64el] http://pkg.bluehorizon.network/linux/ubuntu xenial-updates main
+      key_url: "http://pkg.bluehorizon.network/bluehorizon.network-public.key"
+    packages:
+    - make
+    - git-flow
+    - curl
+    - gettext
+    - jq
+    - ca-certificates
+    - gnupg
+    - bluehorizon
+    - docker-ce
+    - qemu
+    - qemu-user
+    - qemu-user-static
+    - binfmt-support
+    - dpkg-cross
+## env - global
+env:
+  global:
+    - DEBUG=true
+    - BUILD_ON=false
+    - TEST_ON=true 
+    - PUSH_ON=false
+    - PUBLISH_ON=false
+    - PATTERN_ON=false
+    - REGISTRY_TARGET=docker.io
+    - EXCHANGE_TARGET=alpha.edge-fabric.com
+    - EXCHANGE_TARGET_VERSION=v1
+    - TEST_NODES_LIST=localhost
+## before installing or doing anything else, do these things:
+before_install:
+  # create files from secrets (not for pulls)
+  - if [ ${TRAVIS_BEFORE:-true} = true ]; then ./.travis/travis-before-install.sh; fi
+  # enable experimental features in Docker
+  - if [ ${EXP:-false} = true ]; then ./.travis/docker-enable-experimental.sh; fi
+  # enable QEMU emulation
+  - if [ ${QEMU:-false} = true ]; then ./.travis/docker-enable-qemu.sh; fi
+# branches on which we act
+branches:
+  only:
+    - master
+    - beta
+## stages
+stages:
+  - name: beta-pull-request
+    if: branch = beta AND type = pull-request
+  - name: test-amd64-beta
+    if: branch = beta AND type = pull-request
+  - name: test-arm64-beta
+    if: branch = beta AND type = pull-request
+  - name: test-arm-beta
+    if: branch = beta AND type = pull-request
+  - name: beta-publish
+    if: branch = beta AND type != pull-request
+  - name: beta-deploy
+    if: branch = master AND type != pull-request
+  - name: master-pull-request
+    if: branch = master AND type = pull-request
+  - name: master-publish
+    if: branch = master AND type != pull-request
+  - name: master-deploy
+    if: branch = master AND type != pull-request
+jobs:
+  include:
+    # beta pull-request
+    - stage: beta-pull-request
+      env:
+        - STAGE=beta-pull-request
+        - TAG=beta 
+      script:
+        - ./.travis/travis-pull-request.sh beta
+    # beta amd64 build
+    - stage: test-amd64-beta
+      env:
+        - STAGE=test-amd64-beta
+        - TAG=beta 
+        - BUILD_ARCH=amd64
+      script:
+        - if [ ${BUILD_ON:-false} = true ]; then ./travis/travis-build-service.sh beta; fi
+        - if [ ${TEST_ON:-false} = true ]; then ./travis/travis-test-service.sh beta; fi
+    # beta arm64 build
+    - stage: test-arm64-beta
+      env:
+        - STAGE=test-arm64-beta
+        - TAG=beta 
+        - BUILD_ARCH=arm64
+      script:
+        - if [ ${BUILD_ON:-false} = true ]; then ./travis/travis-build-service.sh beta; fi
+        - if [ ${TEST_ON:-false} = true ]; then ./travis/travis-test-service.sh beta; fi
+    # beta arm build
+    - stage: test-arm-beta
+      env:
+        - STAGE=test-arm-beta
+        - TAG=beta 
+        - BUILD_ARCH=arm
+      script:
+        - if [ ${BUILD_ON:-false} = true ]; then ./travis/travis-build-service.sh beta; fi
+        - if [ ${TEST_ON:-false} = true ]; then ./travis/travis-test-service.sh beta; fi
+      after_script:
+        - if [ ${TRAVIS_AFTER:-false} = true ]; then ./.travis/travis-after-script.sh; fi
+      after_success:
+        - if [ ${TRAVIS_SUCCESS:-false} = true ]; then ./.travis/travis-after-success.sh; fi
+      after_failure:
+        - if [ ${TRAVIS_FAILURE:-false} = true ]; then ./.travis/travis-after-failure.sh; fi
+    # beta publish
+    - stage: beta-publish
+      env:
+        - STAGE=beta-publish
+        - TAG=beta 
+        - BUILD_ARCH=amd64
+      script:
+        - if [ ${PUBLISH_ON:-false} = true ]; then ./.travis/travis-publish-service.sh beta; fi
+    # beta deploy
+    - stage: beta-deploy
+      env:
+        - STAGE=beta-deploy
+        - TAG=beta 
+        - REGISTRY_TARGET=docker.io
+        - EXCHANGE_TARGET=staging.edge-fabric.com
+        - EXCHANGE_TARGET_VERSION=v1
+      script:
+        - if [ ${PATTERN_ON:-false} = true ]; then ./.travis/travis-deploy.sh beta; fi
+#      before_deploy:
+#        provider: script
+#        script:
+#        - if [ ${DEPLOY_ON:-false} = true ]; then make nodes-clean && make nodes-list; fi
+#      deploy:
+#        provider: script
+#        script:
+#        # update master on git
+#          - if [ ${GIT_PUSH:-false} = true ]; then ./.travis/git-push.sh; fi
+#        provider: script
+#        script:
+#          - if [ ${DEPLOY_ON:-false} = true ]; then ./.travis/travis-deploy-nodes.sh; fi
+#          - if [ ${DEPLOY_ON:-false} = true ]; then make nodes; fi
+#      after_deploy:
+#        provider: script
+#        script:
+#          - if [ ${DEPLOY_ON:-false} = true ]; then make nodes-list && make nodes-test; fi
+    # master pull-request
+    - stage: master-pull-request
+      env:
+        - STAGE=master-pull-request
+        - TAG=
+      script:
+        - if [ ${TEST_ON:-false} = true ]; then ./.travis/travis-pull-request.sh; fi
+    # master publish
+    - stage: master-publish
+      env:
+        - STAGE=master-publish
+        - TAG=
+      script:
+        - if [ ${PUBLISH_ON:-false} = true ]; then ./.travis/travis-publish-service.sh; fi
+    # master deploy
+    - stage: master-deploy
+      env:
+        - STAGE=master-deploy
+        - TAG=
+        - REGISTRY_TARGET=icr.io
+        - EXCHANGE_TARGET=alpha.edge-fabric.com
+        - EXCHANGE_TARGET_VERSION=v1
+      script:
+        - if [ ${PATTERN_ON:-false} = true ]; then ./.travis/travis-deploy.sh; fi

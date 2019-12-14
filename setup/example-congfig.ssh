@@ -1,0 +1,30 @@
+#!/bin/bash
+echo 'test-cpu-3' > /etc/hostname
+sed -i 's|\(.*\)raspberrypi|\1test-cpu-3 raspberrypi|' /etc/hosts
+hostname "test-cpu-3"
+
+echo 'spawn passwd pi' > passwd.exp
+echo 'for {} 1 {} { expect {' >> passwd.exp
+echo '  "Enter new UNIX password:" { send "null\r" }' >> passwd.exp
+echo '  "Retype new UNIX password:" { send "null\r" }' >> passwd.exp
+echo '  "password updated successfully" { send_user "changed" ; exit }}}' >> passwd.exp
+
+if [ -z $(command -v expect) ]; then
+  apt install -y expect &> apt.log
+fi
+RESULT=$(expect -f passwd.exp | egrep "changed")
+
+if [ -z "${RESULT}" ]; then RESULT="failure"; fi
+
+if [ "${RESULT}" != "changed" ]; then
+  # report failure
+  echo "${RESULT}"
+else
+  echo 'ChallengeResponseAuthentication no' > sshd_config
+  echo 'PasswordAuthentication no' >> sshd_config
+  echo 'UsePAM no' >> sshd_config
+  mv sshd_config /etc/ssh/sshd_config
+  /etc/init.d/ssh restart &> /dev/null
+  # report success
+  echo "changed"
+fi

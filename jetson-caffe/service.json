@@ -1,0 +1,35 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "jetson-caffe",
+  "description": "Provide Caffe on Jetson TX2 with JetPack v 2.3.3",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-caffe/README.md",
+  "url": "com.github.dcmartin.open-horizon.jetson-caffe",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "caffe": {
+        "environment": [
+          "SERVICE_LABEL=caffe",
+          "SERVICE_VERSION=0.0.1"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  },
+  "ports": {
+    "80/tcp": 8588
+  }
+}

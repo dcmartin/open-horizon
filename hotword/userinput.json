@@ -1,0 +1,53 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.hotword",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "NOIZE_GROUP": "hotword",
+        "NOIZE_CLIENT": "",
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "MQTT_PORT": 1883,
+        "HOTWORD_MOCK": true,
+        "HOTWORD_MODEL": "alexa",
+        "LOGTO": "/dev/stderr",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.noize",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "NOIZE_GROUP": "hotword",
+        "NOIZE_CLIENT": "",
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "MQTT_PORT": 1883,
+        "LOGTO": "/dev/stderr",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    },
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "MQTT_HOST": "mqtt",
+        "MQTT_USERNAME": "",
+        "MQTT_PASSWORD": "",
+        "MQTT_PORT": 1883,
+        "LOGTO": "/dev/stderr",
+        "LOG_LEVEL": "info",
+        "DEBUG": false
+      }
+    }
+  ]
+}

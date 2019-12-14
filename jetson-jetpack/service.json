@@ -1,0 +1,32 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "jetson-jetpack",
+  "description": "Provide JetsonTX2 JetPack 3.3",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-jetpack/README.md",
+  "url": "com.github.dcmartin.open-horizon.jetson-jetpack",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "jetson-jetpack": {
+        "environment": [
+          "SERVICE_LABEL=jetson-jetpack",
+          "SERVICE_VERSION=0.0.1"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 2048000
+  }
+}

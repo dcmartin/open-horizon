@@ -1,0 +1,151 @@
++++ INFO: Using architecture: armhf
+*** WARN: Installing docker
+# Executing docker install script, commit: 4957679
++ sh -c 'apt-get update -qq >/dev/null'
++ sh -c 'apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null'
++ sh -c 'curl -fsSL "https://download.docker.com/linux/raspbian/gpg" | apt-key add -qq - >/dev/null'
+Warning: apt-key output should not be parsed (stdout is not a terminal)
++ sh -c 'echo "deb [arch=armhf] https://download.docker.com/linux/raspbian stretch edge" > /etc/apt/sources.list.d/docker.list'
++ sh -c 'apt-get update -qq >/dev/null'
++ sh -c 'apt-get install -y -qq --no-install-recommends docker-ce >/dev/null'
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
++ sh -c 'docker version'
+Client:
+ Version:           18.09.0
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        4d60db4
+ Built:             Wed Nov  7 00:57:21 2018
+ OS/Arch:           linux/arm
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          18.09.0
+  API version:      1.39 (minimum version 1.12)
+  Go version:       go1.10.4
+  Git commit:       4d60db4
+  Built:            Wed Nov  7 00:17:57 2018
+  OS/Arch:          linux/arm
+  Experimental:     false
+If you would like to use Docker as a non-root user, you should now consider
+adding your user to the "docker" group with something like:
+
+  sudo usermod -aG docker your-user
+
+Remember that you will have to log out and back in for this to take effect!
+
+WARNING: Adding a user to the "docker" group will grant the ability to run
+         containers which can be used to obtain root privileges on the
+         docker host.
+         Refer to https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+         for more information.
++++ INFO: Installing jq
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libjq1 libonig4
+The following NEW packages will be installed:
+  jq libjq1 libonig4
+0 upgraded, 3 newly installed, 0 to remove and 16 not upgraded.
+Need to get 305 kB of archives.
+After this operation, 964 kB of additional disk space will be used.
+Get:1 http://mirrors.ocf.berkeley.edu/raspbian/raspbian stretch/main armhf libonig4 armhf 6.1.3-2 [127 kB]
+Get:2 http://mirrors.ocf.berkeley.edu/raspbian/raspbian stretch/main armhf libjq1 armhf 1.5+dfsg-1.3 [119 kB]
+Get:3 http://mirrors.ocf.berkeley.edu/raspbian/raspbian stretch/main armhf jq armhf 1.5+dfsg-1.3 [58.9 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 305 kB in 1s (187 kB/s)
+Selecting previously unselected package libonig4:armhf.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 36936 files and directories currently installed.)
+Preparing to unpack .../libonig4_6.1.3-2_armhf.deb ...
+Unpacking libonig4:armhf (6.1.3-2) ...
+Selecting previously unselected package libjq1:armhf.
+Preparing to unpack .../libjq1_1.5+dfsg-1.3_armhf.deb ...
+Unpacking libjq1:armhf (1.5+dfsg-1.3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../jq_1.5+dfsg-1.3_armhf.deb ...
+Unpacking jq (1.5+dfsg-1.3) ...
+Setting up libonig4:armhf (6.1.3-2) ...
+Setting up libjq1:armhf (1.5+dfsg-1.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Processing triggers for man-db (2.7.6.1-2) ...
+Setting up jq (1.5+dfsg-1.3) ...
+*** WARN: Using default APT_REPO = updates
+*** WARN: Using default APT_LIST = /etc/apt/sources.list.d/bluehorizon.list
+*** WARN: Using default PUBLICKEY_URL = http://pkg.bluehorizon.network/bluehorizon.network-public.key
++++ INFO: Adding key for Open Horizon from http://pkg.bluehorizon.network/bluehorizon.network-public.key
+Warning: apt-key output should not be parsed (stdout is not a terminal)
+OK
++++ INFO: Configuring Open Horizon repository updates for armhf
++++ INFO: Updating apt(1)
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Get:1 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates InRelease [4687 B]
+Hit:2 http://raspbian.raspberrypi.org/raspbian stretch InRelease
+Hit:3 http://archive.raspberrypi.org/debian stretch InRelease
+Hit:4 https://download.docker.com/linux/raspbian stretch InRelease
+Get:5 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates/main Sources [6363 B]
+Get:6 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates/main armhf Packages [6062 B]
+Fetched 17.1 kB in 2s (5861 B/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+16 packages can be upgraded. Run 'apt list --upgradable' to see them.
++++ INFO: Installing Open Horizon
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  bluehorizon horizon horizon-cli
+0 upgraded, 3 newly installed, 0 to remove and 16 not upgraded.
+Need to get 7423 kB of archives.
+After this operation, 31.3 MB of additional disk space will be used.
+Get:1 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates/main armhf horizon-cli armhf 2.20.1~ppa~ubuntu.xenial [3410 kB]
+Get:2 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates/main armhf horizon armhf 2.20.1~ppa~ubuntu.xenial [3990 kB]
+Get:3 http://pkg.bluehorizon.network/linux/ubuntu xenial-updates/main armhf bluehorizon all 2.20.1~ppa~ubuntu.xenial [24.1 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 7423 kB in 4s (1722 kB/s)
+Selecting previously unselected package horizon-cli.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 36956 files and directories currently installed.)
+Preparing to unpack .../horizon-cli_2.20.1~ppa~ubuntu.xenial_armhf.deb ...
+Unpacking horizon-cli (2.20.1~ppa~ubuntu.xenial) ...
+Selecting previously unselected package horizon.
+Preparing to unpack .../horizon_2.20.1~ppa~ubuntu.xenial_armhf.deb ...
+Unpacking horizon (2.20.1~ppa~ubuntu.xenial) ...
+Selecting previously unselected package bluehorizon.
+Preparing to unpack .../bluehorizon_2.20.1~ppa~ubuntu.xenial_all.deb ...
+Unpacking bluehorizon (2.20.1~ppa~ubuntu.xenial) ...
+Setting up horizon-cli (2.20.1~ppa~ubuntu.xenial) ...
+Setting up horizon (2.20.1~ppa~ubuntu.xenial) ...
+Setting up bluehorizon (2.20.1~ppa~ubuntu.xenial) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/horizon.service → /lib/systemd/system/horizon.service.
+*** WARN: Using default LOG_CONF = /etc/rsyslog.d/10-horizon-docker.conf
++++ INFO: Configuring logging: /etc/rsyslog.d/10-horizon-docker.conf
++++ INFO: Restarting rsyslog(8)
+*** WARN: The horizon.service is already active; restarting

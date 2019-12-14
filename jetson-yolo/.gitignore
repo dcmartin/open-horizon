@@ -49,5 +49,3 @@ sdrconf*
 MQTT2KAFKA_*
 test.*.json
 test.*.jpeg
-HZNPKG_REPO
-KAFKA_APIKEY

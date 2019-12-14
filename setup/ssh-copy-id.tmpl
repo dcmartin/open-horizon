@@ -1,0 +1,30 @@
+spawn ssh-copy-id -f -i %%PUBLIC_KEYFILE%%  %%CLIENT_USERNAME%%@%%CLIENT_IPADDR%%
+for {} 1 {} {
+  expect {
+    "continue connecting (yes/no)?" {
+      send "yes\r"
+      continue
+    }
+    "ermission denied" {
+      send_user "failure"
+      exit
+    }
+    "assword:" { 
+      send "%%CLIENT_PASSWORD%%\r" 
+      expect { 
+	"Number of key(s) added:" {
+	  send_user "success"
+	  exit
+	}
+	"try again." { 
+	  send_user "failure"
+	  exit
+	}
+	"assword:" {
+	  send_user "failure"
+	  exit
+        }
+      }
+    }
+  }
+}

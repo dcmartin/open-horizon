@@ -1,0 +1,20 @@
+USER=dcmartin
+D=raspberrypi.local
+ssh-copy-id pi@${D}
+N=test-arm-1
+S="ssh pi@${D}"
+${S} 'sudo apt-get update'
+${S} 'sudo apt-get upgrade -qq -y'
+${S} 'wget -qO - get.docker.com | sudo bash'
+${S} 'wget -qO - ibm.biz/get-horizon | sudo bash'
+${S} "adduser ${USER}"
+${S} "addgroup ${USER} sudo"
+${S} "addgroup ${USER} docker"
+${S} "echo ${USER}' ALL=(ALL) NOPASSWD: ALL' > /tmp/010_${USER}-nopasswd"
+${S} "sudo chown root /tmp/010_${USER}-nopasswd"
+${S} "sudo chmod 400 /tmp/010_${USER}-nopasswd"
+${S} "sudo mv -f /tmp/010_${USER}-nopasswd /etc/sudoers.d/"
+${S} "sudo sed -i 's|raspberrypi|'${N}'|' /etc/hosts"
+${S} "sudo sed -i 's|raspberrypi|${N}|" /etc/hostname
+${S} "sudo hostname ${N}"
+${S} "sudo passwd pi"

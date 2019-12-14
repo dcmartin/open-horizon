@@ -1,0 +1,30 @@
+#!/bin/bash
+echo '%%DEVICE_NAME%%' > /etc/hostname
+sed -i 's|\([0-9\.]*[ \t]*\).*|\1%%DEVICE_NAME%%|' /etc/hosts
+hostname "%%DEVICE_NAME%%"
+
+echo 'spawn passwd %%CLIENT_USERNAME%%' > passwd.exp
+echo 'for {} 1 {} { expect {' >> passwd.exp
+echo '  "Enter new UNIX password:" { send "%%DEVICE_TOKEN%%\r" }' >> passwd.exp
+echo '  "Retype new UNIX password:" { send "%%DEVICE_TOKEN%%\r" }' >> passwd.exp
+echo '  "password updated successfully" { send_user "changed" ; exit }}}' >> passwd.exp
+
+if [ -z $(command -v expect) ]; then
+  apt install -y expect &> apt.log
+fi
+RESULT=$(expect -f passwd.exp | egrep "changed")
+
+if [ -z "${RESULT}" ]; then RESULT="failure"; fi
+
+if [ "${RESULT}" != "changed" ]; then
+  # report failure
+  echo "${RESULT}"
+else
+  echo 'ChallengeResponseAuthentication no' > sshd_config
+  echo 'PasswordAuthentication no' >> sshd_config
+  echo 'UsePAM no' >> sshd_config
+  mv sshd_config /etc/ssh/sshd_config
+  /etc/init.d/ssh restart &> /dev/null
+  # report success
+  echo "changed"
+fi
