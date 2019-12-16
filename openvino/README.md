@@ -54,7 +54,7 @@ EOF
 ```
 
 ## Step 2
-Download, build and test the Deep Learning Development Toolkit (`dldt`); **this step will take approximately thirty (30) minutes.**
+Download, build and test the Deep Learning Development Toolkit (`dldt`); **this step will take approximately ninety (90) minutes.**
 
 + Clone `opencv/dldt` repository, and pull all submodules recursively.
 + Install all dependecies
