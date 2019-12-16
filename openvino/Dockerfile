@@ -111,6 +111,9 @@ ENV OPENVINO_REPOSITORY "${OPENVINO_REPOSITORY}"
 ENV OPENVINO_CMAKE_FLAGS "${OPENVINO_CMAKE_FLAGS}"
 
 RUN \
+  apt-get install -qq -y sudo
+
+RUN \
   mkdir /tmp/dldt && cd /tmp/dldt && git clone ${OPENVINO_REPOSITORY} . \
   && \
   cd inference-engine && git submodule init && git submodule update --recursive \
@@ -118,16 +121,20 @@ RUN \
   ./install_dependencies.sh
 
 RUN \
-  cd /tmp/dldt && mkdir build && cd build \
+  ARCH=$(arch) \
+  test "${ARCH}" = "armv7l" && export OPENVINO_CMAKE_FLAGS="${OPENVINO_CMAKE_FLAGS} -DCMAKE_CXX_FLAGS=-march=armv7-a" || echo "Not armv7l"
+
+RUN \
+  cd /tmp/dldt/inference-engine && mkdir build && cd build \
   && \
-  export DIST=$(lsb_release -a 2> /dev/null | head -1 | awk '{ print $3 }') \
-  && \
-  if [ "${DIST}" == 'Raspbian' ]; then export OPENVINO_CMAKE_FLAGS="${OPENVINO_CMAKE_FLAGS} -DCMAKE_CXX_FLAGS='-march=armv7-a'"; fi \
+  echo "${OPENVINO_CMAKE_FLAGS}" \
   && \
   cmake ${OPENVINO_CMAKE_FLAGS} ..
 
 RUN \
-  make 
+  cd /tmp/dldt/inference-engine/build \
+  && \
+  make -j4
 
 RUN \
   echo 'SUBSYSTEM=="usb", ATTRS{idProduct}=="2150", ATTRS{idVendor}=="03e7", GROUP="users", MODE="0666", ENV{ID_MM_DEVICE_IGNORE}="1"' \
