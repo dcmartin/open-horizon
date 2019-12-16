@@ -10,32 +10,105 @@ ENV \
     TERM="xterm"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update && apt-get install -q -y --no-install-recommends \
+  && apt-get update -qq -y \
+  && apt-get install -qq -y --no-install-recommends \
     ca-certificates \
     curl \
     build-essential \
+    cmake \
     socat \
     jq \
     bc \
     git \
+    unzip \
     coreutils \
     dateutils \
     findutils
 
-# Copy rootts
-COPY rootfs /
+###
+# OpenCV pre-requisites
+###
 
-## OPENVINO
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && apt-get install -qq -y --no-install-recommends \
+    libjpeg-dev \
+    libtiff5-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libswscale-dev \
+    libv4l-dev \
+    libxvidcore-dev \
+    libx264-dev
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && apt-get install -qq -y --no-install-recommends \
+    libgtk2.0-dev \
+    libgtk-3-dev \
+    libatlas-base-dev \
+    libopenblas-dev \
+    gfortran
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && apt-get install -qq -y --no-install-recommends \
+    python2.7-dev \
+    python3-dev
+
+##
+# opencv
+##
+
+ARG OPENCV_GITHUB_ARCHIVE='https://github.com/opencv/opencv/archive/4.1.0.zip'
+ARG OPENCV_CMAKE_FLAGS='-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/ -DPYTHON3_EXECUTABLE=/usr/bin/python3.7 –DPYTHON_INCLUDE_DIR=/usr/include/python3.7 –DPYTHON_INCLUDE_DIR2=/usr/include/arm-linux-gnueabihf/python3.7m –DPYTHON_LIBRARY=/usr/lib/arm-linux-gnueabihf/libpython3.7m.so'
+
+ENV OPENCV_CMAKE_FLAGS "${OPENCV_CMAKE_FLAGS}"
+ENV OPENCV_GITHUB_ARCHIVE "${OPENCV_GITHUB_ARCHIVE}"
+
+ENV OPENCV_DIR "/tmp/opencv"
+ENV OPENCV_VERSION "opencv-4.1.0"
+
+RUN \
+  curl -sSL https://bootstrap.pypa.io/get-pip.py -o getpip.py \
+  && \
+  python3 getpip.py \
+  && \
+  pip3 install numpy
+
+RUN \
+  curl -sSL ${OPENCV_GITHUB_ARCHIVE} -o /tmp/opencv.zip \
+  && \
+  unzip -qq -d ${OPENCV_DIR} /tmp/opencv.zip \
+  && \
+  rm -f /tmp/opencv.zip
+
+RUN \
+  mkdir ${OPENCV_DIR}/${OPENCV_VERSION}/build
+
+RUN \
+  cd ${OPENCV_DIR}/${OPENCV_VERSION}/build \
+  && \
+  ls .. \
+  && \
+  cmake ${OPENCV_CMAKE_FLAGS} ..
+
+RUN \
+  cd ${OPENCV_DIR}/${OPENCV_VERSION}/build \
+  && \
+  make -j4
+
+RUN \
+  cd ${OPENCV_DIR}/${OPENCV_VERSION}/build \
+  && \
+  make install
+
+##
+# openvino
+##
 
 ARG OPENVINO_REPOSITORY=https://github.com/opencv/dldt.git
 ARG OPENVINO_CMAKE_FLAGS='-DCMAKE_BUILD_TYPE=Release -DENABLE_MKL_DNN=OFF -DENABLE_CLDNN=OFF -DENABLE_GNA=OFF -DENABLE_SSE42=OFF -DTHREADING=SEQ'
 
 ENV OPENVINO_REPOSITORY "${OPENVINO_REPOSITORY}"
 ENV OPENVINO_CMAKE_FLAGS "${OPENVINO_CMAKE_FLAGS}"
-
-##
-# openvino
-##
 
 RUN \
   mkdir /tmp/dldt && cd /tmp/dldt && git clone ${OPENVINO_REPOSITORY} . \

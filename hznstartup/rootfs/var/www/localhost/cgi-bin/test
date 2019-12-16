@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Content-Type: application/json; charset=utf-8"
+echo "Access-Control-Allow-Origin: *"
+echo "Cache-Control: no-cache"
+echo ""
+env | awk -F= 'BEGIN { printf("{\"host\":\"'$(hostname)'\",\"env\":["); x=0 } { if (x++>0) printf(","); s2=sprintf("%s",$2); gsub("\"","",s2); printf("{\"key\":\"%s\",\"value\":\"%s\"}",$1,s2) } END { printf("]}") }'
