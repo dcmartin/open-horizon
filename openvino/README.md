@@ -243,4 +243,3 @@ Duration:   60011.68 ms
 Latency:    9.44 ms
 Throughput: 406.85 FPS
 ```
-Q
