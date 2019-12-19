@@ -137,6 +137,8 @@ RUN \
   make -j4
 
 RUN \
+  mkdir -p /etc/udev/rules.d \
+  && \
   echo 'SUBSYSTEM=="usb", ATTRS{idProduct}=="2150", ATTRS{idVendor}=="03e7", GROUP="users", MODE="0666", ENV{ID_MM_DEVICE_IGNORE}="1"' \
     >> /etc/udev/rules.d/97-myriad-usbboot.rules \
   && \
