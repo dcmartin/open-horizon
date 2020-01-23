@@ -23,15 +23,71 @@ mixpanel.track("home");
 <body>
 
 <h1>
-horizon.dcmartin.com
+<code>horizon.dcmartin.com</code>
 </h1>
 
 <h2>
-News
+Overview
 </h2>
+Detecting entities of interest (e.g. person, animal, vehicle) using the YOLO object detection and classification software from 
+network accessible and direct-attach cameras.
 
 <h2>
-Overview
+Required Software
+</h2>
+
+<ul>
+<li><a href="http://docker.com"><code>Docker</code></a> - Packaging for software delivery system as <b>container</b>
+<li><a href="http://home-assistant.io"><code>Home Assistant</code></a> - Home automation
+<li><a href="http://pjreddie.com/darknet/"><code>YOLO</code></a> - You-Only-Look-Once object detection and classification <b>AI</b>
+<li><a href="http://github.com/open-horizon"><code>OpenHorizon</code></a> - Distributed <b>edge fabric</b> for containers
+</ul>
+
+<h2>
+Containers
+</h2>
+
+<h3>
+<a href="https://github.com/dcmartin/hassio-addons/blob/master/motion/README.md">
+<code>motion</code>
+</a>
+</h3>
+
+A <b>Home Assistant</b> <i>addon</i> for the <a href="http://motion-project.github.io/">motion project</a> software
+<p>
+<img src="https://img.shields.io/badge/aarch64-yes-green.svg">
+<img src="https://img.shields.io/badge/amd64-yes-green.svg">
+<img src="https://img.shields.io/badge/armhf-yes-green.svg">
+<img src="https://img.shields.io/badge/arm7-yes-green.svg">
+<a href="https://microbadger.com/images/dcmartin/amd64-addon-motion">
+<img src="https://images.microbadger.com/badges/image/dcmartin/amd64-addon-motion.svg">
+<img src="https://images.microbadger.com/badges/version/dcmartin/amd64-addon-motion:0.8.66.svg">
+</a>
+
+<h3>
+<a href="https://github.com/dcmartin/open-horizon/blob/master/yolo4motion/README.md">
+<code>yolo4motion</code>
+</a>
+</h3>
+
+A <b>Open Horizon</b> <i>service</i> for the YOLO software
+<p>
+<img src="https://img.shields.io/badge/aarch64-yes-green.svg">
+<img src="https://img.shields.io/badge/amd64-yes-green.svg">
+<img src="https://img.shields.io/badge/armhf-yes-green.svg">
+<img src="https://img.shields.io/badge/arm7-yes-green.svg">
+<a href="https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion">
+<img src="https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion.svg">
+<img src="https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion.svg">
+</a>
+
+<h2>
+Sample
+</h2>
+<img src="sample.gif">
+
+<h2>
+News
 </h2>
 
 <h2>
@@ -40,18 +96,19 @@ Links
 
 <ul>
 <li><a href="http://horizon.dcmartin.com:3094">Exchange monitor</a>
+<li><a href="https://github.com/dcmartin/open-horizon">OpenHorizon setup and examples; github.com/dcmartin/open-horizon</a>
+<li><a href="https://github.com/dcmartin/horizon.dcmartin.com">YAML configuration and tooling; github.com/dcmartin/horizon.dcmartin.com</a>
 <li><a href="http://horizon.dcmartin.com:3092">Home-Assistant front-end</a> (login required)
-<li><a href="https://github.com/open-horizon">github.com/open-horizon</a>.
-<li><a href="https://github.com/dcmartin/open-horizon">github.com/dcmartin/open-horizon</a>
+<li><a href="https://github.com/open-horizon">OpenHorizon repositories; github.com/open-horizon</a>.
 </ul>
 
 <h2>More Information</h2>
 <p>
 If you've read all the way to here and you still want more information, you can find me at the following places:
 <p>
-<a href="http://www.linkedin.com/in/davidcharlesmartin/">LinkedIn</a>
-<a href="http://www.github.com/dcmartin">GitHub</a>
-<a href="http://www.twitter.com/dcmartin/">Twitter</a>
+<a href="http://www.linkedin.com/in/davidcharlesmartin/"><code>LinkedIn</code></a>
+<a href="http://www.github.com/dcmartin"><code>GitHub</code></a>
+<a href="http://www.twitter.com/dcmartin/"><code>Twitter</code></a>
 <p>
 <hr>
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=xr2Q2vt76X42HBH3uchXdk6LOOAJDVqAySTTK3bDWsM&cl=ffffff&w=a"></script>
