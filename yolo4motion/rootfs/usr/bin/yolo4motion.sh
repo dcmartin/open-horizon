@@ -42,6 +42,7 @@ process_motion_event()
 
   local payload="${1}"
   local config="${2}"
+  local now="${3}"
   local device=$(jq -r '.event.device' "${payload}")
   local camera=$(jq -r '.event.camera' "${payload}")
   local service_json_file=$(mktemp)
@@ -49,7 +50,7 @@ process_motion_event()
   local yolo_json_file
 
   # create service update
-  echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) > ${service_json_file}
+  echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
 
   # test if image sent
   if [ $(jq -r '.event.image==null' "${payload}") == true ]; then
@@ -128,7 +129,7 @@ yolo_config ${YOLO_CONFIG}
 
 # update service status
 SERVICE_JSON_FILE=$(mktemp)
-echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s)'|.event=null' > ${SERVICE_JSON_FILE}
+echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${SERVICE_JSON_FILE}
 service_update "${SERVICE_JSON_FILE}"
 
 # congfigure MQTT
@@ -160,41 +161,39 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
     hzn.log.debug "Received JSON; bytes:" $(wc -c ${PAYLOAD} | awk '{ print $1 }')
   fi
 
-  # check date
-  DATE=$(jq -r '.event.date' "${PAYLOAD}")
-  if [ -z "${DATE:-}" ] || [ "${DATE:-}" == 'null' ]; then
-    hzn.log.debug "Bad date; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
-    continue
-  fi
-
   # check timestamp
-  TIMEZONE=$(date +%Z)
-  TIMESTAMP=$(jq -r '.event.timestamp' "${PAYLOAD}")
-  hzn.log.debug "Timezone: ${TIMEZONE}; Timestamp: ${TIMESTAMP}"
-  TIMESTAMP=$(echo "${TIMESTAMP}" | dateutils.dconv -z ${TIMEZONE} -f %s)
-  hzn.log.debug "Timestamp: ${TIMESTAMP}"
+  THISZONE=$(date +%Z)
+  TIMESTAMP=$(jq -r '.event.timestamp.publish' "${PAYLOAD}")
+  hzn.log.debug "Timezone: ${THISZONE}; Timestamp: ${TIMESTAMP}"
+  THATDATE=$(echo "${TIMESTAMP}" | dateutils.dconv -z ${THISZONE} -f %s)
 
   # calculate ago and age
-  NOW=$(date +%s) && AGO=$((NOW - DATE)) && AGE=$((NOW - TIMESTAMP))
+  NOW=$(date +%s) && AGO=$((NOW - THATDATE))
+
+  # test if too old
   if [ ${AGO} -gt ${YOLO4MOTION_TOO_OLD} ]; then 
-    hzn.log.warn "Too old; ${AGO} > ${YOLO4MOTION_TOO_OLD}; AGE: ${AGE}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
+    hzn.log.warn "Too old; ${AGO} > ${YOLO4MOTION_TOO_OLD}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
     continue
-  else
-    hzn.log.debug "AGO: ${AGO}; AGE: ${AGE}"
   fi
 
-  # check device and camera
+  # update date
   device=$(jq -r '.event.device' "${PAYLOAD}")
   camera=$(jq -r '.event.camera' "${PAYLOAD}")
-  if [ -z "${device}" ] || [ -z "${camera}" ] || [ "${device}" == 'null' ] || [ "${camera}" == 'null' ]; then
-    hzn.log.warn "Invalid device or camera; continuing; JSON:" $(jq -c '.' "${PAYLOAD}")
+  DATE=$(jq -r '.event.date' "${PAYLOAD}")
+
+  if [ -z "${DATE:-}" ] || [ "${DATE:-}" == 'null' ]; then
+    hzn.log.error "Bad date; continuing; PAYLOAD:" $(jq -c '.' "${PAYLOAD}")
+    continue
+  elif [ -z "${device}" ] || [ -z "${camera}" ] || [ "${device}" == 'null' ] || [ "${camera}" == 'null' ]; then
+    hzn.log.error "Invalid device or camera; continuing; JSON:" $(jq -c '.' "${PAYLOAD}")
     continue
   else
-    hzn.log.debug "Received event from device: ${device}; camera: ${camera}"
+    hzn.log.debug "Received event from device: ${device}; camera: ${camera}; AGO: ${AGO}"
+    DATE=$((DATE + AGO))
   fi
 
   # process PAYLOAD as motion end event
-  process_motion_event "${PAYLOAD}" "${CONFIG}"
+  process_motion_event "${PAYLOAD}" "${CONFIG}" ${DATE}
 
 done
 
