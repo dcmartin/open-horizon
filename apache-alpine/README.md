@@ -203,9 +203,6 @@ based on the following:
 [David C Martin][dcmartin] (github@dcmartin.com)
 
 [dcmartin]: https://github.com/dcmartin
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
-[edge-slack]: https://ibm-appsci.slack.com/messages/edge-fabric-users/
 [ibm-apikeys]: https://console.bluemix.net/iam/#/apikeys
 [ibm-registration]: https://console.bluemix.net/registration/
 [issue]: https://github.com/dcmartin/open-horizon/issues

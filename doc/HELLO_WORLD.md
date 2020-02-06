@@ -40,7 +40,7 @@ The Open Horizon exchange and Docker registry defaults are utilized.
 It is expected that the development host has been configured as an Open Horizon node with the `hzn` command-line-interface (CLI) and local agent installed.  To utilize the localhost as a pattern test node, the user must have both `sudo` and `ssh` privileges for the development host.
 
 ### &#63743; macOS computer 
-Install Open Horizon for the **&#63743; mac** ([other devices](https://test.cloud.ibm.com/docs/edge-fabric?topic=edge-fabric-adding-devices)) using the following commands:
+Install Open Horizon for the **&#63743; mac** using the following commands:
 
 ```
 curl -sSL -o get-horizon.sh ibm.biz/get-horizon

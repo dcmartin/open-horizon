@@ -224,11 +224,6 @@ David C Martin (github@dcmartin.com)
 [commits]: https://github.com/dcmartin/open-horizon/commits/master
 [contributors]: https://github.com/dcmartin/open-horizon/graphs/contributors
 [dcmartin]: https://github.com/dcmartin
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
-[edge-slack]: https://ibm-cloudplatform.slack.com/messages/edge-fabric-users/
-[ibm-apikeys]: https://console.bluemix.net/iam/#/apikeys
-[ibm-registration]: https://console.bluemix.net/registration/
 [issue]: https://github.com/dcmartin/open-horizon/issues
 [macos-install]: http://pkg.bluehorizon.network/macos
 [open-horizon]: http://github.com/open-horizon/

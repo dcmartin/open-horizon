@@ -125,15 +125,15 @@ For example to _list_ a single machine:
       "image": "dcmartin/amd64_com.github.dcmartin.open-horizon.startup-stg"
     },
     {
-      "name": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-stg_0.0.3_3ae20897-fe12-4c06-b556-a8199df22504-hal",
+      "name": "com.github.dcmartin.open-horizon.hal-stg_0.0.3_3ae20897-fe12-4c06-b556-a8199df22504-hal",
       "image": "dcmartin/amd64_com.github.dcmartin.open-horizon.hal-stg"
     },
     {
-      "name": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.cpu-stg_0.0.3_d9fffb0d-15c3-4f29-b72e-582c61667ad5-cpu",
+      "name": "com.github.dcmartin.open-horizon.cpu-stg_0.0.3_d9fffb0d-15c3-4f29-b72e-582c61667ad5-cpu",
       "image": "dcmartin/amd64_com.github.dcmartin.open-horizon.cpu-stg"
     },
     {
-      "name": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-stg_0.0.3_b9a3ad9e-d830-4c04-90bd-7809b3438294-wan",
+      "name": "com.github.dcmartin.open-horizon.wan-stg_0.0.3_b9a3ad9e-d830-4c04-90bd-7809b3438294-wan",
       "image": "dcmartin/amd64_com.github.dcmartin.open-horizon.wan-stg"
     }
   ]

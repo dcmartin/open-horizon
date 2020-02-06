@@ -7,7 +7,7 @@ cp -f ~/apiKey.json ./apiKey.json
 export DOCKER_HUB_ID=dcmsjc
 docker login
 export HZN_ORG_ID=dcmartin
-for json in */service.json */pattern.json; do sed -i -e "s/dcmartin@us.ibm.com/${HORIZON_ORG_ID}/g" "${json}"; done
+for json in */service.json */pattern.json; do sed -i -e "s/github@dcmartin.com/${HORIZON_ORG_ID}/g" "${json}"; done
 for json in */build.json; do sed -i -e "s/dcmartin\//${DOCKER_HUB_ID}\//g" ${json}; done
 rm -f *.key *.pem
 hzn key create ${HZN_ORG_ID} $(whoami)@$(hostname)

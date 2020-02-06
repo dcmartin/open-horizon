@@ -225,7 +225,6 @@ based on the following:
 [issue]: https://github.com/dcmartin/open-horizon/issues
 [makefile]: ../makefile
 [makevars-md]: ../doc/MAKEVARS.md
-[message-hub]: https://www.ibm.com/cloud/message-hub
 [open-horizon]: http://github.com/open-horizon/
 [pattern-md]: ../doc/PATTERN.md
 [repository]: https://github.com/dcmartin/open-horizon

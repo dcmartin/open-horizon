@@ -932,7 +932,7 @@
                   "MacAddress": "02:42:ac:18:00:02",
                   "DriverOpts": null
                 },
-                "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318": {
+                "com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318": {
                   "IPAMConfig": null,
                   "Links": null,
                   "Aliases": [
@@ -949,7 +949,7 @@
                   "MacAddress": "02:42:ac:16:00:03",
                   "DriverOpts": null
                 },
-                "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66": {
+                "com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66": {
                   "IPAMConfig": null,
                   "Links": null,
                   "Aliases": [
@@ -1284,7 +1284,7 @@
             "HostnamePath": "/var/lib/docker/containers/fae859798a12bf98bb9d075b29250afb57e67d5b3d5e32e54138caab31e1bd0b/hostname",
             "HostsPath": "/var/lib/docker/containers/fae859798a12bf98bb9d075b29250afb57e67d5b3d5e32e54138caab31e1bd0b/hosts",
             "LogPath": "/var/lib/docker/containers/fae859798a12bf98bb9d075b29250afb57e67d5b3d5e32e54138caab31e1bd0b/fae859798a12bf98bb9d075b29250afb57e67d5b3d5e32e54138caab31e1bd0b-json.log",
-            "Name": "/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66-wan",
+            "Name": "/com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66-wan",
             "RestartCount": 0,
             "Driver": "overlay2",
             "Platform": "linux",
@@ -1295,7 +1295,7 @@
             "HostConfig": {
               "Binds": [
                 "/tmp/hzndev:/tmp/hzndev",
-                "/tmp/hzndev/auth/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66:/ess-auth:ro",
+                "/tmp/hzndev/auth/com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66:/ess-auth:ro",
                 "/tmp/hzndev/auth/SSL/cert:/ess-cert:ro"
               ],
               "ContainerIDFile": "",
@@ -1303,7 +1303,7 @@
                 "Type": "json-file",
                 "Config": {}
               },
-              "NetworkMode": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
+              "NetworkMode": "com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
               "PortBindings": null,
               "RestartPolicy": {
                 "Name": "always",
@@ -1400,7 +1400,7 @@
               },
               {
                 "Type": "bind",
-                "Source": "/tmp/hzndev/auth/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
+                "Source": "/tmp/hzndev/auth/com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
                 "Destination": "/ess-auth",
                 "Mode": "ro",
                 "RW": false,
@@ -1457,7 +1457,7 @@
               "Entrypoint": null,
               "OnBuild": null,
               "Labels": {
-                "openhorizon.anax.agreement_id": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
+                "openhorizon.anax.agreement_id": "com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66",
                 "openhorizon.anax.deployment_description_hash": "qOqKxXfdp5uY7yLYLusOeDcIxKM=",
                 "openhorizon.anax.infrastructure": "",
                 "openhorizon.anax.service_name": "wan",
@@ -1492,7 +1492,7 @@
               "IPv6Gateway": "",
               "MacAddress": "",
               "Networks": {
-                "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66": {
+                "com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66": {
                   "IPAMConfig": null,
                   "Links": null,
                   "Aliases": [
@@ -1773,7 +1773,7 @@
               },
               "limit": 1073741824
             },
-            "name": "/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66-wan",
+            "name": "/com.github.dcmartin.open-horizon.wan-beta_0.0.3_6f024ff6-7d9c-403a-8c28-87b648be1a66-wan",
             "id": "fae859798a12bf98bb9d075b29250afb57e67d5b3d5e32e54138caab31e1bd0b",
             "networks": {
               "eth0": {
@@ -1848,7 +1848,7 @@
             "HostnamePath": "/var/lib/docker/containers/4e127caaffc64b52cf85e62f042a9d08cce89523d94312e85e4ac2cf4296117a/hostname",
             "HostsPath": "/var/lib/docker/containers/4e127caaffc64b52cf85e62f042a9d08cce89523d94312e85e4ac2cf4296117a/hosts",
             "LogPath": "/var/lib/docker/containers/4e127caaffc64b52cf85e62f042a9d08cce89523d94312e85e4ac2cf4296117a/4e127caaffc64b52cf85e62f042a9d08cce89523d94312e85e4ac2cf4296117a-json.log",
-            "Name": "/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318-hal",
+            "Name": "/com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318-hal",
             "RestartCount": 0,
             "Driver": "overlay2",
             "Platform": "linux",
@@ -1859,7 +1859,7 @@
             "HostConfig": {
               "Binds": [
                 "/tmp/hzndev:/tmp/hzndev",
-                "/tmp/hzndev/auth/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318:/ess-auth:ro",
+                "/tmp/hzndev/auth/com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318:/ess-auth:ro",
                 "/tmp/hzndev/auth/SSL/cert:/ess-cert:ro"
               ],
               "ContainerIDFile": "",
@@ -1867,7 +1867,7 @@
                 "Type": "json-file",
                 "Config": {}
               },
-              "NetworkMode": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
+              "NetworkMode": "com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
               "PortBindings": null,
               "RestartPolicy": {
                 "Name": "always",
@@ -1956,7 +1956,7 @@
               },
               {
                 "Type": "bind",
-                "Source": "/tmp/hzndev/auth/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
+                "Source": "/tmp/hzndev/auth/com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
                 "Destination": "/ess-auth",
                 "Mode": "ro",
                 "RW": false,
@@ -2021,7 +2021,7 @@
               "Entrypoint": null,
               "OnBuild": null,
               "Labels": {
-                "openhorizon.anax.agreement_id": "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
+                "openhorizon.anax.agreement_id": "com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318",
                 "openhorizon.anax.deployment_description_hash": "V0DQJKg2byO0DluOJZ6I5OHmw8c=",
                 "openhorizon.anax.infrastructure": "",
                 "openhorizon.anax.service_name": "hal",
@@ -2056,7 +2056,7 @@
               "IPv6Gateway": "",
               "MacAddress": "",
               "Networks": {
-                "dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318": {
+                "com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318": {
                   "IPAMConfig": null,
                   "Links": null,
                   "Aliases": [
@@ -2337,7 +2337,7 @@
               },
               "limit": 1073741824
             },
-            "name": "/dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318-hal",
+            "name": "/com.github.dcmartin.open-horizon.hal-beta_0.0.3_634db434-7855-4d71-ba5a-ae5028aad318-hal",
             "id": "4e127caaffc64b52cf85e62f042a9d08cce89523d94312e85e4ac2cf4296117a",
             "networks": {
               "eth0": {

@@ -133,10 +133,6 @@ David C Martin (github@dcmartin.com)
 [dcm-addons]: https://github.com/dcmartin/hassio-addons
 [dcmartin]: https://github.com/dcmartin
 [docker]: https://www.docker.com/
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
-[edge-slack]: https://ibm-cloudplatform.slack.com/messages/edge-fabric-users/
-[etcher-io]: https://www.balena.io/etcher/
 [examples]: https://github.com/open-horizon/examples
 [ha-addons]: https://github.com/hassio-addons
 [ha-home]: https://www.home-assistant.io/

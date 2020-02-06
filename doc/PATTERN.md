@@ -142,28 +142,28 @@ Example output when nodes have registered successfully for a pattern:
 {"agreements":[{"url":"com.github.dcmartin.open-horizon.yolo2msghub-beta","org":"github@dcmartin.com","version":"0.0.11","arch":"arm"}]}
 {"services":["com.github.dcmartin.open-horizon.yolo2msghub-beta","com.github.dcmartin.open-horizon.yolo-beta","com.github.dcmartin.open-horizon.cpu-beta","com.github.dcmartin.open-horizon.wan-beta","com.github.dcmartin.open-horizon.hal-beta"]}
 {"container":"1da0c92c6c7ef1e137b174b741ed1ab49032343ef25008990399adb41d4f69ca-yolo2msghub"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.cpu-beta_0.0.3_fd5d572f-88a6-479c-aa90-4f78cfbb9f31-cpu"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_1c898880-3c23-4d4d-826b-6009d8327e8d-hal"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_131f2992-8a46-4d12-86c8-55158643eb3c-wan"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.yolo-beta_0.0.8_2dedfd5c-316b-4f55-ba9a-71e4f0acae39-yolo"}
+{"container":"com.github.dcmartin.open-horizon.cpu-beta_0.0.3_fd5d572f-88a6-479c-aa90-4f78cfbb9f31-cpu"}
+{"container":"com.github.dcmartin.open-horizon.hal-beta_0.0.3_1c898880-3c23-4d4d-826b-6009d8327e8d-hal"}
+{"container":"com.github.dcmartin.open-horizon.wan-beta_0.0.3_131f2992-8a46-4d12-86c8-55158643eb3c-wan"}
+{"container":"com.github.dcmartin.open-horizon.yolo-beta_0.0.8_2dedfd5c-316b-4f55-ba9a-71e4f0acae39-yolo"}
 >>> MAKE -- 09:27:44 -- listing test-amd64-1.local
 {"node":"test-amd64-1"}
 {"agreements":[{"url":"com.github.dcmartin.open-horizon.yolo2msghub-beta","org":"github@dcmartin.com","version":"0.0.11","arch":"amd64"}]}
 {"services":["com.github.dcmartin.open-horizon.cpu-beta","com.github.dcmartin.open-horizon.wan-beta","com.github.dcmartin.open-horizon.hal-beta","com.github.dcmartin.open-horizon.yolo2msghub-beta","com.github.dcmartin.open-horizon.yolo-beta"]}
 {"container":"deeb4976f5bcf517a3d2ad430d722f017b461b71a5690a936e16faed2295386d-yolo2msghub"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.cpu-beta_0.0.3_3d22f2a4-e761-4f0a-a6a1-71980243f225-cpu"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_157f5aef-0ee0-48cc-9957-be18adb10d0d-hal"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_2219e957-6a29-4f18-a080-fc4e548f9fb7-wan"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.yolo-beta_0.0.8_451ea44f-483d-4a33-a676-023e22944226-yolo"}
+{"container":"com.github.dcmartin.open-horizon.cpu-beta_0.0.3_3d22f2a4-e761-4f0a-a6a1-71980243f225-cpu"}
+{"container":"com.github.dcmartin.open-horizon.hal-beta_0.0.3_157f5aef-0ee0-48cc-9957-be18adb10d0d-hal"}
+{"container":"com.github.dcmartin.open-horizon.wan-beta_0.0.3_2219e957-6a29-4f18-a080-fc4e548f9fb7-wan"}
+{"container":"com.github.dcmartin.open-horizon.yolo-beta_0.0.8_451ea44f-483d-4a33-a676-023e22944226-yolo"}
 >>> MAKE -- 09:27:46 -- listing nano-1.local
 {"node":"nano-1"}
 {"agreements":[{"url":"com.github.dcmartin.open-horizon.yolo2msghub-beta","org":"github@dcmartin.com","version":"0.0.11","arch":"arm64"}]}
 {"services":["com.github.dcmartin.open-horizon.cpu-beta","com.github.dcmartin.open-horizon.wan-beta","com.github.dcmartin.open-horizon.hal-beta","com.github.dcmartin.open-horizon.yolo2msghub-beta","com.github.dcmartin.open-horizon.yolo-beta"]}
 {"container":"0b73a5727ece8c73d74013e08891825697cc37ed7a0fb90d83dff2770f72c42d-yolo2msghub"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.cpu-beta_0.0.3_7b66a0f6-bdaf-4e4f-9bd7-b6c60b79ab34-cpu"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_0fa6224c-be4d-4553-a50d-c9b8938cedbb-hal"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_7cfda214-961b-44bc-82cd-8b784fd94286-wan"}
-{"container":"dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.yolo-beta_0.0.8_c1fa9aa4-509d-46f1-8555-e23c5f8bb813-yolo"}
+{"container":"com.github.dcmartin.open-horizon.cpu-beta_0.0.3_7b66a0f6-bdaf-4e4f-9bd7-b6c60b79ab34-cpu"}
+{"container":"com.github.dcmartin.open-horizon.hal-beta_0.0.3_0fa6224c-be4d-4553-a50d-c9b8938cedbb-hal"}
+{"container":"com.github.dcmartin.open-horizon.wan-beta_0.0.3_7cfda214-961b-44bc-82cd-8b784fd94286-wan"}
+{"container":"com.github.dcmartin.open-horizon.yolo-beta_0.0.8_c1fa9aa4-509d-46f1-8555-e23c5f8bb813-yolo"}
 ```
 
 ## 3.3 Register nodes
