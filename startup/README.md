@@ -201,9 +201,9 @@ Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified
 Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified.
 Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified.
 File sync service container openhorizon.hzn-dev.css-api listening on host port 8580
-Start service: service(s) hal with instance id prefix dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.hal-beta_0.0.3_ef956903-2af5-4e5d-9cd2-d90499c724e5
+Start service: service(s) hal with instance id prefix com.github.dcmartin.open-horizon.hal-beta_0.0.3_ef956903-2af5-4e5d-9cd2-d90499c724e5
 Running service.
-Start service: service(s) wan with instance id prefix dcmartin-us.ibm.com_com.github.dcmartin.open-horizon.wan-beta_0.0.3_fee3e95d-2da7-4681-a83a-a4556537d81a
+Start service: service(s) wan with instance id prefix com.github.dcmartin.open-horizon.wan-beta_0.0.3_fee3e95d-2da7-4681-a83a-a4556537d81a
 Running service.
 Start service: service(s) startup with instance id prefix 9ae15635734a85149a2faebebfd0a7d11d6fead7d4c25da2971104245b5ac8dd
 Running service.
@@ -251,11 +251,6 @@ based on the following:
 
 
 [dcmartin]: https://github.com/dcmartin
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
-[edge-slack]: https://ibm-appsci.slack.com/messages/edge-fabric-users/
-[ibm-apikeys]: https://console.bluemix.net/iam/#/apikeys
-[ibm-registration]: https://console.bluemix.net/registration/
 [issue]: https://github.com/dcmartin/open-horizon/issues
 [macos-install]: http://pkg.bluehorizon.network/macos
 [open-horizon]: http://github.com/open-horizon/

@@ -72,11 +72,7 @@ David C Martin (github@dcmartin.com)
 [setup]: ../setup/SETUP.md
 
 [keepchangelog]: http://keepachangelog.com/en/1.0.0/
-[edge-slack]: https://ibm-appsci.slack.com/messages/edge-fabric-users/
-[ibm-registration]: https://console.bluemix.net/registration/
 [open-horizon]: https://github.com/open-horizon
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
 [macos-install]: https://github.com/open-horizon/anax/releases
 [examples]: https://github.com/open-horizon/examples
 [template]: ../setup/template.json

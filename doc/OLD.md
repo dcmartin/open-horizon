@@ -15,8 +15,6 @@ The Open Horizon [page on github.com][open-horizon-github] provides open-source 
   + _pi3-streamer_ - **out-of-scope**
   + _weatherstation_ - **out-of-scope**
 
-[edge-fabric-staging-docs]: https://github.ibm.com/Edge-Fabric/staging-docs
-
 This CI/CD process was developed based on the existing example patterns and services; only functional patterns and services available in the `IBM` organization were utilized; other examples were not utilized.  The [documentation][edge-fabric-staging-docs] for these examples provided guidance and insight on the requirements for the build process; no documentation was available for any existing release process or build automation.
 ## `examples` Repository
 

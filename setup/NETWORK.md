@@ -418,8 +418,6 @@ David C Martin (github@dcmartin.com)
 [edge-slack]: https://ibm-appsci.slack.com/messages/edge-fabric-users/
 [ibm-registration]: https://console.bluemix.net/registration/
 [open-horizon]: https://github.com/open-horizon
-[edge-fabric]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/getting-started.html
-[edge-install]: https://console.test.cloud.ibm.com/docs/services/edge-fabric/adding-devices.html
 [macos-install]: https://github.com/open-horizon/anax/releases
 [hzn-setup]: https://raw.githubusercontent.com/dcmartin/open-horizon/master/setup/hzn-setup.sh
 [image]: http://releases.ubuntu.com/18.04.1/
