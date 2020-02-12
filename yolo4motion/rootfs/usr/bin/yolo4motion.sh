@@ -52,16 +52,8 @@ process_motion_event()
   # create service update
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
 
-  # test if image sent
-  if [ $(jq -r '.event.image==null' "${payload}") == true ]; then
-    local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}"
-
-    hzn.log.debug "Listening for image via MQTT; args: ${MOSQUITTO_ARGS}; topic: ${topic}"
-    mosquitto_sub ${MOSQUITTO_ARGS} -C 1 -t "${topic}"  > "${input_jpeg_file}"
-  else
-    hzn.log.debug "Decoding image provided in motion event"
-    jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
-  fi
+  hzn.log.debug "Decoding image provided in motion event"
+  jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
 
   # add event to service status
   jq -s add "${service_json_file}" "${payload}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
@@ -132,7 +124,7 @@ SERVICE_JSON_FILE=$(mktemp)
 echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${SERVICE_JSON_FILE}
 service_update "${SERVICE_JSON_FILE}"
 
-# congfigure MQTT
+# con gfigure MQTT
 MOSQUITTO_ARGS="-h ${MQTT_HOST} -p ${MQTT_PORT}"
 if [ ! -z "${MQTT_USERNAME:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -u ${MQTT_USERNAME}"; fi
 if [ ! -z "${MQTT_PASSWORD:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -P ${MQTT_PASSWORD}"; fi
@@ -161,9 +153,24 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
     hzn.log.debug "Received JSON; bytes:" $(wc -c ${PAYLOAD} | awk '{ print $1 }')
   fi
 
+  # check for image
+  if [ $(jq '.event.image!=null' ${PAYLOAD}) != 'true' ]; then
+    hzn.log.error "INVALID PAYLOAD: no image; payload: $(cat ${PAYLOAD})"
+    continue
+  fi
+
   # check timestamp
   THISZONE=$(date +%Z)
   TIMESTAMP=$(jq -r '.event.timestamp.publish' "${PAYLOAD}")
+  if [ "${TIMESTAMP:-null}" = 'null' ]; then
+    hzn.log.warn "INVALID PAYLOAD; no timestamp.publish: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
+    TIMESTAMP=$(jq -r '.event.timestamp' "${PAYLOAD}")
+    if [ "${TIMESTAMP:-null}" = 'null' ]; then
+      hzn.log.error "INVALID PAYLOAD; no event.timestamp: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
+      continue
+    fi
+  fi
+
   hzn.log.debug "Timezone: ${THISZONE}; Timestamp: ${TIMESTAMP}"
   THATDATE=$(echo "${TIMESTAMP}" | dateutils.dconv -z ${THISZONE} -f %s)
 
