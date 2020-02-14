@@ -69,7 +69,7 @@ process_motion_event()
     if [ -s "${output_jpeg}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
       hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
-      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
+      mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
     else
       hzn.log.error "Zero-length output JPEG file"
     fi
@@ -81,7 +81,7 @@ process_motion_event()
     if [ -s "${service_json_file}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
       hzn.log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
-      mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
+      mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
     else
       hzn.log.error "Failed to add JSON: ${service_json_file} and ${yolo_json_file}"
     fi
