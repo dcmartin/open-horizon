@@ -63,13 +63,6 @@ ENV OPENALPR_EU_WEIGHTS_MD5=""
 RUN mkdir -p ${OPENALPR} 
 RUN cd ${OPENALPR} && git clone ${OPENALPR_GIT} .
 
-RUN DEBIAN_FRONTEND=noninteractive \
-  apt-get install -qq -y --no-install-recommends \
-    openalpr \
-    openalpr-daemon \
-    openalpr-utils \
-    libopenalpr-dev
-
 # Build alpr
 RUN \
   cd ${OPENALPR}/src && mkdir build && cd build \
