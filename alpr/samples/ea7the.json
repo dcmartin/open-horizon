@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "data_type": "alpr_results",
+  "epoch_time": 1583013832624,
+  "img_width": 636,
+  "img_height": 358,
+  "processing_time_ms": 253.705429,
+  "regions_of_interest": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 636,
+      "height": 358
+    }
+  ],
+  "results": [
+    {
+      "plate": "EA7THE",
+      "confidence": 91.1474,
+      "matches_template": 0,
+      "plate_index": 0,
+      "region": "",
+      "region_confidence": 0,
+      "processing_time_ms": 73.896919,
+      "requested_topn": 10,
+      "coordinates": [
+        {
+          "x": 206,
+          "y": 163
+        },
+        {
+          "x": 391,
+          "y": 161
+        },
+        {
+          "x": 394,
+          "y": 245
+        },
+        {
+          "x": 207,
+          "y": 248
+        }
+      ],
+      "candidates": [
+        {
+          "plate": "EA7THE",
+          "confidence": 91.1474,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7TBE",
+          "confidence": 81.818542,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7TRE",
+          "confidence": 79.659111,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7TE",
+          "confidence": 79.018761,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7T8E",
+          "confidence": 78.560219,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7IHE",
+          "confidence": 78.108887,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7HE",
+          "confidence": 78.106224,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7TME",
+          "confidence": 78.101746,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7THB",
+          "confidence": 77.812828,
+          "matches_template": 0
+        },
+        {
+          "plate": "EA7TH6",
+          "confidence": 76.512367,
+          "matches_template": 0
+        }
+      ]
+    }
+  ]
+}

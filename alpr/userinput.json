@@ -1,0 +1,18 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.alpr",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+        "ALPR_PERIOD": 0,
+        "ALPR_CONFIG": "us",
+        "ALPR_PATTERN": "",
+        "LOG_LEVEL": "info",
+        "WEBCAM_RESOLUTION": "640x480",
+        "DEBUG": false
+      }
+    }
+  ]
+}

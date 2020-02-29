@@ -1,0 +1,43 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "alpr",
+  "description": "Provide ALPR license plate recognition service",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/alpr/README.md",
+  "url": "com.github.dcmartin.open-horizon.alpr",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "ALPR_CONFIG", "label": "ALPR configuration type: us,eu", "type": "string", "defaultValue": "us" },
+    { "name": "ALPR_PATTERN", "label": "License plate pattern: va, ca, ..", "type": "string", "defaultValue": "" },
+    { "name": "ALPR_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
+    { "name": "ALPR_TOPN", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "10" },
+    { "name": "ALPR_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "0" },
+    { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
+    { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
+    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+  ],
+  "deployment": {
+    "services": {
+      "alpr": {
+        "environment": [
+          "SERVICE_LABEL=alpr",
+          "SERVICE_VERSION=0.0.1"
+        ],
+        "specific_ports": [],
+        "devices": [
+          "/dev/video0:/dev/video0"
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

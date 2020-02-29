@@ -1,0 +1,178 @@
+{
+  "version": 2,
+  "data_type": "alpr_results",
+  "epoch_time": 1583011217615,
+  "img_width": 480,
+  "img_height": 640,
+  "processing_time_ms": 461.971039,
+  "regions_of_interest": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 480,
+      "height": 640
+    }
+  ],
+  "results": [
+    {
+      "plate": "786P0",
+      "confidence": 89.188698,
+      "matches_template": 0,
+      "plate_index": 0,
+      "region": "",
+      "region_confidence": 0,
+      "processing_time_ms": 73.167259,
+      "requested_topn": 10,
+      "coordinates": [
+        {
+          "x": 191,
+          "y": 378
+        },
+        {
+          "x": 269,
+          "y": 378
+        },
+        {
+          "x": 269,
+          "y": 415
+        },
+        {
+          "x": 191,
+          "y": 415
+        }
+      ],
+      "candidates": [
+        {
+          "plate": "786P0",
+          "confidence": 89.188698,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PO",
+          "confidence": 79.189705,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PQ",
+          "confidence": 78.664879,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PD",
+          "confidence": 77.566261,
+          "matches_template": 0
+        },
+        {
+          "plate": "7860",
+          "confidence": 74.050674,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PB",
+          "confidence": 73.013878,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PU",
+          "confidence": 71.202805,
+          "matches_template": 0
+        },
+        {
+          "plate": "786PG",
+          "confidence": 70.925598,
+          "matches_template": 0
+        },
+        {
+          "plate": "786P",
+          "confidence": 69.601059,
+          "matches_template": 0
+        },
+        {
+          "plate": "786O",
+          "confidence": 64.051666,
+          "matches_template": 0
+        }
+      ]
+    },
+    {
+      "plate": "D1D1",
+      "confidence": 81.378746,
+      "matches_template": 0,
+      "plate_index": 1,
+      "region": "",
+      "region_confidence": 0,
+      "processing_time_ms": 82.46994,
+      "requested_topn": 10,
+      "coordinates": [
+        {
+          "x": 71,
+          "y": 27
+        },
+        {
+          "x": 163,
+          "y": 27
+        },
+        {
+          "x": 163,
+          "y": 70
+        },
+        {
+          "x": 72,
+          "y": 70
+        }
+      ],
+      "candidates": [
+        {
+          "plate": "D1D1",
+          "confidence": 81.378746,
+          "matches_template": 0
+        },
+        {
+          "plate": "DDD1",
+          "confidence": 80.732597,
+          "matches_template": 0
+        },
+        {
+          "plate": "D1DI",
+          "confidence": 80.502625,
+          "matches_template": 0
+        },
+        {
+          "plate": "11D1",
+          "confidence": 80.184578,
+          "matches_template": 0
+        },
+        {
+          "plate": "DDDI",
+          "confidence": 79.856476,
+          "matches_template": 0
+        },
+        {
+          "plate": "1DD1",
+          "confidence": 79.538422,
+          "matches_template": 0
+        },
+        {
+          "plate": "11DI",
+          "confidence": 79.308456,
+          "matches_template": 0
+        },
+        {
+          "plate": "1DDI",
+          "confidence": 78.6623,
+          "matches_template": 0
+        },
+        {
+          "plate": "Q1D1",
+          "confidence": 75.84948,
+          "matches_template": 0
+        },
+        {
+          "plate": "D1O1",
+          "confidence": 75.674484,
+          "matches_template": 0
+        }
+      ]
+    }
+  ]
+}
