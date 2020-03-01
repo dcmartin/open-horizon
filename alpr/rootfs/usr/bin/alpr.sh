@@ -27,7 +27,7 @@ OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
 
 ## configure ALPR
-alpr_config ${ALPR_CONFIG}
+alpr_config ${ALPR_COUNTRY:-us}
 
 # start in alpr
 cd ${OPENALPR}
@@ -35,7 +35,7 @@ cd ${OPENALPR}
 if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- processing images from /dev/video0 every ${ALPR_PERIOD} seconds" &> /dev/stderr; fi
 
 if [ -z "${WEBCAM_DEVICE}" ]; then WEBCAM_DEVICE="/dev/video0"; fi
-if [ -z "${WEBCAM_RESOLUTION}" ]; then WEBCAM_RESOLUTION="384x288"; fi
+if [ -z "${WEBCAM_RESOLUTION}" ]; then WEBCAM_RESOLUTION="320x240"; fi
 
 while true; do
   # when we start

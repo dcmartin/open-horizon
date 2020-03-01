@@ -38,7 +38,7 @@ Provides license plate information as micro-service; updates periodically (defau
 + `version` - `0.0.1`
 
 ## Service variables
-+ `ALPR_CONFIG` - configuration of ALPR; `us`, `eu`
++ `ALPR_COUNTRY` - configuration of ALPR; `us`, `eu`
 + `ALPR_PATTERN` - pattern to recognize, for example `va`; defaults to _none_
 + `ALPR_PERIOD` - seconds between updates; defaults to `0`
 + `ALPR_TOPN` - number of interpretations for each plate; default `10`; range `1` to `20`

@@ -7,7 +7,7 @@
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "ALPR_PERIOD": 0,
-        "ALPR_CONFIG": "us",
+        "ALPR_COUNTRY": "us",
         "ALPR_PATTERN": "",
         "LOG_LEVEL": "info",
         "WEBCAM_RESOLUTION": "640x480",

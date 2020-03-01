@@ -10,7 +10,7 @@
   "sharable": "singleton",
   "requiredServices": [],
   "userInput": [
-    { "name": "ALPR_CONFIG", "label": "ALPR configuration type: us,eu", "type": "string", "defaultValue": "us" },
+    { "name": "ALPR_COUNTRY", "label": "ALPR country: us,eu", "type": "string", "defaultValue": "us" },
     { "name": "ALPR_PATTERN", "label": "License plate pattern: va, ca, ..", "type": "string", "defaultValue": "" },
     { "name": "ALPR_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
     { "name": "ALPR_TOPN", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "10" },

@@ -5,7 +5,7 @@ if [ -z "${ALPR_PERIOD:-}" ]; then ALPR_PERIOD=0; fi
 if [ -z "${ALPR_PATTERN:-}" ]; then ALPR_PATTERN=""; fi
 if [ -z "${ALPR_TOPN:-}" ]; then ALPR_TOPN=10; fi
 if [ -z "${ALPR_SCALE:-}" ]; then ALPR_SCALE="320x240"; fi
-if [ -z "${ALPR_CONFIG}" ]; then ALPR_CONFIG="tiny"; fi
+if [ -z "${ALPR_COUNTRY}" ]; then ALPR_COUNTRY="us"; fi
 if [ -z "${OPENALPR}" ]; then echo "*** ERROR -- $0 $$ -- OPENALPR unspecified; set environment variable for testing"; fi
 
 # temporary image and output
@@ -20,7 +20,7 @@ alpr_init()
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","config":"'${ALPR_CONFIG}'","threshold":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"'}'
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","threshold":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"'}'
   # get names of entities that can be detected
   if [ -s "${ALPR_NAMES}" ]; then
     hzn.log.debug "Processing ${ALPR_NAMES}"
@@ -49,7 +49,7 @@ alpr_config()
       ALPR_DATA="${OPENALPR_EU_DATA}"
     ;;
     *)
-      hzn.log.error "Invalid ALPR_CONFIG: ${1}"
+      hzn.log.error "Invalid ALPR_COUNTRY: ${1}"
     ;;
   esac
   if [ ! -z "${ALPR_WEIGHTS:-}" ] && [ ! -s "${ALPR_WEIGHTS}" ]; then
@@ -96,8 +96,8 @@ alpr_process()
   OUTPUT=$(echo "${OUTPUT}" | jq '.info='"${INFO}")
 
   # check configuration options
-  if [ ! -z "${ALPR_CONFIG:-}" ]; then CONFIG="-c ${ALPR_CONFIG}"; fi
-  OUTPUT=$(echo "${OUTPUT}" | jq '.config="'${ALPR_CONFIG:-}'"')
+  if [ ! -z "${ALPR_COUNTRY:-}" ]; then CONFIG="-c ${ALPR_COUNTRY}"; fi
+  OUTPUT=$(echo "${OUTPUT}" | jq '.country="'${ALPR_COUNTRY:-}'"')
   if [ ! -z "${ALPR_PATTERN:-}" ]; then PATTERN="-p ${ALPR_PATTERN}"; fi
   OUTPUT=$(echo "${OUTPUT}" | jq '.pattern="'${ALPR_PATTERN:-}'"')
   if [ ! -z "${ALPR_CFG_FILE:-}" ]; then CFG_FILE="--config ${ALPR_CFG_FILE}"; fi
