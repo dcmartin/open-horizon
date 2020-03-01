@@ -35,7 +35,7 @@ Provides license plate information as micro-service; updates periodically (defau
 ## Service discovery
 + `org` - `github@dcmartin.com`
 + `url` - `com.github.dcmartin.open-horizon.alpr`
-+ `version` - `0.0.8`
++ `version` - `0.0.1`
 
 ## Service variables
 + `ALPR_CONFIG` - configuration of ALPR; `us`, `eu`

@@ -68,7 +68,7 @@ alpr_process()
   local PAYLOAD="${1}"
   local ITERATION="${2}"
   local OUTPUT='{}'
-  local MOCKS=( ${OPENALPR_EU_DATA}/h786poj.jpg ${OPENALPR_US_DATA}/va/ea7the.jpg )
+  local MOCKS=($(find /usr/share/alpr/ -name "*.jpg" -print))
 
   # test image 
   if [ ! -s "${PAYLOAD}" ]; then 
