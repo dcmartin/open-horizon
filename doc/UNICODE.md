@@ -14,6 +14,8 @@
 
 # 1 Black Circle: &#10122; 
 # 2 Black Circle: &#10123; 
+# 3 Black Circle: &#10124; 
+
 # Wine: &#127863;
 # Film Frames: &#127902;
 # Link Symboi: &#128279;

@@ -13,6 +13,7 @@ ENV \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update && apt-get install -qq -y --no-install-recommends \
+  apt-utils \
   ca-certificates \
   curl \
   build-essential \
@@ -74,12 +75,7 @@ RUN \
 FROM alpr
 
 # Copy compiled alpr
-COPY --from=alpr /alpr /alpr
-
-RUN \
-  mkdir -p ${OPENALPR}/data/us/{va,ca} ${OPENALPR}/data/eu \
-  && cd ${OPENALPR}/data/eu && wget http://plates.openalpr.com/h786poj.jpg \
-  && cd ${OPENALPR}/data/us/va && wget http://plates.openalpr.com/ea7the.jpg
+COPY --from=alpr ${OPENALPR} ${OPENALPR}
 
 RUN \
   cd ${OPENALPR}/src/build && make install

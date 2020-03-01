@@ -68,7 +68,7 @@ alpr_process()
   local PAYLOAD="${1}"
   local ITERATION="${2}"
   local OUTPUT='{}'
-  local MOCKS=( eu/h786poj us/va/ea7the )
+  local MOCKS=( ${OPENALPR_EU_DATA}/h786poj.jpg ${OPENALPR_US_DATA}/va/ea7the.jpg )
 
   # test image 
   if [ ! -s "${PAYLOAD}" ]; then 
@@ -77,9 +77,9 @@ alpr_process()
     hzn.log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
     MOCK="${MOCKS[${MOCK_INDEX}]}"
     hzn.log.debug "MOCK image: ${MOCK}"
-    cp -f "${ALPR_DATA}/${MOCK}.jpg" ${PAYLOAD}
+    cp -f "${MOCK}" ${PAYLOAD}
     # update output to be mock
-    OUTPUT=$(echo "${OUTPUT}" | jq '.mock="'${MOCK}'"')
+    OUTPUT=$(echo "${OUTPUT}" | jq '.mock="'${MOCK##*/}'"')
   fi
 
   # scale image
