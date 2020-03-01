@@ -8,13 +8,6 @@ if [ -z "${ALPR_SCALE:-}" ]; then ALPR_SCALE="320x240"; fi
 if [ -z "${ALPR_COUNTRY}" ]; then ALPR_COUNTRY="us"; fi
 if [ -z "${OPENALPR}" ]; then echo "*** ERROR -- $0 $$ -- OPENALPR unspecified; set environment variable for testing"; fi
 
-# temporary image and output
-JPEG="${TMPDIR}/${0##*/}.$$.jpeg"
-OUT="${TMPDIR}/${0##*/}.$$.out"
-
-# same for all configurations
-ALPR_NAMES="${OPENALPR}/data/coco.names"
-
 alpr_init() 
 {
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
@@ -67,8 +60,14 @@ alpr_process()
 
   local PAYLOAD="${1}"
   local ITERATION="${2}"
-  local OUTPUT='{}'
   local MOCKS=($(find /usr/share/alpr/ -name "*.jpg" -print))
+  local JPEG=$(mktemp)
+  local OUT=$(mktemp)
+  local output
+  local config
+  local info
+  local result
+  local mock
 
   # test image 
   if [ ! -s "${PAYLOAD}" ]; then 
@@ -79,30 +78,25 @@ alpr_process()
     hzn.log.debug "MOCK image: ${MOCK}"
     cp -f "${MOCK}" ${PAYLOAD}
     # update output to be mock
-    OUTPUT=$(echo "${OUTPUT}" | jq '.mock="'${MOCK##*/}'"')
+    mock=${MOCK##*/}
   fi
 
-  # scale image
+  # scale
   if [ "${ALPR_SCALE}" != 'none' ]; then
     convert -scale "${ALPR_SCALE}" "${PAYLOAD}" "${JPEG}"
   else
-    mv -f "${PAYLOAD}" "${JPEG}"
+    cp -f "${PAYLOAD}" "${JPEG}"
   fi
   hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
 
-  # get image information
-  INFO=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
-  hzn.log.debug "JPEG: ${JPEG}; info: ${INFO}"
-  OUTPUT=$(echo "${OUTPUT}" | jq '.info='"${INFO}")
+  # image information
+  local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
 
   # check configuration options
   if [ ! -z "${ALPR_COUNTRY:-}" ]; then CONFIG="-c ${ALPR_COUNTRY}"; fi
-  OUTPUT=$(echo "${OUTPUT}" | jq '.country="'${ALPR_COUNTRY:-}'"')
   if [ ! -z "${ALPR_PATTERN:-}" ]; then PATTERN="-p ${ALPR_PATTERN}"; fi
-  OUTPUT=$(echo "${OUTPUT}" | jq '.pattern="'${ALPR_PATTERN:-}'"')
   if [ ! -z "${ALPR_CFG_FILE:-}" ]; then CFG_FILE="--config ${ALPR_CFG_FILE}"; fi
-  OUTPUT=$(echo "${OUTPUT}" | jq '.cfg_file="'${ALPR_CFG_FILE:-}'"')
-
+  local config='{"scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","pattern":"'${ALPR_PATTERN}'","cfg_file":"'${ALPR_CFG_FILE}'"}'
 
   ## do ALPR
   hzn.log.debug "OPENALPR: alpr --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG}"
@@ -110,13 +104,13 @@ alpr_process()
 
   # test for output
   if [ -s "${OUT}" ]; then
-    local TIME=$(jq '.processing_time_ms?' ${OUT})
-    local TOTAL=$(jq '.regions_of_interest?|length' ${OUT})
+    local time_ms=$(jq '.processing_time_ms?' ${OUT})
+    local count=$(jq '.regions_of_interest?|length' ${OUT})
 
-    if [ "${TIME:-null}" != 'null' ] && [ ${TIME} -gt 0 ]; then
-      TIME=$(echo "${TIME} / 1000.0" | bc -l)
+    if [ "${time_ms:-null}" != 'null' ] && [ ${time_ms} -gt 0 ]; then
+      time_ms=$(echo "${time_ms} / 1000.0" | bc -l)
     fi
-    if [ ${TOTAL:-0} -gt 0 ]; then
+    if [ ${count:-0} -gt 0 ]; then
       local plates=$(jq -r '.results[].plate' h786poj.json)
 
       for plate in ${plates}; do
@@ -125,30 +119,74 @@ alpr_process()
       done
       if [ "${detected:-null}" != 'null' ]; then detected="${detected}"']'; fi
     fi
-    OUTPUT=$(echo "${OUTPUT}" | jq '.count='${TOTAL:-null}'|.detected='"${detected:-null}"'|.time='${TIME:-null})
+    # output
+    result=$(mktemp)
+    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"time":'${time_ms:-null}'}' \
+      | jq '.info='"${info:-null}" \
+      | jq '.config='"${config:-null}" > ${result}
+
+    # annotated image
+    local annotated=$(alpr_annotate ${OUT} ${JPEG})
+
+    if [ "${annotated:-null}" != 'null' ]; then
+      local b64file=$(mktemp)
+
+      echo -n '{"image":"' > "${b64file}"
+      base64 -w 0 -i ${annotated} >> "${b64file}"
+      echo '"}' >> "${b64file}"
+      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+      rm -f ${b64file}
+    fi
+    rm -f "${JPEG}" "${OUT}"
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
     hzn.log.debug "alpr failed:" $(cat "${TMPDIR}/alpr.$$.out")
-    OUTPUT=$(echo "${OUTPUT}" | jq '.count=0|.detected=null|.time=0')
   fi
 
-  # capture annotated image as BASE64 encoded string
-  IMAGE="${TMPDIR}/predictions.$$.json"
-  echo -n '{"image":"' > "${IMAGE}"
-  if [ -s "${PAYLOAD}" ]; then
-    base64 -w 0 -i ${PAYLOAD} >> "${IMAGE}"
-  fi
-  echo '"}' >> "${IMAGE}"
-
-  TEMP="${TMPDIR}/${0##*/}.$$.json"
-  echo "${OUTPUT}" > "${TEMP}"
-  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
-  rm -f "${TEMP}"
-
-  # cleanup
-  rm -f "${JPEG}" "${OUT}" predictions.jpg
-
-  # return base64 encode image JSON path
-  echo "${IMAGE}"
+  echo "${result:-}"
 }
 
+alpr_annotate()
+{
+  local json=${1}
+  local jpeg=${2}
+  local result
+
+  if [ -s "${json}" ] && [ -s "${jpeg}" ]; then
+    local plates=$(jq '[.results[]|{"tag":.plate,"confidence":.confidence,"top":[.coordinates[].y]|min,"left":[.coordinates[].x]|min,"bottom":[.coordinates[].y]|max,"right":[.coordinates[].x]|max}]' ${json})
+    local tags=$(echo "${plates:-null}" | jq -r '.[].tag?')
+    local colors=(blue red white yellow green orange magenta cyan lime pink gold)
+    local count=0
+    local output=
+
+    for t in ${tags}; do
+      local plate=$(echo "${plates:-null}" | jq '.[]|select(.tag=="'${t}'")')
+      local top=$(echo "${plate:-null}" | jq -r '.top')
+      local left=$(echo "${plate:-null}" | jq -r '.left')
+      local bottom=$(echo "${plate:-null}" | jq -r '.bottom')
+      local right=$(echo "${plate:-null}" | jq -r '.right')
+
+      if [ ${count} -eq 0 ]; then
+        file=${jpeg%%.*}-${count}.jpg
+        cp -f ${jpeg} ${file}
+      else
+        rm -f ${file}
+        file=${output}
+      fi
+      output=${jpeg%%.*}-$((count+1)).jpg
+      convert -pointsize 24 -stroke ${colors[${count}]} -fill none -strokewidth 5 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} rotate 40 path 'M 10,0  l +15,+5  -5,-5  +5,-5  -15,+5  m +10,0 +20,0' translate 40,0 rotate -40 stroke none fill ${colors[${count}]} text 3,6 '${t}' pop graphic-context" ${file} ${output}
+      if [ ! -s "${output}" ]; then
+        echo "Failed"
+        exit 1
+      fi
+      count=$((count+1))
+      if [ ${count} -ge ${#colors[@]} ]; then count=0; fi
+    done
+    if [ ! -z "${output:-}" ]; then
+      rm -f ${file}
+      result=${jpeg%%.*}-alpr.jpg
+      mv ${output} ${result}
+    fi
+  fi
+  echo "${result:-null}"
+}
