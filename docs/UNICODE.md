@@ -15,6 +15,7 @@
 # 1 Black Circle: &#10122; 
 # 2 Black Circle: &#10123; 
 # 3 Black Circle: &#10124; 
+# 4 Black Circle: &#10125; 
 
 # Wine: &#127863;
 # Film Frames: &#127902;

@@ -40,8 +40,8 @@ Provides license plate information as micro-service; updates periodically (defau
 ## Service variables
 + `ALPR_COUNTRY` - configuration of ALPR; `us`, `eu`
 + `ALPR_PATTERN` - pattern to recognize, for example `va`; defaults to _none_
-+ `ALPR_PERIOD` - seconds between updates; defaults to `0`
 + `ALPR_TOPN` - number of interpretations for each plate; default `10`; range `1` to `20`
++ `ALPR_PERIOD` - seconds between updates; defaults to `30`
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 + `DEBUG` - turn on debugging output; `true` or `false`; default `false`
 

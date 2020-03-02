@@ -1,4 +1,4 @@
-# &#128249; `motion2mqtt` - detect motion and send to MQTT
+# &#127916;`motion` - detect motion service
 
 Monitors attached camera and provides [motion-project.github.io][motion-project-io] as micro-service, transmitting _events_ and _images_ to a designated [MQTT][mqtt-org] host.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
