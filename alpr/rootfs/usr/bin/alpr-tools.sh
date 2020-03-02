@@ -24,7 +24,7 @@ alpr_init()
   if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
 
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","threshold":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","topn":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
 
   echo "${CONFIG}"
 }
@@ -110,7 +110,7 @@ alpr_process()
   # test for output
   if [ -s "${OUT}" ]; then
     local time_ms=$(jq '.processing_time_ms?' ${OUT})
-    local count=$(jq '.regions_of_interest?|length' ${OUT})
+    local count=$(jq '.results?|length' ${OUT})
 
     if [ "${time_ms:-null}" != 'null' ] && [ ${time_ms%%.*} -gt 0 ]; then
       time_ms=$(echo "${time_ms} / 1000.0" | bc -l)
