@@ -15,7 +15,7 @@ Monitors attached microphone and provides [`sox`](https://linux.die.net/man/1/so
 [docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.noize
 [pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.noize.svg
 
-![Supports armhf Architecture][arm-shield]
+![Supports arm Architecture][arm-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.noize.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.noize "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.noize.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.noize "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
@@ -23,7 +23,7 @@ Monitors attached microphone and provides [`sox`](https://linux.die.net/man/1/so
 [docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.noize
 [pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.noize.svg
 
-![Supports aarch64 Architecture][arm64-shield]
+![Supports arm64 Architecture][arm64-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.noize.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.noize "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.noize.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.noize "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
@@ -31,9 +31,9 @@ Monitors attached microphone and provides [`sox`](https://linux.die.net/man/1/so
 [docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.noize
 [pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.noize.svg
 
-[arm64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[arm-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
 ## Service discovery
 + `org` - `github@dcmartin.com`

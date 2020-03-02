@@ -12,7 +12,7 @@ Monitors attached microphone using `record` service and provides FFT functionali
 [docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.fft
 [pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.fft.svg
 
-![Supports armhf Architecture][arm-shield]
+![Supports arm Architecture][arm-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.fft.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.fft "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.fft.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.fft "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
@@ -20,7 +20,7 @@ Monitors attached microphone using `record` service and provides FFT functionali
 [docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.fft
 [pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.fft.svg
 
-![Supports aarch64 Architecture][arm64-shield]
+![Supports arm64 Architecture][arm64-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.fft.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.fft)
 [![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.fft.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.fft)
 [![Docker Pulls][pulls-arm64]][docker-arm64]
@@ -28,9 +28,9 @@ Monitors attached microphone using `record` service and provides FFT functionali
 [docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.fft
 [pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.fft.svg
 
-[arm64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[arm-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
 ## Service discovery
 + `org` - `github@dcmartin.com`

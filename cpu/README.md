@@ -9,7 +9,7 @@ Provides CPU usage information as micro-service; updates periodically (default `
 [![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.cpu.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.cpu "Get your own version badge on microbadger.com")
 [![](https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.cpu.svg)](https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.cpu)
 
-![Supports armhf Architecture][arm-shield]
+![Supports arm Architecture][arm-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.cpu.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.cpu "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.cpu.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.cpu "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
@@ -17,7 +17,7 @@ Provides CPU usage information as micro-service; updates periodically (default `
 [docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.cpu
 [pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.cpu.svg
 
-![Supports aarch64 Architecture][arm64-shield]
+![Supports arm64 Architecture][arm64-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
@@ -25,9 +25,9 @@ Provides CPU usage information as micro-service; updates periodically (default `
 [docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu
 [pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.cpu.svg
 
-[arm64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[arm-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
 ## Service discovery
 + `org` - `github@dcmartin.com`

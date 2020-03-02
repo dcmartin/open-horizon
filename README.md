@@ -1,12 +1,17 @@
-# &#9968; Open Horizon example _services_ and _patterns_
+<img src="docs/bluehorizon.gif" width="90%">
 
-This [repository][repository] contains a set of examples to demonstrate a [CI/CD][cicd-md] process for services and patterns.
+# _Open Horizon_  services & patterns
+
+This [repository][repository] contains [Open Horizon](http://github.com/open-horizon) services and patterns, including:
+
++ [`yolo4motion`](yolo4motion/README.md) - A service to process MQTT messages through the **[YOLO](https://pjreddie.com/darknet/yolo/)** object detector and classifier
++ [`alpr4motion`](alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** object detector and classifier
 
 Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
 
 [design-md]: https://github.com/dcmartin/open-horizon/tree/master/docs/DESIGN.md
 
-# 1. [Status][status-md] ([_beta_][beta-md])
+# 1. [Status][status-md] 
 
 ![](https://img.shields.io/github/license/dcmartin/open-horizon.svg?style=flat)
 ![](https://img.shields.io/github/release/dcmartin/open-horizon.svg?style=flat)
@@ -21,12 +26,14 @@ Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction 
 ![](https://img.shields.io/github/tag/dcmartin/open-horizon.svg?style=flat)
 
 ![Supports amd64 Architecture][amd64-shield]
-![Supports aarch64 Architecture][arm64-shield]
-![Supports armhf Architecture][arm-shield]
+![Supports arm64 Architecture][arm64-shield]
+![Supports arm Architecture][arm-shield]
 
-[arm64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+([_beta_ branch][beta-md])
+
+[arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[arm-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
 ## 1. Introduction
 
