@@ -21,7 +21,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
   imagemagick \
   fswebcam \
   jq \
+  software-properties-common \
   git
+
+RUN add-apt-repository ppa:alex-p/tesseract-ocr && apt update -qq -y
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install -qq -y --no-install-recommends \

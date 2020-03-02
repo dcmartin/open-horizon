@@ -59,7 +59,7 @@ alpr_process()
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
   local PAYLOAD="${1}"
-  local ITERATION="${2}"
+  local ITERATION="${2:-}"
   local MOCKS=($(find /usr/share/alpr/ -name "*.jpg" -print))
   local JPEG=$(mktemp)
   local OUT=$(mktemp)
@@ -119,7 +119,8 @@ alpr_process()
       done
       if [ "${detected:-null}" != 'null' ]; then detected="${detected}"']'; fi
     fi
-    # output
+
+    # initiate output
     result=$(mktemp)
     echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"time":'${time_ms:-null}'}' \
       | jq '.info='"${info:-null}" \
@@ -135,9 +136,9 @@ alpr_process()
       base64 -w 0 -i ${annotated} >> "${b64file}"
       echo '"}' >> "${b64file}"
       jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
-      rm -f ${b64file}
+      rm -f ${b64file} ${annotated}
     fi
-    rm -f "${JPEG}" "${OUT}"
+    rm -f "${JPEG}" "${OUT}" 
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
     hzn.log.debug "alpr failed:" $(cat "${TMPDIR}/alpr.$$.out")

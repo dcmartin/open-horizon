@@ -19,7 +19,7 @@
     { "name": "MOTION_GROUP", "label": "group for pub/sub", "type": "string", "defaultValue": "motion" },
     { "name": "MOTION_CLIENT", "label": "client for subscription", "type": "string", "defaultValue": "+" },
     { "name": "ALPR4MOTION_CAMERA", "label": "camera for subscription", "type": "string", "defaultValue": "+" },
-    { "name": "ALPR4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end/vehicle" },
+    { "name": "ALPR4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end" },
     { "name": "ALPR4MOTION_USE_MOCK", "label": "use mock data true/false", "type": "boolean", "defaultValue": "false" },
     { "name": "ALPR4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
     { "name": "ALPR_COUNTRY", "label": "", "type": "string", "defaultValue": "us" },

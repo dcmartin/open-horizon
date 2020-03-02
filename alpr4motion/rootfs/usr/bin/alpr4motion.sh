@@ -67,7 +67,7 @@ process_motion_event()
     local output_jpeg=$(mktemp)
     jq -r '.image' "${alpr_json_file}" | base64 --decode > ${output_jpeg}
     if [ -s "${output_jpeg}" ]; then
-      local topic="${MOTION_GROUP}/${device}/${camera}/${ALPR4MOTION_TOPIC_PAYLOAD}/${ALPR_PATTERN}"
+      local topic="${MOTION_GROUP}/${device}/${camera}/${ALPR4MOTION_TOPIC_PAYLOAD%%/*}/alpr/${ALPR_PATTERN:-all}"
       hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
     else
@@ -79,7 +79,7 @@ process_motion_event()
     jq -s add "${service_json_file}" "${alpr_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
     # test for success
     if [ -s "${service_json_file}" ]; then
-      local topic="${MOTION_GROUP}/${device}/${camera}/${ALPR4MOTION_TOPIC_EVENT}/${ALPR_PATTERN}"
+      local topic="${MOTION_GROUP}/${device}/${camera}/${ALPR4MOTION_TOPIC_EVENT%%/*}/alpr/${ALPR_PATTERN:-all}"
       hzn.log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
     else
