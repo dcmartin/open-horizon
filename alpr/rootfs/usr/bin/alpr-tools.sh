@@ -1,26 +1,31 @@
 #!/usr/bin/env bash
 
+# sanity
+if [ -z "${OPENALPR}" ]; then echo "*** ERROR -- $0 $$ -- OPENALPR unspecified; set environment variable for testing"; fi
+
 # defaults for testing
-if [ -z "${ALPR_PERIOD:-}" ]; then ALPR_PERIOD=0; fi
+if [ -z "${ALPR_COUNTRY}" ]; then ALPR_COUNTRY="us"; fi
 if [ -z "${ALPR_PATTERN:-}" ]; then ALPR_PATTERN=""; fi
 if [ -z "${ALPR_TOPN:-}" ]; then ALPR_TOPN=10; fi
 if [ -z "${ALPR_SCALE:-}" ]; then ALPR_SCALE="320x240"; fi
-if [ -z "${ALPR_COUNTRY}" ]; then ALPR_COUNTRY="us"; fi
-if [ -z "${OPENALPR}" ]; then echo "*** ERROR -- $0 $$ -- OPENALPR unspecified; set environment variable for testing"; fi
+if [ -z "${ALPR_PERIOD:-}" ]; then ALPR_PERIOD=30; fi
 
 alpr_init() 
 {
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
+  local names=$(find ${OPENALPR}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
+  local countries
+
+  for name in ${names}; do
+    if [ ! -z "${countries:-}" ]; then countries="${countries}"','; else countries='['; fi
+    countries="${countries}"'"'${name}'"'
+  done
+  if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
+
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","threshold":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"'}'
-  # get names of entities that can be detected
-  if [ -s "${ALPR_NAMES}" ]; then
-    hzn.log.debug "Processing ${ALPR_NAMES}"
-    NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${ALPR_NAMES}" | sed 's|""|","|g')']'
-  fi
-  if [ -z "${NAMES:-}" ]; then NAMES='["person"]'; fi
-  CONFIG=$(echo "${CONFIG}" | jq '.names='"${NAMES}")
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","topn":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
+
   echo "${CONFIG}"
 }
 
@@ -105,7 +110,7 @@ alpr_process()
   # test for output
   if [ -s "${OUT}" ]; then
     local time_ms=$(jq '.processing_time_ms?' ${OUT})
-    local count=$(jq '.regions_of_interest?|length' ${OUT})
+    local count=$(jq '.results?|length' ${OUT})
 
     if [ "${time_ms:-null}" != 'null' ] && [ ${time_ms%%.*} -gt 0 ]; then
       time_ms=$(echo "${time_ms} / 1000.0" | bc -l)
