@@ -1,4 +1,4 @@
-# &#128663;&#10125;&#127916; `alpr4motion` - &#128663;`alpr` listening for &#127916;`motion`
+# `alpr4motion` - &#128663;`alpr` listening for &#127916;`motion`
 
 Provides automated license plate reader as micro-service listening for MQTT messages.  This service is built from the [`alpr`](../alpr/README.md) service.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
