@@ -32,7 +32,7 @@ alpr_config ${ALPR_COUNTRY:-us}
 # start in alpr
 cd ${OPENALPR}
 
-if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- processing images from /dev/video0 every ${ALPR_PERIOD} seconds" &> /dev/stderr; fi
+hzn.log.notice "processing images from /dev/video0 every ${ALPR_PERIOD} seconds"
 
 if [ -z "${WEBCAM_DEVICE}" ]; then WEBCAM_DEVICE="/dev/video0"; fi
 if [ -z "${WEBCAM_RESOLUTION}" ]; then WEBCAM_RESOLUTION="320x240"; fi
@@ -45,6 +45,8 @@ while true; do
   JPEG_FILE=$(mktemp -t "${0##*/}-XXXXXX")
   # capture image payload from /dev/video0
   # fswebcam --resolution "${WEBCAM_RESOLUTION}" --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
+
+  hzn.log.debug "Attempting to capture image"
   fswebcam --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
 
   # process image payload into JSON
@@ -59,8 +61,8 @@ while true; do
     jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) "${ALPR_OUTPUT_FILE}" > "${OUTPUT_FILE}"
     # update
   else
+    hzn.log.error "No output"
     echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- nothing seen" &> /dev/stderr; fi
   fi
   # update
   service_update "${OUTPUT_FILE}"
@@ -68,7 +70,7 @@ while true; do
   # wait for ..
   SECONDS=$((ALPR_PERIOD - $(($(date +%s) - DATE))))
   if [ ${SECONDS} -gt 0 ]; then
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- sleep ${SECONDS}" &> /dev/stderr; fi
+    hzn.log.debug "sleep ${SECONDS}"
     sleep ${SECONDS}
   fi
 done

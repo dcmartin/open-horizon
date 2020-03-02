@@ -6,7 +6,7 @@
       "url": "com.github.dcmartin.open-horizon.alpr",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
-        "ALPR_PERIOD": 0,
+        "ALPR_PERIOD": 15,
         "ALPR_COUNTRY": "us",
         "ALPR_PATTERN": "",
         "LOG_LEVEL": "info",

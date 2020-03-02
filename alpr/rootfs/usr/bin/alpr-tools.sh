@@ -61,8 +61,8 @@ alpr_process()
   local PAYLOAD="${1}"
   local ITERATION="${2:-}"
   local MOCKS=($(find /usr/share/alpr/ -name "*.jpg" -print))
-  local JPEG=$(mktemp)
-  local OUT=$(mktemp)
+  local JPEG=$(mktemp).jpg
+  local OUT=$(mktemp).jpg
   local output
   local config
   local info
@@ -100,18 +100,18 @@ alpr_process()
 
   ## do ALPR
   hzn.log.debug "OPENALPR: alpr --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG}"
-  alpr --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG} > "${OUT}" 2> "${TMPDIR}/alpr.$$.out"
+  alpr --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG} > "${OUT}" 2> "${TMPDIR}/alpr.$$.out"
 
   # test for output
   if [ -s "${OUT}" ]; then
     local time_ms=$(jq '.processing_time_ms?' ${OUT})
     local count=$(jq '.regions_of_interest?|length' ${OUT})
 
-    if [ "${time_ms:-null}" != 'null' ] && [ ${time_ms} -gt 0 ]; then
+    if [ "${time_ms:-null}" != 'null' ] && [ ${time_ms%%.*} -gt 0 ]; then
       time_ms=$(echo "${time_ms} / 1000.0" | bc -l)
     fi
     if [ ${count:-0} -gt 0 ]; then
-      local plates=$(jq -r '.results[].plate' h786poj.json)
+      local plates=$(jq -r '.results[].plate' ${OUT})
 
       for plate in ${plates}; do
         if [ "${detected:-null}" != 'null' ]; then detected="${detected},"; else detected='['; fi
@@ -119,7 +119,7 @@ alpr_process()
       done
       if [ "${detected:-null}" != 'null' ]; then detected="${detected}"']'; fi
     fi
-
+    hzn.log.debug "DETECTED: ${detected}"
     # initiate output
     result=$(mktemp)
     echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"time":'${time_ms:-null}'}' \
@@ -175,7 +175,7 @@ alpr_annotate()
         file=${output}
       fi
       output=${jpeg%%.*}-$((count+1)).jpg
-      convert -pointsize 24 -stroke ${colors[${count}]} -fill none -strokewidth 5 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} rotate 40 path 'M 10,0  l +15,+5  -5,-5  +5,-5  -15,+5  m +10,0 +20,0' translate 40,0 rotate -40 stroke none fill ${colors[${count}]} text 3,6 '${t}' pop graphic-context" ${file} ${output}
+      convert -font DejaVu-Sans-Mono -pointsize 24 -stroke ${colors[${count}]} -fill none -strokewidth 5 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} rotate 40 path 'M 10,0  l +15,+5  -5,-5  +5,-5  -15,+5  m +10,0 +20,0' translate 40,0 rotate -40 stroke none fill ${colors[${count}]} text 3,6 '${t}' pop graphic-context" ${file} ${output}
       if [ ! -s "${output}" ]; then
         echo "Failed"
         exit 1

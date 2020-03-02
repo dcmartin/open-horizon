@@ -21,6 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   imagemagick \
   fswebcam \
   jq \
+  bc \
   software-properties-common \
   git
 
