@@ -1,6 +1,6 @@
 # &#128663; `alpr` - Automated license plate reader
 
-Provides license plate information as micro-service; updates periodically (default `0` seconds).  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
+Provides license plate information as micro-service; updates periodically (default `0` seconds).  This service is built from the [OpenALPR](http://github.com/dcmartin/openalpr) software.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
 ## Status
 

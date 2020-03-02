@@ -380,7 +380,7 @@ css-put: css-get
 ##
 
 tidy:
-	-@rm -f test.*.json build.*.out mkdepend.*.out
+	-@rm -f test.*.json build.*.out mkdepend.*.out check.json
 
 clean: remove stop-service
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- clean: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr

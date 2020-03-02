@@ -35,9 +35,9 @@ LABEL \
     org.label-schema.schema-version="1.0" \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
-    org.label-schema.name="yolo" \
-    org.label-schema.description="yolo listening to MQTT" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/yolo4motion/" \
+    org.label-schema.name="alpr" \
+    org.label-schema.description="alpr listening to MQTT" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/alpr4motion/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"
