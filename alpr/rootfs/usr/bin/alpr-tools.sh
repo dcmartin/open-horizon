@@ -182,8 +182,9 @@ alpr_annotate()
       output=${jpeg%%.*}-$((count+1)).jpg
       convert -font DejaVu-Sans-Mono -pointsize 24 -stroke ${colors[${count}]} -fill none -strokewidth 5 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} rotate 40 path 'M 10,0  l +15,+5  -5,-5  +5,-5  -15,+5  m +10,0 +20,0' translate 40,0 rotate -40 stroke none fill ${colors[${count}]} text 3,6 '${t}' pop graphic-context" ${file} ${output}
       if [ ! -s "${output}" ]; then
-        echo "Failed"
-        exit 1
+        hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+        output=""
+        break
       fi
       count=$((count+1))
       if [ ${count} -ge ${#colors[@]} ]; then count=0; fi
