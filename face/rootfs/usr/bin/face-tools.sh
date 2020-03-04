@@ -4,9 +4,7 @@
 if [ -z "${OPENFACE}" ]; then echo "*** ERROR -- $0 $$ -- OPENFACE unspecified; set environment variable for testing"; fi
 
 # defaults for testing
-if [ -z "${FACE_COUNTRY}" ]; then FACE_COUNTRY="us"; fi
-if [ -z "${FACE_PATTERN:-}" ]; then FACE_PATTERN=""; fi
-if [ -z "${FACE_TOPN:-}" ]; then FACE_TOPN=10; fi
+if [ -z "${FACE_THRESHOLD:-}" ]; then FACE_THRESHOLD=10; fi
 if [ -z "${FACE_SCALE:-}" ]; then FACE_SCALE="320x240"; fi
 if [ -z "${FACE_PERIOD:-}" ]; then FACE_PERIOD=30; fi
 
@@ -24,7 +22,7 @@ face_init()
   if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
 
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${FACE_PERIOD}',"pattern":"'${FACE_PATTERN}'","scale":"'${FACE_SCALE}'","country":"'${FACE_COUNTRY}'","topn":'${FACE_TOPN}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${FACE_PERIOD}',"scale":"'${FACE_SCALE}'","threshold":'${FACE_THRESHOLD}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
 
   echo "${CONFIG}"
 }
@@ -47,7 +45,7 @@ face_config()
       FACE_DATA="${OPENFACE_EU_DATA}"
     ;;
     *)
-      hzn.log.error "Invalid FACE_COUNTRY: ${1}"
+      hzn.log.info "Default configuration"
     ;;
   esac
   if [ ! -z "${FACE_WEIGHTS:-}" ] && [ ! -s "${FACE_WEIGHTS}" ]; then
@@ -101,10 +99,10 @@ face_process()
   if [ ! -z "${FACE_COUNTRY:-}" ]; then CONFIG="-c ${FACE_COUNTRY}"; fi
   if [ ! -z "${FACE_PATTERN:-}" ]; then PATTERN="-p ${FACE_PATTERN}"; fi
   if [ ! -z "${FACE_CFG_FILE:-}" ]; then CFG_FILE="--config ${FACE_CFG_FILE}"; fi
-  local config='{"scale":"'${FACE_SCALE}'","country":"'${FACE_COUNTRY}'","pattern":"'${FACE_PATTERN}'","cfg_file":"'${FACE_CFG_FILE}'"}'
+  local config='{"scale":"'${FACE_SCALE}'","threshold":"'${FACE_THRESHOLD}'"}'
 
   ## do FACE
-  hzn.log.debug "OPENFACE: face --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${FACE_TOPN} ${JPEG}"
+  hzn.log.debug "OPENFACE: face --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${FACE_THRESHOLD} ${JPEG}"
   face ${JPEG} > "${OUT}" 2> "${TMPDIR}/face.$$.out"
 
   # test for output
@@ -148,7 +146,8 @@ face_annotate()
 
   local json=${1}
   local jpeg=${2}
-  local colors=(blue red white yellow green orange magenta cyan)
+  local colors=(white yellow green orange magenta cyan lime pink gold blue red)
+
   local result
 
   if [ -s "${json}" ] && [ -s "${jpeg}" ]; then

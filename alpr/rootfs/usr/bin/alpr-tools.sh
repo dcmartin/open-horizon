@@ -161,7 +161,7 @@ alpr_annotate()
   if [ -s "${json}" ] && [ -s "${jpeg}" ]; then
     local plates=$(jq '[.results[]|{"tag":.plate,"confidence":.confidence,"top":[.coordinates[].y]|min,"left":[.coordinates[].x]|min,"bottom":[.coordinates[].y]|max,"right":[.coordinates[].x]|max}]' ${json})
     local tags=$(echo "${plates:-null}" | jq -r '.[].tag?')
-    local colors=(blue red white yellow green orange magenta cyan lime pink gold)
+    local colors=(white yellow green orange magenta cyan lime pink gold blue red)
     local count=0
     local output=
 

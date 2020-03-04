@@ -10,10 +10,8 @@
   "sharable": "singleton",
   "requiredServices": [],
   "userInput": [
-    { "name": "FACE_COUNTRY", "label": "FACE country: us,eu", "type": "string", "defaultValue": "us" },
-    { "name": "FACE_PATTERN", "label": "License plate pattern: va, ca, ..", "type": "string", "defaultValue": "" },
     { "name": "FACE_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
-    { "name": "FACE_TOPN", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "10" },
+    { "name": "FACE_THRESHOLD", "label": "minimum threshold percent", "type": "number", "defaultValue": "10" },
     { "name": "FACE_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "30" },
     { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
     { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },

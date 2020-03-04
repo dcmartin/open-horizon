@@ -113,7 +113,7 @@ CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debu
 service_init ${CONFIG}
 
 # configure FACE
-face_config ${FACE_COUNTRY}
+face_config ${FACE_COUNTRY:-}
 
 ##
 # main

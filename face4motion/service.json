@@ -22,11 +22,8 @@
     { "name": "FACE4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end" },
     { "name": "FACE4MOTION_USE_MOCK", "label": "use mock data true/false", "type": "boolean", "defaultValue": "false" },
     { "name": "FACE4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
-    { "name": "FACE_COUNTRY", "label": "", "type": "string", "defaultValue": "us" },
-    { "name": "FACE_PATTERN", "label": "", "type": "string", "defaultValue": "" },
-    { "name": "FACE_TOPN", "label": "", "type": "int", "defaultValue": "10" },
+    { "name": "FACE_THRESHOLD", "label": "minimum threshold percent", "type": "int", "defaultValue": "10" },
     { "name": "FACE_SCALE", "label": "size WIDTHxHEIGHT for image", "type": "string", "defaultValue": "none" },
-    { "name": "FACE_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "10" },
     { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
     { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
     { "name": "DEBUG", "label": "debug true/false", "type": "boolean", "defaultValue": "false" }

@@ -27,7 +27,7 @@ OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
 
 ## configure FACE
-face_config ${FACE_COUNTRY:-us}
+face_config ${FACE_CONFIG:-}
 
 # start in face
 cd ${OPENFACE}

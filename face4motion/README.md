@@ -1,6 +1,6 @@
 # `face4motion` - &#9786;`face` listening for &#127916;`motion`
 
-Provides automated license plate reader as micro-service listening for MQTT messages.  This service is built from the [`face`](../face/README.md) service.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
+Provides face detection s micro-service listening for MQTT messages.  This service is built from the [`face`](../face/README.md) service.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
 ## Status
 
@@ -38,9 +38,7 @@ Provides automated license plate reader as micro-service listening for MQTT mess
 + `version` - `0.0.1`
 
 ## Service variables 
-+ `FACE_COUNTRY` - configuration of FACE; `us`, `eu`
-+ `FACE_PATTERN` - pattern to recognize, for example `va`; defaults to _none_
-+ `FACE_TOPN` - number of interpretations for each plate; default `10`; range `1` to `20`
++ `FACE_THRESHOLD` - minimum confidence percent; default `1`; range `1` to `99`
 + `MQTT_HOST` - hostname or IP address of MQTT broker; defaults to `mqtt`
 + `MQTT_PORT` - port for MQTT; defaults to `1883`
 + `MQTT_USERNAME` - username for MQTT access; default "" (_empty string_)

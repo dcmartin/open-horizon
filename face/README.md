@@ -66,8 +66,7 @@ The `face` payload will be incomplete until the service completes; subsequent `m
 
 ## Example
 
-![](samples/ea7the-face.jpg?raw=true "EA7THE")
-![](samples/h786poj-face.jpg?raw=true "H786POJ")
+![](samples/people-face.jpg?raw=true "people")
 
 ## Changelog & Releases
 
