@@ -4,7 +4,6 @@
         "amd64": "ubuntu:bionic",
         "arm": "arm32v7/ubuntu:bionic",
         "arm64": "arm64v8/ubuntu:bionic",
-	"arm32v6": "armhf/ubuntu",
 	"ppc64": null,
 	"ppc64le": null,
 	"mips64": null,
