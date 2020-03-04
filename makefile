@@ -19,10 +19,10 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
 ##
 
 BASES := base-alpine base-ubuntu 
-SERVICES := cpu hal wan yolo apache-alpine apache-ubuntu hznmonitor hzncli mqtt yolo4motion alpr4motion face4motion mqtt2kafka herald fft noize 
+SERVICES := cpu hal wan yolo apache-alpine apache-ubuntu hznmonitor hzncli mqtt yolo4motion alpr alpr4motion face face4motion mqtt2kafka herald fft noize 
 WIP := mqtt2mqtt record hotword 
 JETSONS := # jetson-jetpack jetson-cuda jetson-opencv jetson-yolo jetson-caffe jetson-digits
-PATTERNS := yolo2msghub hznsetup startup motion2mqtt
+PATTERNS := hznsetup startup motion2mqtt
 MISC := setup sh doc
 
 ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP} ${JETSONS}
