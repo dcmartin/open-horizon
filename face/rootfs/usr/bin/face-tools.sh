@@ -12,14 +12,16 @@ face_init()
 {
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
-  local names=$(find ${OPENFACE}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
-  local countries
+  if [ -d "${OPENFACE}/runtime_data/config" ]; then
+    local names=$(find ${OPENFACE}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
+    local countries
 
-  for name in ${names}; do
-    if [ ! -z "${countries:-}" ]; then countries="${countries}"','; else countries='['; fi
-    countries="${countries}"'"'${name}'"'
-  done
-  if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
+    for name in ${names}; do
+      if [ ! -z "${countries:-}" ]; then countries="${countries}"','; else countries='['; fi
+      countries="${countries}"'"'${name}'"'
+    done
+    if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
+  fi
 
   # build configuation
   CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${FACE_PERIOD}',"scale":"'${FACE_SCALE}'","threshold":'${FACE_THRESHOLD}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
