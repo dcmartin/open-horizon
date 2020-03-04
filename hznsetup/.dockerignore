@@ -1,7 +1,7 @@
-makefile
-README.md
+*.md
 sh/
 horizon/
+TEST_*
 test-*.sh
 APIKEY
 README.md

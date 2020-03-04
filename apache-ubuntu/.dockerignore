@@ -1,6 +1,7 @@
-README.md
+*.md
 sh/
 horizon/
+TEST_*
 test-*.sh
 APIKEY
 README.md
@@ -8,4 +9,3 @@ build.*.out
 check.json
 userinput.sh
 service.json
-pattern.json
