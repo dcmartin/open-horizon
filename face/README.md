@@ -1,6 +1,6 @@
-# &#128663; `face` - Automated license plate reader
+# &#9786; `face` - Face-detection
 
-Provides license plate information as micro-service; updates periodically (default `0` seconds).  This service is built from the [OpenFACE](http://github.com/dcmartin/openface) software.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
+Provides face detection information as micro-service; updates periodically (default `0` seconds).  This service is built from the [OpenFACE](http://github.com/dcmartin/openface) software.  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
 ## Status
 
