@@ -3,6 +3,8 @@
 # Introduction
 This directory contains information and tools to utilize the [Open Horizon](https://github.com/open-horizon) software using Docker.
 
+**THESE INSTRUCTIONS ARE DEPRECATED**; see these [instructions](https://github.com/dcmartin/open-horizon-integration/blob/master/hub/01-horizon-services-setup.md)
+
 ## Services
 Below is a list of the Open Horizon microservices, their ports, and “ping” URLs.
 

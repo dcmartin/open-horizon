@@ -5,7 +5,10 @@
 This [repository][repository] contains [Open Horizon](http://github.com/open-horizon) services and patterns, including:
 
 + [`yolo4motion`](yolo4motion/README.md) - A service to process MQTT messages through the **[YOLO](https://pjreddie.com/darknet/yolo/)** object detector and classifier
-+ [`alpr4motion`](alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** object detector and classifier
++ [`alpr4motion`](alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
++ [`face4motion`](face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
+
+To setup your own Open Horizon _exchange_, follow the [instructions](exchange/README.md) to install and configure the Docker containers.
 
 Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
 
