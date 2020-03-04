@@ -4,6 +4,7 @@
     "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
     "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
+    "arm32v6": "${DOCKER_REPOSITORY}/arm32v6_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
     "386": null,
     "ppc64": null,
     "ppc64le": null,
