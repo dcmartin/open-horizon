@@ -38,9 +38,7 @@ Provides face detection information as micro-service; updates periodically (defa
 + `version` - `0.0.1`
 
 ## Service variables
-+ `FACE_COUNTRY` - configuration of FACE; `us`, `eu`
-+ `FACE_PATTERN` - pattern to recognize, for example `va`; defaults to _none_
-+ `FACE_TOPN` - number of interpretations for each plate; default `10`; range `1` to `20`
++ `FACE_THRESHOLD` - minimum threshold percent; default `10`; range `1` to `99`
 + `FACE_PERIOD` - seconds between updates; defaults to `30`
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 + `DEBUG` - turn on debugging output; `true` or `false`; default `false`
