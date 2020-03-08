@@ -203,3 +203,5 @@ SUM:|326|3709|1842|33145
 
 ![map](http://clustrmaps.com/map_v2.png?cl=ada6a6&w=1024&t=n&d=b6TnAROswVvp8u4K3_6FHn9fu7NGlN6T_Rt3dSYwPqI&co=ffffff&ct=050505)
 
+## Stargazers
+[![Stargazers over time](https://starchart.cc/dcmartin/open-horizon.svg)](https://starchart.cc/dcmartin/open-horizon)
