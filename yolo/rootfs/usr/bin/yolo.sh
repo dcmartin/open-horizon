@@ -18,16 +18,13 @@ source /usr/bin/yolo-tools.sh
 hzn_init
 
 ## initialize servive
-CONFIG=$(echo $(yolo_init) | jq '.resolution="'${WEBCAM_RESOLUTION}'"|.device="'${WEBCAM_DEVICE}'"')
+CONFIG=$(echo $(yolo_init ${YOLO_CONFIG}) | jq '.resolution="'${WEBCAM_RESOLUTION}'"|.device="'${WEBCAM_DEVICE}'"')
 
 service_init "${CONFIG}"
 
 ## initialize
 OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
-
-## configure YOLO
-yolo_config ${YOLO_CONFIG}
 
 # start in darknet
 cd ${DARKNET}

@@ -125,7 +125,7 @@ depend: $(APIKEY) ${DIR}
 ##
 
 logs:
-	docker logs -f $$(docker ps --format '{{.Image}},{{.Names}}' | egrep "${DOCKER_NAME}" | awk -F, '{ print $$2 }')
+	docker logs -f $$(docker ps --format '{{.Image}},{{.Names}}' | egrep "${DOCKER_NAME}" | head -1 | awk -F, '{ print $$2 }')
 
 run: stop stop-service remove
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- run: ${DOCKER_NAME}; port: ${DOCKER_PORT}:${SERVICE_PORT}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr

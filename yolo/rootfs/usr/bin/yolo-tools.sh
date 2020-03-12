@@ -1,34 +1,55 @@
 #!/usr/bin/env bash
 
+# test
+if [ -z "${DARKNET}" ]; then hzn.log.error "DARKNET unspecified; set environment variable for testing"; fi
+
 # defaults for testing
 if [ -z "${YOLO_PERIOD:-}" ]; then YOLO_PERIOD=0; fi
 if [ -z "${YOLO_ENTITY:-}" ]; then YOLO_ENTITY=person; fi
 if [ -z "${YOLO_THRESHOLD:-}" ]; then YOLO_THRESHOLD=0.25; fi
 if [ -z "${YOLO_SCALE:-}" ]; then YOLO_SCALE="320x240"; fi
+if [ -z "${YOLO_NAMES:-}" ]; then YOLO_NAMES=""; fi
+if [ -z "${YOLO_DATA:-}" ]; then YOLO_DATA=""; fi
+if [ -z "${YOLO_CFG_FILE:-}" ]; then YOLO_CFG_FILE=""; fi
+if [ -z "${YOLO_WEIGHTS:-}" ]; then YOLO_WEIGHTS=""; fi
+if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then YOLO_WEIGHTS_URL=""; fi
 if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny"; fi
-if [ -z "${DARKNET}" ]; then echo "*** ERROR -- $0 $$ -- DARKNET unspecified; set environment variable for testing"; fi
 
 # temporary image and output
 JPEG="${TMPDIR}/${0##*/}.$$.jpeg"
 OUT="${TMPDIR}/${0##*/}.$$.out"
-
-# same for all configurations
-YOLO_NAMES="${DARKNET}/data/coco.names"
+CONF_FILE=/etc/yolo.conf
 
 yolo_init() 
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn.log.trace "${FUNCNAME[0]} ${*}"
+
+  ## configure YOLO
+  local which=${1:-tiny-v2}
+  local darknet=$(yolo_config ${which})
+
+  local weights=$(echo "${darknet}" | jq -r '.weights')
+  local weights_url=$(echo "${darknet}" | jq -r '.weights_url')
+  local namefile=$(echo "${darknet}" | jq -r '.names')
+
+  if [ ! -s "${weights}" ]; then
+    hzn.log.notice "YOLO config: ${which}; updating ${weights} from ${weights_url}"
+    curl -fsSL ${weights_url} -o ${weights}
+    if [ ! -s "${weights}" ]; then
+      hzn.log.error "YOLO config: ${which}; failed to download: ${weights_url}"
+    fi
+  fi
 
   # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","threshold":'${YOLO_THRESHOLD}',"services":'"${SERVICES:-null}"'}'
-  # get names of entities that can be detected
-  if [ -s "${YOLO_NAMES}" ]; then
-    hzn.log.debug "Processing ${YOLO_NAMES}"
-    NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${YOLO_NAMES}" | sed 's|""|","|g')']'
+  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","services":'"${SERVICES:-null}"',"darknet":'"${darknet}"'}'
+  # get namefile of entities that can be detected
+  if [ -s "${namefile}" ]; then
+    hzn.log.info "Processing ${namefile}"
+    NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${namefile}" | sed 's|""|","|g')']'
   fi
   if [ -z "${NAMES:-}" ]; then NAMES='["person"]'; fi
   CONFIG=$(echo "${CONFIG}" | jq '.names='"${NAMES}")
-  echo "${CONFIG}"
+  echo "${CONFIG}" | tee ${CONF_FILE}
 }
 
 yolo_config()
@@ -37,40 +58,38 @@ yolo_config()
 
   case ${1} in
     tiny|tiny-v2)
-      DARKNET_WEIGHTS="${DARKNET_TINYV2_WEIGHTS_URL}"
+      YOLO_WEIGHTS_URL="${DARKNET_TINYV2_WEIGHTS_URL}"
       YOLO_WEIGHTS="${DARKNET_TINYV2_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_TINYV2_CONFIG}"
       YOLO_DATA="${DARKNET_TINYV2_DATA}"
+      YOLO_NAMES="${DARKNET_TINYV2_NAMES}"
     ;;
     tiny-v3)
-      DARKNET_WEIGHTS="${DARKNET_TINYV3_WEIGHTS_URL}"
+      YOLO_WEIGHTS_URL="${DARKNET_TINYV3_WEIGHTS_URL}"
       YOLO_WEIGHTS="${DARKNET_TINYV3_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_TINYV3_CONFIG}"
       YOLO_DATA="${DARKNET_TINYV3_DATA}"
+      YOLO_NAMES="${DARKNET_TINYV3_NAMES}"
     ;;
     v2)
-      DARKNET_WEIGHTS="${DARKNET_V2_WEIGHTS_URL}"
+      YOLO_WEIGHTS_URL="${DARKNET_V2_WEIGHTS_URL}"
       YOLO_WEIGHTS="${DARKNET_V2_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_V2_CONFIG}"
       YOLO_DATA="${DARKNET_V2_DATA}"
+      YOLO_NAMES="${DARKNET_V2_NAMES}"
     ;;
     v3)
-      DARKNET_WEIGHTS="${DARKNET_V3_WEIGHTS_URL}"
+      YOLO_WEIGHTS_URL="${DARKNET_V3_WEIGHTS_URL}"
       YOLO_WEIGHTS="${DARKNET_V3_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_V3_CONFIG}"
       YOLO_DATA="${DARKNET_V3_DATA}"
+      YOLO_NAMES="${DARKNET_V3_NAMES}"
     ;;
     *)
       hzn.log.error "Invalid YOLO_CONFIG: ${1}"
     ;;
   esac
-  if [ ! -s "${YOLO_WEIGHTS}" ]; then
-    hzn.log.debug "YOLO config: ${1}; updating ${YOLO_WEIGHTS} from ${DARKNET_WEIGHTS}"
-    curl -fsSL ${DARKNET_WEIGHTS} -o ${YOLO_WEIGHTS}
-    if [ ! -s "${YOLO_WEIGHTS}" ]; then
-      hzn.log.error "YOLO config: ${1}; failed to download: ${DARKNET_WEIGHTS}"
-    fi
-  fi
+  echo '{"threshold":'${YOLO_THRESHOLD}',"weights_url":"'${YOLO_WEIGHTS_URL}'","weights":"'${YOLO_WEIGHTS}'","cfg":"'${YOLO_CFG_FILE}'","data":"'${YOLO_DATA}'","names":"'${YOLO_NAMES}'"}'
 }
 
 yolo_process()
@@ -107,9 +126,14 @@ yolo_process()
   hzn.log.debug "JPEG: ${JPEG}; info: ${INFO}"
   OUTPUT=$(echo "${OUTPUT}" | jq '.info='"${INFO}")
 
+  local data=$(jq -r '.darknet.data' ${CONF_FILE})
+  local weights=$(jq -r '.darknet.weights' ${CONF_FILE})
+  local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
+  local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
+
   ## do YOLO
-  hzn.log.debug "DARKNET: ./darknet detector test ${YOLO_DATA} ${YOLO_CFG_FILE} ${YOLO_WEIGHTS} ${JPEG} -thresh ${YOLO_THRESHOLD}"
-  ./darknet detector test "${YOLO_DATA}" "${YOLO_CFG_FILE}" "${YOLO_WEIGHTS}" "${JPEG}" -thresh "${YOLO_THRESHOLD}" > "${OUT}" 2> "${TMPDIR}/darknet.$$.out"
+  hzn.log.debug "DARKNET: ./darknet detector test ${data} ${cfg} ${weights} ${JPEG} -thresh ${threshold}"
+  ./darknet detector test "${data}" "${cfg}" "${weights}" "${JPEG}" -thresh "${threshold}" > "${OUT}" 2> "${TMPDIR}/darknet.$$.out"
   # extract processing time in seconds
   TIME=$(cat "${OUT}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
   if [ -z "${TIME}" ]; then TIME=0; fi
