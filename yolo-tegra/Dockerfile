@@ -62,10 +62,17 @@ RUN mkdir -p ${OPENYOLO}
 RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
 
 # Build darknet
-RUN \
-    cd ${DARKNET} \
-    \
-    && GPU=1 make
+RUN cd ${DARKNET} \
+    && \
+    PATH=/usr/local/cuda/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/local/cuda8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} \
+    GPU=1 make obj/convolutional_kernels.o
+
+RUN cd ${DARKNET} \
+    && \
+    PATH=/usr/local/cuda/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/local/cuda8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} \
+    GPU=1 make
 
 FROM openyolo
 
