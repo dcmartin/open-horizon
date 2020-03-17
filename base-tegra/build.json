@@ -1,0 +1,7 @@
+{
+    "squash": false,
+    "build_from": {
+        "arm64": "nvcr.io/nvidia/l4t-base:r32.3.1"
+    },
+    "args": {}
+}

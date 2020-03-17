@@ -1,0 +1,7 @@
+{
+  "squash": false,
+  "build_from": { 
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.base-tegra:0.1.0"
+  },
+  "args": {}
+}
