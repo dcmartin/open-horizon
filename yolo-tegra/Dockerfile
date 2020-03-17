@@ -1,5 +1,25 @@
 ARG BUILD_FROM
 
+###
+## WARNING ! WARNING !
+#
+# This container may only be built using the nVidia container runtime
+# Please change /etc/docker/daemon.json to specify the runtime
+# See below:
+#
+#{
+#  "default-runtime": "nvidia",
+#  "runtimes": {
+#    "nvidia": {
+#      "path": "/usr/bin/nvidia-container-runtime",
+#      "runtimeArgs": []
+#    }
+#  }
+#}
+#
+## WARNING ! WARNING !
+### 
+
 FROM $BUILD_FROM as openyolo
 
 ARG BUILD_ARCH=amd64
