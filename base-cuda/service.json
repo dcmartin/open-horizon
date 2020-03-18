@@ -1,0 +1,34 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "base",
+  "description": "Provides base container with nVidia Linux4Tegra",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/base-cuda/README.md",
+  "url": "com.github.dcmartin.open-horizon.base-cuda",
+  "version": "0.1.0",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "BASE_PERIOD", "label": "periodicity", "type": "int", "defaultValue": "30" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" }
+  ],
+  "deployment": {
+    "services": {
+      "base": {
+        "environment": [
+          "SERVICE_LABEL=base",
+          "SERVICE_VERSION=0.1.0"
+        ],
+        "specific_ports": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

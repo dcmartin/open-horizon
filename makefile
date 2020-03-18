@@ -18,14 +18,26 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
 ## things NOT TO change
 ##
 
-BASES := base-alpine base-ubuntu 
-SERVICES := cpu hal wan yolo apache-alpine apache-ubuntu hznmonitor hzncli mqtt yolo4motion alpr alpr4motion face face4motion mqtt2kafka herald fft noize 
+BASES := base-alpine base-ubuntu apache-alpine apache-ubuntu 
+SERVICES := yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka # cpu hal wan hznmonitor hzncli herald fft noize mqtt 
 WIP := mqtt2mqtt record hotword 
-JETSONS := # jetson-jetpack jetson-cuda jetson-opencv jetson-yolo jetson-caffe jetson-digits
-PATTERNS := hznsetup startup motion2mqtt
+PATTERNS := startup # hznsetup motion2mqtt
 MISC := setup sh doc
 
-ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP} ${JETSONS}
+# intel/amd64 + GPU
+ifeq ($(BUILD_ARCH), "amd64")
+BASES += base-cuda
+SERVICES += yolo-cuda yolo-cuda4motion
+endif
+
+# jetson nano (maybe tx2)
+ifeq ($(BUILD_ARCH), "arm64")
+BASES += base-tegra
+SERVICES += yolo-tegra yolo-tegra4motion
+endif
+
+# all
+ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP}
 
 ##
 ## targets

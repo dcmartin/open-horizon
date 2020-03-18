@@ -1,7 +1,7 @@
 {
   "squash": false,
-  "build_from": {
-    "amd64": "nvidia/cuda:10.1-cudnn7-runtime"
+  "build_from": { 
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-cuda:0.1.0"
   },
   "args": {}
 }
