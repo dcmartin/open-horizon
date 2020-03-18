@@ -20,7 +20,7 @@ hzn_init
 CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","LOGTO":"'${LOGTO:-}'","LOG_LEVEL":"'${LOG_LEVEL:-}'","DEBUG":'${DEBUG:-false}'}'
 
 ## initialize service
-service_init ${CONFIG}
+service_init "${CONFIG}"
 
 hzn.log.notice "Service initialized"
 

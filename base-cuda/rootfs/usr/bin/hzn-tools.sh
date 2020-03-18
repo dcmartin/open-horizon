@@ -35,14 +35,15 @@ hzn_pattern() {
 }
 
 # initialize horizon
-hzn_init() {
+hzn_init()
+{
   hzn.log.trace "${FUNCNAME[0]}"
 
   HZN='{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"hzn":{"agreementid":"'${HZN_AGREEMENTID:-}'","arch":"'${HZN_ARCH:-}'","cpus":'${HZN_CPUS:-0}',"device_id":"'${HZN_DEVICE_ID:-}'","exchange_url":"'${HZN_EXCHANGE_URL:-}'","host_ips":['$(echo "${HZN_HOST_IPS:-}" | sed 's/,/","/g' | sed 's/\(.*\)/"\1"/')'],"organization":"'${HZN_ORGANIZATION:-}'","ram":'${HZN_RAM:-0}',"pattern":'$(hzn_pattern "${HZN_PATTERN:-}")'}}'
 
   hzn.log.debug "horizon configuration: ${HZN}"
 
-  echo "${HZN}" > "${HZN_CONFIG_FILE}" && cat "${HZN_CONFIG_FILE}" || echo ''
+  echo "${HZN}" | tee "${HZN_CONFIG_FILE}"
 }
 
 # get horizon configuration
