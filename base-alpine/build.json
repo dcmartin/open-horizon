@@ -4,13 +4,7 @@
         "amd64": "alpine:3.8",
         "arm": "arm32v6/alpine:3.8",
         "arm64": "arm64v8/alpine:3.8",
-	"ppc64": null,
-	"ppc64le": null,
-	"mips64": null,
-	"mips64le": null,
-	"s390x": null,
-	"mips": null,
-	"mipsle": null
+        "arm3v6": "arm64v8/alpine:3.8"
     },
     "args": {}
 }
