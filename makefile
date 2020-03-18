@@ -25,13 +25,13 @@ PATTERNS := startup # hznsetup motion2mqtt
 MISC := setup sh doc
 
 # intel/amd64 + GPU
-ifeq ($(BUILD_ARCH), "amd64")
+ifeq ($(BUILD_ARCH), 'amd64')
 BASES += base-cuda
 SERVICES += yolo-cuda yolo-cuda4motion
 endif
 
 # jetson nano (maybe tx2)
-ifeq ($(BUILD_ARCH), "arm64")
+ifeq ($(BUILD_ARCH), 'arm64')
 BASES += base-tegra
 SERVICES += yolo-tegra yolo-tegra4motion
 endif
@@ -73,14 +73,6 @@ pattern-validate:
 
 .PHONY: ${ALL} default all build run check stop push publish verify clean start test sync
 
-sync: ../beta .gitignore CLOC.md 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- synching ${ALL}""${NC}" &> /dev/stderr
-	@rsync -av makefile service.makefile .travis *.md .gitignore .travis.yml ../beta
-	export DIRS="${BASES} $(SERVICES) ${MISC} ${JETSONS} ${WIP}" && for dir in $${DIRS}; do \
-	  echo "$${dir}"; \
-	  rsync -av --info=name --exclude-from=./.gitignore $${dir}/ ../beta/$${dir}/ ; \
-	done
-	
 CLOC.md: .gitignore .
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- counting source code""${NC}" &> /dev/stderr
 	@cloc --md --exclude-list-file=.gitignore . > CLOC.md
