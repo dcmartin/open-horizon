@@ -32,7 +32,7 @@ SYNC_SERVICE := $(shell jq -r '.sync==true' $(SERVICE_JSON))
 
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
-SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),$(shell pwd -P | sed 's|.*/||'))
+SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),"UNKNOWN_SERVICE")
 SERVICE_NAME = $(if ${TAG},${SERVICE_LABEL}-${TAG},${SERVICE_LABEL})
 SERVICE_VERSION = $(shell jq -r '.version' $(SERVICE_JSON) | envsubst)
 SERVICE_TAG = "${DOCKER_NAMESPACE}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
