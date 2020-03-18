@@ -3,7 +3,7 @@ ARG BUILD_FROM
 ###
 ## WARNING ! WARNING !
 #
-# This container may only be built using the nVidia container runtime
+# This container may only be built and run using the nVidia container runtime
 # Please change /etc/docker/daemon.json to specify the runtime
 # See below:
 #
