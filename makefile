@@ -12,7 +12,7 @@ HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID)
 TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
 
 # hard code architecture for build environment
-BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),)
+BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
 ##
 ## things NOT TO change
@@ -25,13 +25,14 @@ PATTERNS := startup # hznsetup motion2mqtt
 MISC := setup sh doc
 
 # intel/amd64 + GPU
-ifeq ($(BUILD_ARCH), 'amd64')
+ifeq ($(BUILD_ARCH), amd64)
+#ifeq ($(CUDA), 1)
 BASES += base-cuda
 SERVICES += yolo-cuda yolo-cuda4motion
 endif
 
 # jetson nano (maybe tx2)
-ifeq ($(BUILD_ARCH), 'arm64')
+ifeq ($(BUILD_ARCH), arm64)
 BASES += base-tegra
 SERVICES += yolo-tegra yolo-tegra4motion
 endif
