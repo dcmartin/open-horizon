@@ -18,51 +18,49 @@ source /usr/bin/yolo-tools.sh
 hzn_init
 
 ## initialize servive
-service_init $(yolo_init)
+CONFIG=$(echo $(yolo_init ${YOLO_CONFIG}) | jq '.resolution="'${WEBCAM_RESOLUTION}'"|.device="'${WEBCAM_DEVICE}'"')
+
+service_init "${CONFIG}"
 
 ## initialize
 OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
-
-## configure YOLO
-yolo_config ${YOLO_CONFIG}
 
 # start in darknet
 cd ${DARKNET}
 
 if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- processing images from /dev/video0 every ${YOLO_PERIOD} seconds" &> /dev/stderr; fi
 
+if [ -z "${WEBCAM_DEVICE}" ]; then WEBCAM_DEVICE="/dev/video0"; fi
+if [ -z "${WEBCAM_RESOLUTION}" ]; then WEBCAM_RESOLUTION="384x288"; fi
+
 while true; do
   # when we start
   DATE=$(date +%s)
 
   # path to image payload
-  JPEG_FILE="${TMPDIR}/${0##*/}.$$.jpg"
+  JPEG_FILE=$(mktemp -t "${0##*/}-XXXXXX")
   # capture image payload from /dev/video0
-  fswebcam --no-banner "${JPEG_FILE}" &> /dev/null
+  # fswebcam --resolution "${WEBCAM_RESOLUTION}" --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
+  fswebcam --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
 
   # process image payload into JSON
   if [ -z "${ITERATION:-}" ]; then ITERATION=0; else ITERATION=$((ITERATION+1)); fi
-  YOLO_JSON_FILE=$(yolo_process "${JPEG_FILE}" "${ITERATION}")
+  YOLO_OUTPUT_FILE=$(yolo_process "${JPEG_FILE}" "${ITERATION}")
 
-  if [ -s "${YOLO_JSON_FILE}" ]; then
-    # initialize output with configuration
-    JSON_FILE="${TMPDIR}/${0##*/}.$$.json"
-    echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s)'|.entity="'${YOLO_ENTITY}'"' > "${JSON_FILE}"
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- JSON_FILE: ${JSON_FILE}:" $(jq -c '.image=(.image!=null)|.names=(.names!=null)' "${JSON_FILE}") &> /dev/stderr; fi
+  # remove
+  rm -f ${JPEG_FILE}
 
+  if [ -s "${YOLO_OUTPUT_FILE}" ]; then
     # add two files
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- YOLO_JSON_FILE: ${YOLO_JSON_FILE}" $(jq -c '.image=(.image!=null)' ${YOLO_JSON_FILE}) &> /dev/stderr; fi
-    jq -s add "${JSON_FILE}" "${YOLO_JSON_FILE}" > "${JSON_FILE}.$$" && mv -f "${JSON_FILE}.$$" "${JSON_FILE}"
-    if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- JSON_FILE: ${JSON_FILE}:" $(jq -c '.image=(.image!=null)|.names=(.names!=null)' "${JSON_FILE}") &> /dev/stderr; fi
-
-    # make it atomic
-    if [ -s "${JSON_FILE}" ]; then
-      service_update "${JSON_FILE}"
-    fi
+    jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) "${YOLO_OUTPUT_FILE}" > "${OUTPUT_FILE}"
+    # update
   else
+    echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
     if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- nothing seen" &> /dev/stderr; fi
   fi
+  # update
+  service_update "${OUTPUT_FILE}"
 
   # wait for ..
   SECONDS=$((YOLO_PERIOD - $(($(date +%s) - DATE))))
@@ -70,5 +68,4 @@ while true; do
     if [ "${DEBUG:-}" == 'true' ]; then echo "--- INFO -- $0 $$ -- sleep ${SECONDS}" &> /dev/stderr; fi
     sleep ${SECONDS}
   fi
-
 done

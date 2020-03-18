@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.jetson-yolo",
+      "url": "com.github.dcmartin.open-horizon.yolo-cuda",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "YOLO_PERIOD": 30,
