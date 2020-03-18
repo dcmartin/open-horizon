@@ -4,7 +4,7 @@
   "description": "Provide YOLO microservice for hosts with operational nvidia-container-runtime as default Docker runtime; only amd64 and arm64",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo-cuda/README.md",
   "url": "com.github.dcmartin.open-horizon.yolo-cuda",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -26,7 +26,7 @@
       "yolo": {
         "environment": [
           "SERVICE_LABEL=yolo",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.1.2"
         ],
         "specific_ports": [],
         "image": null,
