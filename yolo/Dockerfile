@@ -72,6 +72,9 @@ FROM openyolo
 # Copy compiled darknet
 COPY --from=openyolo ${OPENYOLO} ${OPENYOLO}
 
+# download `tiny` weights as default/backup
+RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+
 # Copy usr
 COPY rootfs/usr /usr
 
