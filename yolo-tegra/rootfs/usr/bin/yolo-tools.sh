@@ -30,14 +30,33 @@ yolo_init()
 
   local weights=$(echo "${darknet}" | jq -r '.weights')
   local weights_url=$(echo "${darknet}" | jq -r '.weights_url')
+  local weights_md5=$(echo "${darknet}" | jq -r '.weights_md5')
   local namefile=$(echo "${darknet}" | jq -r '.names')
+  local attempts=1
 
-  if [ ! -s "${weights}" ]; then
-    hzn.log.notice "YOLO config: ${which}; updating ${weights} from ${weights_url}"
+  hzn.log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}"
+  while [ ! -s "${weights}" ] && [ ${attempts} -le ${YOLO_ATTEMPTS:-2} ]; do
+
+    # download
+    hzn.log.notice "YOLO config: ${which}; downloading ${weights} from ${weights_url}"
     curl -fsSL ${weights_url} -o ${weights}
-    if [ ! -s "${weights}" ]; then
-      hzn.log.error "YOLO config: ${which}; failed to download: ${weights_url}"
+
+    # test
+    if [ -s "${weights}" ]; then
+      local md5=$(md5sum ${weights} | awk '{ print $1 }')
+
+      if [ "${md5}" != "${weights_md5}" ]; then
+        hzn.log.notice "YOLO config: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
+        rm -f ${weights}
+      fi
     fi
+    attempts=$((attempts+1))
+  done
+  if [ ! -s "${weights}" ]; then
+    hzn.log.notice "YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:tiny}"
+    yolo_config ${YOLO_DEFAULT:-tiny}
+  else
+    hzn.log.notice "YOLO config: ${which}; downloaded: ${weights}"
   fi
 
   # build configuation
@@ -59,6 +78,7 @@ yolo_config()
   case ${1} in
     tiny|tiny-v2)
       YOLO_WEIGHTS_URL="${DARKNET_TINYV2_WEIGHTS_URL}"
+      YOLO_WEIGHTS_MD5="${DARKNET_TINYV2_WEIGHTS_MD5}"
       YOLO_WEIGHTS="${DARKNET_TINYV2_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_TINYV2_CONFIG}"
       YOLO_DATA="${DARKNET_TINYV2_DATA}"
@@ -66,6 +86,7 @@ yolo_config()
     ;;
     tiny-v3)
       YOLO_WEIGHTS_URL="${DARKNET_TINYV3_WEIGHTS_URL}"
+      YOLO_WEIGHTS_MD5="${DARKNET_TINYV3_WEIGHTS_MD5}"
       YOLO_WEIGHTS="${DARKNET_TINYV3_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_TINYV3_CONFIG}"
       YOLO_DATA="${DARKNET_TINYV3_DATA}"
@@ -73,6 +94,7 @@ yolo_config()
     ;;
     v2)
       YOLO_WEIGHTS_URL="${DARKNET_V2_WEIGHTS_URL}"
+      YOLO_WEIGHTS_MD5="${DARKNET_V2_WEIGHTS_MD5}"
       YOLO_WEIGHTS="${DARKNET_V2_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_V2_CONFIG}"
       YOLO_DATA="${DARKNET_V2_DATA}"
@@ -80,6 +102,7 @@ yolo_config()
     ;;
     v3)
       YOLO_WEIGHTS_URL="${DARKNET_V3_WEIGHTS_URL}"
+      YOLO_WEIGHTS_MD5="${DARKNET_V3_WEIGHTS_MD5}"
       YOLO_WEIGHTS="${DARKNET_V3_WEIGHTS}"
       YOLO_CFG_FILE="${DARKNET_V3_CONFIG}"
       YOLO_DATA="${DARKNET_V3_DATA}"
@@ -89,7 +112,7 @@ yolo_config()
       hzn.log.error "Invalid YOLO_CONFIG: ${1}"
     ;;
   esac
-  echo '{"threshold":'${YOLO_THRESHOLD}',"weights_url":"'${YOLO_WEIGHTS_URL}'","weights":"'${YOLO_WEIGHTS}'","cfg":"'${YOLO_CFG_FILE}'","data":"'${YOLO_DATA}'","names":"'${YOLO_NAMES}'"}'
+  echo '{"threshold":'${YOLO_THRESHOLD}',"weights_url":"'${YOLO_WEIGHTS_URL}'","weights":"'${YOLO_WEIGHTS}'","weights_md5":"'${YOLO_WEIGHTS_MD5}'","cfg":"'${YOLO_CFG_FILE}'","data":"'${YOLO_DATA}'","names":"'${YOLO_NAMES}'"}'
 }
 
 yolo_process()
