@@ -11,9 +11,13 @@ ENV \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
     TERM="xterm"
 
-RUN apt-get update && apt-get install -q -y --no-install-recommends \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive \
+  && \
+  apt-get update && apt-get install -q -y --no-install-recommends \
   bc \
   inotify-tools \
+  dateutils \
   mosquitto-clients
 
 # Copy usr
@@ -33,7 +37,7 @@ LABEL \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="yolo" \
     org.label-schema.description="yolo listening to MQTT" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/yolo4mqtt/" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/yolo4motion/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

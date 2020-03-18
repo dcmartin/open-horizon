@@ -1,0 +1,15 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "com.github.dcmartin.open-horizon.yolo-tegra4motion",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+	"MQTT_HOST": "mqtt.dcmartin.com",
+	"MQTT_USERNAME": "username",
+	"MQTT_PASSWORD":"password"
+      }
+    }
+  ]
+}

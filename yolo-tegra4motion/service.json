@@ -1,15 +1,15 @@
 {
   "org": "${HZN_ORG_ID}",
   "label": "yolo4motion",
-  "description": "Listen to MQTT topic and run YOLO on image received",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo4motion/README.md",
-  "url": "com.github.dcmartin.open-horizon.yolo4motion",
-  "version": "0.1.0",
+  "description": "yolo service with local MQTT broker (usage optional)",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo-tegra4motion/README.md",
+  "url": "com.github.dcmartin.open-horizon.yolo-tegra4motion",
+  "version": "0.1.1",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
   ],
   "userInput": [
     { "name": "MQTT_HOST", "label": "MQTT host", "type": "string", "defaultValue": "mqtt" },
@@ -20,7 +20,7 @@
     { "name": "MOTION_CLIENT", "label": "client for subscription", "type": "string", "defaultValue": "+" },
     { "name": "YOLO4MOTION_CAMERA", "label": "camera for subscription", "type": "string", "defaultValue": "+" },
     { "name": "YOLO4MOTION_TOPIC_EVENT", "label": "event topic", "type": "string", "defaultValue": "event/end" },
-    { "name": "YOLO4MOTION_TOPIC_PAYLOAD", "label": "image topic", "type": "string", "defaultValue": "image" },
+    { "name": "YOLO4MOTION_TOPIC_PAYLOAD", "label": "image topic", "type": "string", "defaultValue": "image/end" },
     { "name": "YOLO4MOTION_USE_MOCK", "label": "use mock data true/false", "type": "boolean", "defaultValue": "false" },
     { "name": "YOLO4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
     { "name": "YOLO_CONFIG", "label": "configuration: tiny, tiny-v3, v2, v3; default: tiny", "type": "string", "defaultValue": "tiny" },
@@ -37,7 +37,7 @@
       "yolo4motion": {
         "environment": [
           "SERVICE_LABEL=yolo4motion",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.1.1"
         ],
         "specific_ports": [],
         "devices": [],
