@@ -4,22 +4,6 @@ Provides entity count information as micro-service; updates periodically (defaul
 
 ## Status
 
-![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-tegra4motion "Get your own version badge on microbadger.com")
-[![Docker Pulls][pulls-amd64]][docker-amd64]
-
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-tegra4motion
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg
-
-![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion "Get your own version badge on microbadger.com")
-[![Docker Pulls][pulls-arm]][docker-arm]
-
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg
-
 ![Supports arm64 Architecture][arm64-shield]
 [![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion "Get your own version badge on microbadger.com")
@@ -27,15 +11,12 @@ Provides entity count information as micro-service; updates periodically (defaul
 
 [docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion
 [pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg
-
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
-[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
 + `url` - `com.github.dcmartin.open-horizon.yolo-tegra4motion`
-+ `version` - `0.0.1`
++ `version` - `0.1.2`
 
 ## Service variables 
 + `YOLO_CONFIG` - configuration: `tiny`|`tinyv2`, `tinyv3`, `v2`, `v3`; default: `tiny`
@@ -56,87 +37,23 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `YOLO4MOTION_USE_MOCK` - generate mock events for testing
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 
+## &#9995; nVidia Jetson _only_
+This container will only run on nVidia Jetson computers, e.g. Jetson Nano or TX2, with the latest JetPack installed.  In addition, Docker must be configured to use the nVidia Container runtime as the default; for example `/etc/docker/daemon.json` should contain:
+
+```
+{
+  "default-runtime": "nvidia",
+  "runtimes": {
+    "nvidia": {
+      "path": "/usr/bin/nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  }
+}
+```
+
 ## How To Use
-
-Copy this [repository][repository], change to the `yolo-tegra4motion` directory, then use the **make** command; see below:
-
-```
-% mkdir ~/gitdir
-% cd ~/gitdir
-% git clone http://github.com/dcmartin/open-horizon
-% cd open-horizon/yolo-tegra4motion
-% make
-...
-{
-  "yolo4motion": null,
-  "date": 1554317838,
-  "hzn": {
-    "agreementid": "",
-    "arch": "",
-    "cpus": 0,
-    "device_id": "",
-    "exchange_url": "",
-    "host_ips": [
-      ""
-    ],
-    "organization": "",
-    "ram": 0,
-    "pattern": null
-  },
-  "config": null,
-  "service": {
-    "label": "yolo4motion",
-    "version": "0.0.4.3"
-  }
-}
-```
-
-The `yolo-tegra4motion` service will not operate successfully without an attached camera; when the service is deployed in conjunction with another service, the status output:
-
-```
-{
-  "yolo4motion": {
-    "date": 1548702367,
-    "device": "test-cpu-2",
-    "log_level": "info",
-    "debug": "false",
-    "period": 0,
-    "entity": "person",
-    "time": 38.565109,
-    "count": 0,
-    "width": 320,
-    "height": 240,
-    "scale": "320x240",
-    "mock": "false",
-    "image": "<redacted>"
-  },
-  "date": 1554174883,
-  "hzn": {
-    "agreementid": "",
-    "arch": "arm",
-    "cpus": 1,
-    "device_id": "test-cpu-3",
-    "exchange_url": "https://alpha.edge-fabric.com/v1/",
-    "host_ips": [
-      "127.0.0.1",
-      "192.168.160.1",
-      "192.168.1.167",
-      "172.17.0.1"
-    ],
-    "organization": "github@dcmartin.com",
-    "ram": 0,
-    "pattern": "github@dcmartin.com/motion2mqtt"
-  },
-  "config": null,
-  "service": {
-    "label": "yolo4motion",
-    "version": "0.0.4.3"
-  }
-}
-```
-## Sample 
-
-![sample.png](samples/sample.png?raw=true "YOLO4MOTION")
+Please see the [`yolo4motion`](../yolo4motion/README.md) documentation for more information.
 
 ## Changelog & Releases
 
