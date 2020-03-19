@@ -26,7 +26,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 + `DEBUG` - turn on debugging output; `true` or `false`; default `false`
 
-## ONLY nVidia Jetson
+## &#9995; nVidia Jetson _only_
 This container will only run on nVidia Jetson computers, e.g. Jetson Nano or TX2, with the latest JetPack installed.  In addition, Docker must be configured to use the nVidia Container runtime as the default; for example `/etc/docker/daemon.json` should contain:
 
 ```

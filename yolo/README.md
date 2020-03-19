@@ -5,7 +5,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo)
 [![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
@@ -13,7 +13,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 [pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo)
 [![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
@@ -21,7 +21,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 [pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo)
 [![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
@@ -44,6 +44,26 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `YOLO_THRESHOLD` - minimum probability; default `0.25`; range `0.0` to `1.0`
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 + `DEBUG` - turn on debugging output; `true` or `false`; default `false`
+
+## GPU-enabled versions
+There are two version of this service which are enabled with nVidia GPU capabilities, drastically reducing the time required to perform a prediction.
+
++ [`yolo-cuda`](../yolo-cuda/README.md) - For AMD/Intel 64-bit systems with nVidia GPU supporting CUDA version 10
++ [`yolo-tegra`](../yolo-tegra/README.md) - For nVidia Jetson Nano and other `tegra` devices with JetPack v3.2
+
+For both services the default container run-time for Docker **must** be the `nvidia-container-runtime`.  The `/etc/docker/daemon.json` file must contain the following:
+
+```
+{
+  "default-runtime": "nvidia",
+  "runtimes": {
+    "nvidia": {
+      "path": "/usr/bin/nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  }
+}
+```
 
 ## How To Use
 

@@ -26,7 +26,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `LOG_LEVEL` - specify level of logging; default `info`; options include (`debug` and `none`)
 + `DEBUG` - turn on debugging output; `true` or `false`; default `false`
 
-## ONLY AMD64/nVidia GPU
+## &#9995; AMD64/nVidia GPU _only_
 This container will only run on AMD64 achitecture with nVidia GPU.  In addition, Docker must be configured to use the nVidia Container runtime as the default; for example `/etc/docker/daemon.json` should contain:
 
 ```
