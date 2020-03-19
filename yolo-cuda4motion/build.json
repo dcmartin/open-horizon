@@ -1,7 +1,7 @@
 {
   "squash": false,
   "build_from": {
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo-cuda:0.1.1"
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo-cuda:0.1.2"
   },
   "args": {}
 }

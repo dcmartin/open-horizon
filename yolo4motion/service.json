@@ -4,7 +4,7 @@
   "description": "yolo service with local MQTT broker (usage optional)",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo4motion/README.md",
   "url": "com.github.dcmartin.open-horizon.yolo4motion",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -37,7 +37,7 @@
       "yolo4motion": {
         "environment": [
           "SERVICE_LABEL=yolo4motion",
-          "SERVICE_VERSION=0.1.1"
+          "SERVICE_VERSION=0.1.2"
         ],
         "specific_ports": [],
         "devices": [],
