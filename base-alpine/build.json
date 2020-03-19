@@ -4,7 +4,7 @@
         "amd64": "alpine:3.8",
         "arm": "arm32v6/alpine:3.8",
         "arm64": "arm64v8/alpine:3.8",
-        "arm3v6": "arm64v8/alpine:3.8"
+        "arm32v6": "arm64v8/alpine:3.8"
     },
     "args": {}
 }
