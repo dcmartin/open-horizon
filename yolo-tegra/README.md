@@ -42,116 +42,7 @@ This container will only run on nVidia Jetson computers, e.g. Jetson Nano or TX2
 ```
 
 ## How To Use
-
-Copy this [repository][repository], change to the `yolo` directory, then use the **make** command; see below:
-
-```
-% mkdir ~/gitdir
-% cd ~/gitdir
-% git clone http://github.com/dcmartin/open-horizon
-% cd open-horizon/yolo
-% make
-...
-{
-  "yolo": null,
-  "date": 1554316177,
-  "hzn": {
-    "agreementid": "",
-    "arch": "",
-    "cpus": 0,
-    "device_id": "",
-    "exchange_url": "",
-    "host_ips": [
-      ""
-    ],
-    "organization": "",
-    "ram": 0,
-    "pattern": null
-  },
-  "config": {
-    "log_level": "info",
-    "debug": false,
-    "date": 1554316177,
-    "period": 0,
-    "entity": "all",
-    "scale": "none",
-    "config": "tiny",
-    "device": "/dev/video0",
-    "threshold": 0.25,
-    "services": null,
-    "names": [
-      "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush"
-    ]
-  },
-  "service": {
-    "label": "yolo",
-    "version": "0.0.8"
-  }
-}
-```
-
-The `yolo` payload will be incomplete until the service completes; subsequent `make check` will return complete; see below:
-
-```
-{
-  "yolo": {
-    "mock": "eagle",
-    "info": {
-      "type": "JPEG",
-      "size": "773x512",
-      "bps": "8-bit",
-      "color": "sRGB"
-    },
-    "time": 0.861101,
-    "count": 1,
-    "detected": [
-      {
-        "entity": "bird",
-        "count": 1
-      }
-    ],
-    "image": "<redacted>",
-    "date": 1554316261
-  },
-  "date": 1554316177,
-  "hzn": {
-    "agreementid": "",
-    "arch": "",
-    "cpus": 0,
-    "device_id": "",
-    "exchange_url": "",
-    "host_ips": [
-      ""
-    ],
-    "organization": "",
-    "ram": 0,
-    "pattern": null
-  },
-  "config": {
-    "log_level": "info",
-    "debug": false,
-    "date": 1554316177,
-    "period": 0,
-    "entity": "all",
-    "scale": "none",
-    "config": "tiny",
-    "device": "/dev/video0",
-    "threshold": 0.25,
-    "services": null,
-    "names": [
-      "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush"
-    ]
-  },
-  "service": {
-    "label": "yolo",
-    "version": "0.0.8"
-  }
-}
-```
-
-## Example
-
-![mock-output.jpg](samples/mock-output.jpg?raw=true "YOLO")
+Please see the [`yolo`](../yolo/README.md) documentation for more information.
 
 ## Changelog & Releases
 
@@ -166,12 +57,6 @@ based on the following:
 ## Authors & contributors
 
 [David C Martin][dcmartin] (github@dcmartin.com)
-
-[userinput]: ../yolo/userinput.json
-[service-json]: ../yolo/service.json
-[build-json]: ../yolo/build.json
-[dockerfile]: ../yolo/Dockerfile
-
 
 [dcmartin]: https://github.com/dcmartin
 [issue]: https://github.com/dcmartin/open-horizon/issues
