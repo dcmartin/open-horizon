@@ -35,7 +35,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 ## Service discovery
 + `org` - `github@dcmartin.com`
 + `url` - `com.github.dcmartin.open-horizon.yolo`
-+ `version` - `0.0.8`
++ `version` - `0.1.2`
 
 ## Service variables
 + `YOLO_CONFIG` - configuration of YOLO; `tinyv2`, `tinyv3`,`v2`, or `v3`
