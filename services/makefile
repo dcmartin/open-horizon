@@ -13,6 +13,7 @@ TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
 
 # hard code architecture for build environment
 BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
+NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRuntime=="nvidia"')
 
 ##
 ## things NOT TO change
@@ -27,14 +28,18 @@ MISC := setup sh doc
 # intel/amd64 + GPU
 ifeq ($(BUILD_ARCH), amd64)
 #ifeq ($(CUDA), 1)
+ifeq ($(NVIDIA_RUNTIME), true)
 BASES += base-cuda
 SERVICES += yolo-cuda yolo-cuda4motion
+endif
 endif
 
 # jetson nano (maybe tx2)
 ifeq ($(BUILD_ARCH), arm64)
+ifeq ($(NVIDIA_RUNTIME), true)
 BASES += base-tegra
 SERVICES += yolo-tegra yolo-tegra4motion
+endif
 endif
 
 # all
