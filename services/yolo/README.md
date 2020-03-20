@@ -59,7 +59,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `version` - `0.1.2`
 
 ## Service variables
-+ `YOLO_CONFIG` - configuration of YOLO; `tinyv2`, `tinyv3`,`v2`, or `v3`
++ `YOLO_CONFIG` - configuration of YOLO; `tiny-v2`, `tiny-v3`,`v2`, or `v3`
 + `YOLO_ENTITY` - entity to count; defaults to `all`
 + `YOLO_PERIOD` - seconds between updates; defaults to `0`
 + `YOLO_THRESHOLD` - minimum probability; default `0.25`; range `0.0` to `1.0`

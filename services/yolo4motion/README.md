@@ -58,7 +58,7 @@ Provides entity count information as micro-service; updates periodically (defaul
 + `version` - `0.1.2`
 
 ## Service variables 
-+ `YOLO_CONFIG` - configuration: `tiny`|`tinyv2`, `tinyv3`, `v2`, `v3`; default: `tiny`
++ `YOLO_CONFIG` - configuration: `tiny`|`tiny-v2`, `tiny-v3`, `v2`, `v3`; default: `tiny`
 + `YOLO_SCALE` - width and height to scale image; defaults to `none`
 + `YOLO_ENTITY` - entity to count; defaults to `all`
 + `YOLO_THRESHOLD` - entity to count; defaults to `0.25`
