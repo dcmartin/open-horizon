@@ -32,24 +32,25 @@ yolo_init()
   local weights_url=$(echo "${darknet}" | jq -r '.weights_url')
   local weights_md5=$(echo "${darknet}" | jq -r '.weights_md5')
   local namefile=$(echo "${darknet}" | jq -r '.names')
-  local attempts=1
+  local attempts=0
 
   hzn.log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}"
-  while [ ! -s "${weights}" ] && [ ${attempts} -le ${YOLO_ATTEMPTS:-2} ]; do
 
-    # download
-    hzn.log.notice "YOLO config: ${which}; downloading ${weights} from ${weights_url}"
-    curl -fsSL ${weights_url} -o ${weights}
-
-    # test
+  while [ ${attempts} -le ${YOLO_ATTEMPTS:-2} ]; do
     if [ -s "${weights}" ]; then
       local md5=$(md5sum ${weights} | awk '{ print $1 }')
 
       if [ "${md5}" != "${weights_md5}" ]; then
         hzn.log.notice "YOLO config: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
         rm -f ${weights}
+      else
+        break
       fi
     fi
+
+    # download
+    hzn.log.notice "YOLO config: ${which}; downloading ${weights} from ${weights_url}"
+    curl -fsSL ${weights_url} -o ${weights}
     attempts=$((attempts+1))
   done
   if [ ! -s "${weights}" ]; then

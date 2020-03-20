@@ -37,6 +37,11 @@
       }
     }
   },
+  "mount": [
+    {"source":"${PWD}/yolov3-tiny.weights","target":"/openyolo/darknet/yolov3-tiny.weights"},
+    {"source":"${PWD}/yolov2.weights","target":"/openyolo/darknet/yolov2.weights"},
+    {"source":"${PWD}/yolov3.weights","target":"/openyolo/darknet/yolov3.weights"}
+  ],
   "tmpfs": {
     "size": 8192000
   }
