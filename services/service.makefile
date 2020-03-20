@@ -30,6 +30,9 @@ SERVICE_JSON := $(if $(wildcard service.json),service.json,"/dev/null")
 ## SYNC
 SYNC_SERVICE := $(shell jq -r '.sync==true' $(SERVICE_JSON))
 
+## DOCKER NAMESPACE
+DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
+
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
 SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),"UNKNOWN_SERVICE")
@@ -53,7 +56,6 @@ APIKEY := $(if $(wildcard ../HZN_EXCHANGE_APIKEY),$(shell cat ../HZN_EXCHANGE_AP
 ## docker
 DOCKER_RESTART ?= $(if $(wildcard ../DOCKER_RESTART),$(shell cat ../DOCKER_RESTART),'--restart=unless-stopped')
 DOCKER_REGISTRY ?= $(if $(wildcard ../DOCKER_REGISTRY),$(shell cat ../DOCKER_REGISTRY),$(if $(wildcard ../registry.json),$(shell jq -r '.registry' ../registry.json),))
-DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
 DOCKER_REPOSITORY ?= $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY)/$(DOCKER_NAMESPACE),$(DOCKER_NAMESPACE))
 DOCKER_LOGIN := $(if $(wildcard ../DOCKER_LOGIN),$(shell cat ../DOCKER_LOGIN),$(if $(wildcard ../registry.json),token,))
 DOCKER_PASSWORD := $(if $(wildcard ../DOCKER_PASSWORD),$(shell cat ../DOCKER_PASSWORD),$(if $(wildcard ../registry.json),$(shell jq -r '.private' ../registry.json),))
