@@ -1,12 +1,12 @@
 <img src="docs/bluehorizon.gif" width="90%">
 
-# _Open Horizon_  services & patterns
+# `open-horizon`  _edge fabric_ services & patterns
 
 This [repository][repository] contains [Open Horizon](http://github.com/open-horizon) services and patterns, including:
 
-+ [`yolo4motion`](yolo4motion/README.md) - A service to process MQTT messages through the **[YOLO](https://pjreddie.com/darknet/yolo/)** object detector and classifier
-+ [`alpr4motion`](alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
-+ [`face4motion`](face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
++ [`yolo4motion`](services/yolo4motion/README.md) - A service to process MQTT messages through the **[OpenYOLO](https://github.com/dcmartin/openyolo/)** object detector and classifier
++ [`alpr4motion`](services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
++ [`face4motion`](services/face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
 
 To setup your own Open Horizon _exchange_, follow the [instructions](exchange/README.md) to install and configure the Docker containers.
 
@@ -38,7 +38,7 @@ Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction 
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 [arm-shield]: https://img.shields.io/badge/arm-yes-green.svg
 
-## 1. Introduction
+## 1.1 Introduction
 
 These services and patterns are built and pushed to designated Docker registry & namespace as well as Open Horizon exchange and organization.  The default build configuration is:
 
@@ -56,7 +56,7 @@ This repository works best on a &#63743; macOS computer.  However, macOS need so
 % cd /usr/local/bin && ln -s ../Cellar/gettext/0.19.8.1/bin/envsubst .
 ```
 
-### 1.1 Variables
+### 1.1.1 Variables
 The `HZN_ORG_ID` and `DOCKER_NAMESPACE` should be specified appropriately prior to any build; substitute values appropriately, for example:
 
 ```
@@ -71,15 +71,7 @@ To make those environment variables persistent, copy them into files with the sa
 % echo "${DOCKER_NAMESPACE}" > DOCKER_NAMESPACE
 ```
 
-An IBM Cloud Platform API key is required to publish any service or pattern; please refer to the IBM [IAM](http://cloud.ibm.com/iam/) service to download a JSON API key file.  Then copy that file into the top-level directory of the forked or cloned repository; for example:
-
-```
-% cp ~/Downloads/apiKey.json ~/gitdir/open-horizon/
-```
-
-The API key will be automatically extracted and saved in a local `APIKEY` file for use in the build process.
-
-### 1.2 Dependencies
+### 1.1.2 Dependencies
 Docker provides for build dependencies through the `FROM ` directive in the `Dockerfile`; most services depend on the base service containers for `base-ubuntu` or `base-alpine`.
 
 Build all services and containers from the top-level using the following command:
@@ -93,56 +85,51 @@ Build all services and containers from the top-level using the following command
 
 Services are defined within a directory hierarchy of this [repository][repository]. All services in this repository share a common [design][design-md].
 
-Patterns include:
+Examples:
 
-+ `yolo2msghub` - Pattern of `yolo2msghub` with `yolo`,`hal`,`wan`, and `cpu`
-+ `motion2mqtt` - Pattern of `motion2mqtt`,`yolo4motion` and `mqtt2kafka` with `mqtt`,`hal`,`wan`, and `cpu`
 + [`hello`](./hello/README.md) - The "hello world" example
 + [`esstest`](./esstest/README.md) - A simple test of the [edge-sync-service](http://github.com/open-horizon/edge-sync-service)
 + [`sdr2msghub`](./sdr2msghub/README.md) - Re-packaging of `IBM/sdr2msghub` service w/ `startup`
-+ [`cpu2msghub`](./cpu2msghub/README.md) - Re-packaging of `IBM/cpu2msghub` service w/ `startup`
 
 Services include:
 
-+ [`cpu`](./cpu/README.md) - provide CPU usage as percentage (0-100)
-+ [`fft`](./fft/README.md) - Perform FFT analysis on sound
-+ [`hal`](./hal/README.md) - provide Hardware-Abstraction-Layer information
-+ [`herald`](./herald/README.md) - multi-cast data received from other heralds on local-area-network
-+ [`hotword`](./hotword/README.md) - Detect specific _hot_ words
-+ [`mqtt`](./mqtt/README.md) - MQTT message broker service
-+ [`motion2mqtt`](./motion2mqtt/README.md) - transmit motion detected images to MQTT
-+ [`mqtt2kafka`](./mqtt2kafka/README.md) - relay MQTT traffic to Kafka
-+ [`mqtt2mqtt`](./mqtt2mqtt/README.md) - Relay MQTT traffic
-+ [`nmap`](./nmap/README.md) - Provide network map 
-+ [`noize`](./noize/README.md) - Capture noise from silence
-+ [`record`](./record/README.md) - Record audio from a microphone
-+ [`wan`](./wan/README.md) - provide Wide-Area-Network information
-+ [`yolo`](./yolo/README.md) - recognize entities from USB camera
-+ [`yolo2msghub`](./yolo2msghub/README.md) - transmit `yolo`, `hal`, `cpu`, and `wan` information to Kafka
-+ [`yolo4motion`](./yolo4motion/README.md) - subscribe to MQTT _topics_ from `motion2mqtt`,  recognize entities, and publish results
++ [`cpu`](services/cpu/README.md) - provide CPU usage as percentage services/0-100)
++ [`fft`](services/fft/README.md) - Perform FFT analysis on sound
++ [`hal`](services/hal/README.md) - provide Hardware-Abstraction-Layer information
++ [`herald`](services/herald/README.md) - multi-cast data received from other heralds on local-area-network
++ [`hotword`](services/hotword/README.md) - Detect specific _hot_ words
++ [`mqtt`](services/mqtt/README.md) - MQTT message broker service
++ [`motion2mqtt`](services/motion2mqtt/README.md) - transmit motion detected images to MQTT
++ [`mqtt2kafka`](services/mqtt2kafka/README.md) - relay MQTT traffic to Kafka
++ [`mqtt2mqtt`](services/mqtt2mqtt/README.md) - Relay MQTT traffic
++ [`nmap`](services/nmap/README.md) - Provide network map 
++ [`noize`](services/noize/README.md) - Capture noise from silence
++ [`record`](services/record/README.md) - Record audio from a microphone
++ [`wan`](services/wan/README.md) - provide Wide-Area-Network information
++ [`yolo`](services/yolo/README.md) - recognize entities from USB camera
++ [`yolo2msghub`](services/yolo2msghub/README.md) - transmit `yolo`, `hal`, `cpu`, and `wan` information to Kafka
++ [`yolo4motion`](services/yolo4motion/README.md) - subscribe to MQTT _topics_ from `motion2mqtt`,  recognize entities, and publish results
 
 There are _utility_ services that are used for command and control:
 
-+ [`startup`](./startup/README.md) - send and receive device information and configuration using ESS/CSS (and Kafka)
-+ [`hzncli`](./hzncli/README.md) - service container with `hzn` command-line-interface installed
-+ [`hznsetup`](./hznsetup/README.md) - Setup new devices as nodes
-+ [`hznmonitor`](./hznmonitor/README.md) - Monitor exchange, organization, patterns, services, nodes, and Kafka for `startup`
++ [`startup`](services/startup/README.md) - send and receive device information and configuration using ESS/CSS (and Kafka)
++ [`hzncli`](services/hzncli/README.md) - service container with `hzn` command-line-interface installed
++ [`hznsetup`](services/hznsetup/README.md) - Setup new devices as nodes
++ [`hznmonitor`](services/hznmonitor/README.md) - Monitor exchange, organization, patterns, services, nodes, and Kafka for `startup`
 
 There are _base_ containers that are used by the other services:
 
-+ [`base-alpine`](./base-alpine/README.md) - base container for Alpine LINUX
-+ [`base-ubuntu`](./base-ubuntu/README.md) - base container for Ubuntu LINUX
-+ [`apache-ubuntu`](./apache-ubuntu/README.md) - Apache Web server for Ubuntu
-+ [`apache-alpine`](./apache-alpine/README.md) - Apache Web server for Alpine
++ [`base-alpine`](services/base-alpine/README.md) - base container for Alpine LINUX
++ [`base-ubuntu`](services/base-ubuntu/README.md) - base container for Ubuntu LINUX
++ [`apache-ubuntu`](services/apache-ubuntu/README.md) - Apache Web server for Ubuntu
++ [`apache-alpine`](services/apache-alpine/README.md) - Apache Web server for Alpine
 
-Finally, there are services specialized for the [nVidia](http://nvidia.com) Jetson computers:
+Finally, there are services specialized for the [nVidia](http://nvidia.com) GPU enabled computers:
 
-+ [`jetson-jetpack`](./jetson-jetpack/README.md) - base container for Jetson devices
-+ [`jetson-cuda`](./jetson-jetpack/README.md) - base container for Jetson devices with CUDA
-+ [`jetson-opencv`](./jetson-opencv/README.md) - base container for Jetson devices with CUDA & OpenCV
-+ [`jetson-caffe`](./jetson-caffe/README.md) - BVLC Caffe with CUDA and OpenCV for nVidia Jetson TX
-+ [`jetson-yolo`](./jetson-yolo/README.md) - Darknet YOLO with CUDA and OpenCV for nVidia Jetson TX
-+ [`jetson-digits`](./jetson-digits/README.md) - nVidia DIGITS with CUDA
++ [`yolo-cuda`](services/yolo-cuda/README.md) - `yolo` for ARMv8 devices
++ [`yolo-tegra`](services/yolo-tegra/README.md) - `yolo` for ARMv8 devices
++ [`yolo-cuda4motion`](services/yolo-cuda4motion/README.md) - `yolo4motion` for ARMv8 devices
++ [`yolo-tegra4motion`](services/yolo-tegra4motion/README.md) - `yolo4motion` for ARMv8 devices
 
 #  Further Information 
 
