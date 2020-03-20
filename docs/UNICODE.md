@@ -81,3 +81,5 @@
 # Love Hotel	 	&#127977; 
 # Hospital	&#127973; 
 # Clapper board	&#127916; 
+# Car &#128663;
+# Smiley face &#9786;

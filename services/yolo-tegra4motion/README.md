@@ -1,4 +1,4 @@
-# `yolo4motion` - &#128065;`yolo-tegra` listening for &#127916;`motion`
+# `yolo4motion` - &#128064;`yolo-tegra` listening for &#127916;`motion`
 
 Provides entity count information as micro-service; updates periodically (default `0` seconds).  This container may be run locally using Docker, pushed to a Docker registry, and published to any [_Open Horizon_][open-horizon] exchange.
 
