@@ -27,20 +27,22 @@ MISC := setup sh doc
 
 # intel/amd64 + GPU
 ifeq ($(BUILD_ARCH), amd64)
-#ifeq ($(CUDA), 1)
 ifeq ($(NVIDIA_RUNTIME), true)
-BASES += base-cuda
-SERVICES += yolo-cuda yolo-cuda4motion
+GPU_BASES += base-cuda
+GPU_SERVICES += yolo-cuda yolo-cuda4motion
 endif
 endif
 
 # jetson nano (maybe tx2)
 ifeq ($(BUILD_ARCH), arm64)
 ifeq ($(NVIDIA_RUNTIME), true)
-BASES += base-tegra
-SERVICES += yolo-tegra yolo-tegra4motion
+GPU_BASES += base-tegra
+GPU_SERVICES += yolo-tegra yolo-tegra4motion
 endif
 endif
+
+BASES += $(GPU_BASES)
+SERVICES += $(GPU_SERVICES)
 
 # all
 ALL = $(BASES) $(SERVICES) $(PATTERNS) # ${WIP}
@@ -53,7 +55,18 @@ TARGETS = all tidy clean distclean build push publish verify build-service push-
 
 ## actual
 
-default: $(ALL)
+default: build
+
+## GPU only
+
+gpu: 
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- building $@""${NC}" &> /dev/stderr
+	@for dir in ${GPU_BASES} ${GPU_SERVICES}; do \
+	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir build; \
+	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir push; \
+	done
+
+## all
 
 $(ALL):
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
