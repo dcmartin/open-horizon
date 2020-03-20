@@ -72,6 +72,25 @@ else
   if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- no tmpfs" &> /dev/stderr; fi
 fi
 
+# temporary file-system
+if [ $(jq '.mount!=null' "${SERVICE}") = true ]; then 
+  mounts=$(jq '.mount|to_entries' "${SERVICE}")
+  keys=$(echo "${mounts}" | jq '.[]|.key')
+  for key in ${keys}; do
+    mount=$(echo "${mounts}" | jq '.[]|select(.key=='${key}').value')
+    source=$(echo "${mount}" | jq -r '.source' | envsubst)
+    target=$(echo "${mount}" | jq -r '.target' | envsubst)
+
+    if [ -e "${source}" ]; then
+      OPTIONS="${OPTIONS} --mount type=bind,source=${source},target=${target}"
+    else
+      echo "*** ERROR -- $0 $$ -- no source: ${source}; not mounted into ${target}" &> /dev/stderr
+    fi
+  done
+else
+  if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- no mount" &> /dev/stderr; fi
+fi
+
 # inputs
 if [ "$(jq '.userInput!=null' ${SERVICE})" = true ]; then
   URL=$(jq -r '.url' ${SERVICE})
