@@ -27,7 +27,6 @@ MISC := setup sh doc
 
 # intel/amd64 + GPU
 ifeq ($(BUILD_ARCH), amd64)
-#ifeq ($(CUDA), 1)
 ifeq ($(NVIDIA_RUNTIME), true)
 BASES += base-cuda
 SERVICES += yolo-cuda yolo-cuda4motion
