@@ -167,28 +167,26 @@ David C Martin (github@dcmartin.com)
 [status-md]: STATUS.md
 [beta-md]: BETA.md
 
-## [`CLOC.md`][cloc-md]
-
-[cloc-md]: CLOC.md
+## `CLOC`
 
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
-Markdown|49|1986|0|12122
-JSON|130|1|0|11538
-Bourne Shell|105|1144|1335|7096
-Dockerfile|26|311|191|1182
-Bourne Again Shell|5|83|103|441
-make|2|96|66|304
-Python|6|84|108|293
-YAML|1|0|39|148
+Markdown|72|2965|0|16211
+JSON|147|1|0|15388
+Bourne Shell|202|2386|2354|13309
+Dockerfile|38|479|310|1874
+make|6|308|231|1146
+YAML|4|47|271|733
+Bourne Again Shell|16|51|33|340
+Python|6|89|106|304
+HTML|6|236|2034|220
+TOML|5|30|0|205
 awk|1|4|0|16
 Expect|1|0|0|5
 --------|--------|--------|--------|--------
-SUM:|326|3709|1842|33145
-
-## MAP
-
-![map](http://clustrmaps.com/map_v2.png?cl=ada6a6&w=1024&t=n&d=b6TnAROswVvp8u4K3_6FHn9fu7NGlN6T_Rt3dSYwPqI&co=ffffff&ct=050505)
+SUM:|504|6596|5339|49751
 
 ## Stargazers
 [![Stargazers over time](https://starchart.cc/dcmartin/open-horizon.svg)](https://starchart.cc/dcmartin/open-horizon)
+
+<img width="1" src="http://clustrmaps.com/map_v2.png?cl=ada6a6&w=1024&t=n&d=b6TnAROswVvp8u4K3_6FHn9fu7NGlN6T_Rt3dSYwPqI&co=ffffff&ct=050505">
