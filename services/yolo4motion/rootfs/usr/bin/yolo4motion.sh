@@ -76,7 +76,7 @@ process_motion_event()
     rm -f "${output_jpeg}"
 
     # combine YOLO output with service configuration file
-    jq -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
+    jq -c -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
     # test for success
     if [ -s "${service_json_file}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
