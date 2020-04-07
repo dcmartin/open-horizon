@@ -31,7 +31,7 @@ SERVICE_JSON := $(if $(wildcard service.json),service.json,"/dev/null")
 SYNC_SERVICE := $(shell jq -r '.sync==true' $(SERVICE_JSON))
 
 ## DOCKER NAMESPACE
-DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
+DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(shell whoami))
 
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
