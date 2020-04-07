@@ -6,7 +6,7 @@
 ### IT SHOULD __NOT__ BE CALLED INTERACTIVELY
 ###
 
-if [ -z "${HZN_EXCHANGE_URL}" ]; then export HZN_EXCHANGE_URL="https://alpha.edge-fabric.com/v1"; fi
+if [ -z "${HZN_EXCHANGE_URL}" ]; then export HZN_EXCHANGE_URL="http://exchange:3090/v1"; fi
 if [ ! -s "APIKEY" ]; then 
   if [ -s "../apiKey.json" ]; then 
     jq -r '.apiKey' "../apiKey.json" > APIKEY

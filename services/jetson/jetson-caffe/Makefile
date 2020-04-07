@@ -4,8 +4,8 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),"iamapikey")
 HZN_ORG_ID ?= $(if $(wildcard ../HZN_ORG_ID),$(shell cat ../HZN_ORG_ID),HZN_ORG_ID_UNSPECIFIED)
-HZN_EXCHANGE_URL ?= $(if $(wildcard ../HZN_EXCHANGE_URL),$(shell cat ../HZN_EXCHANGE_URL),"https://alpha.edge-fabric.com/v1/")
-HZN_FSS_CSSURL ?= $(if $(wildcard ../HZN_FSS_CSSURL),$(shell cat ../HZN_FSS_CSSURL),"https://alpha.edge-fabric.com/css/")
+HZN_EXCHANGE_URL ?= $(if $(wildcard ../HZN_EXCHANGE_URL),$(shell cat ../HZN_EXCHANGE_URL),"http://exchange:3090/v1/")
+HZN_FSS_CSSURL ?= $(if $(wildcard ../HZN_FSS_CSSURL),$(shell cat ../HZN_FSS_CSSURL),"http://exchange:9443/css/")
 HZN_VERSION ?= $(if $(wildcard ../HZN_VERSION),$(shell cat ../HZN_VERSION),"v1")
 
 ## PACKAGE
@@ -347,8 +347,8 @@ nodes-purge: # nodes-undo nodes-clean
 ## CSS (just for `startup` service)
 ##
 
-# alternative: https://alpha.edge-fabric.com/css
-# https://alpha.edge-fabric.com/v1/
+# alternative: http://exchange:9443/css
+# http://exchange:3090/v1/
 
 CSS_SERVICE := $(if $(CSS_SERVICE),$(CSS_SERVICE),'local')
 

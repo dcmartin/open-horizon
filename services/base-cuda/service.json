@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "base",
   "description": "Provides base container with nVidia Linux4Tegra",
-  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/base-cuda/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/base-cuda/README.md",
   "url": "com.github.dcmartin.open-horizon.base-cuda",
   "version": "0.1.0",
   "arch": null,

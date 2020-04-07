@@ -89,7 +89,7 @@
     "arch": "arm",
     "cpus": 1,
     "device_id": "test-sdr-1",
-    "exchange_url": "https://alpha.edge-fabric.com/v1/",
+    "exchange_url": "http://exchange:3090/v1/",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.219",

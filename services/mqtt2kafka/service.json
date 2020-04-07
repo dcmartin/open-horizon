@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "mqtt2kafka",
   "description": "Route traffic from MQTT to Kafka",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/mqtt2kafka/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt2kafka/README.md",
   "url": "com.github.dcmartin.open-horizon.mqtt2kafka",
   "version": "0.0.1",
   "arch": null,

@@ -66,7 +66,7 @@ Copy this [repository][repository], change to the `hzn-ubuntu` directory, then u
     "arch": "",
     "cpus": 0,
     "device_id": "",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       ""
     ],
@@ -136,7 +136,7 @@ test.amd64_com.github.dcmartin.open-horizon.hzncli:0.0.3.json
     "arch": "amd64",
     "cpus": 1,
     "device_id": "davidsimac.local",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.26",

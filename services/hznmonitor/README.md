@@ -149,7 +149,7 @@ Produces the following JSON output:
   "numberOfAgbotMsgs": 0,
   "dbSchemaVersion": 17,
   "org": "github@dcmartin.com",
-  "url": "https://alpha.edge-fabric.com/v1/"
+  "url": "http://exchange:3090/v1/"
 }
 ```
 
@@ -251,7 +251,7 @@ Create a `userinput.json` file containing the environment variables for each ser
      "url": "com.github.dcmartin.open-horizon.hznmonitor",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { 
-       "HZNMONITOR_EXCHANGE_URL": "https://alpha.edge-fabric.com/v1/",
+       "HZNMONITOR_EXCHANGE_URL": "http://exchange:3090/v1/",
        "HZNMONITOR_EXCHANGE_ORG": "<YOUR_ORGANIZATION_ID>",
        "HZNMONITOR_EXCHANGE_APIKEY": "<YOUR_EXCHANGE_APIKEY>",
        "HZNMONITOR_KAFKA_APIKEY":"<YOUR_KAFKA_APIKEY>",
@@ -302,7 +302,7 @@ Inspect the device to determine proper node configuration, for example:
     "last_update_time": "2019-05-15 06:57:09 -0700 PDT"
   },
   "configuration": {
-    "exchange_api": "https://alpha.edge-fabric.com/v1/",
+    "exchange_api": "http://exchange:3090/v1/",
     "exchange_version": "1.80.0",
     "required_minimum_exchange_version": "1.73.0",
     "preferred_exchange_version": "1.75.0",
@@ -365,7 +365,7 @@ Produces a JSON status payload; the `status` attribute is a BASE64 encoded HTML 
     "arch": "amd64",
     "cpus": 1,
     "device_id": "davidsimac.local",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.27",
@@ -382,7 +382,7 @@ Produces a JSON status payload; the `status` attribute is a BASE64 encoded HTML 
     "log_level": "info",
     "debug": false,
     "org": "github@dcmartin.com",
-    "exchange": "https://alpha.edge-fabric.com/v1/",
+    "exchange": "http://exchange:3090/v1/",
     "db": "https://515bed78-9ddc-408c-bf41-32502db2ddf8-bluemix.cloudant.com",
     "username": "515bed78-9ddc-408c-bf41-32502db2ddf8-bluemix",
     "conf": "/etc/apache2/httpd.conf",

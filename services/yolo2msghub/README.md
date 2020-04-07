@@ -227,7 +227,7 @@ Inspect the device to determine proper node configuration, for example:
     "last_update_time": "2019-05-15 06:57:09 -0700 PDT"
   },
   "configuration": {
-    "exchange_api": "https://alpha.edge-fabric.com/v1/",
+    "exchange_api": "http://exchange:3090/v1/",
     "exchange_version": "1.80.0",
     "required_minimum_exchange_version": "1.73.0",
     "preferred_exchange_version": "1.75.0",
@@ -1519,7 +1519,7 @@ The shell script `kafkacat.sh` may be used to listen to the `yolo2msghub` topic;
     "arch": "amd64",
     "cpus": 1,
     "device_id": "davidsimac.local",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.26",

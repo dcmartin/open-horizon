@@ -206,7 +206,7 @@ This service publishes JSON *events*, JPEG *images*, and GIF *animations* of mot
     "arch": "arm",
     "cpus": 1,
     "device_id": "test-sdr-4",
-    "exchange_url": "https://alpha.edge-fabric.com/v1/",
+    "exchange_url": "http://exchange:3090/v1/",
     "host_ips": [ "127.0.0.1", "192.168.1.71", "192.168.1.70", "172.17.0.1" ],
     "organization": "github@dcmartin.com",
     "ram": 0,
@@ -414,7 +414,7 @@ The `motion2mqtt` value will initially be incomplete until the service completes
     "arch": "arm",
     "cpus": 1,
     "device_id": "test-sdr-4",
-    "exchange_url": "https://alpha.edge-fabric.com/v1/",
+    "exchange_url": "http://exchange:3090/v1/",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.71",

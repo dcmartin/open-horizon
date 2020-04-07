@@ -136,7 +136,7 @@ The `yolo4motion` service will not operate successfully without an attached came
     "arch": "arm",
     "cpus": 1,
     "device_id": "test-cpu-3",
-    "exchange_url": "https://alpha.edge-fabric.com/v1/",
+    "exchange_url": "http://exchange:3090/v1/",
     "host_ips": [
       "127.0.0.1",
       "192.168.160.1",

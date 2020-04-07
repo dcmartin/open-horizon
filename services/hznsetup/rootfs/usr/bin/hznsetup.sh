@@ -11,7 +11,7 @@ source /usr/bin/hznsetup-tools.sh
 ###
 
 if [ "${HZN_SETUP_VENDOR:-any}" = 'any' ]; then HZN_SETUP_VENDOR="*"; fi
-if [ -z "${HZN_SETUP_EXCHANGE:-}" ]; then HZN_SETUP_EXCHANGE="https://alpha.edge-fabric.com/v1/"; fi
+if [ -z "${HZN_SETUP_EXCHANGE:-}" ]; then HZN_SETUP_EXCHANGE="http://exchange:3090/v1/"; fi
 if [ -z "${HZN_SETUP_ORG:-}" ]; then HZN_SETUP_ORG="${HZN_ORG_ID:-none}"; fi
 if [ -z "${HZN_SETUP_APIKEY:-}" ]; then HZN_SETUP_APIKEY="${HZN_EXCHANGE_APIKEY}"; fi
 if [ -z "${HZN_SETUP_APPROVE:-}" ]; then HZN_SETUP_APPROVE="auto"; fi

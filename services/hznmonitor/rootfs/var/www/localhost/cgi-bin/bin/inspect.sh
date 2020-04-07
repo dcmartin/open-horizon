@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "${HZNMONITOR_EXCHANGE_URL:-}" ]; then HZNMONITOR_EXCHANGE_URL="https://alpha.edge-fabric.com/v1"; fi
+if [ -z "${HZNMONITOR_EXCHANGE_URL:-}" ]; then HZNMONITOR_EXCHANGE_URL="http://exchange:3090/v1"; fi
 
 lsnodes()
 {

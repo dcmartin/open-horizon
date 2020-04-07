@@ -67,7 +67,7 @@ The `record` value will initially be incomplete until the service completes its 
 ```
 {   
   "date": 1555192656,
-  "hzn": { "agreementid": "ca200f9e5620cde9ad9d36384de52c0fcd307e8f0b22428a2f55da71ef4ac403", "arch": "arm", "cpus": 1, "device_id": "test-cpu-2", "exchange_url": "https://alpha.edge-fabric.com/v1/", "host_ips": [ "127.0.0.1", "192.168.1.52", "172.17.0.1", "172.18.0.1", "169.254.179.194" ], "organization": "github@dcmartin.com", "ram": 0, "pattern": "record" },
+  "hzn": { "agreementid": "ca200f9e5620cde9ad9d36384de52c0fcd307e8f0b22428a2f55da71ef4ac403", "arch": "arm", "cpus": 1, "device_id": "test-cpu-2", "exchange_url": "http://exchange:3090/v1/", "host_ips": [ "127.0.0.1", "192.168.1.52", "172.17.0.1", "172.18.0.1", "169.254.179.194" ], "organization": "github@dcmartin.com", "ram": 0, "pattern": "record" },
   "service": { "label": "record", "version": "0.0.1", "port": "9192" },
   "config": {
     "log_level": "info",

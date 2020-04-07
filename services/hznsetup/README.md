@@ -151,7 +151,7 @@ The database stores information about each device; a device record is defined by
 
 ```
 {
-  "exchange": "https://alpha.edge-fabric.com/v1",
+  "exchange": "http://exchange:3090/v1",
   "org": "github@dcmartin.com",
   "pattern": "none",
   "device":  {
@@ -209,7 +209,7 @@ When the service registers the device, the service response (JSON) provides node
 
 ```
 {
-  "exchange": "https://alpha.edge-fabric.com/v1",
+  "exchange": "http://exchange:3090/v1",
   "org": "github@dcmartin.com",
   "pattern": "",
   "node": {
@@ -269,7 +269,7 @@ Which will produce a status result:
     "arch": "amd64",
     "cpus": 1,
     "device_id": "davidsimac.local",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.27",
@@ -286,7 +286,7 @@ Which will produce a status result:
     "log_level": "info",
     "debug": true,
     "org": "github@dcmartin.com",
-    "exchange": "https://alpha.edge-fabric.com/v1",
+    "exchange": "http://exchange:3090/v1",
     "pattern": "",
     "port": 3093,
     "db": "https://515bed78-9ddc-408c-bf41-32502db2ddf8-bluemix.cloudant.com",
