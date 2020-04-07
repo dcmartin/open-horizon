@@ -4,8 +4,8 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),"iamapikey")
 HZN_ORG_ID ?= $(if $(wildcard ../HZN_ORG_ID),$(shell cat ../HZN_ORG_ID),HZN_ORG_ID_UNSPECIFIED)
-HZN_EXCHANGE_URL ?= $(if $(wildcard ../HZN_EXCHANGE_URL),$(shell cat ../HZN_EXCHANGE_URL),"https://alpha.edge-fabric.com/v1/")
-HZN_FSS_CSSURL ?= $(if $(wildcard ../HZN_FSS_CSSURL),$(shell cat ../HZN_FSS_CSSURL),"https://alpha.edge-fabric.com/css/")
+HZN_EXCHANGE_URL ?= $(if $(wildcard ../HZN_EXCHANGE_URL),$(shell cat ../HZN_EXCHANGE_URL),"http://exchange:3090/v1/")
+HZN_FSS_CSSURL ?= $(if $(wildcard ../HZN_FSS_CSSURL),$(shell cat ../HZN_FSS_CSSURL),"http://exchange:9443/css/")
 HZN_VERSION ?= $(if $(wildcard ../HZN_VERSION),$(shell cat ../HZN_VERSION),"v1")
 
 ## PACKAGE
@@ -31,7 +31,7 @@ SERVICE_JSON := $(if $(wildcard service.json),service.json,"/dev/null")
 SYNC_SERVICE := $(shell jq -r '.sync==true' $(SERVICE_JSON))
 
 ## DOCKER NAMESPACE
-DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(if $(wildcard ../registry.json),$(shell jq -r '.namespace' ../registry.json),$(shell whoami)))
+DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_NAMESPACE),$(shell whoami))
 
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
@@ -44,6 +44,7 @@ SERVICE_URL = $(if ${TAG},${SERVICE_URI}-${TAG},${SERVICE_URI})
 SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_VARIABLES := $(shell jq -r '.userInput[].name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=null).key' build.json 2> /dev/null)
+SERVICE_BUILD_FROM := $(shell jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json 2> /dev/null)
 
 ## KEYS
 PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),MISSING_PRIVATE_KEY_FILE)
@@ -105,17 +106,26 @@ $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE):
 ## development
 
 ${DIR}:
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
 	@rm -fr ${DIR} && mkdir -p ${DIR} && export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_ORG_ID=${HZN_ORG_ID} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn dev service new -d ${DIR} # > /dev/null
 
 ${DIR}/service.definition.json: ${SERVICE_JSON}
-	@jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) > ${DIR}/service.definition.json
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
+	@export \
+	  SERVICE_NAME=${SERVICE_NAME} \
+	  SERVICE_VERSION=${SERVICE_VERSION} \
+	  DOCKER_IMAGE_BASE=${SERVICE_BUILD_FROM} \
+	&& \
+	jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) | envsubst > ${DIR}/service.definition.json
 	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
 
 ${DIR}/userinput.json: userinput.json
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
 	@export HZN_EXCHANGE_APIKEY=$(shell cat $(APIKEY)) SERVICE_URL=${SERVICE_URL} HZN_ORG_ID=${HZN_ORG_ID} && cat userinput.json | envsubst > ${DIR}/userinput.json
 	@./sh/checkvars.sh ${DIR}
 
 ${DIR}/pattern.json: pattern.json
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
 	-@export TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
 
 depend: $(APIKEY) ${DIR}
@@ -244,9 +254,14 @@ service-publish:
 publish-service: publish
 	@echo "${PURPLE}>>> MAKE --" $$(date +%T) "-- publish-service: $(SERVICE_NAME); architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
 
-publish: ${DIR} $(APIKEY) $(KEYS)
+publish: ${DIR} ${DIR}/service.definition.json $(APIKEY) $(KEYS)
 	@echo "${PURPLE}>>> MAKE --" $$(date +%T) "-- publish-service: $(SERVICE_NAME); architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
-	@export HZN_USER_ID=${HZN_USER_ID} HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && if [ ! -z "$(DOCKER_PUBLICKEY)" ]; then ARGS="-r $(DOCKER_REGISTRY):${HZN_USER_ID}:$(DOCKER_PUBLICKEY)"; fi && hzn exchange service publish -I -O -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} -f ${DIR}/service.definition.json -o ${HZN_ORG_ID} -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) $${ARGS:-}
+	@export \
+	  HZN_USER_ID=${HZN_USER_ID} \
+	  HZN_ORG_ID=$(HZN_ORG_ID) \
+	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
+	  && if [ ! -z "$(DOCKER_PUBLICKEY)" ]; then ARGS="-r $(DOCKER_REGISTRY):${HZN_USER_ID}:$(DOCKER_PUBLICKEY)"; fi \
+	  && hzn exchange service publish -I -O -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} -f ${DIR}/service.definition.json -o ${HZN_ORG_ID} -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) $${ARGS:-}
 
 service-verify: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-verify : ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
@@ -357,8 +372,8 @@ nodes-purge: # nodes-undo nodes-clean
 ## CSS (just for `startup` service)
 ##
 
-# alternative: https://alpha.edge-fabric.com/css
-# https://alpha.edge-fabric.com/v1/
+# alternative: http://exchange:9443/css
+# http://exchange:3090/v1/
 
 CSS_SERVICE := $(if $(CSS_SERVICE),$(CSS_SERVICE),'local')
 
@@ -397,7 +412,7 @@ distclean: service-clean
 ## BOOKKEEPING
 ##
 
-.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish
+.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish horizon/service.definition.json
 
 ##
 ## COLORS

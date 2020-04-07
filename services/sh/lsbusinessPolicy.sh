@@ -15,7 +15,7 @@ if [ -z $(command -v jq) ]; then
   exit 1
 fi
 
-if [ -z "${HZN_EXCHANGE_URL:-}" ]; then HZN_EXCHANGE_URL="https://alpha.edge-fabric.com/v1"; fi
+if [ -z "${HZN_EXCHANGE_URL:-}" ]; then HZN_EXCHANGE_URL="http://exchange:3090/v1"; fi
 
 if [ -z "${HZN_EXCHANGE_APIKEY:-}" ] || [ "${HZN_EXCHANGE_APIKEY:-}" == "null" ]; then
   echo "*** ERROR $0 $$ -- invalid HZN_EXCHANGE_APIKEY" &> /dev/stderr

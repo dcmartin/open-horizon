@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "hznsetup",
   "description": "setup nodes automatically",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/hznsetup/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hznsetup/README.md",
   "url": "com.github.dcmartin.open-horizon.hznsetup",
   "version": "0.1.0",
   "arch": null,
@@ -12,7 +12,7 @@
     { "url": "com.github.dcmartin.open-horizon.hznmonitor", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
   ],
   "userInput": [
-    { "name": "HZNSETUP_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "https://alpha.edge-fabric.com/v1" },
+    { "name": "HZNSETUP_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "http://exchange:3090/v1" },
     { "name": "HZNSETUP_EXCHANGE_ORG", "label": "exchange organization", "type": "string", "defaultValue": "" },
     { "name": "HZNSETUP_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
     { "name": "HZNSETUP_PATTERN", "label": "", "type": "string", "defaultValue": "" },

@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "yolo4motion",
   "description": "yolo service with local MQTT broker (usage optional)",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo-cuda4motion/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/yolo-cuda4motion/README.md",
   "url": "com.github.dcmartin.open-horizon.yolo-cuda4motion",
   "version": "0.1.2",
   "arch": null,

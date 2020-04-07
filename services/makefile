@@ -20,9 +20,9 @@ NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRunt
 ##
 
 BASES := base-alpine base-ubuntu apache-alpine apache-ubuntu 
-SERVICES := yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka # cpu hal wan hznmonitor hzncli herald fft noize mqtt 
+SERVICES :=  cpu hal wan hzncli herald fft mqtt motion2mqtt hznmonitor noize yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka
 WIP := mqtt2mqtt record hotword 
-PATTERNS := startup # hznsetup motion2mqtt
+PATTERNS := startup # hznsetup
 MISC := setup sh doc
 
 # intel/amd64 + GPU

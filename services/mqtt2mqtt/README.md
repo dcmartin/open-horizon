@@ -256,7 +256,7 @@ test.amd64_com.github.dcmartin.open-horizon.mqtt2mqtt:0.0.1.json
     "arch": "amd64",
     "cpus": 1,
     "device_id": "davidsimac.local",
-    "exchange_url": "https://alpha.edge-fabric.com/v1",
+    "exchange_url": "http://exchange:3090/v1",
     "host_ips": [
       "127.0.0.1",
       "192.168.1.26",

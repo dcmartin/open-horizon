@@ -6,7 +6,7 @@
 ### IT SHOULD __NOT__ BE CALLED INTERACTIVELY
 ###
 
-if [ -z "${HZN_EXCHANGE_URL}" ]; then export HZN_EXCHANGE_URL="https://alpha.edge-fabric.com/v1"; fi
+if [ -z "${HZN_EXCHANGE_URL}" ]; then export HZN_EXCHANGE_URL="http://exchange:3090/v1"; fi
 if [ ! -s "APIKEY" ]; then 
   if [ -s "../apiKey.json" ]; then 
     jq -r '.apiKey' "../apiKey.json" > APIKEY
@@ -27,7 +27,7 @@ hzn_exchange()
   ITEMS='null'
   if [ ! -z "${ITEM}" ]; then
     URL="${HZN_EXCHANGE_URL}/orgs/${SERVICE_ORG}/${ITEM}"
-    ALL=$(curl -fsSL -u "${SERVICE_ORG}/${HZN_USER_ID:-iamapikey}:$(cat APIKEY)" "${URL}")
+    ALL=$(curl -fsSL -u "${SERVICE_ORG}/${HZN_USER_ID:-${USER}}:$(cat APIKEY)" "${URL}")
     ENTITYS=$(echo "${ALL}" | jq '{"'${ITEM}'":[.'${ITEM}'| objects | keys[]] | unique}' | jq -r '.'${ITEM}'[]') 
     ITEMS='{"'${ITEM}'":['
     i=0; for ENTITY in ${ENTITYS}; do 
@@ -53,7 +53,7 @@ exchange_service_delete()
   if [ "${ID}" != "${ID##*/}" ]; then SO="${ID%/*}"; ID=${ID##*/}; echo "+++ WARN $0 $$ -- organization ${SO}; service identifier: ${ID}" &> /dev/stderr; else SO="${SERVICE_ORG}"; fi
   URL="${HZN_EXCHANGE_URL}/orgs/${SO}/services/${ID}"
   if [ "${DEBUG:-}" == 'true' ]; then echo "??? DEBUG -- $0 $$ -- DELETE ${ID} from ${SO}" &> /dev/stderr; DRY_RUN='--dry-run'; fi
-  RESULT=$(curl -fsSL -X DELETE -u "${SO}/${HZN_USER_ID:-iamapikey}:$(cat APIKEY)" "${URL}")
+  RESULT=$(curl -fsSL -X DELETE -u "${SO}/${HZN_USER_ID:-${USER}}:$(cat APIKEY)" "${URL}")
   STATUS=$?
   echo "${STATUS}"
 }

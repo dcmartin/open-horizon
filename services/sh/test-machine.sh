@@ -44,7 +44,7 @@ node_test()
 ## ENVIRONMENT
 export HZNSETUP_ORG_ID="${HZN_ORG_ID:-}"
 export HZNSETUP_EXCHANGE_APIKEY="${HZN_EXCHANGE_APIKEY:-}"
-export HZNSETUP_EXCHANGE_URL="${HZN_EXCHANGE_URL:-https://alpha.edge-fabric.com/v1/}"
+export HZNSETUP_EXCHANGE_URL="${HZN_EXCHANGE_URL:-http://exchange:3090/v1/}"
 if [ -z "${HZNSETUP_ORG_ID}" ] || [ -z "${HZNSETUP_EXCHANGE_URL}" ] || [ -z "${HZNSETUP_EXCHANGE_APIKEY}" ]; then
   hzn.log.error "environment invalid; exiting"
   exit 1

@@ -14,8 +14,8 @@ source ${0%/*}/node-tools.sh
 ## ENVIRONMENT
 export HZNSETUP_ORG_ID=${HZNSETUP_ORG_ID:-${HZN_ORG_ID:-}}
 export HZNSETUP_EXCHANGE_APIKEY=${HZNSETUP_EXCHANGE_APIKEY:-${HZN_EXCHANGE_APIKEY:-}}
-export HZNSETUP_EXCHANGE_URL=${HZNSETUP_EXCHANGE_URL:-${HZN_EXCHANGE_URL:-https://alpha.edge-fabric.com/v1/}}
-export HZNSETUP_FSS_CSSURL=${HZNSETUP_FSS_CSSURL:-${HZN_FSS_CSSURL:-https://alpha.edge-fabric.com/css/}}
+export HZNSETUP_EXCHANGE_URL=${HZNSETUP_EXCHANGE_URL:-${HZN_EXCHANGE_URL:-http://exchange:3090/v1/}}
+export HZNSETUP_FSS_CSSURL=${HZNSETUP_FSS_CSSURL:-${HZN_FSS_CSSURL:-http://exchange:3090/css/}}
 
 if [ -z "${HZNSETUP_ORG_ID}" ] || [ -z "${HZNSETUP_EXCHANGE_URL}" ] || [ -z "${HZNSETUP_EXCHANGE_APIKEY}" ]; then
   hzn.log.error "environment invalid; exiting"

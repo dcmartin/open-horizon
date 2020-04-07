@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "cpu",
   "description": "Provides hardware abstraction layer as service",
-  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/cpu/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/cpu/README.md",
   "url": "com.github.dcmartin.open-horizon.cpu",
   "version": "0.1.0",
   "arch": null,

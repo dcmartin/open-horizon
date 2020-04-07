@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "yolo2msghub",
   "description": "Sends JSON payloads from yolo service to Kafka",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/yolo2msghub/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/yolo2msghub/README.md",
   "url": "com.github.dcmartin.open-horizon.yolo2msghub",
   "version": "0.0.11",
   "arch": null,

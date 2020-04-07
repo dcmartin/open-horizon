@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "mqtt",
   "description": "Provide MQTT service",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/mqtt/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt/README.md",
   "url": "com.github.dcmartin.open-horizon.mqtt",
   "version": "0.1.0",
   "arch": null,

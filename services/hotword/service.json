@@ -2,7 +2,7 @@
   "org": "${HZN_ORG_ID}",
   "label": "hotword",
   "description": "detect hotword from noize",
-  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/hotword/README.md",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hotword/README.md",
   "url": "com.github.dcmartin.open-horizon.hotword",
   "version": "0.0.1",
   "arch": null,
