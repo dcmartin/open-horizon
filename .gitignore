@@ -51,3 +51,4 @@ test.*.json
 test.*.jpeg
 HZNPKG_REPO
 KAFKA_APIKEY
+*.deb
