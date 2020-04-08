@@ -294,9 +294,12 @@ ${EXCHANGE_KEYS}:
 	  -out ${EXCHANGE_KEYS_CRT} \
 	  -subj ${EXCHANGE_KEYS_SUBJ}
 
+logs:
+	docker-compose logs -f
+
 ## ADMINISTRIVIA
 
-.PHONY: keys config up down clean prime remove remove-images reset-db realclean distclean tidy
+.PHONY: logs keys config up down clean prime remove remove-images reset-db realclean distclean tidy
 
 remove:
 	-docker rm -f "$(AGBOT_CONTAINER_NAME)"

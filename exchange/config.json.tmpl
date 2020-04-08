@@ -1,24 +1,24 @@
 {
   "horizon": {
-    "hostname": "127.0.0.1",
-    "namespace": "oh",
+    "hostname": "${HZN_HOSTNAME}",
+    "namespace": "${HZN_NAMESPACE}",
     "network": {
-      "name": "hznnet",
-      "driver": "bridge"
+      "name": "${HZN_NETWORK}",
+      "driver": "${HZN_NETWORK_DRIVER}"
     },
     "identity": {
-      "comp": "dcmartin.com",
-      "user": "dcmartin",
-      "name": "exchange.dcmartin.com",
-      "subj": ""
+      "comp": "${SOMECOMP}",
+      "user": "${SOMEUSER}",
+      "name": "${SOMENAME}",
+      "subj": "${SOMESUBJ}"
     },
-    "root": "root"
+    "root": "${EXCHANGE_ROOT}"
   },
   "services": {
     "agbot": {
       "name": "agbot",
       "image": "openhorizon/amd64_agbot",
-      "tag": "2.24.18",
+      "tag": "${AGBOT_TAG}",
       "stable": "2.24.18",
       "port": 3091,
       "listen": "http",
@@ -30,7 +30,7 @@
     "css": {
       "name": "css-api",
       "image": "openhorizon/amd64_cloud-sync-service",
-      "tag": "1.0.18",
+      "tag": "${CSS_TAG}",
       "stable": "1.0.18",
       "port": 9443,
       "transport": "http",
@@ -39,19 +39,19 @@
     "exchange": {
       "name": "exchange-api",
       "image": "openhorizon/amd64_exchange-api",
-      "tag": "2.12.3",
+      "tag": "${EXCHANGE_TAG}",
       "stable": "2.12.3",
       "version": "v1",
-      "port": 3090,
+      "port": ${EXCHANGE_PORT},
       "listen": "http",
       "root": "root",
       "log": "WARN",
-      "password": "Horizon-Rul3s",
-      "encoded": "$2a$10$Mh5kobwYwN2WE3LcKkpqzeBzV8phhuzZ/xHD2QRwt1uIswAWNpm7K",
-      "org": "dcmartin",
+      "password": "${EXCHANGE_PASSWORD}",
+      "encoded": "${EXCHANGE_PASSWORD_ENCODED}",
+      "org": "${EXCHANGE_ORG}",
       "admin": {
-        "username": "dcmartin",
-        "password": "whocares"
+        "username": "${EXCHANGE_ADMIN_USERNAME}",
+        "password": "${EXCHANGE_ADMIN_PASSWORD}"
       }
     },
     "cssdb": {
