@@ -32,7 +32,7 @@ cd ~/GIT/open-horizon && sudo ./sh/get.horizon.sh
 export HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-http://exchange:3090/v1/}
 export HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-http://exchange:9443/css/}
 sudo sed -i -e "s/^HZN_EXCHANGE_URL=.*/HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}" /etc/default/horizon
-sudo sed -i -e "s/^HZN_FSS_CSSURL=.*/HZN_FSS_CSSURL=${HZN_FSS_CSSURL}/" /etc/default/horizon
+sudo sed -i -e "s/^HZN_FSS_CSSURL=.*/HZN_FSS_CSSURL=${HZN_FSS_CSSURL}" /etc/default/horizon
 sudo systemctl restart horizon
 ```
 

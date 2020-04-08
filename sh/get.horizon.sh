@@ -1,26 +1,50 @@
 #!/bin/bash
-arch=$(dpkg --print-architecture)
-platform=$(lsb_release -a 2> /dev/null | egrep 'Distributor ID:' | awk '{ print $3 }' | tr '[:upper:]' '[:lower:]')
-dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
-version=2.24.18
-
-if [ ! -s bluehorizon.deb ]; then
-  curl -sSL http://pkg.bluehorizon.network/linux/${platform}/pool/main/h/horizon/bluehorizon_${version}~ppa~${platform}.${dist}_all.deb -o bluehorizon.deb
-fi
-
-if [ ! -s horizon-cli.deb ]; then
-  curl -sSL http://pkg.bluehorizon.network/linux/${platform}/pool/main/h/horizon/horizon-cli_${version}~ppa~${platform}.${dist}_${arch}.deb -o horizon-cli.deb
-fi
-
-if [ ! -s horizon.deb ]; then
-  curl -sSL http://pkg.bluehorizon.network/linux/${platform}/pool/main/h/horizon/horizon_${version}~ppa~${platform}.${dist}_${arch}.deb -o horizon.deb
-fi
 
 if [ "${USER:-}" != 'root' ]; then
   echo "Run as root: sudo ${0} ${*}" &> /dev/stderr
   exit 1
 fi
 
-dpkg -i horizon-cli.deb
-dpkg -i horizon.deb
-dpkg -i bluehorizon.deb
+# get particulars
+arch=$(dpkg --print-architecture)
+platform=$(lsb_release -a 2> /dev/null | egrep 'Distributor ID:' | awk '{ print $3 }' | tr '[:upper:]' '[:lower:]')
+dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
+
+# only working version
+repo=http://pkg.bluehorizon.network/linux
+dir=pool/main/h/horizon
+version=2.24.18
+
+if [ ! -z "$(command -v hzn)" ]; then
+  echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge bluehorizon horizon horizon-cli"' &> /dev/stderr
+else
+  # download packages
+  for p in horizon-cli horizon bluehorizon; do
+    if [ ! -s ${p}.deb ]; then
+      if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
+      package=${dir}/${p}
+      curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb
+    fi
+    dpkg -i ${p}.deb
+  done
+fi
+
+if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
+if [ "${HZN_EXCHANGE_URL:-null}" != 'null' ]; then
+  echo 'Updating /etc/default/horizon with HZN_EXCHANGE_URL="'${HZN_EXCHANGE_URL}'"' &> /dev/stderr
+  sed -i -e "s|^HZN_EXCHANGE_URL=.*|HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}|" /etc/default/horizon
+  restart=true
+else
+  echo 'Edit /etc/default/horizon and specify HZN_EXCHANGE_URL; then "sudo systemctl restart horizon"' &> /dev/stderr
+fi
+
+if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
+if [ "${HZN_FSS_CSSURL:-null}" != 'null' ]; then
+  echo 'Updating /etc/default/horizon with HZN_FSS_CSSURL="'${HZN_FSS_CSSURL}'"' &> /dev/stderr
+  sed -i -e "s|^HZN_FSS_CSSURL=.*|HZN_FSS_CSSURL=${HZN_FSS_CSSURL}|" /etc/default/horizon
+  restart=true
+else
+  echo 'Edit /etc/default/horizon and specify HZN_FSS_CSSURL; then "sudo systemctl restart horizon"' &> /dev/stderr
+fi
+
+if [ "${restart:-false}" = 'true' ]; then systemctl restart horizon; fi
