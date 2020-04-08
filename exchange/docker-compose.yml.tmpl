@@ -44,6 +44,7 @@ services:
       - ${AGBOT_POLICY_DIR}:/etc/agbot/policy.d
       - ${AGBOT_COLONUS_DIR}:/var/horizon
     environment:
+      - HZN_VAR_BASE=/home/agbotuser
       - AGBOT_NAME=${EXCHANGE_AGBOT_NAME}
       - CSS_URL=${CSS_URL}
       - EXCH_APP_HOST=${EXCHANGE_URL}
@@ -80,6 +81,7 @@ services:
     environment:
       - POSTGRES_DB=${EXCHANGEDB_DATABASE}
       - POSTGRES_USER=${EXCHANGEDB_USER}
+      - POSTGRES_HOST_AUTH_METHOD=trust
   ##
   ## css
   ##
