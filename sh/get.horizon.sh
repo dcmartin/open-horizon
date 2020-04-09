@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ##
 update_defaults()
@@ -139,14 +139,21 @@ get_horizon()
 ### MAIN
 ###
 
-if [ -z "$(command -v docker)" ]; then
-  echo 'Please install Docker; curl -sSL get.docker.com -o get.docker.sh && sudo bash -s ./get.docker.sh' &> /dev/stderr
-  exit 1
-fi
-
 if [ -z "$(command -v curl)" ]; then
   echo 'Please install curl; sudo apt install -qq -y curl' &> /dev/stderr
   exit 1
+fi
+
+if [ -z "$(command -v docker)" ]; then
+  echo 'Installing Docker' &> /dev/stderr
+  curl -sSL get.docker.com -o get.docker.sh 
+  if [ -s get.docker.sh ]; then
+    chmod 755 get.docker.sh
+    ./get.docker.sh
+  else
+    echo 'Failed to get Docker installation script; download "http://get.docker.com"' &> /dev/stderr
+    exit 1
+  fi
 fi
 
 STABLE_VERSION=2.24.18
