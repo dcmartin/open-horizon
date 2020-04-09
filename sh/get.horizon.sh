@@ -63,7 +63,7 @@ install_linux()
 
 install_darwin()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   # which version
   local version=${1}
