@@ -46,11 +46,13 @@ install_linux()
   else
     # download packages
     for p in horizon-cli horizon bluehorizon; do
+      echo 'Downloading ...' &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
         package=${dir}/${p}
         curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb
       fi
+      echo 'Installing ...' &> /dev/stderr
       dpkg -i ${p}.deb
     done
   fi
@@ -71,6 +73,8 @@ install_darwin()
   local pkg="http://pkg.bluehorizon.network/macos/horizon-cli-${version}.pkg"
   local result
 
+  echo 'Downloading ...' &> /dev/stderr
+
   if [ ! -s "horizon-cli.crt" ]; then
     curl -sSL "${crt}" -o horizon-cli.crt
   fi
@@ -78,6 +82,7 @@ install_darwin()
     curl -sSL "${pkg}" -o horizon-cli.pkg
   fi
 
+  echo 'Installing ...' &> /dev/stderr
   if [ -s "horizon-cli.crt" ]; then
     security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain horizon-cli.crt
     result=$?
@@ -95,13 +100,17 @@ install_darwin()
         mkdir -p /etc/default
         echo "HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}" > /etc/default/horizon
         echo "HZN_FSS_CSSURL=${HZN_FSS_CSS_URL}" >> /etc/default/horizon
+
         if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
-          echo 'Stopping horizon container' &> /dev/stderr
+          echo 'Running "horizon-container stop"' &> /dev/stderr
           horizon-container stop
         fi
-        echo 'Starting horizon container' &> /dev/stderr
-        horizon-container start
-        result=$?
+        if [ -z "$(command socat)" ]; then
+          echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
+        else
+          echo 'Running "horizon-container start"' &> /dev/stderr
+          horizon-container start
+        fi
       fi
     else
       echo "Unable to add trusted certificate; result: ${result}" &> /dev/stderr
@@ -163,5 +172,6 @@ STABLE_VERSION=2.24.18
 if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
 if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
 
+echo 'STARTING..' &> /dev/stderr
 get_horizon ${1:-${STABLE_VERSION}}
 echo 'COMPLETE' &> /dev/stderr
