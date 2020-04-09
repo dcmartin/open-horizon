@@ -42,8 +42,8 @@ Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction 
 
 These services and patterns are built and pushed to designated Docker registry & namespace as well as Open Horizon exchange and organization.  The default build configuration is:
 
-+ `HZN_EXCHANGE_URL` defaults to `https://alpha.edge-fabric.com/v1`
-+ `HZN_ORG_ID` is **unspecified** (e.g. `github@dcmartin.com`)
++ `HZN_EXCHANGE_URL` defaults to `https://exchange:3090/v1/`
++ `HZN_ORG_ID` is **unspecified** (e.g. `dcmartin`)
 + `DOCKER_NAMESPACE` is **unspecified** (e.g. [`dcmartin`][docker-dcmartin])
 + `DOCKER_REGISTRY` is **unset** and defaults to `docker.io`
 
@@ -60,26 +60,37 @@ This repository works best on a &#63743; macOS computer.  However, macOS need so
 The `HZN_ORG_ID` and `DOCKER_NAMESPACE` should be specified appropriately prior to any build; substitute values appropriately, for example:
 
 ```
-% export HZN_ORG_ID="github@dcmartin.com"
-% export DOCKER_NAMESPACE="dcmartin"
+export HZN_ORG_ID=$(USER}
+export HZN_USER_ID=${USER}
+export DOCKER_NAMESPACE=${USER}
+export HZN_EXCHANGE_URL="http://exchange:3090/v1/"
+export HZN_EXCHANGE_APIKEY="whocares"
 ```
 
 To make those environment variables persistent, copy them into files with the same names:
 
 ```
-% echo "${HZN_ORG_ID}" > HZN_ORG_ID
-% echo "${DOCKER_NAMESPACE}" > DOCKER_NAMESPACE
+echo "${HZN_ORG_ID}" > HZN_ORG_ID
+echo "${HZN_USER_ID}" > HZN_USER_ID
+echo "${HZN_EXCHANGE_APIKEY}" > HZN_EXCHANGE_APIKEY
+echo "${HZN_EXCHANGE_URL}" > HZN_EXCHANGE_URL
+echo "${DOCKER_NAMESPACE}" > DOCKER_NAMESPACE
 ```
 
 ### 1.1.2 Dependencies
 Docker provides for build dependencies through the `FROM ` directive in the `Dockerfile`; most services depend on the base service containers for `base-ubuntu` or `base-alpine`.
 
-Build all services and containers from the top-level using the following command:
+Build services and containers from the top-level using the following command:
 
 ```
-% make service-build
+make build
 ```
 
+To build (or push or publish ..) for all services on _all_ architectures, modify the target with `service-` prepended; for example:
+
+```
+make service-build
+```
 
 # 2. Services & Patterns
 
