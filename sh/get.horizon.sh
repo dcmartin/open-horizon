@@ -139,6 +139,11 @@ get_horizon()
 ### MAIN
 ###
 
+if [ "${USER:-}" != 'root' ]; then
+  echo "Run as root: sudo ${0} ${*}" &> /dev/stderr
+  exit 1
+fi
+
 if [ -z "$(command -v curl)" ]; then
   echo 'Please install curl; sudo apt install -qq -y curl' &> /dev/stderr
   exit 1
@@ -161,10 +166,5 @@ STABLE_VERSION=2.24.18
 if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
 if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
 
-if [ "${USER:-}" != 'root' ]; then
-  echo "Run as root: sudo ${0} ${*}" &> /dev/stderr
-  exit 1
-else
-  get_horizon ${1:-${STABLE_VERSION}}
-  echo 'COMPLETE' &> /dev/stderr
-fi
+get_horizon ${1:-${STABLE_VERSION}}
+echo 'COMPLETE' &> /dev/stderr
