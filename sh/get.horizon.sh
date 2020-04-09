@@ -3,7 +3,7 @@
 ##
 update_defaults()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local result
 
@@ -28,7 +28,7 @@ update_defaults()
 ##
 install_linux()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   # which version
   local version=${1}
@@ -63,7 +63,7 @@ install_linux()
 
 install_darwin()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   # which version
   local version=${1}
@@ -110,14 +110,13 @@ install_darwin()
     echo "Unable to download certificate; URL: ${crt}" &> /dev/stderr
   fi
   echo ${result:-1}
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: exit: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 }
 
 ##
 
 get_horizon()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local version=${1}
   local result
@@ -127,11 +126,9 @@ get_horizon()
     result=$(install_linux ${version})
   elif [ "${uname:-}" = 'Darwin' ]; then
     result=$(install_darwin ${version})
-    echo 'DEBUG' &> /dev/stderr
   else
     echo 'Unknown system: ${uname}' &> /dev/stderr
   fi
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: exit: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
   echo ${result:-1}
 }
 
