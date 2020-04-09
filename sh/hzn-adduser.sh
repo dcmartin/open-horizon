@@ -6,7 +6,7 @@ password="${3:-password}"
 
 HZN_ORG_ID="${HZN_ORG_ID:-dcmartin}"
 HZN_EXCHANGE_APIKEY="${HZN_EXCHANGE_APIKEY:-HZN_EXCHANGE_APIKEY}"
-HZN_EXCHANGE_URL="${HZN_EXCHANGE_URL:-http://exchange.dcmartin.com:3090/v1}"
+HZN_EXCHANGE_URL="${HZN_EXCHANGE_URL:-http://exchange:3090/v1}"
 
 REQUEST='{ "password": "'${password}'", "admin": false, "email": "'${email}'" }'
 URL="${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/users/${user}"
