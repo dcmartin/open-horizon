@@ -139,6 +139,16 @@ get_horizon()
 ### MAIN
 ###
 
+if [ -z "$(command -v docker)" ]; then
+  echo 'Please install Docker; curl -sSL get.docker.com -o get.docker.sh && sudo bash -s ./get.docker.sh' &> /dev/stderr
+  exit 1
+fi
+
+if [ -z "$(command -v curl)" ]; then
+  echo 'Please install curl; sudo apt install -qq -y curl' &> /dev/stderr
+  exit 1
+fi
+
 STABLE_VERSION=2.24.18
 
 if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
