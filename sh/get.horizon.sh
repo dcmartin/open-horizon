@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/bash -x
 
 ##
-install_defaults()
+update_defaults()
 {
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+
   local result
 
-  if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
   if [ "${HZN_EXCHANGE_URL:-null}" != 'null' ]; then
     echo 'Updating /etc/default/horizon with HZN_EXCHANGE_URL="'${HZN_EXCHANGE_URL}'"' &> /dev/stderr
     sed -i -e "s|^HZN_EXCHANGE_URL=.*|HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}|" /etc/default/horizon
@@ -14,7 +15,6 @@ install_defaults()
     echo 'Edit /etc/default/horizon and specify HZN_EXCHANGE_URL; then "sudo systemctl restart horizon"' &> /dev/stderr
   fi
 
-  if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
   if [ "${HZN_FSS_CSSURL:-null}" != 'null' ]; then
     echo 'Updating /etc/default/horizon with HZN_FSS_CSSURL="'${HZN_FSS_CSSURL}'"' &> /dev/stderr
     sed -i -e "s|^HZN_FSS_CSSURL=.*|HZN_FSS_CSSURL=${HZN_FSS_CSSURL}|" /etc/default/horizon
@@ -22,14 +22,13 @@ install_defaults()
   else
     echo 'Edit /etc/default/horizon and specify HZN_FSS_CSSURL; then "sudo systemctl restart horizon"' &> /dev/stderr
   fi
-  if [ "${result:-1}" -eq 0 ]; then systemctl restart horizon; fi
   echo ${result:-1}
 }
 
 ##
 install_linux()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "${FUNCNAME[0} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   # which version
   local version=${1}
@@ -56,14 +55,15 @@ install_linux()
     done
   fi
   
-  install_defaults
+  result=$(update_defaults)
+  if [ "${result:-1}" -eq 0 ]; then systemctl restart horizon; fi
   
   echo ${result:-0}
 }
 
 install_darwin()
 {
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "${FUNCNAME[0} ${*}" &> /dev/stderr; fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   # which version
   local version=${1}
@@ -79,40 +79,59 @@ install_darwin()
   fi
 
   if [ -s "horizon-cli.crt" ]; then
-    result=$(security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain horizon-cli.crt)
+    security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain horizon-cli.crt
+    result=$?
     if [ ${result} -eq 0 ]; then
       if [ -s "horizon-cli.pkg" ]; then
-        result=$(installer -pkg "horizon-cli-2.24.18.pkg" -target /)
+        installer -pkg "horizon-cli.pkg" -target /
+        result=$?
       else
-        echo 'Unable to download package; URL: ${pkg}' &> /dev/stderr
+        echo "Unable to download package; URL: ${pkg}" &> /dev/stderr
       fi
       if [ ${result} -ne 0 ]; then
-        echo 'Unable to install package; result: ${result}' &> /dev/stderr
+        echo "Unable to install package; result: ${result}" &> /dev/stderr
+      else
+        echo 'Creating /etc/default/horizon' &> /dev/stderr
+        mkdir -p /etc/default
+        echo "HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}" > /etc/default/horizon
+        echo "HZN_FSS_CSSURL=${HZN_FSS_CSS_URL}" >> /etc/default/horizon
+        if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
+          echo 'Stopping horizon container' &> /dev/stderr
+          horizon-container stop
+        fi
+        echo 'Starting horizon container' &> /dev/stderr
+        horizon-container start
+        result=$?
       fi
     else
-      echo 'Unable to add trusted certificate; result: ${result}' &> /dev/stderr
+      echo "Unable to add trusted certificate; result: ${result}" &> /dev/stderr
     fi
   else
-    echo 'Unable to download certificate; URL: ${crt}' &> /dev/stderr
+    echo "Unable to download certificate; URL: ${crt}" &> /dev/stderr
   fi
   echo ${result:-1}
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: exit: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 }
 
 ##
 
 get_horizon()
 {
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: enter: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+
   local version=${1}
   local result
+  local uname=$(uname)
 
-  case $(uname) in 
-    Linux)
-      result=$(install_linux ${version})
-      ;;
-    Darwin)
-      result=$(install_darwin ${version})
-      ;;
-  esac
+  if [ "${uname:-}" = 'Linux' ]; then
+    result=$(install_linux ${version})
+  elif [ "${uname:-}" = 'Darwin' ]; then
+    result=$(install_darwin ${version})
+    echo 'DEBUG' &> /dev/stderr
+  else
+    echo 'Unknown system: ${uname}' &> /dev/stderr
+  fi
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: exit: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
   echo ${result:-1}
 }
 
@@ -122,9 +141,13 @@ get_horizon()
 
 STABLE_VERSION=2.24.18
 
+if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
+if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
+
 if [ "${USER:-}" != 'root' ]; then
   echo "Run as root: sudo ${0} ${*}" &> /dev/stderr
   exit 1
 else
-  exit $(get_horizon ${1:-${STABLE_VERSION}})
+  get_horizon ${1:-${STABLE_VERSION}}
+  echo 'COMPLETE' &> /dev/stderr
 fi
