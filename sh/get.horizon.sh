@@ -22,17 +22,17 @@ update_defaults()
     echo "HZN_AGENT_PORT=" >> /etc/default/horizon
   fi
 
-  if [ "${HZN_EXCHANGE_URL:-null}" != 'null' ]; then
-    echo 'Updating /etc/default/horizon with HZN_EXCHANGE_URL="'${HZN_EXCHANGE_URL}'"' &> /dev/stderr
-    sed -i -e "s|^HZN_EXCHANGE_URL=.*|HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}|" /etc/default/horizon
+  if [ "${url:-null}" != 'null' ]; then
+    echo 'Updating /etc/default/horizon with HZN_EXCHANGE_URL='${url} &> /dev/stderr
+    sed -i -e "s|^HZN_EXCHANGE_URL=.*|HZN_EXCHANGE_URL=${url}|" /etc/default/horizon
     result=0
   else
     echo 'Edit /etc/default/horizon and specify HZN_EXCHANGE_URL; then restart horizon' &> /dev/stderr
   fi
 
-  if [ "${HZN_FSS_CSSURL:-null}" != 'null' ]; then
-    echo 'Updating /etc/default/horizon with HZN_FSS_CSSURL="'${HZN_FSS_CSSURL}'"' &> /dev/stderr
-    sed -i -e "s|^HZN_FSS_CSSURL=.*|HZN_FSS_CSSURL=${HZN_FSS_CSSURL}|" /etc/default/horizon
+  if [ "${fss:-null}" != 'null' ]; then
+    echo 'Updating /etc/default/horizon with HZN_FSS_CSSURL='${fss} &> /dev/stderr
+    sed -i -e "s|^HZN_FSS_CSSURL=.*|HZN_FSS_CSSURL=${fss}|" /etc/default/horizon
     result=0
   else
     echo 'Edit /etc/default/horizon and specify HZN_FSS_CSSURL; then restart horizon' &> /dev/stderr
@@ -182,8 +182,13 @@ if [ "${USER:-}" != 'root' ]; then
 fi
 
 if [ -z "$(command -v curl)" ]; then
-  echo 'Please install curl; sudo apt install -qq -y curl' &> /dev/stderr
-  exit 1
+  echo "Installing curl" &> /dev/stderr
+  apt install -qq -y curl
+fi
+
+if [ -z "$(command -v ifconfig)" ]; then
+  echo "Installing net-tools" &> /dev/stderr
+  apt install -qq -y net-tools
 fi
 
 if [ -z "$(command -v docker)" ]; then
@@ -202,10 +207,4 @@ if [ -s HZN_AGENT_VERSION ]; then HZN_AGENT_VERSION=${HZN_AGENT_VERSION:-$(cat H
 if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}; fi
 if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}; fi
 
-if [ -z "${HZN_EXCHANGE_URL:-}" ]; then
-  echo 'WARNING: HZN_EXCHANGE_URL unset: "export HZN_EXCHANGE_URL=http://<ip-or-fqdn>:3090/v1/"' &> /dev/stderr
-fi
-
-echo 'STARTING..' &> /dev/stderr
-get_horizon ${1:-${HZN_AGENT_VERSION}}
-echo 'COMPLETE' &> /dev/stderr
+echo 'STARTING..' $(get_horizon ${1:-${HZN_AGENT_VERSION}}) 'DONE' &> /dev/stderr
