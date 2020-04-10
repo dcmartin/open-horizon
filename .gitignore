@@ -52,3 +52,5 @@ test.*.jpeg
 HZNPKG_REPO
 KAFKA_APIKEY
 *.deb
+horizon-cli.crt
+horizon-cli.pkg
