@@ -1,18 +1,29 @@
 #!/bin/bash
 
-##
+## DEFAULTS
+
 update_defaults()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local result
 
+  if [ ! -s "/etc/default/horizon" ]; then
+    echo 'Creating /etc/default/horizon' &> /dev/stderr
+    mkdir -p /etc/default 
+    echo "HZN_EXCHANGE_URL=" > /etc/default/horizon
+    echo "HZN_FSS_CSSURL=" >> /etc/default/horizon
+    echo "HZN_DEVICE_ID=" >> /etc/default/horizon
+    echo "HZN_MGMT_HUB_CERT_PATH=" >> /etc/default/horizon
+    echo "HZN_AGENT_PORT=" >> /etc/default/horizon
+  fi
+
   if [ "${HZN_EXCHANGE_URL:-null}" != 'null' ]; then
     echo 'Updating /etc/default/horizon with HZN_EXCHANGE_URL="'${HZN_EXCHANGE_URL}'"' &> /dev/stderr
     sed -i -e "s|^HZN_EXCHANGE_URL=.*|HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}|" /etc/default/horizon
     result=0
   else
-    echo 'Edit /etc/default/horizon and specify HZN_EXCHANGE_URL; then "sudo systemctl restart horizon"' &> /dev/stderr
+    echo 'Edit /etc/default/horizon and specify HZN_EXCHANGE_URL; then restart horizon' &> /dev/stderr
   fi
 
   if [ "${HZN_FSS_CSSURL:-null}" != 'null' ]; then
@@ -20,12 +31,13 @@ update_defaults()
     sed -i -e "s|^HZN_FSS_CSSURL=.*|HZN_FSS_CSSURL=${HZN_FSS_CSSURL}|" /etc/default/horizon
     result=0
   else
-    echo 'Edit /etc/default/horizon and specify HZN_FSS_CSSURL; then "sudo systemctl restart horizon"' &> /dev/stderr
+    echo 'Edit /etc/default/horizon and specify HZN_FSS_CSSURL; then restart horizon' &> /dev/stderr
   fi
   echo ${result:-1}
 }
 
-##
+## LINUX
+
 install_linux()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
@@ -56,12 +68,22 @@ install_linux()
       dpkg -i ${p}.deb
     done
   fi
-  
   result=$(update_defaults)
-  if [ "${result:-1}" -eq 0 ]; then systemctl restart horizon; fi
-  
+  if [ "${result:-1}" -eq 0 ]; then 
+    linux_start
+  fi
+
   echo ${result:-0}
 }
+
+linux_start()
+{
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+
+  systemctl restart horizon
+}
+
+## DARWIN
 
 install_darwin()
 {
@@ -96,21 +118,7 @@ install_darwin()
       if [ ${result} -ne 0 ]; then
         echo "Unable to install package; result: ${result}" &> /dev/stderr
       else
-        echo 'Creating /etc/default/horizon' &> /dev/stderr
-        mkdir -p /etc/default
-        echo "HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}" > /etc/default/horizon
-        echo "HZN_FSS_CSSURL=${HZN_FSS_CSS_URL}" >> /etc/default/horizon
-
-        if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
-          echo 'Running "horizon-container stop"' &> /dev/stderr
-          horizon-container stop
-        fi
-        if [ -z "$(command socat)" ]; then
-          echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
-        else
-          echo 'Running "horizon-container start"' &> /dev/stderr
-          horizon-container start
-        fi
+        result=$(update_defaults)
       fi
     else
       echo "Unable to add trusted certificate; result: ${result}" &> /dev/stderr
@@ -118,7 +126,26 @@ install_darwin()
   else
     echo "Unable to download certificate; URL: ${crt}" &> /dev/stderr
   fi
+  if [ "${result:-1}" -eq 0 ]; then
+    darwin_start
+  fi
   echo ${result:-1}
+}
+
+darwin_start()
+{
+  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+
+  if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
+    echo 'Running "horizon-container stop"' &> /dev/stderr
+    horizon-container stop
+  fi
+  if [ -z "$(command socat)" ]; then
+    echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
+  else
+    echo 'Running "horizon-container start"' &> /dev/stderr
+    horizon-container start
+  fi
 }
 
 ##
