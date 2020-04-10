@@ -7,10 +7,9 @@ update_defaults()
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local result
-  local ipaddr=$(ifconfig | egrep 'inet ' | awk '{ print $2 }' | egrep -v '^172.|^10.|^127.' | head -1)
-  local url=${1:-${HZN_EXCHANGE_URL:-http://${ipaddr}:3090/v1/}}
-  local fss=${2:-${HZN_FSS_CSSURL:-http://${ipaddr}:9443/css/}}
-  local ver=${3:-${HZN_AGENT_VERSION:-2.24.18}}
+  local url=${1:-${URL}}
+  local fss=${2:-${FSS}}
+  local ver=${3:-${VER}}
 
   if [ ! -s "/etc/default/horizon" ]; then
     echo 'Creating /etc/default/horizon' &> /dev/stderr
@@ -158,16 +157,23 @@ get_horizon()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
-  local version=${1}
+  local url=${1}
+  local fss=${2}
+  local version=${3}
   local result
-  local uname=$(uname)
 
-  if [ "${uname:-}" = 'Linux' ]; then
-    result=$(install_linux ${version})
-  elif [ "${uname:-}" = 'Darwin' ]; then
-    result=$(install_darwin ${version})
+  if [ ! -z "${url:-}" ] && [ ! -z "${fss:-}" ] && [ ! -z "${version:-}" ]; then
+    local uname=$(uname)
+
+    if [ "${uname:-}" = 'Linux' ]; then
+      result=$(install_linux ${version})
+    elif [ "${uname:-}" = 'Darwin' ]; then
+      result=$(install_darwin ${version})
+    else
+      echo 'Unknown system: ${uname}' &> /dev/stderr
+    fi
   else
-    echo 'Unknown system: ${uname}' &> /dev/stderr
+    echo "Invalid arguments; required: url, fss, version; provided: ${*}" &> /dev/stderr
   fi
   echo ${result:-1}
 }
@@ -203,8 +209,26 @@ if [ -z "$(command -v docker)" ]; then
   fi
 fi
 
-if [ -s HZN_AGENT_VERSION ]; then HZN_AGENT_VERSION=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}; fi
-if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}; fi
-if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}; fi
+# exchange URL
+if [ -s HZN_EXCHANGE_URL ]; then 
+  URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}
+else 
+  URL=${1:-${HZN_EXCHANGE_URL}}
+fi
 
-echo 'STARTING..' $(get_horizon ${1:-${HZN_AGENT_VERSION}}) 'DONE' &> /dev/stderr
+# css URL
+if [ -s HZN_FSS_CSSURL ]; then
+  FSS=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}
+else
+  FSS=${2:-${HZN_FSS_CSSURL}}
+fi
+
+# version
+if [ -s HZN_AGENT_VERSION ]; then 
+  VER=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}
+else
+  VER=${3:-${HZN_AGENT_VERSION:-2.24.18}}
+fi
+
+echo 'STARTING..' 
+exit $(get_horizon ${URL} ${FSS} ${VER})
