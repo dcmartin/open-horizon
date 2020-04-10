@@ -7,6 +7,10 @@ update_defaults()
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local result
+  local ipaddr=$(ifconfig | egrep 'inet ' | awk '{ print $2 }' | egrep -v '^172.|^10.|^127.' | head -1)
+  local url=${1:-${HZN_EXCHANGE_URL:-http://${ipaddr}:3090/v1/}}
+  local fss=${2:-${HZN_FSS_CSSURL:-http://${ipaddr}:9443/css/}}
+  local ver=${3:-${HZN_AGENT_VERSION:-2.24.18}}
 
   if [ ! -s "/etc/default/horizon" ]; then
     echo 'Creating /etc/default/horizon' &> /dev/stderr
@@ -58,13 +62,13 @@ install_linux()
   else
     # download packages
     for p in horizon-cli horizon bluehorizon; do
-      echo 'Downloading ...' &> /dev/stderr
+      echo 'Downloading ${p} ...' &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
         package=${dir}/${p}
         curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb
       fi
-      echo 'Installing ...' &> /dev/stderr
+      echo 'Installing ${p} ...' &> /dev/stderr
       dpkg -i ${p}.deb
     done
   fi
@@ -194,11 +198,14 @@ if [ -z "$(command -v docker)" ]; then
   fi
 fi
 
-STABLE_VERSION=2.24.18
+if [ -s HZN_AGENT_VERSION ]; then HZN_AGENT_VERSION=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}; fi
+if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}; fi
+if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}; fi
 
-if [ -s HZN_EXCHANGE_URL ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
-if [ -s HZN_FSS_CSSURL ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
+if [ -z "${HZN_EXCHANGE_URL:-}" ]; then
+  echo 'WARNING: HZN_EXCHANGE_URL unset: "export HZN_EXCHANGE_URL=http://<ip-or-fqdn>:3090/v1/"' &> /dev/stderr
+fi
 
 echo 'STARTING..' &> /dev/stderr
-get_horizon ${1:-${STABLE_VERSION}}
+get_horizon ${1:-${HZN_AGENT_VERSION}}
 echo 'COMPLETE' &> /dev/stderr
