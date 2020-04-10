@@ -226,4 +226,8 @@ else
 fi
 
 echo 'STARTING..' 
-exit $(get_horizon ${URL} ${FSS} ${VER})
+if [ $(get_horizon ${URL} ${FSS} ${VER}) -gt 0 ]; then
+  echo 'Failed'
+else
+  echo 'Success'
+fi
