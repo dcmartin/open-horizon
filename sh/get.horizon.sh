@@ -61,13 +61,13 @@ install_linux()
   else
     # download packages
     for p in horizon-cli horizon bluehorizon; do
-      echo 'Downloading ${p} ...' &> /dev/stderr
+      echo "Downloading ${p} ..." &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
         package=${dir}/${p}
         curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb
       fi
-      echo 'Installing ${p} ...' &> /dev/stderr
+      echo "Installing ${p} ..." &> /dev/stderr
       dpkg -i ${p}.deb
     done
   fi
@@ -190,11 +190,6 @@ fi
 if [ -z "$(command -v curl)" ]; then
   echo "Installing curl" &> /dev/stderr
   apt install -qq -y curl
-fi
-
-if [ -z "$(command -v ifconfig)" ]; then
-  echo "Installing net-tools" &> /dev/stderr
-  apt install -qq -y net-tools
 fi
 
 if [ -z "$(command -v docker)" ]; then
