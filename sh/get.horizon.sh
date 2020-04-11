@@ -65,10 +65,10 @@ install_linux()
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
         package=${dir}/${p}
-        curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb
+        curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb &> /dev/stderr
       fi
       echo "Installing ${p} ..." &> /dev/stderr
-      dpkg -i ${p}.deb
+      dpkg -i ${p}.deb &> /dev/stderr
     done
   fi
   result=$(update_defaults)
@@ -109,11 +109,11 @@ install_darwin()
 
   echo 'Installing ...' &> /dev/stderr
   if [ -s "horizon-cli.crt" ]; then
-    security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain horizon-cli.crt
+    security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain horizon-cli.crt &> /dev/stderr
     result=$?
     if [ ${result} -eq 0 ]; then
       if [ -s "horizon-cli.pkg" ]; then
-        installer -pkg "horizon-cli.pkg" -target /
+        installer -pkg "horizon-cli.pkg" -target / &> /dev/stderr
         result=$?
       else
         echo "Unable to download package; URL: ${pkg}" &> /dev/stderr
@@ -141,13 +141,13 @@ darwin_start()
 
   if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
     echo 'Running "horizon-container stop"' &> /dev/stderr
-    horizon-container stop
+    horizon-container stop &> /dev/stderr
   fi
   if [ -z "$(command socat)" ]; then
     echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
   else
     echo 'Running "horizon-container start"' &> /dev/stderr
-    horizon-container start
+    horizon-container start &> /dev/stderr
   fi
 }
 
@@ -189,12 +189,12 @@ fi
 
 if [ -z "$(command -v curl)" ]; then
   echo "Installing curl" &> /dev/stderr
-  apt install -qq -y curl
+  apt install -qq -y curl &> /dev/stderr
 fi
 
 if [ -z "$(command -v docker)" ]; then
   echo 'Installing Docker' &> /dev/stderr
-  curl -sSL get.docker.com -o get.docker.sh 
+  curl -sSL get.docker.com -o get.docker.sh &> /dev/stderr
   if [ -s get.docker.sh ]; then
     chmod 755 get.docker.sh
     ./get.docker.sh
@@ -226,8 +226,9 @@ else
 fi
 
 echo 'STARTING..' 
-if [ $(get_horizon ${URL} ${FSS} ${VER}) -gt 0 ]; then
-  echo 'Failed'
+result=$(get_horizon ${URL} ${FSS} ${VER})
+if [ -z "${result:-}" ] || [ ${#result} -gt 1 ] || [ ${result:-1} -gt 0 ]; then
+  echo "Failed: result: ${result}"
 else
   echo 'Success'
 fi
