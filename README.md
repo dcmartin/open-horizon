@@ -113,7 +113,6 @@ Services include:
 + [`motion2mqtt`](services/motion2mqtt/README.md) - transmit motion detected images to MQTT
 + [`mqtt2kafka`](services/mqtt2kafka/README.md) - relay MQTT traffic to Kafka
 + [`mqtt2mqtt`](services/mqtt2mqtt/README.md) - Relay MQTT traffic
-+ [`nmap`](services/nmap/README.md) - Provide network map 
 + [`noize`](services/noize/README.md) - Capture noise from silence
 + [`record`](services/record/README.md) - Record audio from a microphone
 + [`wan`](services/wan/README.md) - provide Wide-Area-Network information
