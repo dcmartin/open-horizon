@@ -81,12 +81,13 @@ Change directory to the top-level of this cloned repository and define the varia
 + `HZN_EXCHANGE_IP` - identifies the TCP/IPv4 network address; may be fully qualified DNS
 + `HZN_EXCHANGE_URL` _exchange_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
 + `HZN_FSS_CSSURL` - _edge sync service_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
-+ `HZN_ORG_ID` - variable for Open Horizon CLI (_aka_ `hzn`) **and** shell scripts in this repository
-+ `HZN_USER_ID` - shell scripts
-+ `HZN_EXCHANGE_APIKEY` - shell scripts 
++ `HZN_ORG_ID` - variable for Open Horizon CLI (_aka_ `hzn`) **and** `make` & shell scripts in this repository
++ `HZN_USER_ID` - used by `make` & shell scripts in this repository
++ `HZN_EXCHANGE_APIKEY` - used by `make` & shell scripts in this repository
 + `HZN_EXCHANGE_USER_AUTH` -  `hzn` CLI; _aka_: `${HZN_ORD_ID}/${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY}`
 
 #### 3.2.1  _Persistent_ variables
+To define variables and their values persistently, i.e. between login sessions, create files with the same names as the variables.  Variables may be defined both at the top-level (e.g. see below), or in any subdirectory; the easist way to ensure consistent usage of variables is to define them in this fashion and then utilize _symbolic links_ to reference when appropriate (n.b. see `hznmonitor` below).
 
 ```
 cd ~/GIT/open-horizon
@@ -99,6 +100,7 @@ echo whocares > HZN_EXCHANGE_APIKEY
 ```
 
 #### 3.2.2 _Environment_ variables
+Variables and their values may also be defined for the _environment_ (i.e. `bash` command-line shell); these values will over-ride any _persistent_ definitions (i.e. files); the `make` files and `bash` shell scripts in this repository make use of the following environment variables:
 
 ```
 export HZN_EXCHANGE_APIKEY=$(cat HZN_EXCHANGE_APIKEY)
@@ -110,8 +112,12 @@ export HZN_USER_ID=$(cat HZN_USER_ID)
 ```
 
 #### 3.2.3 Open Horizon CLI (`hzn`) variables
+The Open Horizon command-line-interface program, i.e. `hzn`, requires the following environment variables to be defined for successful operation.
+
+**Note**: `HZN_ORG_ID` ,`HZN_USER_ID` and `HZN_EXCHANGE_APIKEY` as the same as above.
 
 ```
+export HZN_ORG_ID=$(cat HZN_ORG_ID)
 export HZN_EXCHANGE_USER_AUTH=${HZN_ORG_ID}/${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY}
 ```
 
