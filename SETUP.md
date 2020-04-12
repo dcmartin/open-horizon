@@ -10,7 +10,11 @@ sudo apt update -qq -y && sudo apt upgrade -qq -y
 sudo apt install -qq -y git make curl jq net-tools apache2-utils docker-compose
 sudo addgroup ${USER} docker
 ```
-Log out and log back in activate `docker` group privileges.
+Log out and log back in activate `docker` group privileges.  Then clone this repository and run `make all` in the directory.  The process will build:
+
++ `exchange` - to setup the _exchange_ server and start it
++ `agent` - to setup the _agent_ client and start it (n.b. `socat` must be pre-installed)
++ `services` - to build, push, and publish all the sample services provided (n.b. only for the current architecture)
 
 ```
 git clone http://github.com/dcmartin/open-horizon
@@ -232,7 +236,6 @@ Run the `hznmonitor` service to inspect the exchange and see the listing of serv
 ```
 cd ~/GIT/open-horizon/services/hznmonitor/
 ln -s ../../HZN_EXCHANGE_URL HZNMONITOR_EXCHANGE_URL
-ln -s ../../HZN_EXCHANGE_APIKEY HZNMONITOR_EXCHANGE_APIKEY
 ln -s ../../HZN_ORG_ID HZNMONITOR_EXCHANGE_ORG
 ln -s ../../HZN_USER_ID HZNMONITOR_EXCHANGE_USER
 make
@@ -248,11 +251,7 @@ a785cad1dac8d11ac1f12d3c40cf8fa02bda52841bd67205851a951c31582729
 >>> MAKE -- 13:27:10 -- check: amd64_com.github.dcmartin.open-horizon.hznmonitor; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor:0.1.0; URL: http://localhost:3095
 ```
 
-Using a web browser navigate to the user-interface at [http://127.0.0.1:3094/](http://127.0.0.1:3094/); for example the following is the `Matrix` display of all _nodes_ in the _exchange_:
-
-<img src="docs/matrix.png" width=512>
-
-And selecting `Catalog` provides a listing of all _services_ in the _exchange_, organized by the _service_ `label` and providing details on architecture, version, and other status information:
+Using a web browser navigate to the user-interface at [http://127.0.0.1:3094/](http://127.0.0.1:3094/); for example:
 
 <img src="docs/catalog.png" width=1024>
 
