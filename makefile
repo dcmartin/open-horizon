@@ -7,6 +7,10 @@ SHELL := /bin/bash
 ## HOSTIP
 THIS_HOSTIP := $(shell ifconfig | egrep 'inet ' | awk '{ print $$2 }' | egrep -v '^172.|^10.|^127.' | head -1)
 
+###
+### VARIABLES
+###
+
 ## HZN
 HZN_EXCHANGE_URL ?= $(if $(wildcard HZN_EXCHANGE_URL),$(shell v=$$(cat HZN_EXCHANGE_URL) && echo "** SPECIFIED: HZN_EXCHANGE_URL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:3090/v1/" && echo "!! UNSPECIFIED: HZN_EXCHANGE_URL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 HZN_FSS_CSSURL ?= $(if $(wildcard HZN_FSS_CSSURL),$(shell v=$$(cat HZN_FSS_CSSURL) && echo "** SPECIFIED: HZN_FSS_CSSURL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:9443/css/" && echo "!! UNSPECIFIED: HZN_FSS_CSSURL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
@@ -14,20 +18,7 @@ HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell v=$$(cat HZN_ORG_ID) && echo "
 HZN_USER_ID ?= $(if $(wildcard HZN_USER_ID),$(shell v=$$(cat HZN_USER_ID) && echo "** SPECIFIED: HZN_USER_ID: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$${USER} && echo "!! UNSPECIFIED: HZN_USER_ID unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 HZN_EXCHANGE_APIKEY ?= $(if $(wildcard HZN_EXCHANGE_APIKEY),$(shell v=$$(cat HZN_EXCHANGE_APIKEY) && echo "** SPECIFIED: HZN_EXCHANGE_APIKEY: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='whocares' && echo "!! UNSPECIFIED: HZN_EXCHANGE_APIKEY unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 
-###
-### TARGETS
-###
-
-ACTIONS := all tidy clean
-
-default: exchange agent services
-
-${ACTIONS}:
-	@echo "making $@ in $${P}" && ${MAKE} -C $${P} $@
-
 ## EXCHANGE
-
-# BASICS
 EXCHANGE_HOSTNAME ?= $(if $(wildcard EXCHANGE_HOSTNAME),$(shell v=$$(cat EXCHANGE_HOSTNAME) && echo "** SPECIFIED: EXCHANGE_HOSTNAME: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$(THIS_HOSTIP) && echo "!! UNSPECIFIED: EXCHANGE_HOSTNAME unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 EXCHANGE_NAMESPACE ?= $(if $(wildcard EXCHANGE_NAMESPACE),$(shell v=$$(cat EXCHANGE_NAMESPACE) && echo "** SPECIFIED: EXCHANGE_NAMESPACE: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='oh' && echo "!! UNSPECIFIED: EXCHANGE_NAMESPACE unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 EXCHANGE_NETWORK ?= $(if $(wildcard EXCHANGE_NETWORK),$(shell v=$$(cat EXCHANGE_NETWORK) && echo "** SPECIFIED: EXCHANGE_NETWORK: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='hznnet' && echo "!! UNSPECIFIED: EXCHANGE_NETWORK unset; default: $${v}" > /dev/stderr && echo "$${v}"))
@@ -35,12 +26,29 @@ EXCHANGE_NETWORK_DRIVER ?= $(if $(wildcard EXCHANGE_NETWORK_DRIVER),$(shell v=$$
 EXCHANGE_ROOT ?= $(if $(wildcard EXCHANGE_ROOT),$(shell v=$$(cat EXCHANGE_ROOT) && echo "** SPECIFIED: EXCHANGE_ROOT: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='root' && echo "!! UNSPECIFIED: EXCHANGE_ROOT unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),$(shell jq -r '.services.exchange.password' exchange/config.json.tmpl))
 
+## VERSIONS
 # EXCHANGE
 EXCHANGE_TAG ?= $(if $(wildcard EXCHANGE_TAG),$(shell v=$$(cat EXCHANGE_TAG) && echo "** SPECIFIED: EXCHANGE_TAG: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$$(jq -r '.services.exchange.stable' exchange/config.json.tmpl) && echo "!! UNSPECIFIED: EXCHANGE_TAG unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 # CSS
 CSS_TAG ?= $(if $(wildcard CSS_TAG),$(shell v=$$(cat CSS_TAG) && echo "** SPECIFIED: CSS_TAG: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$$(jq -r '.services.css.stable' exchange/config.json.tmpl) && echo "!! UNSPECIFIED: CSS_TAG unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 # AGBOT
 AGBOT_TAG ?= $(if $(wildcard AGBOT_TAG),$(shell v=$$(cat AGBOT_TAG) && echo "** SPECIFIED: AGBOT_TAG: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$$(jq -r '.services.agbot.stable' exchange/config.json.tmpl) && echo "!! UNSPECIFIED: AGBOT_TAG unset; default: $${v}" > /dev/stderr && echo "$${v}"))
+
+###
+### TARGETS
+###
+
+ACTIONS := tidy clean
+
+default:
+	@echo 'These are the targets: exchange, agent, services, all, tidy, and clean; run "make all" to setup everything'
+
+all: exchange agent services
+
+${ACTIONS}:
+	@echo "making $@ in $${P}" && ${MAKE} -C $${P} $@
+
+## EXCHANGE
 
 exchange: exchange/config.json
 	@echo "making $@"
@@ -101,8 +109,8 @@ services: ${HZN_VARIABLES}
 	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
 	  HZN_ORG_ID="$(HZN_ORG_ID)" \
 	  HZN_USER_ID="$(HZN_USER_ID)" \
-	&& ${MAKE} -C $@ publish push
+	&& ${MAKE} -C $@ build push publish
 
 ## ADMINISTRIVIA
 
-.PHONY: default exchange/config.json $(ACTIONS) services exchange agent
+.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all
