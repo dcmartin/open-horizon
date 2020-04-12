@@ -3,7 +3,7 @@
 These instructions are for Debian LINUX, notably Ubuntu and Raspbian.  Instructions for _macOS_ are TBD.
 
 ## _Quick Start_
-For Ubuntu 18.04 LTS access host and install pre-requisites and enable `docker` group permissions.
+For AMD64/Ubuntu 18.04 LTS access host and install pre-requisites and enable `docker` group permissions.
 
 ```
 sudo apt update -qq -y && sudo apt upgrade -qq -y
@@ -79,8 +79,8 @@ echo ${USER} > ~/GIT/open-horizon/DOCKER_NAMESPACE
 Change directory to the top-level of this cloned repository and define the variables that control Open Horizion as follows:
 
 + `HZN_EXCHANGE_IP` - identifies the TCP/IPv4 network address; may be fully qualified DNS
-+ `HZN_EXCHANGE_URL` _exchange_ API end-point; default: `http:${HZN_EXCHANGE_IP}:9443/css/`
-+ `HZN_FSS_CSSURL` - _edge sync service_ API end-point; default: `http:${HZN_EXCHANGE_IP}:9443/css/`
++ `HZN_EXCHANGE_URL` _exchange_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
++ `HZN_FSS_CSSURL` - _edge sync service_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
 + `HZN_ORG_ID` - variable for Open Horizon CLI (_aka_ `hzn`) **and** shell scripts in this repository
 + `HZN_USER_ID` - shell scripts
 + `HZN_EXCHANGE_APIKEY` - shell scripts 
@@ -115,8 +115,8 @@ export HZN_USER_ID=$(cat HZN_USER_ID)
 export HZN_EXCHANGE_USER_AUTH=${HZN_ORG_ID}/${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY}
 ```
 
-## Step 4 - Start  _exchange_
-Change to the `exchange/` directory, link the `HZN_` configuration files from the parent directory, and setup the Open Horizon _exchange_; for example:
+## Step 4 - Start  _exchange_ (Intel/AMD 64-bit)
+The [`openhorizon`](https://hub.docker.com/u/openhorizon) repository on Docker hub provide _only_ `amd64` container images.  Change to the `exchange/` directory, link the `HZN_` configuration files from the parent directory, and setup the Open Horizon _exchange_; for example:
 
 ```
 cd ~/GIT/open-horizon/exchange/
