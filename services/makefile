@@ -57,7 +57,7 @@ TARGETS = all tidy clean distclean build push publish verify build-service push-
 
 default: build
 
-all: build push ${KEYS} publish
+all: build push $(KEYS) publish
 
 ## KEYS
 PRIVATE_KEY_FILE ?= ${HZN_ORG_ID}.key
@@ -78,11 +78,11 @@ gpu:
 
 ## all
 
-$(ALL):
+$(ALL): $(KEYS)
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
 	$(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
 
-$(TARGETS):
+$(TARGETS): $(KEYS)
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@ in ${ALL}""${NC}" &> /dev/stderr
 	@for dir in $(ALL); do \
 	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
@@ -94,7 +94,7 @@ pattern-publish: ${KEYS}
 	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-pattern-validate:
+pattern-validate: $(KEYS)
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- validating $(PATTERNS)""${NC}" &> /dev/stderr
 	@for dir in $(PATTERNS); do \
 	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \

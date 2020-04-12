@@ -2,6 +2,23 @@
 
 These instructions are for Debian LINUX, notably Ubuntu and Raspbian.  Instructions for _macOS_ are TBD.
 
+## _Quick Start_
+For Ubuntu 18.04 LTS access host and install pre-requisites and enable `docker` group permissions.
+
+```
+sudo apt update -qq -y && sudo apt upgrade -qq -y
+sudo apt install -qq -y git make curl jq net-tools apache2-utils docker-compose
+sudo addgroup ${USER} docker
+```
+Log out and log back in activate `docker` group privileges.
+
+```
+git clone http://github.com/dcmartin/open-horizon
+cd open-horizon && make all
+```
+
+# Detailed Setup Instructions
+
 ## Step 1 - Clone [repository](http://github.com/dcmartin/open-horizon)
 
 ```
@@ -12,17 +29,17 @@ git clone http://github.com/dcmartin/open-horizon
 
 ## Step 2 - Install  pre-requisites
 
-### 2.1 Utilities
-```
-sudo apt update -qq -y && sudo apt upgrade -qq -y
-sudo apt install -qq -y curl jq
-```
-
-### 2.2 `docker`
+### 2.1 `docker`
 ```
 curl -sSL -o get.docker.sh http://get.docker.com/
 chmod 755 get.docker.sh
 sudo ./get.docker.sh
+```
+
+### 2.2 Utilities
+```
+sudo apt update -qq -y && sudo apt upgrade -qq -y
+sudo apt install -qq -y curl jq make net-tools docker-compose apache2-utils
 ```
 
 ### 2.3 `/etc/docker/daemon.json`
