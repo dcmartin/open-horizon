@@ -47,8 +47,8 @@ SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=n
 SERVICE_BUILD_FROM := $(shell jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json 2> /dev/null)
 
 ## KEYS
-PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),MISSING_PRIVATE_KEY_FILE)
-PUBLIC_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.pem),$(wildcard ../${HZN_ORG_ID}*.pem),MISSING_PUBLIC_KEY_FILE)
+PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),${HZN_ORG_ID}.key)
+PUBLIC_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.pem),$(wildcard ../${HZN_ORG_ID}*.pem),${HZN_ORG_ID}.pem)
 KEYS := $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE)
 
 ## IBM Cloud API Key
@@ -100,8 +100,8 @@ default:
 ## support
 ##
 
-$(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE):
-	@hzn key create ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
+$(KEYS):
+	@hzn key create -f -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
 
 ## development
 

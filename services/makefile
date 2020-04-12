@@ -57,7 +57,15 @@ TARGETS = all tidy clean distclean build push publish verify build-service push-
 
 default: build
 
-all: build push publish
+all: build push ${KEYS} publish
+
+## KEYS
+PRIVATE_KEY_FILE ?= ${HZN_ORG_ID}.key
+PUBLIC_KEY_FILE ?= ${HZN_ORG_ID}.pem
+KEYS := $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE)
+
+$(KEYS):
+	@hzn key create -f -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
 
 ## GPU only
 
@@ -80,13 +88,13 @@ $(TARGETS):
 	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-pattern-publish:
+pattern-publish: ${KEYS}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- publishing $(PATTERNS)""${NC}" &> /dev/stderr
 	@for dir in $(PATTERNS); do \
 	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
 	done
 
-pattern-validate: 
+pattern-validate:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- validating $(PATTERNS)""${NC}" &> /dev/stderr
 	@for dir in $(PATTERNS); do \
 	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
