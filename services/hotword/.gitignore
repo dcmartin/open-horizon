@@ -1,5 +1,4 @@
 sh/
-*.md
 *.out
 test.json
 *.zip
