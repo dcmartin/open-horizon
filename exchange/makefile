@@ -154,7 +154,7 @@ up: ${DOCKER_COMPOSE} keys config
 
 prime: # up
 	@echo "making $@"
-	export \
+	@export \
 	  EXCHANGE_AGBOT_NAME=${EXCHANGE_AGBOT_NAME} \
 	  EXCHANGE_AGBOT_TOKEN=${EXCHANGE_AGBOT_TOKEN} \
 	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \

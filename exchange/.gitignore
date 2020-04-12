@@ -10,3 +10,5 @@ exchange/
 hzn.json
 EXCHANGE_PASSWORD
 docker-compose.yaml
+config.json
+exchange.json
