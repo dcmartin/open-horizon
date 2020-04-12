@@ -8,7 +8,7 @@ This [repository][repository] contains [Open Horizon](http://github.com/open-hor
 + [`alpr4motion`](services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
 + [`face4motion`](services/face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
 
-To setup your own Open Horizon _exchange_, follow the [instructions](exchange/README.md) to install and configure the Docker containers.
+To setup your own Open Horizon _exchange_, follow the setup [instructions](SETUP.md) to install and configure.
 
 Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
 
