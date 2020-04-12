@@ -46,7 +46,8 @@ default:
 all: exchange agent services
 
 ${ACTIONS}:
-	@echo "making $@ in $${P}" && ${MAKE} -C $${P} $@
+	@${MAKE} -C exchange $@
+	@${MAKE} -C services $@
 
 ## EXCHANGE
 

@@ -101,7 +101,7 @@ default:
 ##
 
 $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE):
-	@echo "*** ERROR -- cannot locate $@; use command \"hzn key create\" to create keys; exiting"  > /dev/stderr && exit 1
+	@hzn key create ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
 
 ## development
 
