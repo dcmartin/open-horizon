@@ -114,11 +114,7 @@ Change directory to top-level of this cloned repository and run the provided scr
 
 ```
 cd ~/GIT/open-horizon/
-# if undefined; define now
-export HZN_EXCHANGE_IP=${HZN_EXCHANGE_IP:-192.168.1.199}
-sudo ./sh/get.horizon.sh \
-${HZN_EXCHANGE_URL:-http://${HZN_EXCHANGE_IP}:3090/v1/} \
-${HZN_FSS_CSSURL:-http://${HZN_EXCHANGE_IP}:9443/css/}
+sudo ./sh/get.horizon.sh
 ```
 
 ## &#9937; Test
@@ -127,6 +123,10 @@ ${HZN_FSS_CSSURL:-http://${HZN_EXCHANGE_IP}:9443/css/}
 # if undefined; define now
 export HZN_EXCHANGE_USER_AUTH=${HZN_ORG_ID}/${HZN_USER_ID}:${HZN_EXCHANGE_APIKEY}
 hzn exchange user list
+```
+Outputs something like the following:
+
+```
 {
   "dcmartin/dcmartin": {
     "admin": true,
@@ -164,6 +164,11 @@ make publish
 
 ```
 hzn exchange service list
+```
+
+Outputs something like the following:
+
+```
 [
   "dcmartin/com.github.dcmartin.open-horizon.alpr4motion_0.0.1_amd64", "dcmartin/com.github.dcmartin.open-horizon.alpr4motion_0.0.1_arm", "dcmartin/com.github.dcmartin.open-horizon.alpr4motion_0.0.1_arm64",
   "dcmartin/com.github.dcmartin.open-horizon.alpr_0.0.1_amd64", "dcmartin/com.github.dcmartin.open-horizon.alpr_0.0.1_arm", "dcmartin/com.github.dcmartin.open-horizon.alpr_0.0.1_arm64",
@@ -207,6 +212,16 @@ ln -s ../../HZN_EXCHANGE_URL HZNMONITOR_EXCHANGE_URL
 ln -s ../../HZN_ORG_ID HZNMONITOR_EXCHANGE_ORG
 ln -s ../../HZN_USER_ID HZNMONITOR_EXCHANGE_USER
 make
+```
+
+Outputs something like the following:
+
+```
+>>> MAKE -- 13:26:54 -- build: hznmonitor; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor:0.1.0
+>>> MAKE -- 13:27:05 -- run: amd64_com.github.dcmartin.open-horizon.hznmonitor; port: 3095:3095; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor:0.1.0
++++ WARN -- ./sh/docker-run.sh 25036 -- service port: 3095; continuing
+a785cad1dac8d11ac1f12d3c40cf8fa02bda52841bd67205851a951c31582729
+>>> MAKE -- 13:27:10 -- check: amd64_com.github.dcmartin.open-horizon.hznmonitor; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor:0.1.0; URL: http://localhost:3095
 ```
 
 Using a web browser navigate to the user-interface at [http://127.0.0.1:3094/](http://127.0.0.1:3094/); for example:

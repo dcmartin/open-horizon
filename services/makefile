@@ -3,7 +3,7 @@
 ###
 
 ##
-## things TO change - create your own HZN_HZN_ORG_ID_ID and URL files.
+## things TO change - create your own HZN_ORG_ID and URL files.
 ##
 
 HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID)
@@ -20,7 +20,7 @@ NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRunt
 ##
 
 BASES := base-alpine base-ubuntu apache-alpine apache-ubuntu 
-SERVICES :=  cpu hal wan hzncli herald fft mqtt motion2mqtt hznmonitor noize yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka
+SERVICES :=  cpu hal wan hzncli herald mqtt fft motion2mqtt hznmonitor noize yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka
 WIP := mqtt2mqtt record hotword 
 PATTERNS := startup # hznsetup
 MISC := setup sh doc
@@ -56,6 +56,8 @@ TARGETS = all tidy clean distclean build push publish verify build-service push-
 ## actual
 
 default: build
+
+all: build push publish
 
 ## GPU only
 

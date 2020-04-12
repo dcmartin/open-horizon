@@ -1,15 +1,15 @@
 {
   "horizon": {
-    "hostname": "192.168.1.80",
+    "hostname": "192.168.1.28",
     "namespace": "oh",
     "network": {
       "name": "hznnet",
       "driver": "bridge"
     },
     "identity": {
-      "comp": "dcmartin.com",
-      "user": "dcmartin",
-      "name": "exchange.dcmartin.com",
+      "comp": "",
+      "user": "",
+      "name": "",
       "subj": ""
     },
     "root": "root"
@@ -47,7 +47,7 @@
       "root": "root",
       "log": "WARN",
       "password": "Horizon-Rul3s",
-      "encoded": "$2a$10$Mh5kobwYwN2WE3LcKkpqzeBzV8phhuzZ/xHD2QRwt1uIswAWNpm7K",
+      "encoded": "$2a$10$6.Nb62j0ikqD5Yf9mge6p.nLybIB6IAywoM2IsNoSHpMklRbHPuye",
       "org": "dcmartin",
       "admin": {
         "username": "dcmartin",
