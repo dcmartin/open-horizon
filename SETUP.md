@@ -63,7 +63,7 @@ If the host device has specialized capabilities or configuration requirements th
 
 **NOTE**: the combination of a specialized _runtime_ in conjunction with a host processor architecture is defined in the following table.
 
-Architecture|Runtime|Label
+Architecture|Runtime|Label modifier
 :--|:--|:--
 arm64|`nvidia`|`tegra`
 amd64|`nvidia`|`cuda`
@@ -83,7 +83,7 @@ echo ${USER} > ~/GIT/open-horizon/DOCKER_NAMESPACE
 Change directory to the top-level of this cloned repository and define the variables that control Open Horizion as follows:
 
 + `HZN_EXCHANGE_IP` - identifies the TCP/IPv4 network address; may be fully qualified DNS
-+ `HZN_EXCHANGE_URL` _exchange_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
++ `HZN_EXCHANGE_URL` _exchange_ API end-point; default: `http://${HZN_EXCHANGE_IP}:3090/v1/`
 + `HZN_FSS_CSSURL` - _edge sync service_ API end-point; default: `http://${HZN_EXCHANGE_IP}:9443/css/`
 + `HZN_ORG_ID` - variable for Open Horizon CLI (_aka_ `hzn`) **and** `make` & shell scripts in this repository
 + `HZN_USER_ID` - used by `make` & shell scripts in this repository
