@@ -6,7 +6,7 @@ nvidia_modprobe()
 
   local result
 
-  sudo /sbin/modprobe nvidia &> /dev/null
+  /sbin/modprobe nvidia &> /dev/null
   if [ "$?" -eq 0 ]; then
     # Count the number of NVIDIA controllers found.
     local ndevs=$(lspci | grep -i NVIDIA)
@@ -15,9 +15,9 @@ nvidia_modprobe()
     local n=$((n3d + nvga -1))
 
     for i in $(seq 0 $n); do
-      sudo mknod -m 666 "/dev/nvidia${i}" c 195 ${i} &> /dev/stderr
+      mknod -m 666 "/dev/nvidia${i}" c 195 ${i} &> /dev/stderr
     done
-    sudo mknod -m 666 "/dev/nvidiactl" c 195 255 &> /dev/stderr
+    mknod -m 666 "/dev/nvidiactl" c 195 255 &> /dev/stderr
     result='true'
   else
     echo "${FUNCNAME[0]} failed" &> /dev/stderr
@@ -31,12 +31,12 @@ nvidia_modprobe_uvm()
 
   local result
 
-  sudo /sbin/modprobe nvidia-uvm &> /dev/null
+  /sbin/modprobe nvidia-uvm &> /dev/null
   if [ "$?" -eq 0 ]; then
     # Find out the major device number used by the nvidia-uvm driver
     local D=`grep nvidia-uvm /proc/devices | awk '{print $1}'`
 
-    sudo mknod -m 666 /dev/nvidia-uvm c $D 0 &> /dev/stderr
+    mknod -m 666 /dev/nvidia-uvm c $D 0 &> /dev/stderr
     result='true'
   else
     echo "${FUNCNAME[0]} failed" &> /dev/stderr
@@ -53,17 +53,17 @@ nvidia_get_cuda()
   pushd /tmp &> /dev/null
   if [ ! -s /etc/apt/preferences.d/cuda-repository-pin-600 ]; then
     wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin \
-    && sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
+    && mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
   fi
   if [ ! -s cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb ]; then
     wget -q http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
   fi
   local count=$(apt list 2> /dev/null | egrep '^cuda-10-2' | wc -l)
   if [ "${count:-null}" == 'null' ] || [ ${count:-0} -eq 0 ]; then
-    sudo dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb &> /dev/stderr \
-      && sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub &> /dev/stderr \
-      && sudo apt-get -qq -y update &> /dev/stderr \
-      && sudo apt-get -qq -y install cuda &> /dev/stderr \
+    dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb &> /dev/stderr \
+      && apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub &> /dev/stderr \
+      && apt-get -qq -y update &> /dev/stderr \
+      && apt-get -qq -y install cuda &> /dev/stderr \
       && result=true || result=false
   else
     result=true
@@ -80,9 +80,9 @@ nvidia_blacklist_nouveau()
   local file="/etc/modprobe.d/blacklist-nouveau.conf"
 
   if [ ! -s "${file}" ]; then
-    echo 'blacklist nouveau' | sudo tee "${file}" &> /dev/null
-    echo 'options nouveau modeset=0' | sudo tee -a "${file}" &> /dev/null
-    sudo update-initramfs -u &> /dev/stderr
+    echo 'blacklist nouveau' | tee "${file}" &> /dev/null
+    echo 'options nouveau modeset=0' | tee -a "${file}" &> /dev/null
+    update-initramfs -u &> /dev/stderr
   fi
   echo true
 }
@@ -90,6 +90,16 @@ nvidia_blacklist_nouveau()
 ###
 ### main
 ###
+
+if [ "${USER:-}" != 'root' ]; then
+  echo "Run as root: ${0} ${*}" &> /dev/stderr
+  exit 1
+fi
+
+if [ -z "$(command -v curl)" ]; then
+  echo "Installing curl" &> /dev/stderr
+  apt install -qq -y curl &> /dev/stderr
+fi
 
 if [ $(uname -m) != 'x86_64' ]; then
   echo "Unsupported architecture: $(uname -m)" &> /dev/stderr
