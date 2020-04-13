@@ -176,15 +176,15 @@ make build
 ## Step 7 - Push _services_
 
 ```
-cd ~/GIT/open-horizon/services
-make push
+cd ~/GIT/open-horizon
+make -C services push
 ```
 
 ## Step 8 - Publish _services_
 
 ```
-cd ~/GIT/open-horizon/services
-make publish
+cd ~/GIT/open-horizon
+make -C services publish
 ```
 
 ## &#9937; Test

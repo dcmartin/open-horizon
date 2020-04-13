@@ -115,6 +115,7 @@ ${DIR}/service.definition.json: ${SERVICE_JSON}
 	  SERVICE_NAME=${SERVICE_NAME} \
 	  SERVICE_VERSION=${SERVICE_VERSION} \
 	  DOCKER_IMAGE_BASE=${SERVICE_BUILD_FROM} \
+	  HZN_ORG_ID=${HZN_ORG_ID} \
 	&& \
 	jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) | envsubst > ${DIR}/service.definition.json
 	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
@@ -126,7 +127,7 @@ ${DIR}/userinput.json: userinput.json
 
 ${DIR}/pattern.json: pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
-	-@export TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
+	-@export HZN_ORG_ID=${HZN_ORG_ID} TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
 
 depend: $(APIKEY) ${DIR}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- fetching dependencies; service: ${SERVICE_LABEL}; dir: ${DIR}""${NC}" > /dev/stderr
