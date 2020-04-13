@@ -1,4 +1,4 @@
-<img src="docs/bluehorizon.gif" width="90%">
+<img src="docs/matrix.gif" width="90%">
 
 # `open-horizon`  _edge fabric_ services & patterns
 
@@ -8,9 +8,9 @@ This [repository][repository] contains [Open Horizon](http://github.com/open-hor
 + [`alpr4motion`](services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
 + [`face4motion`](services/face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
 
-To setup your own Open Horizon _exchange_, follow the [instructions](exchange/README.md) to install and configure the Docker containers.
-
 Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
+
+### To run a sample Open Horizon _exchange_, follow the [setup](SETUP.md) instructions.
 
 [design-md]: https://github.com/dcmartin/open-horizon/tree/master/docs/DESIGN.md
 
@@ -113,7 +113,6 @@ Services include:
 + [`motion2mqtt`](services/motion2mqtt/README.md) - transmit motion detected images to MQTT
 + [`mqtt2kafka`](services/mqtt2kafka/README.md) - relay MQTT traffic to Kafka
 + [`mqtt2mqtt`](services/mqtt2mqtt/README.md) - Relay MQTT traffic
-+ [`nmap`](services/nmap/README.md) - Provide network map 
 + [`noize`](services/noize/README.md) - Capture noise from silence
 + [`record`](services/record/README.md) - Record audio from a microphone
 + [`wan`](services/wan/README.md) - provide Wide-Area-Network information

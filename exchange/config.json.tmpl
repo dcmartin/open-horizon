@@ -1,10 +1,10 @@
 {
   "horizon": {
-    "hostname": "${HZN_HOSTNAME}",
-    "namespace": "${HZN_NAMESPACE}",
+    "hostname": "${EXCHANGE_HOSTNAME}",
+    "namespace": "${EXCHANGE_NAMESPACE}",
     "network": {
-      "name": "${HZN_NETWORK}",
-      "driver": "${HZN_NETWORK_DRIVER}"
+      "name": "${EXCHANGE_NETWORK}",
+      "driver": "${EXCHANGE_NETWORK_DRIVER}"
     },
     "identity": {
       "comp": "${SOMECOMP}",
@@ -12,7 +12,7 @@
       "name": "${SOMENAME}",
       "subj": "${SOMESUBJ}"
     },
-    "root": "${EXCHANGE_ROOT}"
+    "root": "root"
   },
   "services": {
     "agbot": {
@@ -42,16 +42,16 @@
       "tag": "${EXCHANGE_TAG}",
       "stable": "2.12.3",
       "version": "v1",
-      "port": ${EXCHANGE_PORT},
+      "port": 3090,
       "listen": "http",
       "root": "root",
       "log": "WARN",
-      "password": "${EXCHANGE_PASSWORD}",
-      "encoded": "${EXCHANGE_PASSWORD_ENCODED}",
-      "org": "${EXCHANGE_ORG}",
+      "password": "Horizon-Rul3s",
+      "encoded": "$2a$10$Mh5kobwYwN2WE3LcKkpqzeBzV8phhuzZ/xHD2QRwt1uIswAWNpm7K",
+      "org": "${HZN_ORG_ID}",
       "admin": {
-        "username": "${EXCHANGE_ADMIN_USERNAME}",
-        "password": "${EXCHANGE_ADMIN_PASSWORD}"
+        "username": "${HZN_USER_ID}",
+        "password": "${HZN_EXCHANGE_APIKEY}"
       }
     },
     "cssdb": {

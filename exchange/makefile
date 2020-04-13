@@ -13,29 +13,27 @@
 # clean - stop and clean
 # 
 
-##
-THIS_HOSTIP := $(shell ifconfig | egrep 'inet ' | awk '{ print $$2 }' | egrep -v '^172.|^10.|^127.' | head -1)
+## where am i
+CWD := $(shell pwd -P)
 
-## target outpu
-DOCKER_COMPOSE := ${PWD}/docker-compose.yml
+## target output
+DOCKER_COMPOSE := ${CWD}/docker-compose.yml
+
+CONFIG_JSON := $(if $(wildcard config.json),config.json,config.json.tmpl)
 
 # exchange root, admin, organization
-HZN_ROOT_ID := $(shell jq -r '.horizon.root' config.json)
-HZN_NAMESPACE := $(shell jq -r '.horizon.namespace' config.json)
-HZN_NAMESPACE := $(if ${HZN_NAMESPACE},${HZN_NAMESPACE},"oh")
+HZN_ROOT_ID := $(shell jq -r '.horizon.root' $(CONFIG_JSON))
+EXCHANGE_NAMESPACE := $(shell jq -r '.horizon.namespace' $(CONFIG_JSON))
+EXCHANGE_NAMESPACE := $(if ${EXCHANGE_NAMESPACE},${EXCHANGE_NAMESPACE},"oh")
 
 ## for network
-HZN_HOSTNAME := $(shell jq -r '.horizon.hostname' config.json)
-HZN_NETWORK := $(shell jq -r '.horizon.network.name' config.json)
-HZN_NETWORK_DRIVER := $(shell jq -r '.horizon.network.driver' config.json)
-# backups
-HZN_HOSTNAME := $(if ${HZN_HOSTNAME},${HZN_HOSTNAME},$(shell hostname -f))
-HZN_NETWORK := $(if ${HZN_NETWORK},${HZN_NETWORK},"hznnet")
-HZN_NETWORK_DRIVER := $(if ${HZN_NETWORK_DRIVER},${HZN_NETWORK_DRIVER},"bridge")
+EXCHANGE_HOSTNAME ?= $(shell jq -r '.horizon.hostname' $(CONFIG_JSON))
+EXCHANGE_NETWORK ?= $(shell jq -r '.horizon.network.name' $(CONFIG_JSON))
+EXCHANGE_NETWORK_DRIVER ?= $(shell jq -r '.horizon.network.driver' $(CONFIG_JSON))
 
 ## key files
-HZN_PUBLICKEY_FILE := ${PWD}/publickey.pem
-HZN_CACERTS_FILE := ${PWD}/cacerts.pem
+HZN_PUBLICKEY_FILE := ${CWD}/publickey.pem
+HZN_CACERTS_FILE := ${CWD}/cacerts.pem
 
 ## for TLS certificates
 SOMECOMP := somecomp.com
@@ -44,41 +42,41 @@ SOMENAME := localhost
 SOMESUBJ :="/C=US/ST=${SOMEUSER}${SOMECOMP}/L=${SOMEUSER}${SOMECOMP}/O=${SOMEUSER}${SOMECOMP}/CN=${SOMENAME}"
 
 ## EXCHANGE
-EXCHANGE_CONTAINER_NAME = $(shell jq -r '.services.exchange.name' config.json)
-EXCHANGE_CONTAINER_IMAGE := $(shell jq -r '.services.exchange.image' config.json)
-EXCHANGE_CONTAINER_TAG := $(shell jq -r '.services.exchange.tag' config.json)
-EXCHANGE_PORT := $(shell jq -r '.services.exchange.port' config.json)
-EXCHANGE_VERSION := $(shell jq -r '.services.exchange.version' config.json)
-EXCHANGE_ORGANIZATION := $(shell jq -r '.services.exchange.org' config.json)
-EXCHANGE_ROOT := ${HZN_ROOT_ID}/$(shell jq -r '.services.exchange.root' config.json)
-EXCHANGE_ADMIN_USERNAME := $(shell jq -r '.services.exchange.admin.username' config.json)
-EXCHANGE_ADMIN_PASSWORD := $(shell jq -r '.services.exchange.admin.password' config.json)
-EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),$(shell jq -r '.services.exchange.password' config.json))
-EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tr -d ':\n' | sed 's/$2y/$2a/')
+EXCHANGE_CONTAINER_NAME = $(shell jq -r '.services.exchange.name' $(CONFIG_JSON))
+EXCHANGE_CONTAINER_IMAGE := $(shell jq -r '.services.exchange.image' $(CONFIG_JSON))
+EXCHANGE_TAG ?= $(shell jq -r '.services.exchange.tag' $(CONFIG_JSON))
+EXCHANGE_PORT := $(shell jq -r '.services.exchange.port' $(CONFIG_JSON))
+EXCHANGE_VERSION := $(shell jq -r '.services.exchange.version' $(CONFIG_JSON))
+EXCHANGE_ORGANIZATION := $(shell jq -r '.services.exchange.org' $(CONFIG_JSON))
+EXCHANGE_ROOT := ${HZN_ROOT_ID}/$(shell jq -r '.services.exchange.root' $(CONFIG_JSON))
+EXCHANGE_ADMIN_USERNAME := $(shell jq -r '.services.exchange.admin.username' $(CONFIG_JSON))
+EXCHANGE_ADMIN_PASSWORD := $(shell jq -r '.services.exchange.admin.password' $(CONFIG_JSON))
+EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),$(shell jq -r '.services.exchange.password' $(CONFIG_JSON)))
+EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tr -d ':\n' | sed 's/$$2y/$$2a/')
 
-EXCHANGE_LISTEN := $(shell jq -r '.services.exchange.listen' config.json)
-EXCHANGE_URL := ${EXCHANGE_LISTEN}://${HZN_HOSTNAME}:${EXCHANGE_PORT}/${EXCHANGE_VERSION}
+EXCHANGE_LISTEN := $(shell jq -r '.services.exchange.listen' $(CONFIG_JSON))
+HZN_EXCHANGE_URL := ${EXCHANGE_LISTEN}://${EXCHANGE_HOSTNAME}:${EXCHANGE_PORT}/${EXCHANGE_VERSION}
 
 # "WARNING", "INFO", "DEBUG", "TRACE"
-EXCHANGE_LOG_LEVEL = $(shell jq -r '.services.exchange.log' config.json)
+EXCHANGE_LOG_LEVEL = $(shell jq -r '.services.exchange.log' $(CONFIG_JSON))
 
-EXCHANGE_KEYS_DIR := ${PWD}/certs
+EXCHANGE_KEYS_DIR := ${CWD}/certs
 EXCHANGE_KEYS_KEY := ${EXCHANGE_KEYS_DIR}/exchange.key 
 EXCHANGE_KEYS_CRT := ${EXCHANGE_KEYS_DIR}/exchange.crt
 EXCHANGE_KEYS_SUBJ := ${SOMESUBJ}
 EXCHANGE_KEYS := ${EXCHANGE_KEYS_KEY} ${EXCHANGE_KEYS_CRT}
-EXCHANGE_CONFIG_DIR := ${PWD}/exchange
+EXCHANGE_CONFIG_DIR := ${CWD}/exchange
 EXCHANGE_CONFIG_FILE := ${EXCHANGE_CONFIG_DIR}/exchange.json
 
 ## EXCHANGE DATABASE
-EXCHANGEDB_CONTAINER_NAME := $(shell jq -r '.services.exchangedb.name' config.json)
-EXCHANGEDB_CONTAINER_IMAGE := $(shell jq -r '.services.exchangedb.image' config.json)
-EXCHANGEDB_CONTAINER_TAG := $(shell jq -r '.services.exchangedb.tag' config.json)
-EXCHANGEDB_VOLUME_NAME := $(shell jq -r '.services.exchangedb.volume' config.json)
-EXCHANGEDB_DATABASE := $(shell jq -r '.services.exchangedb.database' config.json)
-EXCHANGEDB_PORT := $(shell jq -r '.services.exchangedb.port' config.json)
-EXCHANGEDB_USER := $(shell jq -r '.services.exchangedb.user' config.json)
-EXCHANGEDB_PASSWORD := $(shell jq -r '.services.exchangedb.password' config.json)
+EXCHANGEDB_CONTAINER_NAME := $(shell jq -r '.services.exchangedb.name' $(CONFIG_JSON))
+EXCHANGEDB_CONTAINER_IMAGE := $(shell jq -r '.services.exchangedb.image' $(CONFIG_JSON))
+EXCHANGEDB_CONTAINER_TAG := $(shell jq -r '.services.exchangedb.tag' $(CONFIG_JSON))
+EXCHANGEDB_VOLUME_NAME := $(shell jq -r '.services.exchangedb.volume' $(CONFIG_JSON))
+EXCHANGEDB_DATABASE := $(shell jq -r '.services.exchangedb.database' $(CONFIG_JSON))
+EXCHANGEDB_PORT := $(shell jq -r '.services.exchangedb.port' $(CONFIG_JSON))
+EXCHANGEDB_USER := $(shell jq -r '.services.exchangedb.user' $(CONFIG_JSON))
+EXCHANGEDB_PASSWORD := $(shell jq -r '.services.exchangedb.password' $(CONFIG_JSON))
 
 ## independent postgres
 POSTGRES_USER := $(if $(wildcard postgres.json),$(shell jq -r '.connection.postgres.authentication.username' postgres.json),${EXCHANGEDB_USER})
@@ -88,53 +86,55 @@ POSTGRES_HOSTNAME := $(if $(wildcard postgres.json),$(shell jq -r '.connection.p
 POSTGRES_PORT := $(if $(wildcard postgres.json),$(shell jq -r '.connection.postgres.hosts[].port' postgres.json),${EXCHANGEDB_PORT})
 
 ## CLOUD SYNC SERVICE
-CSS_KEYS_DIR := ${PWD}/certs
+CSS_KEYS_DIR := ${CWD}/certs
 CSS_KEYS_KEY := ${CSS_KEYS_DIR}/css.key 
 CSS_KEYS_CRT := ${CSS_KEYS_DIR}/css.crt
 CSS_KEYS_SUBJ := ${SOMESUBJ}
 CSS_KEYS := ${CSS_KEYS_KEY} ${CSS_KEYS_CRT}
-CSS_CONFIG_DIR := ${PWD}/css
+CSS_CONFIG_DIR := ${CWD}/css
 CSS_CONFIG_FILE := ${CSS_CONFIG_DIR}/sync.conf
-CSS_CONTAINER_NAME := $(shell jq -r '.services.css.name' config.json)
-CSS_CONTAINER_IMAGE := $(shell jq -r '.services.css.image' config.json)
-CSS_CONTAINER_TAG := $(shell jq -r '.services.css.tag' config.json)
-CSS_PORT := $(shell jq -r '.services.css.port' config.json)
-CSS_LISTEN := $(shell jq -r '.services.css.listen' config.json)
-CSS_TRANSPORT := $(shell jq -r '.services.css.transport' config.json)
-CSS_URL := ${CSS_LISTEN}://${HZN_HOSTNAME}:${CSS_PORT}
+CSS_CONTAINER_NAME := $(shell jq -r '.services.css.name' $(CONFIG_JSON))
+CSS_CONTAINER_IMAGE := $(shell jq -r '.services.css.image' $(CONFIG_JSON))
+CSS_TAG ?= $(shell jq -r '.services.css.tag' $(CONFIG_JSON))
+CSS_PORT := $(shell jq -r '.services.css.port' $(CONFIG_JSON))
+CSS_LISTEN := $(shell jq -r '.services.css.listen' $(CONFIG_JSON))
+CSS_TRANSPORT := $(shell jq -r '.services.css.transport' $(CONFIG_JSON))
+HZN_FSS_CSSURL := ${CSS_LISTEN}://${EXCHANGE_HOSTNAME}:${CSS_PORT}
 
 ## CLOUD SYNC SERVICE DATABASE
-CSSDB_CONTAINER_NAME := $(shell jq -r '.services.cssdb.name' config.json)
-CSSDB_CONTAINER_IMAGE := $(shell jq -r '.services.cssdb.image' config.json)
-CSSDB_CONTAINER_TAG := $(shell jq -r '.services.cssdb.tag' config.json)
-CSSDB_VOLUME_NAME := $(shell jq -r '.services.cssdb.volume' config.json)
+CSSDB_CONTAINER_NAME := $(shell jq -r '.services.cssdb.name' $(CONFIG_JSON))
+CSSDB_CONTAINER_IMAGE := $(shell jq -r '.services.cssdb.image' $(CONFIG_JSON))
+CSSDB_CONTAINER_TAG := $(shell jq -r '.services.cssdb.tag' $(CONFIG_JSON))
+CSSDB_VOLUME_NAME := $(shell jq -r '.services.cssdb.volume' $(CONFIG_JSON))
 
 ## AGBOT
-AGBOT_KEYS_DIR := ${PWD}/certs
+AGBOT_KEYS_DIR := ${CWD}/certs
 AGBOT_KEYS_KEY := ${AGBOT_KEYS_DIR}/domain.key 
 AGBOT_KEYS_CRT := ${AGBOT_KEYS_DIR}/domain.crt
 AGBOT_KEYS_SUBJ := ${SOMESUBJ}
 AGBOT_KEYS := ${AGBOT_KEYS_KEY} ${AGBOT_KEYS_CRT}
-AGBOT_CONFIG_DIR := ${PWD}/agbot
+AGBOT_CONFIG_DIR := ${CWD}/agbot
 AGBOT_CONFIG_FILE := ${AGBOT_CONFIG_DIR}/agbot.config
 AGBOT_POLICY_DIR := ${AGBOT_CONFIG_DIR}/policy
 AGBOT_COLONUS_DIR := ${AGBOT_CONFIG_DIR}/colonus
-AGBOT_CONTAINER_NAME := $(shell jq -r '.services.agbot.name' config.json)
-AGBOT_CONTAINER_IMAGE := $(shell jq -r '.services.agbot.image' config.json)
-AGBOT_CONTAINER_TAG := $(shell jq -r '.services.agbot.tag' config.json)
-AGBOT_PORT := $(shell jq -r '.services.agbot.port' config.json)
-AGBOT_LISTEN := $(shell jq -r '.services.agbot.listen' config.json)
-AGBOT_URL := ${AGBOT_LISTEN}://${HZN_HOSTNAME}:${AGBOT_PORT}
+AGBOT_CONTAINER_NAME := $(shell jq -r '.services.agbot.name' $(CONFIG_JSON))
+AGBOT_CONTAINER_IMAGE := $(shell jq -r '.services.agbot.image' $(CONFIG_JSON))
+AGBOT_TAG ?= $(shell jq -r '.services.agbot.tag' $(CONFIG_JSON))
+AGBOT_PORT := $(shell jq -r '.services.agbot.port' $(CONFIG_JSON))
+AGBOT_LISTEN := $(shell jq -r '.services.agbot.listen' $(CONFIG_JSON))
+AGBOT_URL := ${AGBOT_LISTEN}://${EXCHANGE_HOSTNAME}:${AGBOT_PORT}
 
 ## AGREEMENTBOT
-EXCHANGE_AGBOT_NAME := $(shell jq -r '.services.agbot.bot.name' config.json)
-EXCHANGE_AGBOT_TOKEN := $(shell jq -r '.services.agbot.bot.token' config.json)
+EXCHANGE_AGBOT_NAME := $(shell jq -r '.services.agbot.bot.name' $(CONFIG_JSON))
+EXCHANGE_AGBOT_TOKEN := $(shell jq -r '.services.agbot.bot.token' $(CONFIG_JSON))
 
 ###
 ### TARGETS
 ###
 
-default: keys config ${DOCKER_COMPOSE}
+default: all up
+
+all: keys config ${DOCKER_COMPOSE}
 
 keys: ${CSS_KEYS} ${AGBOT_KEYS} ${EXCHANGE_KEYS}
 
@@ -143,9 +143,9 @@ CONFIGS := \
 	  ${EXCHANGE_CONFIG_FILE} \
 	  ${CSS_CONFIG_FILE} \
 	  ${AGBOT_CONFIG_FILE} \
-	  ${PWD}/anax.json \
-	  ${PWD}/hzn.json \
-	  ${PWD}/default.horizon
+	  ${CWD}/anax.json \
+	  ${CWD}/hzn.json \
+	  ${CWD}/default.horizon
 
 config: makefile ${CONFIGS} ${AGBOT_POLICY_DIR} ${AGBOT_COLONUS_DIR}
 
@@ -153,10 +153,11 @@ up: ${DOCKER_COMPOSE} keys config
 	docker-compose up -d
 
 prime: # up
-	export \
+	@echo "making $@"
+	@export \
 	  EXCHANGE_AGBOT_NAME=${EXCHANGE_AGBOT_NAME} \
 	  EXCHANGE_AGBOT_TOKEN=${EXCHANGE_AGBOT_TOKEN} \
-	  EXCHANGE_URL=${EXCHANGE_URL} \
+	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
 	  EXCHANGE_ROOT=${EXCHANGE_ROOT} \
 	  EXCHANGE_PASSWORD=${EXCHANGE_PASSWORD} \
 	  EXCHANGE_ORGANIZATION=${EXCHANGE_ORGANIZATION} \
@@ -165,33 +166,37 @@ prime: # up
 	  && ./prime-exchange.sh
 
 org:
+	@echo "making $@"
 	# create organization & administrative user
-	-curl -v -X POST \
+	-@curl -v -X POST \
 	    -u "${EXCHANGE_ROOT}:${EXCHANGE_PASSWORD}" \
 	    -H "Content-Type:application/json" \
 	    -d '{"label": "${EXCHANGE_ORGANIZATION}", "description": "Organization for ${EXCHANGE_ORGANIZATION}"}' \
-	    ${EXCHANGE_URL}/orgs/${EXCHANGE_ORGANIZATION} | jq
-	-curl -v -X POST \
+	    ${HZN_EXCHANGE_URL}/orgs/${EXCHANGE_ORGANIZATION} | jq
+	-@curl -v -X POST \
 	    -u "${EXCHANGE_ROOT}:${EXCHANGE_PASSWORD}" \
 	    -H "Content-Type:application/json" \
 	    -d '{"password":"${EXCHANGE_PASSWORD}","email": "${EXCHANGE_ORGANIZATION}", "admin": true}' \
-	    ${EXCHANGE_URL}/orgs/${EXCHANGE_ORGANIZATION}/users/${EXCHANGE_ADMIN_USERNAME} | jq
+	    ${HZN_EXCHANGE_URL}/orgs/${EXCHANGE_ORGANIZATION}/users/${EXCHANGE_ADMIN_USERNAME} | jq
 
 down: ${DOCKER_COMPOSE}
 	docker-compose down
 
 ${CSS_CONFIG_DIR}/sync/auth.json:
-	mkdir -p ${CSS_CONFIG_DIR}/sync
-	chmod 777 ${CSS_CONFIG_DIR}/sync
-	echo '{"regularUsers":[],"syncAdmins":[]}' > ${CSS_CONFIG_DIR}/sync/auth.json
+	@echo "making $@"
+	-@mkdir -p ${CSS_CONFIG_DIR}/sync
+	-@chmod 777 ${CSS_CONFIG_DIR}/sync
+	@echo '{"regularUsers":[],"syncAdmins":[]}' > ${CSS_CONFIG_DIR}/sync/auth.json
 
 ${AGBOT_POLICY_DIR}: config.json
-	-mkdir -p $@
-	chmod 777 $@
+	@echo "making $@"
+	-@mkdir -p $@
+	-@chmod 777 $@
 
 ${AGBOT_COLONUS_DIR}: config.json
-	-mkdir -p $@ $@/.colonus
-	chmod 777 $@ $@/.colonus
+	@echo "making $@"
+	-@mkdir -p $@ $@/.colonus
+	-@chmod 777 $@ $@/.colonus
 
 ##
 ## CONFIGURATION FILES
@@ -200,16 +205,15 @@ ${AGBOT_COLONUS_DIR}: config.json
 ${CONFIGS}: config.json makefile
 	@F=$@ && D=$${F%/*} && F=$${F##*/} && mkdir -p $${D} && \
 	export \
-	  THIS_HOSTIP='${THIS_HOSTIP}' \
-	  HZN_HOSTNAME='${HZN_HOSTNAME}' \
-	  HZN_NAMESPACE='${HZN_NAMESPACE}' \
-	  HZN_NETWORK='${HZN_NETWORK}' \
-	  HZN_NETWORK_DRIVER='${HZN_NETWORK_DRIVER}' \
+	  EXCHANGE_HOSTNAME='${EXCHANGE_HOSTNAME}' \
+	  EXCHANGE_NAMESPACE='${EXCHANGE_NAMESPACE}' \
+	  EXCHANGE_NETWORK='${EXCHANGE_NETWORK}' \
+	  EXCHANGE_NETWORK_DRIVER='${EXCHANGE_NETWORK_DRIVER}' \
 	  HZN_PUBLICKEY_FILE='${HZN_PUBLICKEY_FILE}' \
 	  HZN_CACERTS_FILE='${HZN_CACERTS_FILE}' \
 	  EXCHANGE_CONTAINER_NAME='${EXCHANGE_CONTAINER_NAME}' \
 	  EXCHANGE_CONTAINER_IMAGE='${EXCHANGE_CONTAINER_IMAGE}' \
-	  EXCHANGE_CONTAINER_TAG='${EXCHANGE_CONTAINER_TAG}' \
+	  EXCHANGE_TAG='${EXCHANGE_TAG}' \
 	  EXCHANGE_ORGANIZATION='${EXCHANGE_ORGANIZATION}' \
 	  EXCHANGE_ADMIN_USERNAME='${EXCHANGE_ADMIN_USERNAME}' \
 	  EXCHANGE_KEYS_DIR='${EXCHANGE_KEYS_DIR}' \
@@ -220,7 +224,7 @@ ${CONFIGS}: config.json makefile
 	  EXCHANGE_VERSION='${EXCHANGE_VERSION}' \
 	  EXCHANGE_LOG_LEVEL='${EXCHANGE_LOG_LEVEL}' \
 	  EXCHANGE_PORT='${EXCHANGE_PORT}' \
-	  EXCHANGE_URL='${EXCHANGE_URL}' \
+	  HZN_EXCHANGE_URL='${HZN_EXCHANGE_URL}' \
 	  EXCHANGE_ROOT='${EXCHANGE_ROOT}' \
 	  EXCHANGE_AGBOT_NAME='${EXCHANGE_AGBOT_NAME}' \
 	  EXCHANGE_AGBOT_TOKEN='${EXCHANGE_AGBOT_TOKEN}' \
@@ -230,21 +234,21 @@ ${CONFIGS}: config.json makefile
 	  AGBOT_CONFIG_FILE='${AGBOT_CONFIG_FILE}' \
 	  AGBOT_CONTAINER_NAME='${AGBOT_CONTAINER_NAME}' \
 	  AGBOT_CONTAINER_IMAGE='${AGBOT_CONTAINER_IMAGE}' \
-	  AGBOT_CONTAINER_TAG='${AGBOT_CONTAINER_TAG}' \
+	  AGBOT_TAG='${AGBOT_TAG}' \
 	  AGBOT_KEYS_DIR='${AGBOT_KEYS_DIR}' \
 	  AGBOT_LISTEN='${AGBOT_LISTEN}' \
 	  AGBOT_PORT='${AGBOT_PORT}' \
 	  AGBOT_URL='${AGBOT_URL}' \
 	  CSS_CONTAINER_NAME='${CSS_CONTAINER_NAME}' \
 	  CSS_CONTAINER_IMAGE='${CSS_CONTAINER_IMAGE}' \
-	  CSS_CONTAINER_TAG='${CSS_CONTAINER_TAG}' \
+	  CSS_TAG='${CSS_TAG}' \
 	  CSS_KEYS_DIR='${CSS_KEYS_DIR}' \
 	  CSS_CONFIG_DIR='${CSS_CONFIG_DIR}' \
 	  CSS_CONFIG_FILE='${CSS_CONFIG_FILE}' \
 	  CSS_LISTEN='${CSS_LISTEN}' \
 	  CSS_PORT='${CSS_PORT}' \
 	  CSS_TRANSPORT='${CSS_TRANSPORT}' \
-	  CSS_URL='${CSS_URL}' \
+	  HZN_FSS_CSSURL='${HZN_FSS_CSSURL}' \
 	  CSSDB_CONTAINER_NAME='${CSSDB_CONTAINER_NAME}' \
 	  CSSDB_CONTAINER_IMAGE='${CSSDB_CONTAINER_IMAGE}' \
 	  CSSDB_CONTAINER_TAG='${CSSDB_CONTAINER_TAG}' \
@@ -299,7 +303,7 @@ logs:
 
 ## ADMINISTRIVIA
 
-.PHONY: logs keys config up down clean prime remove remove-images reset-db realclean distclean tidy
+.PHONY: logs keys config up down clean prime remove remove-images reset-db realclean distclean tidy config.json
 
 remove:
 	-docker rm -f "$(AGBOT_CONTAINER_NAME)"
@@ -309,17 +313,17 @@ remove:
 	-docker rm -f "$(CSSDB_CONTAINER_NAME)"
 
 remove-images: remove
-	-docker rmi $(AGBOT_CONTAINER_IMAGE):$(AGBOT_CONTAINER_TAG)
-	-docker rmi $(EXCHANGE_CONTAINER_IMAGE):$(EXCHANGE_CONTAINER_TAG)
+	-docker rmi $(AGBOT_CONTAINER_IMAGE):$(AGBOT_TAG)
+	-docker rmi $(EXCHANGE_CONTAINER_IMAGE):$(EXCHANGE_TAG)
 	-docker rmi $(EXCHANGEDB_CONTAINER_IMAGE):$(EXCHANGEDB_CONTAINER_TAG)
-	-docker rmi $(CSS_CONTAINER_IMAGE):$(CSS_CONTAINER_TAG)
+	-docker rmi $(CSS_CONTAINER_IMAGE):$(CSS_TAG)
 	-docker rmi $(CSSDB_CONTAINER_IMAGE):$(CSSDB_CONTAINER_TAG)
 
 reset-db:
 	-export \
-	  TOKEN=$$(curl -sLX GET -H 'Authorization:Basic ${EXCHANGE_ROOT}:$(EXCHANGE_PASSWORD)' "${EXCHANGE_URL}/admin/dropdb/token" | jq -r '.token'))) \
-	  && curl -sLX POST -H "Authorization:Basic ${EXCHANGE_ROOT}:$${TOKEN}" "${EXCHANGE_URL}/admin/dropdb" | jq -r '.msg'
-	-curl -sLX POST -H "Authorization:Basic ${EXCHANGE_ROOT}:$(EXCHANGE_PASSWORD)" "${EXCHANGE_URL}/admin/initdb" | jq -r '.msg'
+	  TOKEN=$$(curl -sLX GET -H 'Authorization:Basic ${EXCHANGE_ROOT}:$(EXCHANGE_PASSWORD)' "${HZN_EXCHANGE_URL}/admin/dropdb/token" | jq -r '.token'))) \
+	  && curl -sLX POST -H "Authorization:Basic ${EXCHANGE_ROOT}:$${TOKEN}" "${HZN_EXCHANGE_URL}/admin/dropdb" | jq -r '.msg'
+	-curl -sLX POST -H "Authorization:Basic ${EXCHANGE_ROOT}:$(EXCHANGE_PASSWORD)" "${HZN_EXCHANGE_URL}/admin/initdb" | jq -r '.msg'
 
 tidy:
 	-rm -fr anax.json hzn.json default.horizon

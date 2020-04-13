@@ -143,7 +143,7 @@ darwin_start()
     echo 'Running "horizon-container stop"' &> /dev/stderr
     horizon-container stop &> /dev/stderr
   fi
-  if [ -z "$(command socat)" ]; then
+  if [ -z "$(command -v socat)" ]; then
     echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
   else
     echo 'Running "horizon-container start"' &> /dev/stderr

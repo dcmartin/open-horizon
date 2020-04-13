@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ## reset exchange database
 exchange_db_reset()
@@ -185,7 +185,7 @@ exchange_register_allpolicy()
 
 ## EXCHANGE
 ORG=${EXCHANGE_ORGANIZATION:-}
-URL=${EXCHANGE_URL:-}
+URL=${HZN_EXCHANGE_URL:-}
 ROOT=${EXCHANGE_ROOT:-}
 PASSWORD=${EXCHANGE_PASSWORD:-}
 

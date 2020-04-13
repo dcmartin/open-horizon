@@ -1,12 +1,12 @@
 {
   "horizon": {
     "exchange": {
-      "host": "exchange.dcmartin.com",
+      "host": "192.168.1.199",
       "port": 3090,
       "protocol": "http",
-      "org": "",
-      "user": "",
-      "apikey": ""
+      "org": "dcmartin",
+      "user": "dcmartin",
+      "apikey": "whocares"
     }
   },
   "edgex": {

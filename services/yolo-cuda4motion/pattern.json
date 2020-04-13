@@ -5,13 +5,25 @@
     {
       "serviceUrl": "com.github.dcmartin.open-horizon.startup",
       "serviceArch": "amd64",
-      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceVersions": [
+        {
+          "version": "0.1.0",
+          "priority": {},
+          "upgradePolicy": {}
+        }
+      ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
       "serviceUrl": "com.github.dcmartin.open-horizon.yolo-cuda4motion",
       "serviceArch": "amd64",
-      "serviceVersions": [ { "version": "0.0.4", "priority": {}, "upgradePolicy": {} } ],
+      "serviceVersions": [
+        {
+          "version": "0.1.2",
+          "priority": {},
+          "upgradePolicy": {}
+        }
+      ],
       "serviceOrgid": "${HZN_ORG_ID}"
     }
   ]

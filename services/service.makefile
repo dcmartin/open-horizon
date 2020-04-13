@@ -47,8 +47,8 @@ SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=n
 SERVICE_BUILD_FROM := $(shell jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json 2> /dev/null)
 
 ## KEYS
-PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),MISSING_PRIVATE_KEY_FILE)
-PUBLIC_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.pem),$(wildcard ../${HZN_ORG_ID}*.pem),MISSING_PUBLIC_KEY_FILE)
+PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),${HZN_ORG_ID}.key)
+PUBLIC_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.pem),$(wildcard ../${HZN_ORG_ID}*.pem),${HZN_ORG_ID}.pem)
 KEYS := $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE)
 
 ## IBM Cloud API Key
@@ -100,8 +100,8 @@ default:
 ## support
 ##
 
-$(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE):
-	@echo "*** ERROR -- cannot locate $@; use command \"hzn key create\" to create keys; exiting"  > /dev/stderr && exit 1
+$(KEYS):
+	@hzn key create -f -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
 
 ## development
 
@@ -111,10 +111,7 @@ ${DIR}:
 
 ${DIR}/service.definition.json: ${SERVICE_JSON}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
-	@export \
-	  SERVICE_NAME=${SERVICE_NAME} \
-	  SERVICE_VERSION=${SERVICE_VERSION} \
-	  DOCKER_IMAGE_BASE=${SERVICE_BUILD_FROM} \
+	@export HZN_ORG_ID=${HZN_ORG_ID} \
 	&& \
 	jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) | envsubst > ${DIR}/service.definition.json
 	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
@@ -126,7 +123,7 @@ ${DIR}/userinput.json: userinput.json
 
 ${DIR}/pattern.json: pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
-	-@export TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
+	-@export HZN_ORG_ID=${HZN_ORG_ID} TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
 
 depend: $(APIKEY) ${DIR}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- fetching dependencies; service: ${SERVICE_LABEL}; dir: ${DIR}""${NC}" > /dev/stderr
@@ -294,11 +291,11 @@ exchange-clean: ${DIR}
 pattern.json:
 	@echo "${RED}>>> MAKE --" $$(date +%T) "-- not a Pattern; no pattern.json; skipping""${NC}" > /dev/stderr
 
-pattern-publish: ${APIKEY} pattern.json horizon/pattern.json
+pattern-publish: ${DIR} ${APIKEY} pattern.json ${DIR}/pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-publish: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
 	@export HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern publish -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) -f ${DIR}/pattern.json -p ${SERVICE_NAME} -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE}
 
-pattern-verify: pattern.json horizon/pattern.json
+pattern-verify: pattern.json ${DIR}/pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-verify: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
 	@export HZN_USER_ID=${HZN_USER_ID} HZN_ORG_ID=$(HZN_ORG_ID) HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && hzn exchange pattern verify -o "${HZN_ORG_ID}" -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) --public-key-file ${PUBLIC_KEY_FILE} ${SERVICE_NAME}
 
@@ -412,7 +409,7 @@ distclean: service-clean
 ## BOOKKEEPING
 ##
 
-.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish horizon/service.definition.json
+.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish ${DIR}/service.definition.json ${DIR}/pattern.json
 
 ##
 ## COLORS

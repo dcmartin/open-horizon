@@ -13,8 +13,8 @@ volumes:
 ###
 
 networks:
-  ${HZN_NETWORK}:
-    driver: ${HZN_NETWORK_DRIVER}
+  ${EXCHANGE_NETWORK}:
+    driver: ${EXCHANGE_NETWORK_DRIVER}
 
 ###
 ### SERVICES
@@ -25,13 +25,13 @@ services:
   ## agbot
   ##
   agbot:
-    image: ${AGBOT_CONTAINER_IMAGE}:${AGBOT_CONTAINER_TAG}
+    image: ${AGBOT_CONTAINER_IMAGE}:${AGBOT_TAG}
     container_name: ${AGBOT_CONTAINER_NAME}
     privileged: true
     networks:
-      ${HZN_NETWORK}:
+      ${EXCHANGE_NETWORK}:
         aliases: 
-          - ${HZN_NAMESPACE}-agbot-${EXCHANGE_AGBOT_NAME}
+          - ${EXCHANGE_NAMESPACE}-agbot-${EXCHANGE_AGBOT_NAME}
     restart: always
     ports:
       - ${AGBOT_PORT}:${AGBOT_PORT}
@@ -46,7 +46,7 @@ services:
     environment:
       - HZN_VAR_BASE=/home/agbotuser
       - AGBOT_NAME=${EXCHANGE_AGBOT_NAME}
-      - CSS_URL=${CSS_URL}
+      - CSS_URL=${HZN_FSS_CSSURL}
       - EXCH_APP_HOST=${EXCHANGE_URL}
       - EXCH_ROOTPW=${EXCHANGE_PASSWORD}
       - HZN_AGBOT_API=${AGBOT_URL}
@@ -55,14 +55,14 @@ services:
   ## exchange-api
   ##
   exchange-api:
-    image:  ${EXCHANGE_CONTAINER_IMAGE}:${EXCHANGE_CONTAINER_TAG}
+    image:  ${EXCHANGE_CONTAINER_IMAGE}:${EXCHANGE_TAG}
     container_name: ${EXCHANGE_CONTAINER_NAME}
     ports:
       - ${EXCHANGE_PORT}:8080
     networks:
-      ${HZN_NETWORK}:
+      ${EXCHANGE_NETWORK}:
         aliases: 
-          - ${HZN_NAMESPACE}-exchange-api
+          - ${EXCHANGE_NAMESPACE}-exchange-api
     volumes:
       - ${EXCHANGE_CONFIG_FILE}:/etc/horizon/exchange/config.json
   ##
@@ -75,9 +75,9 @@ services:
     volumes:
       - ${EXCHANGEDB_VOLUME_NAME}:/var/lib/postgresql/data
     networks:
-      ${HZN_NETWORK}:
+      ${EXCHANGE_NETWORK}:
         aliases:
-          - ${HZN_NAMESPACE}-exchange-db
+          - ${EXCHANGE_NAMESPACE}-exchange-db
     environment:
       - POSTGRES_DB=${EXCHANGEDB_DATABASE}
       - POSTGRES_USER=${EXCHANGEDB_USER}
@@ -86,21 +86,21 @@ services:
   ## css
   ##
   css-api:
-    image: ${CSS_CONTAINER_IMAGE}:${CSS_CONTAINER_TAG}
+    image: ${CSS_CONTAINER_IMAGE}:${CSS_TAG}
     container_name: ${CSS_CONTAINER_NAME}
     restart: always
     ports:
       - ${CSS_PORT}:${CSS_PORT}
     networks:
-      ${HZN_NETWORK}:
+      ${EXCHANGE_NETWORK}:
         aliases:
-          - ${HZN_NAMESPACE}-css-api
+          - ${EXCHANGE_NAMESPACE}-css-api
     volumes:
       - ${CSS_CONFIG_DIR}:/etc/edge-sync-service
       - ${CSS_KEYS_DIR}:/certs
       - ${CSSDB_VOLUME_NAME}:/var/wiotp-edge/persist
     environment:
-      - HZN_EXCHANGE_URL=${EXCHANGE_URL}
+      - HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL}
       - HZN_EXCHANGE_CA_CERT=/certs/domain.crt
   ##
   ## css-db
@@ -114,6 +114,6 @@ services:
     ports:
       - 27017:27017
     networks:
-      ${HZN_NETWORK}:
+      ${EXCHANGE_NETWORK}:
         aliases:
-          - ${HZN_NAMESPACE}-css-db
+          - ${EXCHANGE_NAMESPACE}-css-db
