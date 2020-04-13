@@ -49,6 +49,9 @@ ${ACTIONS}:
 	@${MAKE} -C exchange $@
 	@${MAKE} -C services $@
 
+build:
+	@${MAKE} -C services $@
+
 ## EXCHANGE
 
 exchange: exchange/config.json
@@ -114,4 +117,4 @@ services: ${HZN_VARIABLES}
 
 ## ADMINISTRIVIA
 
-.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all
+.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build
