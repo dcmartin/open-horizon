@@ -576,7 +576,7 @@ labels_request.onreadystatechange = function() {
       var str = '<table border="1">';
 
       lbls.forEach(function(lbl,index) {
-        str += '<tr><td valign="top"><b><code>' + lbl.label + '</code></b></td><td>';
+        str += '<tr><td valign="top"><b><code>' + lbl.label + '</code></b></td><td valign="top">';
         var svcs = lbl["services"];
         if (svcs.length > 0) {
           str += '<table>';
@@ -592,7 +592,7 @@ labels_request.onreadystatechange = function() {
             str += '<img src="https://img.shields.io/badge/url-' + urlencoded + '-brown.svg"></a></td></tr>';
             str += '<tr><td><img src="https://img.shields.io/badge/public-' + svc["public"] + '-orange.svg"></td></tr>';
             str += '<tr><td><img src="https://img.shields.io/badge/shared-' + svc["shared"] + '-cyan.svg"></td></tr>';
-            str += '</table></td><td>';
+            str += '</table></td><td valign="top">';
             var vers = svc["versions"];
             if (vers.length > 0) {
               str += '<table>';

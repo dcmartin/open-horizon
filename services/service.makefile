@@ -254,6 +254,8 @@ service-publish:
 publish-service: publish
 	@echo "${PURPLE}>>> MAKE --" $$(date +%T) "-- publish-service: $(SERVICE_NAME); architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
 
+PUBLISH_OUT = publish.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
+
 publish: ${DIR} ${DIR}/service.definition.json $(APIKEY) $(KEYS)
 	@echo "${PURPLE}>>> MAKE --" $$(date +%T) "-- publish-service: $(SERVICE_NAME); architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
 	@export \
@@ -261,7 +263,7 @@ publish: ${DIR} ${DIR}/service.definition.json $(APIKEY) $(KEYS)
 	  HZN_ORG_ID=$(HZN_ORG_ID) \
 	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
 	  && if [ ! -z "$(DOCKER_PUBLICKEY)" ]; then ARGS="-r $(DOCKER_REGISTRY):${HZN_USER_ID}:$(DOCKER_PUBLICKEY)"; fi \
-	  && hzn exchange service publish -I -O -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} -f ${DIR}/service.definition.json -o ${HZN_ORG_ID} -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) $${ARGS:-}
+	  && hzn exchange service publish -I -O -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} -f ${DIR}/service.definition.json -o ${HZN_ORG_ID} -u ${HZN_USER_ID}:$(shell cat $(APIKEY)) $${ARGS:-} &> ${PUBLISH_OUT}
 
 service-verify: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-verify : ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
