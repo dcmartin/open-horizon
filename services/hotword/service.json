@@ -9,7 +9,7 @@
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
   ],
   "userInput": [
     { "name": "NOIZE_GROUP", "label": "group for client", "type": "string", "defaultValue": "hotword" },
