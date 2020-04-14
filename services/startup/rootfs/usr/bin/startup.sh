@@ -10,15 +10,21 @@ source /usr/bin/ess-tools.sh
 source /usr/bin/host-tools.sh
 source /usr/bin/docker-tools.sh
 
+## configuration file
+startup_config_file()
+{
+  echo "${TMPDIR}/${SERVICE_LABEL}-config.json"
+}
+
 startup_sync_period()
 {
-  local out=$(jq -r '.sync.period'  ${STARTUP_CONFIG_FILE} 2> /dev/null)
+  local out=$(jq -r '.sync.period'  $(startup_config_file) 2> /dev/null)
   echo "${out:-0}"
 }
 
 startup_period()
 {
-  jq -r '.period'  ${STARTUP_CONFIG_FILE}
+  jq -r '.period'  $(startup_config_file)
 }
 
 
@@ -84,9 +90,6 @@ else
   hzn.log.debug "no old objects of type ${STARTUP_SYNC_GET}"
 fi
 
-## configuration file
-STARTUP_CONFIG_FILE=${TMPDIR}/${0##*/}-config.json
-
 ## never inspected
 INSPECT_DATE=0
 ## never synchronized
@@ -113,7 +116,7 @@ while true; do
 	file=$(ess_object_download ${id} ${STARTUP_SYNC_GET})
 	if [ ! -z "${file}" ] && [ -s ${file} ]; then
 	  hzn.log.info "DOWNLOAD: objectType: ${STARTUP_SYNC_GET}; objectID: ${id}; size: " $(wc -c ${file})
-	  mv -f ${file} ${STARTUP_CONFIG_FILE}
+	  mv -f ${file} $(startup_config_file)
 	  SYNC_DATE=$(date +%s)
 	  UPDATED=true
 	else
@@ -152,9 +155,9 @@ while true; do
 
   # create output 
   if [ "${UPDATED:-false}" = true ]; then
-    if [ -s "${STARTUP_CONFIG_FILE}" ]; then
-      hzn.log.debug "configuration file: ${STARTUP_CONFIG_FILE}"
-      echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"docker":'${CONTAINERS:-null}',"host":'"${INSPECT:-null}"',"'${STARTUP_SYNC_GET}'":'$(cat ${STARTUP_CONFIG_FILE})'}' > "${OUTPUT_FILE}"
+    if [ -s "$(startup_config_file)" ]; then
+      hzn.log.debug "configuration file: $(startup_config_file)"
+      echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"docker":'${CONTAINERS:-null}',"host":'"${INSPECT:-null}"',"'${STARTUP_SYNC_GET}'":'$(cat $(startup_config_file))'}' > "${OUTPUT_FILE}"
     else
       echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"docker":'${CONTAINERS:-null}',"host":'"${INSPECT:-null}"',"'${STARTUP_SYNC_GET}'":null}' > "${OUTPUT_FILE}"
     fi

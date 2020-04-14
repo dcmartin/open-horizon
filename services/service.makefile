@@ -10,7 +10,7 @@ HZN_VERSION ?= $(if $(wildcard ../HZN_VERSION),$(shell cat ../HZN_VERSION),"v1")
 
 ## PACKAGE
 HZNPKG_URL ?= $(if $(wildcard ../HZNPKG_URL),$(shell cat ../HZNPKG_URL),"http://pkg.bluehorizon.network")
-HZNPKG_KEY ?= $(if $(wildcard ../HZNPKG_KEY),$(shell cat ../HZNPKG_KEY),"{HZNPKG_URL}/bluehorizon.network-public.key}")
+HZNPKG_KEY ?= $(if $(wildcard ../HZNPKG_KEY),$(shell cat ../HZNPKG_KEY),"${HZNPKG_URL}/bluehorizon.network-public.key}")
 HZNPKG_TYPE ?= $(if $(wildcard ../HZNPKG_TYPE),$(shell cat ../HZNPKG_TYPE),"linux")
 HZNPKG_DIST ?= $(if $(wildcard ../HZNPKG_DIST),$(shell cat ../HZNPKG_DIST),"ubuntu")
 HZNPKG_RELEASE ?= $(if $(wildcard ../HZNPKG_RELEASE),$(shell cat ../HZNPKG_RELEASE),"xenial")
@@ -320,7 +320,7 @@ nodes-list:
 nodes: ${DIR}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- nodes: ${TEST_NODE_NAMES}""${NC}" > /dev/stderr
 	@./sh/checkvars.sh ${DIR}
-	@for machine in $(TEST_NODE_NAMES); do \
+	for machine in $(TEST_NODE_NAMES); do \
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- running: ./sh/make-machine.sh $${machine}"; \
 	  export \
 	  HZNPKG_URL=${HZNPKG_URL} \

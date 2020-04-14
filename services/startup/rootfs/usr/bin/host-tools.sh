@@ -12,10 +12,10 @@ host_key()
 
   if [ -z "${STARTUP_HOST_KEY:-}" ]; then
     hzn.log.warn "no host key defined: STARTUP_HOST_KEY"
-    if [ -s ${STARTUP_CONFIG_FILE} ]; then
-      STARTUP_HOST_KEY=$(jq -r '.hostkey' ${STARTUP_CONFIG_FILE})  
+    if [ -s $(startup_config_file) ]; then
+      STARTUP_HOST_KEY=$(jq -r '.hostkey' $(startup_config_file))  
     else
-      hzn.log.warn "no configuration file: ${STARTUP_CONFIG_FILE}"
+      hzn.log.warn "no configuration file: $(startup_config_file)"
     fi
   fi
   echo "${STARTUP_HOST_KEY:-}"
