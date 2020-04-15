@@ -22,9 +22,14 @@ RUN \
         jq \
         coreutils \
         lshw \
+        i2c-tools@edge \
+        py-pip \
         socat \
     && rm -f -r \
         /tmp/*
+
+RUN \
+    pip install csvkit
 
 # Copy root file-system
 COPY rootfs /

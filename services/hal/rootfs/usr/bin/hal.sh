@@ -7,7 +7,7 @@ if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
 ### FUNCTIONS
 ###
 
-source /usr/bin/service-tools.sh
+source ${USRBIN:-/usr/bin}/service-tools.sh
 
 ###
 ### MAIN
@@ -31,7 +31,7 @@ while true; do
   DATE=$(date +%s)
   OUTPUT=$(jq -c '.' "${OUTPUT_FILE}")
 
-  for ls in lshw lsusb lscpu lspci lsblk lsdf; do
+  for ls in lshw lsusb lscpu lspci lsblk lsdf i2c; do
     OUT="$(${ls}.sh | jq '.'${ls}'?')"
     if [ ${DEBUG:-} == 'true' ]; then echo "${ls} == ${OUT}" &> /dev/stderr; fi
     if [ -z "${OUT:-}" ]; then OUT=null; fi
