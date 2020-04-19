@@ -7,6 +7,7 @@
 ##
 
 HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID)
+HZN_USER_ID ?= $(if $(wildcard HZN_USER_ID),$(shell cat HZN_USER_ID),HZN_USER_ID)
 
 # tag this build environment
 TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
@@ -107,11 +108,11 @@ gpu-pattern-publish:
 
 ## all
 
-$(ALL): $(KEYS)
+$(ALL):
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
 	$(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $@
 
-$(TARGETS): $(KEYS)
+$(TARGETS):
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@ in ${ALL}""${NC}" &> /dev/stderr
 	@for dir in $(ALL); do \
 	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir $@; \
