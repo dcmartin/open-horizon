@@ -23,13 +23,16 @@ CONFIG_JSON := $(if $(wildcard config.json),config.json,config.json.tmpl)
 
 # exchange root, admin, organization
 HZN_ROOT_ID := $(shell jq -r '.horizon.root' $(CONFIG_JSON))
-EXCHANGE_NAMESPACE := $(shell jq -r '.horizon.namespace' $(CONFIG_JSON))
-EXCHANGE_NAMESPACE := $(if ${EXCHANGE_NAMESPACE},${EXCHANGE_NAMESPACE},"oh")
 
 ## for network
-EXCHANGE_HOSTNAME ?= $(shell jq -r '.horizon.hostname' $(CONFIG_JSON))
-EXCHANGE_NETWORK ?= $(shell jq -r '.horizon.network.name' $(CONFIG_JSON))
-EXCHANGE_NETWORK_DRIVER ?= $(shell jq -r '.horizon.network.driver' $(CONFIG_JSON))
+EXCHANGE_ROOTID := $(if $(wildcard EXCHANGE_ROOTID),$(shell cat EXCHANGE_ROOTID),root)
+EXCHANGE_NAMESPACE := $(if $(wildcard EXCHANGE_NAMESPACE),$(shell cat EXCHANGE_NAMESPACE),$(shell whoami))
+EXCHANGE_HOSTNAME := $(if $(wildcard EXCHANGE_HOSTNAME),$(shell cat EXCHANGE_HOSTNAME),$(shell hostname -I | awk '{ print $$1 }'))
+EXCHANGE_NETWORK := $(if $(wildcard EXCHANGE_NETWORK),$(shell cat EXCHANGE_NETWORK),'hzn')
+EXCHANGE_NETWORK_DRIVER := $(if $(wildcard EXCHANGE_NETWORK_DRIVER),$(shell cat EXCHANGE_NETWORK_DRIVER),'bridge')
+CSS_TAG := $(if $(wildcard CSS_TAG),$(shell cat CSS_TAG),$(shell jq -r '.services.css.stable' ${CONFIG_JSON}))
+EXCHANGE_TAG := $(if $(wildcard EXCHANGE_TAG),$(shell cat EXCHANGE_TAG),$(shell jq -r '.services.exchange.stable' ${CONFIG_JSON}))
+AGBOT_TAG := $(if $(wildcard AGBOT_TAG),$(shell cat AGBOT_TAG),$(shell jq -r '.services.agbot.stable' ${CONFIG_JSON}))
 
 ## key files
 HZN_PUBLICKEY_FILE := ${CWD}/publickey.pem
@@ -39,7 +42,7 @@ HZN_CACERTS_FILE := ${CWD}/cacerts.pem
 SOMECOMP := somecomp.com
 SOMEUSER := e2edev
 SOMENAME := localhost
-SOMESUBJ :="/C=US/ST=${SOMEUSER}${SOMECOMP}/L=${SOMEUSER}${SOMECOMP}/O=${SOMEUSER}${SOMECOMP}/CN=${SOMENAME}"
+SOMESUBJ := "/C=US/ST=${SOMEUSER}${SOMECOMP}/L=${SOMEUSER}${SOMECOMP}/O=${SOMEUSER}${SOMECOMP}/CN=${SOMENAME}"
 
 ## EXCHANGE
 EXCHANGE_CONTAINER_NAME = $(shell jq -r '.services.exchange.name' $(CONFIG_JSON))
@@ -202,8 +205,8 @@ ${AGBOT_COLONUS_DIR}: config.json
 ## CONFIGURATION FILES
 ##
 
-${CONFIGS}: config.json makefile
-	@F=$@ && D=$${F%/*} && F=$${F##*/} && mkdir -p $${D} && \
+${CONFIGS}: ${CONFIG_JSON} makefile
+	F=$@ && D=$${F%/*} && F=$${F##*/} && mkdir -p $${D} && \
 	export \
 	  EXCHANGE_HOSTNAME='${EXCHANGE_HOSTNAME}' \
 	  EXCHANGE_NAMESPACE='${EXCHANGE_NAMESPACE}' \
