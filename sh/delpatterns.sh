@@ -27,7 +27,7 @@ if [ -z "${HZN_ORG_ID:-}" ] || [ "${HZN_ORG_ID:-}" == "null" ]; then
   exit 1
 fi
 
-for pattern in $(curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-iamapikey}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/patterns" | jq -r '(.patterns|to_entries[]|.value.id=.key|.value).id'); do
+for pattern in $(curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-${USER}}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/patterns" | jq -r '(.patterns|to_entries[]|.value.id=.key|.value).id'); do
   id=${pattern##*/}
   if [ ! -z "${1:-}" ]; then
     if [[ "${id}" =~ "${1}" ]]; then 
@@ -41,6 +41,6 @@ for pattern in $(curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-iamapikey}:${HZN_EXCH
   fi
   if [ "${match:-false}" = true ]; then
     echo "--- INFO $0 $$ -- deleting pattern: ${id}" &> /dev/stderr
-    curl -sL -X DELETE -u "${HZN_ORG_ID}/${HZN_USER_ID:-iamapikey}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/patterns/${id}"
+    curl -sL -X DELETE -u "${HZN_ORG_ID}/${HZN_USER_ID:-${USER}}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/patterns/${id}"
   fi
 done

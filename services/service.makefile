@@ -2,7 +2,7 @@
 BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
 ## HORIZON EXCHANGE
-HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),"iamapikey")
+HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))
 HZN_ORG_ID ?= $(if $(wildcard ../HZN_ORG_ID),$(shell cat ../HZN_ORG_ID),HZN_ORG_ID_UNSPECIFIED)
 HZN_EXCHANGE_URL ?= $(if $(wildcard ../HZN_EXCHANGE_URL),$(shell cat ../HZN_EXCHANGE_URL),"http://exchange:3090/v1/")
 HZN_FSS_CSSURL ?= $(if $(wildcard ../HZN_FSS_CSSURL),$(shell cat ../HZN_FSS_CSSURL),"http://exchange:9443/css/")
