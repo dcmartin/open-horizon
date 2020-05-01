@@ -30,7 +30,7 @@ fi
 node=${1:-$(hostname)}
 
 TEMP=$(mktemp)
-CODE=$(curl -w '%{http_code}' -o ${TEMP} -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-iamapikey}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/nodes/${node}/policy")
+CODE=$(curl -w '%{http_code}' -o ${TEMP} -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-${USER}}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/nodes/${node}/policy")
 if [ ${CODE} != 200 ]; then
   output='{"node":"'${node}'","exchange":"'${HZN_EXCHANGE_URL}'","error":"'${CODE}'","org":"'${HZN_ORG_ID}'","policy":[]}'
 else

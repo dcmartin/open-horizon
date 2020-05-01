@@ -27,5 +27,5 @@ if [ -z "${HZN_ORG_ID:-}" ] || [ "${HZN_ORG_ID:-}" == "null" ]; then
   exit 1
 fi
 
-curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-iamapikey}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/nodes" \
+curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-${USER}}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/nodes" \
   | jq '{"exchange":"'${HZN_EXCHANGE_URL}'","org":"'${HZN_ORG_ID}'","nodes":[.nodes|to_entries[]|.value.id=.key|.value]|sort_by(.lastHeartbeat|split("Z")[0]|split(".")[0]|strptime("%Y-%m-%dT%H:%M:%S")|mktime)|reverse}'
