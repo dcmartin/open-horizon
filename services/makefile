@@ -6,7 +6,7 @@
 ## things TO change - create your own HZN_ORG_ID and URL files.
 ##
 
-HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID)
+HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell cat HZN_ORG_ID),HZN_ORG_ID_UNSPECIFIED)
 
 # tag this build environment
 TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
