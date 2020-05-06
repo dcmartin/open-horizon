@@ -5,6 +5,7 @@ echo "${USER} ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/010_${USER}-nop
 sudo addgroup dcmartin docker
 sudo reboot
 
+touch ~/.rnd
 git clone http://github.com/dcmartin/open-horizon
 cd open-horizon
 make exchange
