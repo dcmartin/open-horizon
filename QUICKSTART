@@ -1,6 +1,6 @@
 sudo apt update -qq -y
 sudo apt upgrade -qq -y
-sudo apt install -qq -y git build-essential net-tools jq curl apache2-utils docker-compose 
+sudo apt install -qq -y git build-essential net-tools jq curl apache2-utils gnupg2 pass docker-compose
 echo "${USER} ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/010_${USER}-nopasswd
 sudo addgroup dcmartin docker
 sudo reboot

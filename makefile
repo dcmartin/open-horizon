@@ -113,7 +113,7 @@ services: ${HZN_VARIABLES}
 	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
 	  HZN_ORG_ID="$(HZN_ORG_ID)" \
 	  HZN_USER_ID="$(HZN_USER_ID)" \
-	&& ${MAKE} -C $@ build push publish
+	&& ${MAKE} -C $@ push publish
 
 ## ADMINISTRIVIA
 
