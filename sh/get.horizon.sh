@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 ## DEFAULTS
 
@@ -7,9 +7,9 @@ update_defaults()
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   local result
-  local url=${1:-${URL}}
-  local fss=${2:-${FSS}}
-  local ver=${3:-${VER}}
+  local url=${1:-${HZN_EXCHANGE_URL}}
+  local fss=${2:-${HZN_FSS_CSSURL}}
+  local ver=${3:-${HZN_AGENT_VERSION}}
 
   if [ ! -s "/etc/default/horizon" ]; then
     echo 'Creating /etc/default/horizon' &> /dev/stderr
@@ -68,7 +68,7 @@ install_linux()
         curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb &> /dev/stderr
       fi
       echo "Installing ${p} ..." &> /dev/stderr
-      dpkg -i ${p}.deb &> /dev/stderr
+      dpkg --force-all -i ${p}.deb &> /dev/stderr
     done
   fi
   result=$(update_defaults)
@@ -204,31 +204,57 @@ if [ -z "$(command -v docker)" ]; then
   fi
 fi
 
-# exchange URL
-if [ -s HZN_EXCHANGE_URL ]; then 
-  URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}
-else 
-  URL=${1:-${HZN_EXCHANGE_URL}}
+# if expressed
+if [ -s HZN_EXCHANGE_URL ] && [ -z "${HZN_EXCHANGE_URL}" ]; then HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}; fi
+if [ -s HZN_FSS_CSSURL ] && [ -z "${HZN_FSS_CSSURL:-}" ]; then HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}; fi
+if [ -s HZN_AGENT_VERSION ] && [ -z "${HZN_AGENT_VERSION:-}" ]; then HZN_AGENT_VERSION=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}; fi
+
+# CONFIG
+CONFIG=${0%/*}/../exchange/config.json
+
+# test for defined
+if [ -s "${CONFIG:-}" ]; then
+  host=$(jq -r '.horizon.hostname' ${CONFIG})
+
+  # exchange
+  exchange_listen=$(jq -r '.services.exchange.listen' ${CONFIG})
+  exchange_port=$(jq -r '.services.exchange.port' ${CONFIG})
+  exchange_version=$(jq -r '.services.exchange.tag' ${CONFIG})
+  URL="${exchange_listen}://${host}:${exchange_port}/${exchange_version}/"
+  if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ "${HZN_EXCHANGE_URL:-}" != "${URL}" ]; then
+    echo "WARNING: defined HZN_EXCHANGE_URL: ${HZN_EXCHANGE_URL}; does not match ${CONFIG}: ${URL}" &> /dev/stderr
+  else
+    HZN_EXCHANGE_URL="${URL}"
+  fi
+
+  # css
+  css_listen=$(jq -r '.services.css.listen' ${CONFIG})
+  css_port=$(jq -r '.services.css.port' ${CONFIG})
+  FSS="${css_listen}://${host}:${css_port}/"
+  if [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ "${HZN_FSS_CSSURL:-}" != "${FSS}" ]; then
+    echo "WARNING: defined HZN_FSS_CSSURL: ${HZN_FSS_CSSURL}; does not match ${CONFIG}: ${FSS}" &> /dev/stderr
+  else
+    HZN_FSS_CSSURL="${FSS}"
+  fi
+
+  # agbot
+  agbot_tag=$(jq -r '.services.agbot.tag' ${CONFIG})
+  VER="${agbot_tag}"
+  if [ ! -z "${HZN_AGENT_VERSION:-}" ] && [ "${HZN_AGENT_VERSION:-}" != "${VER}" ]; then
+    echo "WARNING: defined HZN_AGENT_VERSION: ${HZN_AGENT_VERSION}; does not match ${CONFIG}: ${VER}" &> /dev/stderr
+  else
+    HZN_AGENT_VERSION="${VER}"
+  fi
 fi
 
-# css URL
-if [ -s HZN_FSS_CSSURL ]; then
-  FSS=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}
+if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z "${HZN_AGENT_VERSION:-}" ]; then
+  echo 'STARTING..' 
+  result=$(get_horizon ${HZN_EXCHANGE_URL} ${HZN_FSS_CSSURL} ${HZN_AGENT_VERSION})
+  if [ -z "${result:-}" ] || [ ${#result} -gt 1 ] || [ ${result:-1} -gt 0 ]; then
+    echo "Failed: result: ${result}"
+  else
+    echo 'Success'
+  fi
 else
-  FSS=${2:-${HZN_FSS_CSSURL}}
-fi
-
-# version
-if [ -s HZN_AGENT_VERSION ]; then 
-  VER=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}
-else
-  VER=${3:-${HZN_AGENT_VERSION:-2.24.18}}
-fi
-
-echo 'STARTING..' 
-result=$(get_horizon ${URL} ${FSS} ${VER})
-if [ -z "${result:-}" ] || [ ${#result} -gt 1 ] || [ ${result:-1} -gt 0 ]; then
-  echo "Failed: result: ${result}"
-else
-  echo 'Success'
+  echo 'USAGE: '${0}' ${HZN_EXCHANGE_URL} ${HZN_FSS_CSSURL} ${HZN_AGENT_VERSION}; did you "make exchange" yet?'
 fi
