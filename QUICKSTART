@@ -1,0 +1,15 @@
+sudo apt update -qq -y
+sudo apt upgrade -qq -y
+sudo apt install -qq -y git build-essential net-tools jq curl apache2-utils docker-compose 
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/010_${USER}-nopasswd
+sudo addgroup dcmartin docker
+sudo reboot
+
+git clone http://github.com/dcmartin/open-horizon
+cd open-horizon
+make exchange
+sudo ./sh/get.horizon.sh
+make services
+cd services/hznmonitor
+make
+
