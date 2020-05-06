@@ -219,7 +219,7 @@ if [ -s "${CONFIG:-}" ]; then
   # exchange
   exchange_listen=$(jq -r '.services.exchange.listen' ${CONFIG})
   exchange_port=$(jq -r '.services.exchange.port' ${CONFIG})
-  exchange_version=$(jq -r '.services.exchange.tag' ${CONFIG})
+  exchange_version=$(jq -r '.services.exchange.version' ${CONFIG})
   URL="${exchange_listen}://${host}:${exchange_port}/${exchange_version}/"
   if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ "${HZN_EXCHANGE_URL:-}" != "${URL}" ]; then
     echo "WARNING: defined HZN_EXCHANGE_URL: ${HZN_EXCHANGE_URL}; does not match ${CONFIG}: ${URL}" &> /dev/stderr
