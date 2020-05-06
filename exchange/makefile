@@ -61,7 +61,7 @@ EXCHANGE_ADMIN_PASSWORD := $(if ${EXCHANGE_ADMIN_PASSWORD},${EXCHANGE_ADMIN_PASS
 
 ## PASSWORD
 EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),$(shell jq -r '.services.exchange.password' $(CONFIG_JSON)))
-EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tr -d ':\n' | sed 's/$$2y/$$2a/')
+EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}")
 
 EXCHANGE_LISTEN := $(shell jq -r '.services.exchange.listen' $(CONFIG_JSON))
 HZN_EXCHANGE_URL := ${EXCHANGE_LISTEN}://${EXCHANGE_HOSTNAME}:${EXCHANGE_PORT}/${EXCHANGE_VERSION}
@@ -148,6 +148,7 @@ all: keys config ${DOCKER_COMPOSE}
 keys: ${CSS_KEYS} ${AGBOT_KEYS} ${EXCHANGE_KEYS}
 
 CONFIGS := \
+	  ${CWD}/config.json \
 	  ${DOCKER_COMPOSE} \
 	  ${EXCHANGE_CONFIG_FILE} \
 	  ${CSS_CONFIG_FILE} \
@@ -163,7 +164,7 @@ up: ${DOCKER_COMPOSE} keys config
 
 prime: # up
 	@echo "making $@"
-	@export \
+	export \
 	  EXCHANGE_AGBOT_NAME=${EXCHANGE_AGBOT_NAME} \
 	  EXCHANGE_AGBOT_TOKEN=${EXCHANGE_AGBOT_TOKEN} \
 	  HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} \
