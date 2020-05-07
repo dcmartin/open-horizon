@@ -116,7 +116,7 @@ services: ${HZN_VARIABLES}
 	  HZN_USER_ID="$(HZN_USER_ID)" \
 	&& ${MAKE} -C $@ push publish
 
-hznmonitor: ${HZN_VARIABLES}
+hznmonitor: ${HZN_VARIABLES} KAFKA_APIKEY MQTT_HOST MQTT_USERNAME MQTT_PASSWORD
 	@echo "making $@"
 	@export \
 	  BASES='base-ubuntu apache-ubuntu' \
