@@ -44,7 +44,8 @@ make exchange
 Run provided script to list users in the exchange:
 
 ```
-export HZN_USER_ID=${USER} HZN_ORG_ID=${USER} HZN_EXCHANGE_APIKEY=whocares HZN_EXCHANGE_URL=http://localhost:3090/v1/
+export HZN_USER_ID=${USER} HZN_ORG_ID=${USER} HZN_EXCHANGE_APIKEY=whocares
+export HZN_EXCHANGE_URL=http://localhost:3090/v1/
 ./sh/lsusers.sh
 ```
 
