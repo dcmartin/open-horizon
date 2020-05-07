@@ -358,7 +358,7 @@ tidy:
 	-rm -fr anax.json hzn.json default.horizon
 
 clean: tidy remove
-	sudo rm -fr ${DOCKER_COMPOSE} css agbot exchange
+	sudo rm -fr ${DOCKER_COMPOSE} css agbot exchange EXCHANGE_PASSWORD_ENCODED
 
 realclean:  clean
 	-docker volume prune -f
