@@ -145,6 +145,8 @@ Finally, there are services specialized for the [nVidia](http://nvidia.com) GPU 
 See [`SERVICE.md`][service-md] and [`PATTERN.md`][pattern-md] for more information on building services and patterns.
 Refer to the following for more information on [getting started][edge-fabric] and [installation][edge-install].
 
+See the video library [Coding with Dave](docs/CWD.md)
+
 # Changelog & Releases
 
 Releases are based on Semantic Versioning, and use the format
