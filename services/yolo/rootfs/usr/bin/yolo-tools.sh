@@ -120,21 +120,19 @@ yolo_process()
 {
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
-  PAYLOAD="${1}"
-  ITERATION="${2}"
-  OUTPUT='{}'
+  local PAYLOAD="${1}"
+  local ITERATION="${2}"
+  local output='{}'
+  local MOCK=
+  local JPEG=$(mktemp .jpeg)
 
   # test image 
   if [ ! -s "${PAYLOAD}" ]; then 
-    MOCKS=( dog giraffe kite eagle horses person scream )
+    local MOCKS=( dog giraffe kite eagle horses person scream )
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    hzn.log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
     MOCK="${MOCKS[${MOCK_INDEX}]}"
-    hzn.log.debug "MOCK image: ${MOCK}"
     cp -f "data/${MOCK}.jpg" ${PAYLOAD}
-    # update output to be mock
-    OUTPUT=$(echo "${OUTPUT}" | jq '.mock="'${MOCK}'"')
   fi
 
   # scale image
@@ -146,42 +144,78 @@ yolo_process()
   hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
 
   # get image information
-  INFO=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
-  hzn.log.debug "JPEG: ${JPEG}; info: ${INFO}"
-  OUTPUT=$(echo "${OUTPUT}" | jq '.info='"${INFO}")
 
   local data=$(jq -r '.darknet.data' ${CONF_FILE})
   local weights=$(jq -r '.darknet.weights' ${CONF_FILE})
   local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
   local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
 
+  output=$(darknet_detector_test ${data} ${weights} ${cfg} ${threshold} ${JPEG})
+    # update output to be mock
+    output=$(echo "${output}" | jq '.mock="'${MOCK:-null}'"')
+
+  # capture annotated image as BASE64 encoded string
+  local IMAGE=$(mktemp)
+  local TEMP=$(mktemp)
+
+  echo -n '{"image":"' > "${IMAGE}"
+  if [ -s "predictions.jpg" ]; then
+    base64 -w 0 -i predictions.jpg >> "${IMAGE}"
+  fi
+  echo '"}' >> "${IMAGE}"
+
+  echo "${output}" > "${TEMP}"
+  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
+  rm -f "${TEMP}"
+
+  # cleanup
+  rm -f "${JPEG}" "${out}" predictions.jpg
+
+  # return base64 encode image JSON path
+  echo "${IMAGE}"
+}
+
+
+darknet_detector_test()
+{
+  local data=${1}
+  local weights=${2}
+  local cfg=${3}
+  local threshold=${5}
+  local JPEG=${6}
+
+  local out=$(mktemp)
+  local err=$(mktemp)
+  local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
+  local output='{"info":'"${info}"'}'
+
   ## do YOLO
-  hzn.log.debug "DARKNET: ./darknet detector test ${data} ${cfg} ${weights} ${JPEG} -thresh ${threshold}"
-  ./darknet detector test "${data}" "${cfg}" "${weights}" "${JPEG}" -thresh "${threshold}" > "${OUT}" 2> "${TMPDIR}/darknet.$$.out"
-  # extract processing time in seconds
-  TIME=$(cat "${OUT}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
-  if [ -z "${TIME}" ]; then TIME=0; fi
-  OUTPUT=$(echo "${OUTPUT}" | jq '.time="'${TIME}'"')
-  hzn.log.debug "TIME: ${TIME}"
+  ./darknet detector test "${data}" "${cfg}" "${weights}" "${JPEG}" -thresh "${threshold}" > "${out}" 2> "${err}"
+
   # test for output
-  if [ -s "${OUT}" ]; then
+  if [ -s "${out}" ]; then
+    # extract processing time in seconds
+    TIME=$(cat "${out}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
+    if [ -z "${TIME}" ]; then TIME=0; fi
+    output=$(echo "${output}" | jq '.time="'${TIME}'"')
+
     TOTAL=0
     case ${YOLO_ENTITY} in
       all)
 	# find entities in output
-	cat "${OUT}" | tr '\n' '\t' | sed 's/.*Predicted in \([^ ]*\) seconds. */time: \1/' | tr '\t' '\n' | tail +2 > "${OUT}.$$"
-	FOUND=$(cat "${OUT}.$$" | awk -F: '{ print $1 }' | sort | uniq)
+	cat "${out}" | tr '\n' '\t' | sed 's/.*Predicted in \([^ ]*\) seconds. */time: \1/' | tr '\t' '\n' | tail +2 > "${out}.$$"
+	FOUND=$(cat "${out}.$$" | awk -F: '{ print $1 }' | sort | uniq)
 	if [ ! -z "${FOUND}" ]; then
 	  hzn.log.debug "Detected:" $(echo "${FOUND}" | fmt -1000)
 	  JSON=
 	  for F in ${FOUND}; do
 	    if [ -z "${JSON:-}" ]; then JSON='['; else JSON="${JSON}"','; fi
-	    C=$(egrep '^'"${F}" "${OUT}.$$" | wc -l | awk '{ print $1 }')
+	    C=$(egrep '^'"${F}" "${out}.$$" | wc -l | awk '{ print $1 }')
 	    COUNT='{"entity":"'"${F}"'","count":'${C}'}'
 	    JSON="${JSON}""${COUNT}"
 	    TOTAL=$((TOTAL+C))
 	  done
-	  rm -f "${OUT}.$$"
+	  rm -f "${out}.$$"
 	  if [ -z "${JSON}" ]; then JSON='null'; else JSON="${JSON}"']'; fi
 	  DETECTED="${JSON}"
 	else
@@ -191,36 +225,16 @@ yolo_process()
 	;;
       *)
 	# count single entity
-	C=$(egrep '^'"${YOLO_ENTITY}" "${OUT}" | wc -l | awk '{ print $1 }')
+	C=$(egrep '^'"${YOLO_ENTITY}" "${out}" | wc -l | awk '{ print $1 }')
 	COUNT='{"entity":"'"${YOLO_ENTITY}"'","count":'${C}'}'
 	TOTAL=$((TOTAL+C))
 	DETECTED='['"${COUNT}"']'
 	;;
     esac
-    OUTPUT=$(echo "${OUTPUT}" | jq '.count='${TOTAL}'|.detected='"${DETECTED}"'|.time='${TIME})
+    output=$(echo "${output}" | jq '.count='${TOTAL}'|.detected='"${DETECTED}"'|.time='${TIME})
   else
-    echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
+    echo "+++ WARN $0 $$ -- no output:" $(cat ${out}) &> /dev/stderr
     hzn.log.debug "darknet failed:" $(cat "${TMPDIR}/darknet.$$.out")
-    OUTPUT=$(echo "${OUTPUT}" | jq '.count=0|.detected=null|.time=0')
+    output=$(echo "${output}" | jq '.count=0|.detected=null|.time=0')
   fi
-
-  # capture annotated image as BASE64 encoded string
-  IMAGE="${TMPDIR}/predictions.$$.json"
-  echo -n '{"image":"' > "${IMAGE}"
-  if [ -s "predictions.jpg" ]; then
-    base64 -w 0 -i predictions.jpg >> "${IMAGE}"
-  fi
-  echo '"}' >> "${IMAGE}"
-
-  TEMP="${TMPDIR}/${0##*/}.$$.json"
-  echo "${OUTPUT}" > "${TEMP}"
-  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
-  rm -f "${TEMP}"
-
-  # cleanup
-  rm -f "${JPEG}" "${OUT}" predictions.jpg
-
-  # return base64 encode image JSON path
-  echo "${IMAGE}"
 }
-

@@ -41,6 +41,32 @@ cd open-horizon
 make exchange
 ```
 
+Run provided script to list users in the exchange:
+
+```
+export HZN_USER_ID=${USER} HZN_ORG_ID=${USER} HZN_EXCHANGE_APIKEY=whocares HZN_EXCHANGE_URL=http://localhost:3090/v1/
+./sh/lsusers.sh
+```
+
+Example output:
+
+```
+{
+  "exchange": "http://localhost:3090/v1/",
+  "org": "dcmartin",
+  "users": [
+    {
+      "password": "********",
+      "admin": true,
+      "email": "dcmartin@dcmartin",
+      "lastUpdated": "2020-05-07T17:22:36.807Z[UTC]",
+      "updatedBy": "root/root",
+      "id": "dcmartin/dcmartin"
+    }
+  ]
+}
+```
+
 ## Step 4 - Install horizon
 Run the provided shell script to download `horizon`, `bluehorizon`, and `horizon-cli` packages and install.
 
