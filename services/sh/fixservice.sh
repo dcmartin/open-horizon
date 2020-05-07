@@ -16,6 +16,7 @@ fi
 # what
 SERVICE="${DIR}/service.definition"
 USERINPUT="${DIR}/userinput"
+if [ ! -s "${USERINPUT}.json" ]; then cp userinput.json "${USERINPUT}.json"; fi
 
 # mandatory
 for json in ${SERVICE} ${USERINPUT}; do

@@ -115,6 +115,13 @@ services: ${HZN_VARIABLES}
 	  HZN_USER_ID="$(HZN_USER_ID)" \
 	&& ${MAKE} -C $@ push publish
 
+HZNMONITOR_FROM := services/base-ubuntu services/apache-ubuntu services/hznmonitor
+${HZNMONITOR_FROM}:
+	make -C $@ build
+
+hznmonitor: ${HZNMONITOR_FROM}
+	make -C services/$@
+
 ## ADMINISTRIVIA
 
 .PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build
