@@ -6,6 +6,8 @@ This set of instructions works on the following:
 + 4 GB RAM
 + 32 GB storage
 
+Watch a time-compressed [video](https://youtu.be/_BdAa7jT5VY).
+
 ## Step 1 - Setup & clone
 Setup the account for automated `sudo` privileges, install the `git` program, and clone the repository.
 

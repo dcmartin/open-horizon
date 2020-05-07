@@ -3,12 +3,23 @@ An introductory video series called _Coding with Dave_ is on YouTube:
 
 \#|Title|&#128279;
 ---|---|---
-1.|_From the Top_ |[&#128250;][coding-with-dave-3]
-1.|_Make A Little_ |[&#128250;][coding-with-dave-1]
-3.|_Node Control_ |[&#128250;][coding-with-dave-2]
-4.|_Adding Nodes_ |[&#128250;][coding-with-dave-4]
+1.|From the Top|[&#128250;](https://youtu.be/38-FrQCajPg)
+1.|Make A Little|[&#128250;](https://youtu.be/qrYhJ9jNcOA)
+3.|Node Control|[&#128250;](https://youtu.be/TpS4xQN6WUE)
+4.|Make (lots of) Nodes|[&#128250;](https://youtu.be/865nI-0gDY)
+5.|Machine debugging|[&#128250;](https://youtu.be/tLjk4blTLbQ)
+6.|YOLO4motion time-lapse study|[&#128250;](https://youtu.be/7PS1hM8GTjg)
+7.|**BYO** OpenHorizon _exchange_|[&#128250;](https://youtu.be/_BdAa7jT5VY)
+8.|tbd|[&#128250;]()
 
-[coding-with-dave-1]: https://youtu.be/qrYhJ9jNcOA
-[coding-with-dave-2]: https://youtu.be/TpS4xQN6WUE
-[coding-with-dave-3]: https://youtu.be/38-FrQCajPg
-[coding-with-dave-4]: https://youtu.be/8_65nI-0gDY
+
+\#|Archives|&#128279;
+---|---|---
+1.|Serial Monitor|[&#128250;](https://youtu.be/CIGiMjOO3IE)
+2.|Build & Test _pattern_: a `yolo2msghub` story|[&#128250;](https://youtu.be/IFKi8vf-aHs)
+3.|Clone to publish: a `cpu` story|[&#128250;](https://youtu.be/vLicHLN90JQ)
+4.|Open Horizon: Building a _pattern_|[&#128250;](https://youtu.be/cv_rOdxXidA)
+5.|Horizon Setup (macOS)|[&#128250;](https://youtu.be/XR2pHoF_nTc)
+6.|Horizon Setup (Ubuntu)|[&#128250;](https://youtu.be/G7-CzOzzSUo)
+7.|Horizon Setup|[&#128250;](https://youtu.be/IfR-XY603JY)
+

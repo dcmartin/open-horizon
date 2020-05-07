@@ -10,8 +10,7 @@ This [repository][repository] contains [Open Horizon](http://github.com/open-hor
 
 Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
 
-### To run a sample Open Horizon _exchange_, follow the [Quick Start](QUICKSTART.md) instructions.
-
+### To run a sample Open Horizon _exchange_, follow the [Quick Start](QUICKSTART.md) instructions
 [design-md]: https://github.com/dcmartin/open-horizon/tree/master/docs/DESIGN.md
 
 # 1. [Status][status-md] 
