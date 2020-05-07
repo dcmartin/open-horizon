@@ -41,11 +41,11 @@ cd open-horizon
 make exchange
 ```
 
-Run provided script to list users in the exchange:
+Run provided script to list users in the exchange; please change the `HZN_EXCHANGE_APIKEY` as appropriate:
 
 ```
 export HZN_USER_ID=${USER} HZN_ORG_ID=${USER} HZN_EXCHANGE_APIKEY=whocares
-export HZN_EXCHANGE_URL=http://localhost:3090/v1/
+export HZN_EXCHANGE_URL=$(hzn node list | jq -r '.configuration.exchange_api')
 ./sh/lsusers.sh
 ```
 

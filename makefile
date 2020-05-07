@@ -12,8 +12,6 @@ THIS_HOSTIP := $(shell ifconfig | egrep 'inet ' | awk '{ print $$2 }' | egrep -v
 ###
 
 ## HZN
-HZN_EXCHANGE_URL ?= $(if $(wildcard HZN_EXCHANGE_URL),$(shell v=$$(cat HZN_EXCHANGE_URL) && echo "** SPECIFIED: HZN_EXCHANGE_URL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:3090/v1/" && echo "!! UNSPECIFIED: HZN_EXCHANGE_URL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
-HZN_FSS_CSSURL ?= $(if $(wildcard HZN_FSS_CSSURL),$(shell v=$$(cat HZN_FSS_CSSURL) && echo "** SPECIFIED: HZN_FSS_CSSURL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:9443/css/" && echo "!! UNSPECIFIED: HZN_FSS_CSSURL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 HZN_ORG_ID ?= $(if $(wildcard HZN_ORG_ID),$(shell v=$$(cat HZN_ORG_ID) && echo "** SPECIFIED: HZN_ORG_ID: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$${USER} && echo "!! UNSPECIFIED: HZN_ORG_ID unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 HZN_USER_ID ?= $(if $(wildcard HZN_USER_ID),$(shell v=$$(cat HZN_USER_ID) && echo "** SPECIFIED: HZN_USER_ID: $${v}" > /dev/stderr && echo "$${v}"),$(shell v=$${USER} && echo "!! UNSPECIFIED: HZN_USER_ID unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 HZN_EXCHANGE_APIKEY ?= $(if $(wildcard HZN_EXCHANGE_APIKEY),$(shell v=$$(cat HZN_EXCHANGE_APIKEY) && echo "** SPECIFIED: HZN_EXCHANGE_APIKEY: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='whocares' && echo "!! UNSPECIFIED: HZN_EXCHANGE_APIKEY unset; default: $${v}" > /dev/stderr && echo "$${v}"))
@@ -25,6 +23,10 @@ EXCHANGE_NETWORK ?= $(if $(wildcard EXCHANGE_NETWORK),$(shell v=$$(cat EXCHANGE_
 EXCHANGE_NETWORK_DRIVER ?= $(if $(wildcard EXCHANGE_NETWORK_DRIVER),$(shell v=$$(cat EXCHANGE_NETWORK_DRIVER) && echo "** SPECIFIED: EXCHANGE_NETWORK_DRIVER: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='bridge' && echo "!! UNSPECIFIED: EXCHANGE_NETWORK_DRIVER unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 EXCHANGE_ROOT ?= $(if $(wildcard EXCHANGE_ROOT),$(shell v=$$(cat EXCHANGE_ROOT) && echo "** SPECIFIED: EXCHANGE_ROOT: $${v}" > /dev/stderr && echo "$${v}"),$(shell v='root' && echo "!! UNSPECIFIED: EXCHANGE_ROOT unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),$(shell jq -r '.services.exchange.password' exchange/config.json.tmpl))
+
+# dependent on previous
+HZN_EXCHANGE_URL ?= $(if $(wildcard HZN_EXCHANGE_URL),$(shell v=$$(cat HZN_EXCHANGE_URL) && echo "** SPECIFIED: HZN_EXCHANGE_URL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:3090/v1/" && echo "!! UNSPECIFIED: HZN_EXCHANGE_URL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
+HZN_FSS_CSSURL ?= $(if $(wildcard HZN_FSS_CSSURL),$(shell v=$$(cat HZN_FSS_CSSURL) && echo "** SPECIFIED: HZN_FSS_CSSURL: $${v}" > /dev/stderr && echo "$${v}"),$(shell v="http://${EXCHANGE_HOSTNAME}:9443/css/" && echo "!! UNSPECIFIED: HZN_FSS_CSSURL unset; default: $${v}" > /dev/stderr && echo "$${v}"))
 
 ## VERSIONS
 # EXCHANGE
