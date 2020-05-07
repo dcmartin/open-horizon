@@ -57,7 +57,8 @@ build:
 exchange: exchange/config.json
 	@echo "making $@"
 	${MAKE} -C $@ all up
-	@echo 'Waiting for exchange...' && sleep 10
+	@echo -n 'Waiting for exchange '
+	@while [ -z "$$(curl -qsSL 127.0.0.1:3090/v1/admin/version 2> /dev/null)" ]; do echo -n '.'; sleep 5; done && echo -n ' operational' || echo ' non-operational'
 	${MAKE} -C $@ prime
 	@echo 'Now install agent using script sh/get.horizon.sh'
 
