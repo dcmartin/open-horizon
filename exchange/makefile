@@ -60,10 +60,10 @@ EXCHANGE_ADMIN_PASSWORD := $(shell jq -r '.services.exchange.admin.password' $(C
 EXCHANGE_ADMIN_PASSWORD := $(if ${EXCHANGE_ADMIN_PASSWORD},${EXCHANGE_ADMIN_PASSWORD},whocares)
 
 ## PASSWORD
-EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),Horizon-Rul3s))
+EXCHANGE_PASSWORD ?= $(if $(wildcard EXCHANGE_PASSWORD),$(shell cat EXCHANGE_PASSWORD),Horizon-Rul3s)
 #EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | base64 -w0)
 #EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tr -d ':\n' | sed 's/$$2y/$$2a/')
-EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tee EXCHANGE_PASSWORD_ENCODED)
+EXCHANGE_PASSWORD_ENCODED := $(shell htpasswd -bnBC 10 "" "${EXCHANGE_PASSWORD}" | tr -d ':\n' | sed 's/$$2y/$$2a/' | tee EXCHANGE_PASSWORD_ENCODED)
 
 EXCHANGE_LISTEN := $(shell jq -r '.services.exchange.listen' $(CONFIG_JSON))
 HZN_EXCHANGE_URL := ${EXCHANGE_LISTEN}://${EXCHANGE_HOSTNAME}:${EXCHANGE_PORT}/${EXCHANGE_VERSION}
@@ -160,14 +160,16 @@ CONFIGS := \
 	  ${CWD}/default.horizon
 
 exchange-fix: EXCHANGE_PASSWORD_ENCODED ${EXCHANGE_CONFIG_FILE}
-	temp=$(shell mktemp) \
+	@echo "making $@"
+	@temp=$(shell mktemp) \
 	  && jq '.|.api.root.password="$(shell cat EXCHANGE_PASSWORD_ENCODED)"' ${EXCHANGE_CONFIG_FILE} > $${temp} \
-	  && mv -f $${temp} ${EXCHANGE_CONFIG_FILE}
+	  && mv -f $${temp} ${EXCHANGE_CONFIG_FILE} && chmod 644 ${EXCHANGE_CONFIG_FILE}
 
 config-fix: EXCHANGE_PASSWORD_ENCODED ${CWD}/config.json
-	temp=$(shell mktemp) \
-	  && jq '.services.exchange.encoded="$(shell cat EXCHANGE_PASSWORD_ENCODED)"' ${CWD}/config.json > $${temp} \
-	  && mv -f $${temp} ${CWD}/config.json
+	@echo "making $@"
+	@temp=$(shell mktemp) \
+	  && jq '.|.services.exchange.encoded="$(shell cat EXCHANGE_PASSWORD_ENCODED)"' ${CWD}/config.json > $${temp} \
+	  && mv -f $${temp} ${CWD}/config.json && chmod 644 ${CWD}/config.json
 
 ## config
 config: makefile ${CONFIGS} exchange-fix config-fix ${AGBOT_POLICY_DIR} ${AGBOT_COLONUS_DIR}
@@ -288,6 +290,10 @@ ${CONFIGS}: ${CONFIG_JSON} makefile
 	  POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \
 	  POSTGRES_USER="${POSTGRES_USER}" \
 	  POSTGRES_DATABASE="${POSTGRES_DATABASE}" \
+	  SOMECOMP="${SOMECOMP}" \
+	  SOMEUSER="${SOMEUSER}" \
+	  SOMENAME="${SOMENAME}" \
+	  SOMESUBJ="${SOMESUBJ}" \
 	  && cat $${F}.tmpl | envsubst > $@
 
 ## KEYS

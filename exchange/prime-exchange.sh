@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 ## reset exchange database
 exchange_db_reset()
