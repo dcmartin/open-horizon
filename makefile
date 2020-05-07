@@ -115,13 +115,17 @@ services: ${HZN_VARIABLES}
 	  HZN_USER_ID="$(HZN_USER_ID)" \
 	&& ${MAKE} -C $@ push publish
 
-HZNMONITOR_FROM := services/base-ubuntu services/apache-ubuntu services/hznmonitor
-${HZNMONITOR_FROM}:
-	make -C $@ build
-
-hznmonitor: ${HZNMONITOR_FROM}
-	make -C services/$@
+hznmonitor: ${HZN_VARIABLES}
+	@echo "making $@"
+	@export \
+	  BASES='base-ubuntu apache-ubuntu' \
+	  SERVICES='hznmonitor' \
+	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
+	  HZN_ORG_ID="$(HZN_ORG_ID)" \
+	  HZN_USER_ID="$(HZN_USER_ID)" \
+	&& ${MAKE} -C services push publish
+	${MAKE} -C services/hznmonitor
 
 ## ADMINISTRIVIA
 
-.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build
+.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build hznmonitor 
