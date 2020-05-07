@@ -36,19 +36,24 @@ Run the provided shell script to download `horizon`, `bluehorizon`, and `horizon
 sudo ./sh/get.horizon.sh
 ```
 
-## Step 5 - build, push, and publish services
-Login to Docker (aka `hub.docker.com`) and make all the services, including pushing to Docker hub; the `DOCKER_NAMESPACE` by default is the `USER` environment variable; override by setting the environment variable or creating a persistent file of the same name.
+## Step 5 - login to hub.docker.com
+Login to Docker (aka `hub.docker.com`); the `DOCKER_NAMESPACE` defaults to `USER` environment variable; 
+override by setting the environment variable or creating a persistent file of the same name.
 
 ```
 docker login
+```
+
+## Step 6 - build & run `hznmonitor` service
+Build the containers for this service and run the service to browse the exchange and the services published using a browser on port `3094`
+
+```
+make hznmonitor
+```
+
+## Step 7 - build, push, and publish _all_ services
+Build, push, and publish all the services
+
+```
 make services
 ```
-
-## Step 6 - run `hznmonitor` service
-Run the `hznmonitor` service to browse the exchange and the services published using a browser on port `3094`
-
-```
-cd services/hznmonitor
-make
-```
-
