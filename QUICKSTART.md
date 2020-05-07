@@ -31,7 +31,7 @@ sudo reboot
 ```
 
 ## Step 3 - Create exchange
-Initialize the random number genertor, change to the directory and use `make` to build the _exchange_.
+Initialize the random number generator, change to the directory and use `make` to build the _exchange_.
 
 ```
 touch ~/.rnd
@@ -39,13 +39,22 @@ touch ~/.rnd
 ```
 cd open-horizon
 make exchange
+curl localhost:3090/v1/admin/version
 ```
 
+## Step 4 - Install `hzn` CLI
+Run the provided shell script to download `horizon`, `bluehorizon`, and `horizon-cli` packages and install.
+
+```
+sudo ./sh/get.horizon.sh
+export HZN_EXCHANGE_URL=$(hzn node list | jq -r '.configuration.exchange_api')
+```
+
+## Step 5 - Test exchange 
 Run provided script to list users in the exchange; please change the `HZN_EXCHANGE_APIKEY` as appropriate:
 
 ```
 export HZN_USER_ID=${USER} HZN_ORG_ID=${USER} HZN_EXCHANGE_APIKEY=whocares
-export HZN_EXCHANGE_URL=$(hzn node list | jq -r '.configuration.exchange_api')
 ./sh/lsusers.sh
 ```
 
@@ -68,14 +77,7 @@ Example output:
 }
 ```
 
-## Step 4 - Install horizon
-Run the provided shell script to download `horizon`, `bluehorizon`, and `horizon-cli` packages and install.
-
-```
-sudo ./sh/get.horizon.sh
-```
-
-## Step 5 - `docker login`
+## Step 6 - `docker login`
 Login to Docker (aka `hub.docker.com`); the `DOCKER_NAMESPACE` defaults to `USER` environment variable; 
 override by setting the environment variable or creating a persistent file of the same name.
 
@@ -83,15 +85,25 @@ override by setting the environment variable or creating a persistent file of th
 docker login
 ```
 
-## Step 6 - Build, push, publish (_minimum_)
-Build the base and service containers for `hznmonitor` and start the service.  Browse the exchange and the services published using a Web browser on port 3094, e.g. `http://127.0.0.1:3094/`
+## Step 7 - Build, push, publish `hznmonitor`
+As an example and to provide a means to browse the _exchange_, build  the `hznmonitor` _service_ and start it.  The `hznmonitor` _service_ is built **from** the `apache-ubuntu` _container_, which is built from the `base-ubuntu` _container; all three containers will be built, pushed to Docker hub, and published in the _exchange_.
+
+The _service_ requires the following files to be created (n.b. all _string_ values  must be enclosed in quotation marks \[\"\]):
+
++ `KAFKA_APIKEY` - API key for an IBM _event streams_ Kafka server (_n.b. this will be removed in future versions_)
++ `MQTT_HOST` - TCP/IPv4 address or FQDN for a **MQTT** broker (see [`mqtt`](services/mqtt/README.md))
++ `MQTT_USERNAME` - broker credentials
++ `MQTT_PASSWORD` - broker credentials
+
 
 ```
 make hznmonitor
 ```
+Browse the exchange and the services published using a Web browser on port 3094, e.g. `http://127.0.0.1:3094/`
 
-## Step 7 - Build, push, publish (_everything_)
-Build, push, and publish all the services
+
+## Step 7 - Build, push, publish _all_ services
+Build, push, and publish all the services; there are also sample _patterns_ which may be published from within the `services/` subdirectory.  For more information see [`SERVICE.md`](docs/SERVICE.md)
 
 ```
 make services
