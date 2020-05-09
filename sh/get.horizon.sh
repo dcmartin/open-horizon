@@ -47,6 +47,7 @@ install_linux()
 
   # which version
   local version=${1}
+  local type=${2:-}
   local result
 
   # LINUX specifics
@@ -55,12 +56,22 @@ install_linux()
   local dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
   local repo=http://pkg.bluehorizon.network/linux
   local dir=pool/main/h/horizon
+  local  packages=()
+
+  case ${type:-all} in
+    all)
+      packages=(horizon-cli horizon bluehorizon)
+      ;;
+    cli)
+      packages=(horizon-cli)
+      ;;
+  esac
   
   if [ ! -z "$(command -v hzn)" ]; then
     echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge bluehorizon horizon horizon-cli"' &> /dev/stderr
   else
     # download packages
-    for p in horizon-cli horizon bluehorizon; do
+    for p in ${packages[@]}; do
       echo "Downloading ${p} ..." &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
@@ -160,15 +171,16 @@ get_horizon()
   local url=${1}
   local fss=${2}
   local version=${3}
+  local type=${4:-}
   local result
 
   if [ ! -z "${url:-}" ] && [ ! -z "${fss:-}" ] && [ ! -z "${version:-}" ]; then
     local uname=$(uname)
 
     if [ "${uname:-}" = 'Linux' ]; then
-      result=$(install_linux ${version})
+      result=$(install_linux ${version} ${type})
     elif [ "${uname:-}" = 'Darwin' ]; then
-      result=$(install_darwin ${version})
+      result=$(install_darwin ${version} ${type})
     else
       echo 'Unknown system: ${uname}' &> /dev/stderr
     fi
@@ -204,13 +216,26 @@ if [ -z "$(command -v docker)" ]; then
   fi
 fi
 
-# if expressed
-if [ -s HZN_EXCHANGE_URL ] && [ -z "${HZN_EXCHANGE_URL}" ]; then HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL:-$(cat HZN_EXCHANGE_URL)}; fi
-if [ -s HZN_FSS_CSSURL ] && [ -z "${HZN_FSS_CSSURL:-}" ]; then HZN_FSS_CSSURL=${HZN_FSS_CSSURL:-$(cat HZN_FSS_CSSURL)}; fi
-if [ -s HZN_AGENT_VERSION ] && [ -z "${HZN_AGENT_VERSION:-}" ]; then HZN_AGENT_VERSION=${HZN_AGENT_VERSION:-$(cat HZN_AGENT_VERSION)}; fi
-
 # CONFIG
 CONFIG=${0%/*}/../exchange/config.json
+
+# if expressed
+if [ -s HZN_EXCHANGE_URL ] && [ -z "${HZN_EXCHANGE_URL}" ]; then HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL); fi
+if [ -s HZN_FSS_CSSURL ] && [ -z "${HZN_FSS_CSSURL:-}" ]; then HZN_FSS_CSSURL=$(cat HZN_FSS_CSSURL); fi
+
+# agent version is aligned with exchange; default is the 'stable' version
+if [ -z "${HZN_AGENT_VERSION:-}" ]; then
+  if [ -s HZN_AGENT_VERSION ]; then 
+    HZN_AGENT_VERSION=$(cat HZN_AGENT_VERSION)
+  elif [ -s "${CONFIG:-}" ]; then
+    HZN_AGENT_VERSION=$(jq -r '.services.agbot.tag' ${CONFIG})
+  elif [ -s "${CONFIG:-}.tmpl" ]; then
+    HZN_AGENT_VERSION=$(jq -r '.services.agbot.stable' ${CONFIG}.tmpl)
+  else
+    echo "${0}: no HZN_AGENT_VERSION specified in environment, file-system, or exchange configuration or template: ${CONFIG}[.tmpl]" &> /dev/stderr
+    exit 1
+  fi
+fi
 
 # test for defined
 if [ -s "${CONFIG:-}" ]; then
@@ -249,12 +274,12 @@ fi
 
 if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z "${HZN_AGENT_VERSION:-}" ]; then
   echo 'STARTING..' 
-  result=$(get_horizon ${HZN_EXCHANGE_URL} ${HZN_FSS_CSSURL} ${HZN_AGENT_VERSION})
+  result=$(get_horizon ${HZN_EXCHANGE_URL} ${HZN_FSS_CSSURL} ${HZN_AGENT_VERSION} ${*})
   if [ -z "${result:-}" ] || [ ${#result} -gt 1 ] || [ ${result:-1} -gt 0 ]; then
     echo "Failed: result: ${result}"
   else
     echo 'Success'
   fi
 else
-  echo 'USAGE: '${0}' ${HZN_EXCHANGE_URL} ${HZN_FSS_CSSURL} ${HZN_AGENT_VERSION}; did you "make exchange" yet?'
+  echo 'USAGE: '${0}' [all|cli]'
 fi
