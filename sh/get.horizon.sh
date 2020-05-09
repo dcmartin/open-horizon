@@ -58,12 +58,16 @@ install_linux()
   local dir=pool/main/h/horizon
   local  packages=()
 
-  case ${type:-all} in
+  case ${type:-cli} in
     all)
       packages=(horizon-cli horizon bluehorizon)
       ;;
     cli)
       packages=(horizon-cli)
+      ;;
+    *)
+      echo '${0}: Invalid option: ${type}" &> /dev/stderr
+      exit 1
       ;;
   esac
   
