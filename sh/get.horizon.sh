@@ -66,7 +66,7 @@ install_linux()
       packages=(horizon-cli)
       ;;
     *)
-      echo '${0}: Invalid option: ${type}" &> /dev/stderr
+      echo "${0}: Invalid option: ${type}" &> /dev/stderr
       exit 1
       ;;
   esac
@@ -159,7 +159,7 @@ darwin_start()
     horizon-container stop &> /dev/stderr
   fi
   if [ -z "$(command -v socat)" ]; then
-    echo 'Install "socat"; then run "horizon-container start"' &> /dev/stderr
+    echo 'Install "socat"; and run "horizon-container start"' &> /dev/stderr
   else
     echo 'Running "horizon-container start"' &> /dev/stderr
     horizon-container start &> /dev/stderr
@@ -186,7 +186,7 @@ get_horizon()
     elif [ "${uname:-}" = 'Darwin' ]; then
       result=$(install_darwin ${version} ${type})
     else
-      echo 'Unknown system: ${uname}' &> /dev/stderr
+      echo "Unknown system: ${uname}" &> /dev/stderr
     fi
   else
     echo "Invalid arguments; required: url, fss, version; provided: ${*}" &> /dev/stderr
