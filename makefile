@@ -126,9 +126,42 @@ hznmonitor: ${HZN_VARIABLES} KAFKA_APIKEY MQTT_HOST MQTT_USERNAME MQTT_PASSWORD
 	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
 	  HZN_ORG_ID="$(HZN_ORG_ID)" \
 	  HZN_USER_ID="$(HZN_USER_ID)" \
-	&& ${MAKE} -C services push publish
+	&& ${MAKE} -C services push
 	${MAKE} -C services/hznmonitor
+
+yolo4motion: ${HZN_VARIABLES} MQTT_HOST MQTT_USERNAME MQTT_PASSWORD
+	@echo "making $@"
+	@export \
+	  BASES='base-ubuntu apache-ubuntu' \
+	  SERVICES='yolo mqtt yolo4motion' \
+	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
+	  HZN_ORG_ID="$(HZN_ORG_ID)" \
+	  HZN_USER_ID="$(HZN_USER_ID)" \
+	&& ${MAKE} -C services push
+	${MAKE} -C services/$@
+
+face4motion: ${HZN_VARIABLES} MQTT_HOST MQTT_USERNAME MQTT_PASSWORD
+	@echo "making $@"
+	@export \
+	  BASES='base-ubuntu apache-ubuntu' \
+	  SERVICES='face mqtt face4motion' \
+	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
+	  HZN_ORG_ID="$(HZN_ORG_ID)" \
+	  HZN_USER_ID="$(HZN_USER_ID)" \
+	&& ${MAKE} -C services push
+	${MAKE} -C services/$@
+
+alpr4motion: ${HZN_VARIABLES} MQTT_HOST MQTT_USERNAME MQTT_PASSWORD
+	@echo "making $@"
+	@export \
+	  BASES='base-ubuntu apache-ubuntu' \
+	  SERVICES='alpr mqtt alpr4motion' \
+	  HZN_EXCHANGE_URL="$(HZN_EXCHANGE_URL)" \
+	  HZN_ORG_ID="$(HZN_ORG_ID)" \
+	  HZN_USER_ID="$(HZN_USER_ID)" \
+	&& ${MAKE} -C services push
+	${MAKE} -C services/$@
 
 ## ADMINISTRIVIA
 
-.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build hznmonitor 
+.PHONY: default exchange/config.json $(ACTIONS) services exchange agent all build hznmonitor yolo4motion face4motion alpr4motion vosk4motion
