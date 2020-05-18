@@ -9,7 +9,7 @@ An introductory video series called _Coding with Dave_ is on YouTube:
 4.|Make (lots of) Nodes|[&#128250;](https://youtu.be/865nI-0gDY)
 5.|Machine debugging|[&#128250;](https://youtu.be/tLjk4blTLbQ)
 6.|YOLO4motion time-lapse study|[&#128250;](https://youtu.be/7PS1hM8GTjg)
-7.|**BYO** OpenHorizon _exchange_|[&#128250;](https://youtu.be/_BdAa7jT5VY)
+7.|**BYO** OpenHorizon _exchange_|[&#128250;](https://youtu.be/yfOGy3YjLuw)
 8.|tbd|[&#128250;]()
 
 
