@@ -107,7 +107,7 @@ hzn_init
 ## define service(s)
 SERVICES='[{"name":"mqtt","url":"http://mqtt"}]'
 MQTT='{"host":"'${MQTT_HOST:-}'","port":'${MQTT_PORT:-1883}',"username":"'${MQTT_USERNAME:-}'","password":"'${MQTT_PASSWORD:-}'"}'
-CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-false}',"group":"'${MOTION_GROUP:-}'","device":"'${MOTION_CLIENT}'","camera":"'${FACE4MOTION_CAMERA}'","event":"'${FACE4MOTION_TOPIC_EVENT:-}'","old":'${FACE4MOTION_TOO_OLD:-300}',"payload":"'${FACE4MOTION_TOPIC_PAYLOAD}'","topic":"'${FACE4MOTION_TOPIC}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"face":'$(face_init)'}'
+CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-false}',"group":"'${MOTION_GROUP:-}'","client":"'${MOTION_CLIENT}'","camera":"'${FACE4MOTION_CAMERA}'","event":"'${FACE4MOTION_TOPIC_EVENT:-}'","old":'${FACE4MOTION_TOO_OLD:-300}',"payload":"'${FACE4MOTION_TOPIC_PAYLOAD}'","topic":"'${FACE4MOTION_TOPIC}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"face":'$(face_init)'}'
 
 ## initialize servive
 service_init ${CONFIG}

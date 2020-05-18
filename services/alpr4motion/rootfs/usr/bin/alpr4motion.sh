@@ -107,7 +107,7 @@ hzn_init
 ## define service(s)
 SERVICES='[{"name":"mqtt","url":"http://mqtt"}]'
 MQTT='{"host":"'${MQTT_HOST:-}'","port":'${MQTT_PORT:-1883}',"username":"'${MQTT_USERNAME:-}'","password":"'${MQTT_PASSWORD:-}'"}'
-CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-false}',"group":"'${MOTION_GROUP:-}'","device":"'${MOTION_CLIENT}'","camera":"'${ALPR4MOTION_CAMERA}'","event":"'${ALPR4MOTION_TOPIC_EVENT:-}'","old":'${ALPR4MOTION_TOO_OLD:-300}',"payload":"'${ALPR4MOTION_TOPIC_PAYLOAD}'","topic":"'${ALPR4MOTION_TOPIC}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"alpr":'$(alpr_init)'}'
+CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-false}',"group":"'${MOTION_GROUP:-}'","client":"'${MOTION_CLIENT}'","camera":"'${ALPR4MOTION_CAMERA}'","event":"'${ALPR4MOTION_TOPIC_EVENT:-}'","old":'${ALPR4MOTION_TOO_OLD:-300}',"payload":"'${ALPR4MOTION_TOPIC_PAYLOAD}'","topic":"'${ALPR4MOTION_TOPIC}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"alpr":'$(alpr_init)'}'
 
 ## initialize servive
 service_init ${CONFIG}
