@@ -132,7 +132,7 @@ hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${FACE4MOTION_TOPIC
 
 ## announce service
 topic="service/$(service_label)/$(hostname -s)"
-message="$(echo $(service_config) | jq -c '.')"
+message=$(echo "$(service_config)" | jq -c '.')
 hzn.log.notice "Announcing on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
 mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -m "${message}"
 
