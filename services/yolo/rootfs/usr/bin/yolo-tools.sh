@@ -124,7 +124,7 @@ yolo_process()
   local ITERATION="${2}"
   local output='{}'
   local MOCK=
-  local JPEG=$(mktemp .jpeg)
+  local JPEG=$(mktemp).jpeg
 
   # test image 
   if [ ! -s "${PAYLOAD}" ]; then 
