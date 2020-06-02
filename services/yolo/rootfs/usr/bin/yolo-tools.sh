@@ -131,8 +131,10 @@ yolo_process()
     local MOCKS=( dog giraffe kite eagle horses person scream )
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    MOCK="${MOCKS[${MOCK_INDEX}]}"
+    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
     cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+  else
+    MOCK=null
   fi
 
   # scale image
@@ -151,14 +153,12 @@ yolo_process()
   local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
 
   output=$(darknet_detector_test ${data} ${weights} ${cfg} ${threshold} ${JPEG})
-    # update output to be mock
-    output=$(echo "${output}" | jq '.mock="'${MOCK:-null}'"')
 
   # capture annotated image as BASE64 encoded string
   local IMAGE=$(mktemp)
   local TEMP=$(mktemp)
 
-  echo -n '{"image":"' > "${IMAGE}"
+  echo -n '{"mock": '${MOCK}', "image":"' > "${IMAGE}"
   if [ -s "predictions.jpg" ]; then
     base64 -w 0 -i predictions.jpg >> "${IMAGE}"
   fi
@@ -190,10 +190,12 @@ darknet_detector_test()
   local output='{"info":'"${info}"'}'
 
   ## do YOLO
-  ./darknet detector test "${data}" "${cfg}" "${weights}" "${JPEG}" -thresh "${threshold}" > "${out}" 2> "${err}"
+  hzn.log.debug "CALLING: ${DARKNET}/darknet detector test ${data} ${weights} ${cfg} -thresh ${threshold} ${JPEG}"
+  ${DARKNET}/darknet detector test "${data}" "${cfg}" "${weights}" -thresh "${threshold}" "${JPEG}" > "${out}" 2> "${err}"
 
   # test for output
   if [ -s "${out}" ]; then
+    hzn.log.debug "RETURNED: output: ${out}"
     # extract processing time in seconds
     TIME=$(cat "${out}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
     if [ -z "${TIME}" ]; then TIME=0; fi
