@@ -152,7 +152,7 @@ yolo_process()
   local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
   local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
 
-  output=$(darknet_detector_test ${data} ${weights} ${cfg} ${threshold} ${JPEG})
+  output=$(darknet_detector_test ${data} ${cfg} ${weights} ${threshold} ${JPEG})
 
   # capture annotated image as BASE64 encoded string
   local IMAGE=$(mktemp)
@@ -181,27 +181,34 @@ darknet_detector_test()
   hzn.log.trace "${FUNCNAME[0]}" "${*}"
 
   local data=${1}
-  local weights=${2}
-  local cfg=${3}
-  local threshold=${5}
-  local JPEG=${6}
+  local cfg=${2}
+  local weights=${3}
+  local threshold=${4}
+  local JPEG=${5}
 
-  local out=$(mktemp)
-  local err=$(mktemp)
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
-  local output='{"info":'"${info}"'}'
+  local result='{"info":'"${info}"'}'
+
+  hzn.log.debug "PROCESSING: ${JPEG}: " $(echo "${info}" | jq -c '.')
 
   ## do YOLO
-  hzn.log.debug "CALLING: ${DARKNET}/darknet detector test ${data} ${weights} ${cfg} -thresh ${threshold} ${JPEG}"
-  ${DARKNET}/darknet detector test "${data}" "${cfg}" "${weights}" -thresh "${threshold}" "${JPEG}" > "${out}" 2> "${err}"
+  local out=$(mktemp)
+  local err=$(mktemp)
+  hzn.log.debug "DARKNET: cd ${DARKNET} && ./darknet detector test ${data} ${cfg} ${weights} -thresh ${threshold} ${JPEG}"
+  cd ${DARKNET} && ./darknet detector test "${data}" "${cfg}" "${weights}" -thresh "${threshold}" "${JPEG}" > "${out}" 2> "${err}"
 
   # test for output
   if [ -s "${out}" ]; then
-    hzn.log.debug "RETURNED: output: ${out}"
+    hzn.log.trace "DARKNET: output:" $(cat ${out})
+
     # extract processing time in seconds
     TIME=$(cat "${out}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
-    if [ -z "${TIME}" ]; then TIME=0; fi
-    output=$(echo "${output}" | jq '.time="'${TIME}'"')
+    if [ -z "${TIME}" ]; then 
+      hzn.log.warn "No time in output" $(cat ${out})
+      TIME=0
+    else
+      hzn.log.debug "TIME: ${TIME}"
+    fi
 
     TOTAL=0
     case ${YOLO_ENTITY} in
@@ -235,10 +242,11 @@ darknet_detector_test()
 	DETECTED='['"${COUNT}"']'
 	;;
     esac
-    output=$(echo "${output}" | jq '.count='${TOTAL}'|.detected='"${DETECTED}"'|.time='${TIME})
+    result=$(echo "${result}" | jq '.count='${TOTAL:-null}'|.detected='"${DETECTED:-null}"'|.time='${TIME:-null})
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${out}) &> /dev/stderr
     hzn.log.debug "darknet failed:" $(cat "${TMPDIR}/darknet.$$.out")
-    output=$(echo "${output}" | jq '.count=0|.detected=null|.time=0')
+    result=$(echo "${result}" | jq '.count=0|.detected=null|.time=0')
   fi
+  echo "${result}"
 }
