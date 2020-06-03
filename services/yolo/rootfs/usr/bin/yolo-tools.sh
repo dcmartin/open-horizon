@@ -178,6 +178,8 @@ yolo_process()
 
 darknet_detector_test()
 {
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
   local data=${1}
   local weights=${2}
   local cfg=${3}
