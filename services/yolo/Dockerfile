@@ -61,6 +61,9 @@ ENV DARKNET_V3_WEIGHTS_MD5="c84e5b99d0e52cd466ae710cadf6d84c"
 RUN mkdir -p ${OPENYOLO} 
 RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
 
+# download `tiny` weights as default/backup
+RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+
 # Build darknet
 RUN \
     cd ${DARKNET} \
@@ -72,8 +75,8 @@ FROM openyolo
 # Copy compiled darknet
 COPY --from=openyolo ${OPENYOLO} ${OPENYOLO}
 
-# download `tiny` weights as default/backup
-RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+  python
 
 # Copy usr
 COPY rootfs/usr /usr

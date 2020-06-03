@@ -10,7 +10,7 @@
   "sharable": "singleton",
   "requiredServices": [],
   "userInput": [
-    { "name": "YOLO_CONFIG", "label": "YOLO configuration type: tiny, v2, v3", "type": "string", "defaultValue": "tiny" },
+    { "name": "YOLO_CONFIG", "label": "YOLO configuration type: tiny-v2, tiny-v3, v2, v3", "type": "string", "defaultValue": "tiny-v2" },
     { "name": "YOLO_ENTITY", "label": "entity to count", "type": "string", "defaultValue": "person" },
     { "name": "YOLO_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
     { "name": "YOLO_THRESHOLD", "label": "threshold of probability; 0.0 to 1.0", "type": "number", "defaultValue": "0.25" },

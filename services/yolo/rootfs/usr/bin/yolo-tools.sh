@@ -13,7 +13,7 @@ if [ -z "${YOLO_DATA:-}" ]; then YOLO_DATA=""; fi
 if [ -z "${YOLO_CFG_FILE:-}" ]; then YOLO_CFG_FILE=""; fi
 if [ -z "${YOLO_WEIGHTS:-}" ]; then YOLO_WEIGHTS=""; fi
 if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then YOLO_WEIGHTS_URL=""; fi
-if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny"; fi
+if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny-v2"; fi
 
 # temporary image and output
 JPEG="${TMPDIR}/${0##*/}.$$.jpeg"
@@ -55,7 +55,7 @@ yolo_init()
   done
   if [ ! -s "${weights}" ]; then
     hzn.log.notice "YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:tiny}"
-    yolo_config ${YOLO_DEFAULT:-tiny}
+    yolo_config ${YOLO_DEFAULT:-tiny-v2}
   else
     hzn.log.notice "YOLO config: ${which}; downloaded: ${weights}"
   fi
@@ -116,65 +116,7 @@ yolo_config()
   echo '{"threshold":'${YOLO_THRESHOLD}',"weights_url":"'${YOLO_WEIGHTS_URL}'","weights":"'${YOLO_WEIGHTS}'","weights_md5":"'${YOLO_WEIGHTS_MD5}'","cfg":"'${YOLO_CFG_FILE}'","data":"'${YOLO_DATA}'","names":"'${YOLO_NAMES}'"}'
 }
 
-yolo_process()
-{
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
-
-  local PAYLOAD="${1}"
-  local ITERATION="${2}"
-  local output='{}'
-  local MOCK=
-  local JPEG=$(mktemp).jpeg
-
-  # test image 
-  if [ ! -s "${PAYLOAD}" ]; then 
-    local MOCKS=( dog giraffe kite eagle horses person scream )
-    if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
-    if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
-  else
-    MOCK=null
-  fi
-
-  # scale image
-  if [ "${YOLO_SCALE}" != 'none' ]; then
-    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
-  else
-    mv -f "${PAYLOAD}" "${JPEG}"
-  fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
-
-  # get image information
-
-  local data=$(jq -r '.darknet.data' ${CONF_FILE})
-  local weights=$(jq -r '.darknet.weights' ${CONF_FILE})
-  local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
-  local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
-
-  output=$(darknet_detector_test ${data} ${cfg} ${weights} ${threshold} ${JPEG})
-
-  # capture annotated image as BASE64 encoded string
-  local IMAGE=$(mktemp)
-  local TEMP=$(mktemp)
-
-  echo -n '{"mock": '${MOCK}', "image":"' > "${IMAGE}"
-  if [ -s "predictions.jpg" ]; then
-    base64 -w 0 -i predictions.jpg >> "${IMAGE}"
-  fi
-  echo '"}' >> "${IMAGE}"
-
-  echo "${output}" > "${TEMP}"
-  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
-  rm -f "${TEMP}"
-
-  # cleanup
-  rm -f "${JPEG}" "${out}" predictions.jpg
-
-  # return base64 encode image JSON path
-  echo "${IMAGE}"
-}
-
+## ORIGINAL 
 
 darknet_detector_test()
 {
@@ -249,4 +191,195 @@ darknet_detector_test()
     result=$(echo "${result}" | jq '.count=0|.detected=null|.time=0')
   fi
   echo "${result}"
+}
+
+yolo_process_old()
+{
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
+  local PAYLOAD="${1}"
+  local ITERATION="${2}"
+  local output='{}'
+  local MOCK=
+  local JPEG=$(mktemp).jpeg
+
+  # test image 
+  if [ ! -s "${PAYLOAD}" ]; then 
+    local MOCKS=( dog giraffe kite eagle horses person scream )
+    if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
+    if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
+    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
+    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+  else
+    MOCK=null
+  fi
+
+  # scale image
+  if [ "${YOLO_SCALE}" != 'none' ]; then
+    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
+  else
+    mv -f "${PAYLOAD}" "${JPEG}"
+  fi
+  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+
+  # get image information
+
+  local data=$(jq -r '.darknet.data' ${CONF_FILE})
+  local weights=$(jq -r '.darknet.weights' ${CONF_FILE})
+  local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
+  local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
+
+  output=$(darknet_detector_test ${data} ${cfg} ${weights} ${threshold} ${JPEG})
+
+  # capture annotated image as BASE64 encoded string
+  local IMAGE=$(mktemp)
+  local TEMP=$(mktemp)
+
+  echo -n '{"mock": '${MOCK}', "image":"' > "${IMAGE}"
+  if [ -s "predictions.jpg" ]; then
+    base64 -w 0 -i predictions.jpg >> "${IMAGE}"
+  fi
+  echo '"}' >> "${IMAGE}"
+
+  echo "${output}" > "${TEMP}"
+  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
+  rm -f "${TEMP}"
+
+  # cleanup
+  rm -f "${JPEG}" "${out}" predictions.jpg
+
+  # return JSON payload response
+  echo "${IMAGE}"
+}
+
+yolo_process()
+{
+  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+
+  local PAYLOAD="${1}"
+  local ITERATION="${2}"
+  local output='{}'
+  local MOCK=
+  local JPEG=$(mktemp).jpeg
+
+  # test image
+  if [ ! -s "${PAYLOAD}" ]; then
+    local MOCKS=( dog giraffe kite eagle horses person scream )
+    if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
+    if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
+    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
+    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+  else
+    MOCK=null
+  fi
+
+  # scale image
+  if [ "${YOLO_SCALE}" != 'none' ]; then
+    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
+  else
+    mv -f "${PAYLOAD}" "${JPEG}"
+  fi
+  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+
+  # image information
+  local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
+
+  local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
+
+  ## do YOLO
+  hzn.log.debug "OPENYOLO: ${OPENYOLO}; ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
+  local before=$(date +%s.%N)
+  cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+  local after=$(date +%s.%N)
+
+  # test for output
+  if [ -s "${OUT}" ]; then
+    local seconds=$(echo "${after} - ${before}" | bc -l)
+    local count=$(jq '.count' ${OUT})
+    local results=$(jq '.results' ${OUT})
+    local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
+
+    hzn.log.debug "${FUNCNAME[0]} - SECONDS: ${seconds}; COUNT: ${count}; DETECTED: ${detected}"
+
+    # initiate output
+    result=$(mktemp)
+    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
+      | jq '.info='"${info:-null}" \
+      | jq '.config='"${config:-null}" > ${result}
+
+    # annotated image
+    local annotated=$(yolo_annotate ${OUT} ${JPEG})
+
+    if [ "${annotated:-null}" != 'null' ]; then
+      local b64file=$(mktemp)
+
+      echo -n '{"image":"' > "${b64file}"
+      base64 -w 0 -i ${annotated} >> "${b64file}"
+      echo '"}' >> "${b64file}"
+      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+      rm -f ${b64file} ${annotated}
+    fi
+    rm -f "${JPEG}" "${OUT}"
+  else
+    echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
+    hzn.log.debug "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
+  fi
+
+  echo "${result:-}"
+}
+
+yolo_annotate()
+{
+  hzn.log.trace "${FUNCNAME[0]} ${*}"
+
+  local json=${1}
+  local jpeg=${2}
+  local colors=(white yellow green orange magenta cyan lime pink gold blue red)
+
+  local result
+
+  if [ -s "${json}" ] && [ -s "${jpeg}" ]; then
+    local length=$(jq '.results|length' ${json})
+    yolos=
+
+    if [ ${length:0} -gt 0 ]; then
+      local i=0
+      local count=0
+
+      while [ ${i} -lt ${length} ]; do
+        local yolo=$(jq '.results['${i}']' ${json})
+        local left=$(echo "${yolo:-null}" | jq -r '.x')
+        local top=$(echo "${yolo:-null}" | jq -r '.y')
+        local width=$(echo "${yolo:-null}" | jq -r '.width')
+        local height=$(echo "${yolo:-null}" | jq -r '.height')
+        local bottom=$((top+height))
+        local right=$((left+width))
+        local confidence=$(echo "${yolo:-null}" | jq -r '.confidence')
+
+        if [ ${i} -eq 0 ]; then
+          file=${jpeg%%.*}-${i}.jpg
+          cp -f ${jpeg} ${file}
+        else
+          rm -f ${file}
+          file=${output}
+        fi
+        output=${jpeg%%.*}-$((i+1)).jpg
+        convert -font DejaVu-Sans-Mono -pointsize 16 -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} text 3,6 '${confidence}' pop graphic-context" ${file} ${output}
+        if [ ! -s "${output}" ]; then
+          hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+          output=""
+          break
+        fi
+        i=$((i+1))
+        count=$((count+1))
+        if [ ${count} -ge ${#colors[@]} ]; then count=0; fi
+      done
+      if [ ! -z "${output:-}" ]; then
+        rm -f ${file}
+        result=${jpeg%%.*}-yolo.jpg
+        mv ${output} ${result}
+      fi
+    fi
+  fi
+  echo "${result:-null}"
 }
