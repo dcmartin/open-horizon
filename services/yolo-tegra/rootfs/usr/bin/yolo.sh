@@ -39,7 +39,7 @@ while true; do
   DATE=$(date +%s)
 
   # path to image payload
-  JPEG_FILE=$(mktemp -t "${0##*/}-XXXXXX")
+  JPEG_FILE=$(mktemp)
   # capture image payload from /dev/video0
   # fswebcam --resolution "${WEBCAM_RESOLUTION}" --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
   fswebcam --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
