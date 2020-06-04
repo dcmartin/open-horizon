@@ -81,9 +81,13 @@ ENV DARKNET_V3_WEIGHTS_MD5="c84e5b99d0e52cd466ae710cadf6d84c"
 RUN mkdir -p ${OPENYOLO} 
 RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
 
-# Build darknet
+# download `tiny` weights as default/backup
+RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
 
-RUN cd ${DARKNET} \
+# Build darknet
+RUN \
+    cd ${DARKNET} \
+    \
     && \
     GPU=1 make
 
@@ -92,8 +96,8 @@ FROM openyolo
 # Copy compiled darknet
 COPY --from=openyolo ${OPENYOLO} ${OPENYOLO}
 
-# download `tiny` weights as default/backup
-RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+  python
 
 # Copy usr
 COPY rootfs/usr /usr
@@ -112,7 +116,7 @@ LABEL \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="yolo" \
     org.label-schema.description="yolo/darknet as a service" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/yolo-cuda/" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/yolo-cuda/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"
