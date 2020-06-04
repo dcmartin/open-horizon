@@ -1,0 +1,65 @@
+{
+  "cfg": "darknet/cfg/yolov2-tiny-voc.cfg",
+  "count": 5,
+  "data": "darknet/cfg/voc.data",
+  "filename": "data/horses.jpg",
+  "results": [
+    {
+      "center": {
+        "x": 140,
+        "y": 301
+      },
+      "confidence": 75.16168355941772,
+      "entity": "cow",
+      "height": 198,
+      "id": "0",
+      "width": 277
+    },
+    {
+      "center": {
+        "x": 330,
+        "y": 272
+      },
+      "confidence": 40.84900617599487,
+      "entity": "cow",
+      "height": 163,
+      "id": "1",
+      "width": 183
+    },
+    {
+      "center": {
+        "x": 510,
+        "y": 279
+      },
+      "confidence": 38.64300847053528,
+      "entity": "sheep",
+      "height": 141,
+      "id": "2",
+      "width": 186
+    },
+    {
+      "center": {
+        "x": 384,
+        "y": 258
+      },
+      "confidence": 24.420200288295746,
+      "entity": "cow",
+      "height": 119,
+      "id": "3",
+      "width": 95
+    },
+    {
+      "center": {
+        "x": 556,
+        "y": 274
+      },
+      "confidence": 21.493858098983765,
+      "entity": "sheep",
+      "height": 88,
+      "id": "4",
+      "width": 102
+    }
+  ],
+  "threshold": 0.2,
+  "weights": "darknet/yolov2-tiny-voc.weights"
+}
