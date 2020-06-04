@@ -328,13 +328,51 @@ yolo_process()
   echo "${result:-}"
 }
 
+
+## results:
+#[
+#  {
+#    "center": {
+#      "x": 182,
+#      "y": 166
+#    },
+#    "confidence": 67.5763726234436,
+#    "entity": "person",
+#    "height": 126,
+#    "id": "0",
+#    "width": 49
+#  },
+#  {
+#    "center": {
+#      "x": 562,
+#      "y": 80
+#    },
+#    "confidence": 31.54769539833069,
+#    "entity": "boat",
+#    "height": 80,
+#    "id": "1",
+#    "width": 86
+#  },
+#  {
+#    "center": {
+#      "x": 562,
+#      "y": 80
+#    },
+#    "confidence": 29.37600016593933,
+#    "entity": "car",
+#    "height": 80,
+#    "id": "2",
+#    "width": 86
+#  }
+#]
+
 yolo_annotate()
 {
   hzn.log.trace "${FUNCNAME[0]} ${*}"
 
   local json=${1}
   local jpeg=${2}
-  local colors=(white yellow green orange magenta cyan lime pink gold blue red)
+  local colors=(green yellow orange magenta blue cyan lime gold pink white)
 
   local result
 
@@ -345,16 +383,20 @@ yolo_annotate()
     if [ ${length:0} -gt 0 ]; then
       local i=0
       local count=0
+      local sorted=$(jq '.results|sort_by(.confidence)|reverse' ${json})
 
       while [ ${i} -lt ${length} ]; do
-        local yolo=$(jq '.results['${i}']' ${json})
-        local left=$(echo "${yolo:-null}" | jq -r '.x')
-        local top=$(echo "${yolo:-null}" | jq -r '.y')
+        local yolo=$(echo "${sorted}" | jq '.['${i}']')
+        local left=$(echo "${yolo:-null}" | jq -r '((.center.x - .width/2)|floor)')
+        local top=$(echo "${yolo:-null}" | jq -r '((.center.y - .height/2)|floor)')
         local width=$(echo "${yolo:-null}" | jq -r '.width')
         local height=$(echo "${yolo:-null}" | jq -r '.height')
         local bottom=$((top+height))
         local right=$((left+width))
-        local confidence=$(echo "${yolo:-null}" | jq -r '.confidence')
+        local confidence=$(echo "${yolo:-null}" | jq -r '.confidence|floor')
+        local entity=$(echo "${yolo:-null}" | jq -r '.entity')
+        local display="${entity}: ${confidence}%"
+        local pointsize=16
 
         if [ ${i} -eq 0 ]; then
           file=${jpeg%%.*}-${i}.jpg
@@ -364,7 +406,7 @@ yolo_annotate()
           file=${output}
         fi
         output=${jpeg%%.*}-$((i+1)).jpg
-        convert -font DejaVu-Sans-Mono -pointsize 16 -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} text 3,6 '${confidence}' pop graphic-context" ${file} ${output}
+        convert -font DejaVu-Sans-Mono -pointsize ${pointsize} -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${left},$((top+pointsize/2)) text 3,6 '${display}' pop graphic-context" ${file} ${output}
         if [ ! -s "${output}" ]; then
           hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
           output=""

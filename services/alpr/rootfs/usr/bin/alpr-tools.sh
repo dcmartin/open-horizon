@@ -127,7 +127,7 @@ alpr_process()
     hzn.log.debug "DETECTED: ${detected}"
     # initiate output
     result=$(mktemp)
-    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"time":'${time_ms:-null}'}' \
+    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'$(jq '.results' ${OUT})',"time":'${time_ms:-null}'}' \
       | jq '.info='"${info:-null}" \
       | jq '.config='"${config:-null}" > ${result}
 
