@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# temporary directory
+if [ -d /tmpfs ]; then export TMPDIR=/tmpfs; fi
+
 # test
 if [ -z "${DARKNET}" ]; then hzn.log.error "DARKNET unspecified; set environment variable for testing"; fi
 
@@ -209,18 +212,19 @@ yolo_process_old()
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+    cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
+    hzn.log.debug "MOCK: ${DARKNET}/data/${MOCK}"
   else
     MOCK=null
   fi
 
   # scale image
-  if [ "${YOLO_SCALE}" != 'none' ]; then
+  if [ "${YOLO_SCALE:-none}" != 'none' ]; then
     convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
   else
-    mv -f "${PAYLOAD}" "${JPEG}"
+    cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # get image information
 
@@ -268,18 +272,19 @@ yolo_process()
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+    cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
+    hzn.log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
   else
     MOCK=null
   fi
 
   # scale image
-  if [ "${YOLO_SCALE}" != 'none' ]; then
+  if [ "${YOLO_SCALE:-none}" != 'none' ]; then
     convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
   else
-    mv -f "${PAYLOAD}" "${JPEG}"
+    cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
@@ -287,84 +292,58 @@ yolo_process()
   local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
 
   ## do YOLO
-  hzn.log.debug "OPENYOLO: ${OPENYOLO}; ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
   local before=$(date +%s.%N)
-  cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
+  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
+  cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
+  #hzn.log.debug "OPENYOLO: ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
+  #cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
   local after=$(date +%s.%N)
+  local seconds=$(echo "${after} - ${before}" | bc -l)
+  hzn.log.debug "${FUNCNAME[0]} - time: ${seconds}; output: $(cat ${OUT})"
 
   # test for output
   if [ -s "${OUT}" ]; then
-    local seconds=$(echo "${after} - ${before}" | bc -l)
-    local count=$(jq '.count' ${OUT})
+    local count=$(jq -r '.count' ${OUT})
     local results=$(jq '.results' ${OUT})
-    local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-    hzn.log.debug "${FUNCNAME[0]} - SECONDS: ${seconds}; COUNT: ${count}; DETECTED: ${detected}"
+    hzn.log.debug "${FUNCNAME[0]} - COUNT: ${count}; RESULTS: ${results}"
 
-    # initiate output
-    result=$(mktemp)
-    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
-      | jq '.info='"${info:-null}" \
-      | jq '.config='"${config:-null}" > ${result}
+    if [ ! -z "${count:-}" ] && [ "${results:-null}" != 'null' ]; then
+      local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-    # annotated image
-    local annotated=$(yolo_annotate ${OUT} ${JPEG})
+      hzn.log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
 
-    if [ "${annotated:-null}" != 'null' ]; then
-      local b64file=$(mktemp)
-
-      echo -n '{"image":"' > "${b64file}"
-      base64 -w 0 -i ${annotated} >> "${b64file}"
-      echo '"}' >> "${b64file}"
-      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
-      rm -f ${b64file} ${annotated}
+      # initiate output
+      result=$(mktemp)
+      echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
+        | jq '.info='"${info:-null}" \
+        | jq '.config='"${config:-null}" > ${result}
+  
+      # annotated image
+      local annotated=$(yolo_annotate ${OUT} ${JPEG})
+  
+      if [ "${annotated:-null}" != 'null' ]; then
+        local b64file=$(mktemp)
+  
+        echo -n '{"image":"' > "${b64file}"
+        base64 -w 0 -i ${annotated} >> "${b64file}"
+        echo '"}' >> "${b64file}"
+        jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+        rm -f ${b64file} ${annotated}
+      fi
+      rm -f "${JPEG}" "${OUT}"
+    else
+      hzn.log.debug "yolo failed: $(cat ${OUT})"
     fi
-    rm -f "${JPEG}" "${OUT}"
   else
-    echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
-    hzn.log.debug "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
+    hzn.log.error "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
   fi
 
   echo "${result:-}"
 }
-
-
-## results:
-#[
-#  {
-#    "center": {
-#      "x": 182,
-#      "y": 166
-#    },
-#    "confidence": 67.5763726234436,
-#    "entity": "person",
-#    "height": 126,
-#    "id": "0",
-#    "width": 49
-#  },
-#  {
-#    "center": {
-#      "x": 562,
-#      "y": 80
-#    },
-#    "confidence": 31.54769539833069,
-#    "entity": "boat",
-#    "height": 80,
-#    "id": "1",
-#    "width": 86
-#  },
-#  {
-#    "center": {
-#      "x": 562,
-#      "y": 80
-#    },
-#    "confidence": 29.37600016593933,
-#    "entity": "car",
-#    "height": 80,
-#    "id": "2",
-#    "width": 86
-#  }
-#]
 
 yolo_annotate()
 {
@@ -373,6 +352,8 @@ yolo_annotate()
   local json=${1}
   local jpeg=${2}
   local colors=(green yellow orange magenta blue cyan lime gold pink white)
+  local rtg=(FF0000 FF1100 FF2300 FF3400 FF4600 FF5700 FF6900 FF7B00 FF8C00 FF9E00 FFAF00 FFC100 FFD300 FFE400 FFF600 F7FF00 E5FF00 D4FF00 C2FF00 B0FF00 9FFF00 8DFF00 7CFF00 6AFF00 58FF00 47FF00 35FF00 24FF00 12FF00 00FF00)
+  local nrtg=${#rtg[@]}
 
   local result
 
