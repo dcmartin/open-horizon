@@ -287,42 +287,49 @@ yolo_process()
   local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
 
   ## do YOLO
-  hzn.log.debug "OPENYOLO: ${OPENYOLO}; ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
+  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}
   local before=$(date +%s.%N)
-  cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+  /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
   local after=$(date +%s.%N)
+  local seconds=$(echo "${after} - ${before}" | bc -l)
+  hzn.log.debug "${FUNCNAME[0]} - time: ${seconds}; output: $(cat ${OUT})"
 
   # test for output
   if [ -s "${OUT}" ]; then
-    local seconds=$(echo "${after} - ${before}" | bc -l)
-    local count=$(jq '.count' ${OUT})
+    local count=$(jq -r '.count' ${OUT})
     local results=$(jq '.results' ${OUT})
-    local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-    hzn.log.debug "${FUNCNAME[0]} - SECONDS: ${seconds}; COUNT: ${count}; DETECTED: ${detected}"
+    hzn.log.debug "${FUNCNAME[0]} - COUNT: ${count}; RESULTS: ${results}"
 
-    # initiate output
-    result=$(mktemp)
-    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
-      | jq '.info='"${info:-null}" \
-      | jq '.config='"${config:-null}" > ${result}
+    if [ ! -z "${count:-}" ] && [ "${results:-null}" != 'null' ]; then
+      local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-    # annotated image
-    local annotated=$(yolo_annotate ${OUT} ${JPEG})
+      hzn.log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
 
-    if [ "${annotated:-null}" != 'null' ]; then
-      local b64file=$(mktemp)
-
-      echo -n '{"image":"' > "${b64file}"
-      base64 -w 0 -i ${annotated} >> "${b64file}"
-      echo '"}' >> "${b64file}"
-      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
-      rm -f ${b64file} ${annotated}
+      # initiate output
+      result=$(mktemp)
+      echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
+        | jq '.info='"${info:-null}" \
+        | jq '.config='"${config:-null}" > ${result}
+  
+      # annotated image
+      local annotated=$(yolo_annotate ${OUT} ${JPEG})
+  
+      if [ "${annotated:-null}" != 'null' ]; then
+        local b64file=$(mktemp)
+  
+        echo -n '{"image":"' > "${b64file}"
+        base64 -w 0 -i ${annotated} >> "${b64file}"
+        echo '"}' >> "${b64file}"
+        jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+        rm -f ${b64file} ${annotated}
+      fi
+      rm -f "${JPEG}" "${OUT}"
+    else
+      hzn.log.debug "yolo failed: $(cat ${OUT})"
     fi
-    rm -f "${JPEG}" "${OUT}"
   else
-    echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
-    hzn.log.debug "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
+    hzn.log.error "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
   fi
 
   echo "${result:-}"
@@ -373,6 +380,8 @@ yolo_annotate()
   local json=${1}
   local jpeg=${2}
   local colors=(green yellow orange magenta blue cyan lime gold pink white)
+  local rtg=(FF0000 FF1100 FF2300 FF3400 FF4600 FF5700 FF6900 FF7B00 FF8C00 FF9E00 FFAF00 FFC100 FFD300 FFE400 FFF600 F7FF00 E5FF00 D4FF00 C2FF00 B0FF00 9FFF00 8DFF00 7CFF00 6AFF00 58FF00 47FF00 35FF00 24FF00 12FF00 00FF00)
+  local nrtg=${#rtg[@]}
 
   local result
 
