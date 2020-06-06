@@ -45,24 +45,25 @@ process_motion_event()
   local now="${3}"
   local device=$(jq -r '.event.device' "${payload}")
   local camera=$(jq -r '.event.camera' "${payload}")
-  local service_json_file=$(mktemp)
-  local input_jpeg_file=$(mktemp)
+  local service_json_file=$(mktemp).json
+  local input_jpeg_file=$(mktemp).jpeg
   local yolo_json_file
 
   # create service update
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
-
-  hzn.log.debug "Decoding image provided in motion event"
-  jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
-
   # add event to service status
   jq -s add "${service_json_file}" "${payload}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
 
-  # process image
-  yolo_json_file=$(process_yolo "${input_jpeg_file}")
-
-  if [ -s "${yolo_json_file}" ]; then
-
+  hzn.log.debug "Decoding image provided in motion event"
+  jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
+  if [ -s "${input_jpeg_file}" ]; then
+    hzn.log.debug "IDENTIFY: ${input_jpeg_file}: $(identify ${input_jpeg_file})"
+    # process image
+    yolo_json_file=$(process_yolo "${input_jpeg_file}")
+  else
+    hzn.log.error "No image: $(jq -c '.' ${PAYLOAD})"
+  fi
+  if [ ! -z "${yolo_json_file:-}" ] && [ -s "${yolo_json_file}" ]; then
     # extract image
     local output_jpeg=$(mktemp)
     jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
@@ -85,7 +86,6 @@ process_motion_event()
     else
       hzn.log.error "Failed to add JSON: ${service_json_file} and ${yolo_json_file}"
     fi
-
   else
     hzn.log.error "Zero-length output JSON file"
   fi
@@ -121,11 +121,17 @@ SERVICE_JSON_FILE=$(mktemp)
 echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${SERVICE_JSON_FILE}
 service_update "${SERVICE_JSON_FILE}"
 
-# con gfigure MQTT
+# configure MQTT
 MOSQUITTO_ARGS="-h ${MQTT_HOST} -p ${MQTT_PORT}"
 if [ ! -z "${MQTT_USERNAME:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -u ${MQTT_USERNAME}"; fi
 if [ ! -z "${MQTT_PASSWORD:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -P ${MQTT_PASSWORD}"; fi
 hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}"
+
+## announce service
+topic="service/$(service_label)/$(hostname -s)"
+message=$(echo "$(service_config)" | jq -c '.')
+hzn.log.notice "Announcing on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
+mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -m "${message}"
 
 # start in darknet
 cd ${DARKNET}
