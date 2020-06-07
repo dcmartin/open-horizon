@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# temporary directory
+if [ -d /tmpfs ]; then export TMPDIR=/tmpfs; fi
+
 # test
 if [ -z "${DARKNET}" ]; then hzn.log.error "DARKNET unspecified; set environment variable for testing"; fi
 
@@ -209,18 +212,19 @@ yolo_process_old()
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+    cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
+    hzn.log.debug "MOCK: ${DARKNET}/data/${MOCK}"
   else
     MOCK=null
   fi
 
   # scale image
-  if [ "${YOLO_SCALE}" != 'none' ]; then
+  if [ "${YOLO_SCALE:-none}" != 'none' ]; then
     convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
   else
-    mv -f "${PAYLOAD}" "${JPEG}"
+    cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # get image information
 
@@ -268,18 +272,19 @@ yolo_process()
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "data/${MOCK}.jpg" ${PAYLOAD}
+    cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
+    hzn.log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
   else
     MOCK=null
   fi
 
   # scale image
-  if [ "${YOLO_SCALE}" != 'none' ]; then
+  if [ "${YOLO_SCALE:-none}" != 'none' ]; then
     convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
   else
-    mv -f "${PAYLOAD}" "${JPEG}"
+    cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
@@ -287,9 +292,14 @@ yolo_process()
   local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
 
   ## do YOLO
-  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}
   local before=$(date +%s.%N)
-  /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
+  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
+  cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
+  #hzn.log.debug "OPENYOLO: ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
+  #cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+
   local after=$(date +%s.%N)
   local seconds=$(echo "${after} - ${before}" | bc -l)
   hzn.log.debug "${FUNCNAME[0]} - time: ${seconds}; output: $(cat ${OUT})"
@@ -334,44 +344,6 @@ yolo_process()
 
   echo "${result:-}"
 }
-
-
-## results:
-#[
-#  {
-#    "center": {
-#      "x": 182,
-#      "y": 166
-#    },
-#    "confidence": 67.5763726234436,
-#    "entity": "person",
-#    "height": 126,
-#    "id": "0",
-#    "width": 49
-#  },
-#  {
-#    "center": {
-#      "x": 562,
-#      "y": 80
-#    },
-#    "confidence": 31.54769539833069,
-#    "entity": "boat",
-#    "height": 80,
-#    "id": "1",
-#    "width": 86
-#  },
-#  {
-#    "center": {
-#      "x": 562,
-#      "y": 80
-#    },
-#    "confidence": 29.37600016593933,
-#    "entity": "car",
-#    "height": 80,
-#    "id": "2",
-#    "width": 86
-#  }
-#]
 
 yolo_annotate()
 {
