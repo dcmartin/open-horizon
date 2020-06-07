@@ -23,18 +23,6 @@ YOLO4MOTION_TOPIC="${MOTION_GROUP}/${MOTION_CLIENT}/${YOLO4MOTION_CAMERA}"
 source /usr/bin/yolo-tools.sh
 source /usr/bin/service-tools.sh
 
-## process JPEG image through YOLO
-process_yolo()
-{
-  hzn.log.debug "${FUNCNAME[0]} ${*}"
-
-  local input_jpeg_file=${1}
-  local yolo_json_file=$(yolo_process "${input_jpeg_file}")
-
-  echo "${yolo_json_file:-}"
-}
-
-
 ## process JSON motion event
 process_motion_event()
 {
@@ -43,58 +31,83 @@ process_motion_event()
   local payload="${1}"
   local config="${2}"
   local now="${3}"
-  local device=$(jq -r '.event.device' "${payload}")
-  local camera=$(jq -r '.event.camera' "${payload}")
+
   local service_json_file=$(mktemp).json
-  local input_jpeg_file=$(mktemp).jpeg
+
+  local input_jpeg_file
   local yolo_json_file
 
-  # create service update
+  hzn.log.debug "${FUNCNAME[0]} - initializing service update"
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
-  # add event to service status
+  hzn.log.debug "${FUNCNAME[0]} - adding event to service status"
   jq -s add "${service_json_file}" "${payload}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
 
-  hzn.log.debug "Decoding image provided in motion event"
-  jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
-  if [ -s "${input_jpeg_file}" ]; then
-    hzn.log.debug "IDENTIFY: ${input_jpeg_file}: $(identify ${input_jpeg_file})"
-    # process image
-    yolo_json_file=$(process_yolo "${input_jpeg_file}")
+  hzn.log.debug "${FUNCNAME[0]} - decoding image provided in motion event"
+  local b64file=$(mktemp).b64
+  jq -r '.event.image' ${payload} > ${b64file}
+  if [ -s "${b64file}" ]; then
+    input_jpeg_file=$(mktemp).jpeg
+    cat ${b64file} | base64 --decode > ${input_jpeg_file}
   else
-    hzn.log.error "No image: $(jq -c '.' ${PAYLOAD})"
+    hzn.log.error "${FUNCNAME[0]} - zero-length BASE64-encoded image: $(jq -c '.event' ${payload})"
   fi
-  if [ ! -z "${yolo_json_file:-}" ] && [ -s "${yolo_json_file}" ]; then
-    # extract image
-    local output_jpeg=$(mktemp)
+  rm -f ${b64file}
+
+  if [ -z "${input_jpeg_file:-}" ] || [ ! -s "${input_jpeg_file}" ]; then
+    hzn.log.error "${FUNCNAME[0]} - no BASE64-decoded image; skipping"
+  else
+    local id=$(identify ${input_jpeg_file})
+    local ok=$?
+
+    if [ "${ok:-}" == 0 ]; then
+      hzn.log.debug "${FUNCNAME[0]} - processing image file: ${input_jpeg_file}; id: ${id}"
+      yolo_json_file=$(yolo_process ${input_jpeg_file})
+    else
+      hzn.log.error "${FUNCNAME[0]} - invalid JPEG image: ${input_jpeg_file}"
+    fi
+    rm -f ${input_jpeg_file}
+  fi
+
+  if [ -z "${yolo_json_file:-}" ] || [ ! -s "${yolo_json_file}" ]; then
+    hzn.log.error "${FUNCNAME[0]} - no YOLO output; skipping"
+  else
+    ## IMAGE
+    hzn.log.debug "${FUNCNAME[0]} - extracting annotated image from JSON: ${yolo_json_file}"
+    local output_jpeg=$(mktemp).jpeg
     jq -r '.image' "${yolo_json_file}" | base64 --decode > ${output_jpeg}
     if [ -s "${output_jpeg}" ]; then
+      local device=$(jq -r '.event.device' "${payload}")
+      local camera=$(jq -r '.event.camera' "${payload}")
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
-      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
+
+      # publish image
+      hzn.log.debug "${FUNCNAME[0]} - publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
     else
-      hzn.log.error "Zero-length output JPEG file"
+      hzn.log.error "${FUNCNAME[0]} - zero-length output JPEG file"
     fi
     rm -f "${output_jpeg}"
 
-    # combine YOLO output with service configuration file
+    ## EVENT
+    hzn.log.debug "${FUNCNAME[0]} - combine YOLO output with service configuration file"
     jq -c -s add "${service_json_file}" "${yolo_json_file}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
-    # test for success
     if [ -s "${service_json_file}" ]; then
+      local device=$(jq -r '.event.device' "${payload}")
+      local camera=$(jq -r '.event.camera' "${payload}")
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
-      hzn.log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
+
+      # publish event
+      hzn.log.debug "${FUNCNAME[0]} - publishing event JSON; topic: ${topic}; JSON: ${service_json_file}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
     else
       hzn.log.error "Failed to add JSON: ${service_json_file} and ${yolo_json_file}"
     fi
-  else
-    hzn.log.error "Zero-length output JSON file"
+    rm -f ${yolo_json_file}
   fi
 
   # update service status
   service_update "${service_json_file}"
-
-  # cleanup
-  rm -f ${payload} ${input_jpeg_file} ${yolo_json_file} ${service_json_file}
+  rm -f ${service_json_file}
 }
 
 ###
@@ -117,7 +130,7 @@ service_init ${CONFIG}
 ##
 
 # update service status
-SERVICE_JSON_FILE=$(mktemp)
+SERVICE_JSON_FILE=$(mktemp).json
 echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${SERVICE_JSON_FILE}
 service_update "${SERVICE_JSON_FILE}"
 
@@ -144,7 +157,7 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
     hzn.log.debug "Zero-length REPLY; continuing"
     continue
   else
-    PAYLOAD=$(mktemp)
+    PAYLOAD=$(mktemp).json
     echo '{"event":' > ${PAYLOAD}
     echo "${REPLY}" >> "${PAYLOAD}"
     echo '}' >> "${PAYLOAD}"
@@ -204,6 +217,7 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVE
 
   # process PAYLOAD as motion end event
   process_motion_event "${PAYLOAD}" "${CONFIG}" ${DATE}
+  rm -f ${PAYLOAD}
 
 done
 
