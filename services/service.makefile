@@ -1,6 +1,10 @@
 ## ARCHITECTURE
 BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
+CUDA := $(shell /usr/local/cuda/bin/nvcc --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }')
+CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
+BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}-${CUDA},${BUILD_ARCH})
+
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))
 HZN_ORG_ID ?= $(if $(wildcard ../HZN_ORG_ID),$(shell cat ../HZN_ORG_ID),HZN_ORG_ID_UNSPECIFIED)
@@ -75,7 +79,7 @@ SERVICE_PORT := $(if ${SERVICE_PORT},${SERVICE_PORT},$(if ${DOCKER_PORT},${DOCKE
 DOCKER_PORT := $(if ${DOCKER_PORT},${DOCKER_PORT},$(shell echo "( $$$$ + 5000 ) % 32000 + 32000" | bc))
 
 ## BUILD
-BUILD_BASE=$(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r ".build_from.${BUILD_ARCH}" build.json | envsubst)
+BUILD_BASE=$(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json | envsubst)
 BUILD_ORG=$(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
 SAME_ORG=$(shell if [ $(BUILD_ORG) = $(DOCKER_REPOSITORY) ]; then echo ${DOCKER_REPOSITORY}; else echo ""; fi)
 BUILD_PKG=$(shell echo $(BUILD_BASE) | sed "s|.*/\([^:]*\):.*|\1|")
@@ -170,7 +174,7 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}
+	export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" #> ${BUILD_OUT}
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
