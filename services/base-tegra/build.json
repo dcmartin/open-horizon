@@ -1,7 +1,9 @@
 {
-    "squash": false,
-    "build_from": {
-        "arm64": "nvcr.io/nvidia/l4t-base:r32.4.2"
-    },
-    "args": {}
+  "squash": false,
+  "build_from": {
+    "arm64": "nvcr.io/nvidia/l4t-base:r32.3.1",
+    "arm64-10.0": "nvcr.io/nvidia/l4t-base:r32.3.1",
+    "arm64-10.2": "nvcr.io/nvidia/l4t-base:r32.4.2"
+  },
+  "args": {}
 }
