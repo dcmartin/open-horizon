@@ -294,11 +294,11 @@ yolo_process()
   ## do YOLO
   local before=$(date +%s.%N)
 
-  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
-  cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+  #hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
+  #cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
 
-  #hzn.log.debug "OPENYOLO: ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
-  #cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+  hzn.log.debug "OPENYOLO: ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
+  cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
 
   local after=$(date +%s.%N)
   local seconds=$(echo "${after} - ${before}" | bc -l)
