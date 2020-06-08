@@ -72,7 +72,7 @@ else
   if [ "${DEBUG:-}" = true ]; then echo "--- INFO -- $0 $$ -- no tmpfs" &> /dev/stderr; fi
 fi
 
-# temporary file-system
+# extra mounts
 if [ $(jq '.mount!=null' "${SERVICE}") = true ]; then 
   mounts=$(jq '.mount|to_entries' "${SERVICE}")
   keys=$(echo "${mounts}" | jq '.[]|.key')
