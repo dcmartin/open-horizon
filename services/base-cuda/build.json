@@ -1,7 +1,9 @@
 {
   "squash": false,
   "build_from": {
-    "amd64": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04"
+    "amd64": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04",
+    "amd64-10.0": "nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04",
+    "amd64-10.2": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04"
   },
   "args": {}
 }
