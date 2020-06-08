@@ -1,7 +1,8 @@
 {
   "squash": false,
   "build_from": { 
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-cuda:0.1.0"
+    "amd64-10.0": "${DOCKER_REPOSITORY}/amd64-10.0_com.github.dcmartin.open-horizon.base-cuda:0.1.0",
+    "amd64-10.2": "${DOCKER_REPOSITORY}/amd64-10.2_com.github.dcmartin.open-horizon.base-cuda:0.1.0"
   },
   "args": {}
 }
