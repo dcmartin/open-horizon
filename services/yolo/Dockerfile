@@ -1,4 +1,5 @@
 ARG BUILD_FROM
+ARG GPU
 
 FROM $BUILD_FROM as openyolo
 
@@ -68,7 +69,7 @@ RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
 RUN \
     cd ${DARKNET} \
     \
-    && make
+    && GPU=${GPU} make
 
 FROM openyolo
 

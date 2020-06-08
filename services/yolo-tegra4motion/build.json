@@ -1,8 +1,0 @@
-{
-  "squash": false,
-  "build_from": {
-    "arm64-10.0": "${DOCKER_REPOSITORY}/arm64-10.0_com.github.dcmartin.open-horizon.yolo-tegra:0.1.2",
-    "arm64-10.2": "${DOCKER_REPOSITORY}/arm64-10.2_com.github.dcmartin.open-horizon.yolo-tegra:0.1.2"
-  },
-  "args": {}
-}

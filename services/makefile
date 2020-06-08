@@ -21,38 +21,36 @@ NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRunt
 ##
 
 BASES ?= base-alpine base-ubuntu apache-alpine apache-ubuntu 
-SERVICES ?=  cpu hal wan hzncli herald mqtt fft motion2mqtt startup hznmonitor noize yolo yolo4motion alpr alpr4motion face face4motion mqtt2kafka mqtt2mqtt hotword hznsetup yolo2msghub
-WIP := nmap record
-PATTERNS := hotword hznsetup motion2mqtt startup yolo2msghub yolo4motion alpr4motion face4motion
+SERVICES ?= \
+	yolo \
+	yolo4motion \
+	alpr \
+	alpr4motion \
+	face \
+	face4motion
+
+#	cpu hal wan \
+#	mqtt \
+#	mqtt2mqtt \
+#	motion2mqtt \
+#	nmap \
+#	record \
+#	herald \
+#	hznmonitor \
+#	noize \
+#	hotword \
+#	fft \
+#	hznsetup \
+#	startup \
+#	hzncli \
+#	mqtt2kafka \
+#	yolo2msghub 
+
+PATTERNS := yolo4motion alpr4motion face4motion # motion2mqtt startup hotword hznsetup # yolo2msghub 
 MISC := setup sh doc
 
-
-# intel/amd64 + GPU
-ifeq ($(BUILD_ARCH), amd64)
-ifeq ($(NVIDIA_RUNTIME), true)
-GPU_BASES += base-cuda
-GPU_SERVICES += yolo-cuda yolo-cuda4motion
-# adding patterns for accelerated (GPU); should become unnecessary w/ "policy"
-GPU_PATTERNS += yolo-cuda4motion
-endif
-endif
-
-# jetson nano (maybe tx2)
-ifeq ($(BUILD_ARCH), arm64)
-ifeq ($(NVIDIA_RUNTIME), true)
-GPU_BASES += base-tegra
-GPU_SERVICES += yolo-tegra yolo-tegra4motion
-# adding patterns for accelerated (GPU); should become unnecessary w/ "policy"
-GPU_PATTERNS += yolo-tegra4motion
-endif
-endif
-
-BASES += $(GPU_BASES)
-SERVICES += $(GPU_SERVICES)
-PATTERNS += $(GPU_PATTERNS)
-
 # all
-ALL = $(BASES) $(SERVICES) # ${WIP}
+ALL = $(BASES) $(SERVICES)
 
 ##
 ## targets
@@ -73,38 +71,6 @@ KEYS := $(PRIVATE_KEY_FILE) $(PUBLIC_KEY_FILE)
 
 $(KEYS):
 	@hzn key create -f -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
-
-## GPU only
-
-PHONY += gpu gpu-build gpu-push gpu-publish gpu-service-publish gpu-pattern-publish
-
-gpu: gpu-build gpu-push gpu-publish
-
-gpu-build: 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
-	@for dir in ${GPU_BASES} ${GPU_SERVICES}; do \
-	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir build; \
-	done
-
-gpu-push: 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
-	@for dir in ${GPU_BASES} ${GPU_SERVICES}; do \
-	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir push; \
-	done
-
-gpu-publish: gpu-service-publish gpu-pattern-publish
-
-gpu-service-publish:
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
-	@for dir in ${GPU_BASES} ${GPU_SERVICES}; do \
-	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir service-publish; \
-	done
-
-gpu-pattern-publish:
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- making $@""${NC}" &> /dev/stderr
-	@for dir in ${GPU_PATTERNS}; do \
-	  $(MAKE) TAG=${TAG} HZN_ORG_ID=$(HZN_ORG_ID)  -C $$dir pattern-publish; \
-	done
 
 ## all
 
@@ -136,7 +102,7 @@ CLOC.md: .gitignore .
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- counting source code""${NC}" &> /dev/stderr
 	@cloc --md --exclude-list-file=.gitignore . > CLOC.md
 
-.PHONY:	${BASES} ${SERVICES} ${PATTERNS} ${JETSONS} ${MISC} ${WIP} ${PHONY}
+.PHONY:	${BASES} ${SERVICES} ${PATTERNS} ${JETSONS} ${MISC} ${PHONY}
 
 ##
 ## COLORS
