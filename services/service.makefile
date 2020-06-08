@@ -1,7 +1,8 @@
 ## ARCHITECTURE
 BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
-CUDA := $(shell /usr/local/cuda/bin/nvcc --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }')
+NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
+CUDA := $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
 BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}-${CUDA},${BUILD_ARCH})
 
