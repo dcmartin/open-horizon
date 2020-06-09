@@ -1,5 +1,4 @@
 ARG BUILD_FROM
-ARG GPU
 
 FROM $BUILD_FROM
 
@@ -20,6 +19,9 @@ RUN \
   inotify-tools \
   dateutils \
   mosquitto-clients
+
+ARG GPU
+ENV GPU=${GPU}
 
 # Copy usr
 COPY rootfs /

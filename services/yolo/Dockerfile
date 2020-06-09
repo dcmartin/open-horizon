@@ -1,5 +1,4 @@
 ARG BUILD_FROM
-ARG GPU
 
 FROM $BUILD_FROM as openyolo
 
@@ -63,7 +62,10 @@ RUN mkdir -p ${OPENYOLO}
 RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
 
 # download `tiny` weights as default/backup
-RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+#RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
+
+ARG GPU
+ENV GPU=${GPU}
 
 # Build darknet
 RUN \
