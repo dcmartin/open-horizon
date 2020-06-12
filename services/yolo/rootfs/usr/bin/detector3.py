@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 ## system
-import sys, os, pdb, json, codecs, magic, subprocess
+import sys, os, pdb, json, codecs, magic, subprocess, cv2, time
+import numpy as np
+from ctypes import *
 from PIL import Image
 from PIL import GifImagePlugin
 
@@ -13,6 +15,36 @@ from ctypes import *
 import math
 import random
 
+def c_array(ctype, values):
+    arr = (ctype * len(values))()
+    arr[:] = values
+    return arr
+
+def convertBack(x, y, w, h):
+    xmin = int(round(x - (w / 2)))
+    xmax = int(round(x + (w / 2)))
+    ymin = int(round(y - (h / 2)))
+    ymax = int(round(y + (h / 2)))
+    return xmin, ymin, xmax, ymax
+
+def cvDrawBoxes(detections, img):
+    detection_locations = []
+    for detection in detections:
+        x, y, w, h = detection[2][0],\
+            detection[2][1],\
+            detection[2][2],\
+            detection[2][3]
+        xmin, ymin, xmax, ymax = convertBack(float(x), float(y), float(w), float(h))
+        pt1 = (xmin, ymin)
+        pt2 = (xmax, ymax)
+        cv2.rectangle(img, pt1, pt2, (0, 255, 0), 1)
+        cv2.putText(img,
+                    detection[0].decode() +
+                    " [" + str(round(detection[1] * 100, 2)) + "]",
+                    (pt1[0], pt1[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                    [0, 255, 0], 2)
+        detection_locations.append(detection)
+    return img, detection_locations
 
 class BOX(Structure):
     _fields_ = [("x", c_float),
@@ -91,6 +123,7 @@ do_nms_obj.argtypes = [POINTER(DETECTION), c_int, c_int, c_float]
 do_nms_sort = lib.do_nms_sort
 do_nms_sort.argtypes = [POINTER(DETECTION), c_int, c_int, c_float]
 
+
 free_image = lib.free_image
 free_image.argtypes = [IMAGE]
 
@@ -113,76 +146,60 @@ predict_image = lib.network_predict_image
 predict_image.argtypes = [c_void_p, IMAGE]
 predict_image.restype = POINTER(c_float)
 
+netMain = None
+metaMain = None
+altNames = None
 
 # DARKNET functions
-def classify(net, meta, im):
-    out = predict_image(net, im)
-    res = []
-    for i in range(meta.classes):
-        res.append((meta.names[i], out[i]))
-    res = sorted(res, key=lambda x: -x[1])
-    return res
+def network_width(net):
+    return lib.network_width(net)
+
+def network_height(net):
+    return lib.network_height(net)
+
+def array_to_image(arr):
+    # need to return old values to avoid python freeing memory
+    arr = arr.transpose(2,0,1)
+    c, h, w = arr.shape[0:3]
+    arr = np.ascontiguousarray(arr.flat, dtype=np.float32) / 255.0
+    data = arr.ctypes.data_as(POINTER(c_float))
+    im = IMAGE(w,h,c,data)
+    im.w = w
+    im.h = h
+    return im, arr
 
 def bash_cmd( command ):
-    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    process = subprocess.Popen(command.split())
     output, error = process.communicate()
     if error:
         return error
     return output
 
 
-def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
-    im = load_image(image, 0, 0)
+def detect(net, meta, frame, thresh=.5, hier_thresh=.5, nms=.45):
     num = c_int(0)
     pnum = pointer(num)
-    predict_image(net, im)
-    dets = get_network_boxes(net, im.w, im.h, thresh, hier_thresh, None, 0, pnum)
+    predict_image(net, frame)
+    # dets = get_network_boxes(net, custom_image_bgr.shape[1], custom_image_bgr.shape[0], thresh, hier_thresh, None, 0, pnum, 0) # OpenCV
+    dets = get_network_boxes(net, frame.w, frame.h, thresh, hier_thresh, None, 0, pnum, 0)
     num = pnum[0]
-    if (nms): do_nms_obj(dets, num, meta.classes, nms);
-
+    if nms:
+        do_nms_sort(dets, num, meta.classes, nms)
     res = []
     for j in range(num):
         for i in range(meta.classes):
             if dets[j].prob[i] > 0:
                 b = dets[j].bbox
-                res.append((meta.names[i], dets[j].prob[i], (b.x, b.y, b.w, b.h)))
+                if altNames is None:
+                    nameTag = meta.names[i]
+                else:
+                    nameTag = altNames[i]
+                res.append((nameTag, dets[j].prob[i], (b.x, b.y, b.w, b.h)))
     res = sorted(res, key=lambda x: -x[1])
-    free_image(im)
     free_detections(dets, num)
     return res
 
-
-filetypes = [ "mp4", "gif", "jpg", "png" ]
-
-class TargetFormatExtensions(object):
-    JPG = ".jpg"
-    JPEG = ".jpeg"
-    GIF = ".gif"
-    MP4 = ".mp4"
-    AVI = ".avi"
-    GP = ".3gp"
-
-class ValidFormats(object):
-    jpg = "jpg"
-    jpeg = "jpeg"
-    gif = "gif"
-    mp4 = "mp4"
-    avi = "avi"
-
-def convert_file(inputpath, targetFormat):
-    outputpath = os.path.splitext(inputpath)[0] + targetFormat
-    print("converting\r\n\t{0}\r\nto\r\n\t{1}".format(inputpath, outputpath))
-    bash_cmd("ffmpeg - i {} {}".format(inputpath, outputpath))
-    return outputpath
-
-def split_into_frames( file ):
-    imageObject = Image.open(file)
-    frames = []
-    for frame in range(0, imageObject.n_frames):
-        imageObject.seek(frame)
-        frames += imageObject.show()
-
-    return frames
+filetypes = [ "mp4", "gif", "jpg", "png", "3gp" ]
 
 def determine_filetype( file ):
     if not os.path.exists(file):
@@ -190,67 +207,70 @@ def determine_filetype( file ):
         return FileNotFoundError
     return magic.from_file(file, mime=True).split("/")[1]
 
+def VideoDetections( net, meta, filename, threshold ):
 
-def detections( net, meta, filename, threshold ):
-    try:
-        filetype = determine_filetype(filename)
-    except FileNotFoundError:
-        return FileNotFoundError
-    frames = None
-    if filetype == "mp4":
-        filename = convert_file(filename, TargetFormatExtensions.GIF)
-        filetype = "gif"
-    if filetype == "gif":
-        frames = split_into_frames(filename)
+    cap = cv2.VideoCapture(filename)
+    ret, frame_read = cap.read()
+    if frame_read is None:
+        print("You do not have a valid image or video")
+    detection_locations = []
+    i = 0
+    while frame_read is not None:
+        frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
+        frame_resized = cv2.resize(frame_rgb,
+                                   (network_width(net),
+                                    network_height(net)),
+                                   interpolation=cv2.INTER_LINEAR)
+        im, image = array_to_image(frame_resized)
+        detections = detect(net, meta, im, threshold)
+        img, detection_location = cvDrawBoxes(detections, frame_resized)
+        ret, frame_read = cap.read()
+        i += 1
+        if detections:
+            result = {}
+            result['config'] = config
+            result['cfg'] = cfg
+            result['weights'] = weights
+            result['data'] = data
+            result['threshold'] = threshold
+            result['filename'] = filename
+            result['count'] = len(image)
 
-    final_frames = []
-    if frames is not None:
-        for frame in frames:
-            final_frames += detect(net, meta, frame, threshold)
-    else:
-        final_frames = detect(net, meta, filename, threshold)
+            entities = []
+            for detection in detection_location:
+                # Prepare info for the prediction image
+                record = {}
+                record['id'] = str(detection)
+                record['entity'] = detection[0].decode("utf-8")
+                record['confidence'] = detection[1] * 100.0
 
-    return final_frames
+                center = {}
+                center['x'] = detection[2][0]
+                center['y'] = detection[2][1]
+                record['center'] = center
+                record['width'] = detection[2][2]
+                record['height'] = detection[2][3]
+
+                entities.append(record)
+
+            result['results'] = entities
+            json.dump(result, codecs.open('/dev/stdout', 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True,
+                      indent=2)
+
+
 
 def main(net, meta, filename, threshold):
+    filetype = os.path.basename(filename).split(".")[1].lower()
+    if filetype not in filetypes:
+        print("I'm sorry we don't currently support your file extension: {}".format(filetype))
+        sys.exit(1)
     try:
-        annotated_images = detections(net, meta, filename, threshold)
+        filename = os.path.abspath(filename)
     except FileNotFoundError:
-        print("File Not Found")
+        print(FileNotFoundError)
         exit(1)
-    results = []
-    for image in annotated_images:
-        result = {}
-        result['config'] = config
-        result['cfg'] = cfg
-        result['weights'] = weights
-        result['data'] = data
-        result['threshold'] = threshold
-        result['filename'] = filename
-        result['count'] = len(image)
 
-        entities = []
-        for k in range(len(image)):
-            # Prepare info for the prediction image
-            record = {}
-            record['id'] = str(k)
-            record['entity'] = image[k][0]
-            record['confidence'] = image[k][1] * 100.0
-
-            center = {}
-            center['x'] = int(image[k][2][0])
-            center['y'] = int(image[k][2][1])
-            record['center'] = center
-            record['width'] = int(image[k][2][2])
-            record['height'] = int(image[k][2][3])
-
-            entities.append(record)
-
-        result['results'] = entities
-        results += result
-
-    json.dump(results, codecs.open('/dev/stdout', 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True,
-              indent=2)
+    VideoDetections(net, meta, filename, threshold)
 
 
 if __name__ == '__main__':
@@ -274,15 +294,9 @@ if __name__ == '__main__':
 
     if narg > 4:
         weight = sys.argv[4]
-        config = "manual"
-    else:
-        config = cfg
 
     if narg > 5:
         data = sys.argv[5]
-        config = "manual"
-    else:
-        config = cfg
 
     if config == "tiny-v2" or config == "tiny":
         cfg = os.environ['DARKNET_TINYV2_CONFIG']
@@ -304,11 +318,22 @@ if __name__ == '__main__':
         weights = os.environ['DARKNET_V3_WEIGHTS']
         data = os.environ['DARKNET_V3_DATA']
 
+    if config == "manual":
+        if narg > 4:
+            weight = sys.argv[4]
+        else:
+            config = cfg
+
+        if narg > 5:
+            data = sys.argv[5]
+        else:
+            config = cfg
+
     try:
-        gpu = os.environ['NVIDIA_VISIBLE_DEVICES'];
+        gpu = os.environ['NVIDIA_VISIBLE_DEVICES']
     except:
         set_gpu(0)
 
-    net = load_net(cfg, weights, 0)
-    meta = load_meta(data)
+    net = load_net(bytes(cfg, encoding='utf-8'), bytes(weights, encoding='utf-8'), 0)
+    meta = load_meta(bytes(data, encoding='utf-8'))
     main(net, meta, filename, threshold)

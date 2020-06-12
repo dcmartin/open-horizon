@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   imagemagick \
   fswebcam \
   jq \
-  git
+  git \
+  ffmpeg
 
 # configure openyolo
 ARG OPENYOLO=/openyolo
