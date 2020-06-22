@@ -88,11 +88,11 @@ service_otherServices_output()
   if [ ! -z "${SERVICES}" ] && [ "${SERVICES}" != 'null' ]; then
     for S in ${SERVICES}; do
       URL=$(echo "$(service_otherServices)" | jq -r '.[]|select(.name=="'${S}'").url')
-      TEMP_FILE=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+      TEMP_FILE=$(mktemp)
       if [ ! -z "${URL}" ]; then
 	curl -sSL "${URL}" | jq -c '.'"${S}" > ${TEMP_FILE} 2> /dev/null
       fi
-      TEMP_OUTPUT=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+      TEMP_OUTPUT=$(mktemp)
       echo '{"'${S}'":' > ${TEMP_OUTPUT}
       if [ -s "${TEMP_FILE:-}" ]; then
 	cat ${TEMP_FILE} >> ${TEMP_OUTPUT}
@@ -116,7 +116,7 @@ service_update()
   hzn.log.trace "${FUNCNAME[0]} ${*}"
 
   INPUT_FILE="${1}"
-  UPDATE_FILE=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+  UPDATE_FILE=$(mktemp)
   if [ -s "${INPUT_FILE}" ]; then
     jq -c '.' ${INPUT_FILE} > "${UPDATE_FILE}"
     if [ ! -s "${UPDATE_FILE}" ]; then
@@ -139,18 +139,18 @@ service_output()
   hzn.log.trace "${FUNCNAME[0]} ${*}"
 
   OUTPUT=${1}
-  HCF=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+  HCF=$(mktemp)
   # get horizon config
   hzn_config > "${HCF}"
   # get service config
-  SCF=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+  SCF=$(mktemp)
   service_config > "${SCF}"
   # add configurations together
   jq -s add "${HCF}" "${SCF}" > "${OUTPUT}"
   # remove files
   rm -f "${HCF}" "${SCF}"
   # get service output
-  SOF=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+  SOF=$(mktemp)
   echo '{"'${SERVICE_LABEL}'":' > "${SOF}"
   if [ -s $(service_output_file) ]; then
     hzn.log.debug "service_output: ${SERVICE_LABEL}: valid: $(service_output_file)"
@@ -161,7 +161,7 @@ service_output()
   fi
   echo '}' >> "${SOF}"
   # get required services
-  RSOF=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
+  RSOF=$(mktemp)
   if [ $(service_otherServices_output ${RSOF}) != 0 ]; then
     hzn.log.debug "no additional services output"
   else
