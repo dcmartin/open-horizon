@@ -294,6 +294,7 @@ yolo_process()
   ## do YOLO
   local before=$(date +%s.%N)
 
+  ## TODO: Change to Detector3 to check use with gifs
   hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
   cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
 
