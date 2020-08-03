@@ -1,16 +1,12 @@
 {
   "squash": false,
   "build_from": {
-    "amd64": "ubuntu:bionic",
-    "arm": "arm32v7/ubuntu:bionic",
-    "arm64": "arm64v8/ubuntu:bionic",
-    "arm64-10.0": "nvcr.io/nvidia/l4t-base:r32.3.1",
-    "arm64-10.2": "nvcr.io/nvidia/l4t-base:r32.4.2",
-    "arm64-11.0": "nvcr.io/nvidia/l4t-base:r32.4.2",
-    "amd64-9.2": "nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04",
-    "amd64-10.0": "nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04",
-    "amd64-10.2": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04",
-    "amd64-11.0": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04"
+    "arm": "hassioaddons/ubuntu-base-armv7:5.2.1",
+    "armhf": "hassioaddons/ubuntu-base-armhf:5.2.1",
+    "armv7": "hassioaddons/ubuntu-base-armv7:5.2.1",
+    "aarch64": "hassioaddons/ubuntu-base-aarch64:5.2.1",
+    "amd64": "hassioaddons/ubuntu-base-amd64:5.2.1",
+    "i386": "hassioaddons/ubuntu-base-i386:5.2.1"
   },
   "args": {}
 }

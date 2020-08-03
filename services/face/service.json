@@ -4,7 +4,7 @@
   "description": "Provide FACE license plate recognition service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/face/README.md",
   "url": "com.github.dcmartin.open-horizon.face",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -24,7 +24,7 @@
       "face": {
         "environment": [
           "SERVICE_LABEL=face",
-          "SERVICE_VERSION=0.0.1"
+          "SERVICE_VERSION=0.2.0"
         ],
         "specific_ports": [],
         "devices": [

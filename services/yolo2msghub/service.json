@@ -4,15 +4,15 @@
   "description": "Sends JSON payloads from yolo service to Kafka",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/yolo2msghub/README.md",
   "url": "com.github.dcmartin.open-horizon.yolo2msghub",
-  "version": "0.0.11",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.yolo", "org": "${HZN_ORG_ID}", "version": "0.0.8", "arch": null },
-    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
-    { "url": "com.github.dcmartin.open-horizon.hal", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
-    { "url": "com.github.dcmartin.open-horizon.cpu", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+    { "url": "com.github.dcmartin.open-horizon.yolo", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.hal", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.cpu", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
     { "name": "YOLO2MSGHUB_APIKEY", "label": "message hub API key", "type": "string", "defaultValue": null },
@@ -27,7 +27,7 @@
       "yolo2msghub": {
         "environment": [
           "SERVICE_LABEL=yolo2msghub",
-          "SERVICE_VERSION=0.0.11.7",
+          "SERVICE_VERSION=0.2.0",
           "SERVICE_PORT=8587"
         ],
         "devices": null,

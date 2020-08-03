@@ -4,12 +4,12 @@
   "description": "detect noise and record it",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/noize/README.md",
   "url": "com.github.dcmartin.open-horizon.noize",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
     { "name": "NOIZE_GROUP", "label": "group for client", "type": "string", "defaultValue": "noize" },
@@ -34,7 +34,7 @@
       "noize": {
         "environment": [
           "SERVICE_LABEL=noize",
-          "SERVICE_VERSION=0.0.1",
+          "SERVICE_VERSION=0.2.0",
           "SERVICE_PORT=80"
         ],
         "image": null,

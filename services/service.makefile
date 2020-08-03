@@ -48,6 +48,7 @@ SERVICE_URI := $(shell jq -r '.url' $(SERVICE_JSON) | envsubst)
 SERVICE_URL = $(if ${TAG},${SERVICE_URI}-${TAG},${SERVICE_URI})
 SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_VARIABLES := $(shell jq -r '.userInput[].name' $(SERVICE_JSON) 2> /dev/null)
+SERVICE_LOG_LEVEL:= $(if $(wildcard SERVICE_LOG_LEVEL),$(shell cat SERVICE_LOG_LEVEL),$(shell jq -r '.userInput[]|select(.name=="SERVICE_LOG_LEVEL").defaultValue' $(SERVICE_JSON)))
 SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=null).key' build.json 2> /dev/null)
 SERVICE_BUILD_FROM := $(shell jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json 2> /dev/null)
 
@@ -107,6 +108,21 @@ default:
 
 $(KEYS):
 	@hzn key create -f -k ${PRIVATE_KEY_FILE} -K ${PUBLIC_KEY_FILE} ${HZN_ORG_ID} ${HZN_USER_ID}@${HZN_ORG_ID}
+
+##
+## options.json
+##
+
+SERVICE_OPTIONS := rootfs/data/options.json
+
+${SERVICE_OPTIONS}: options.json.tmpl service.json makefile
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
+	@mkdir -p rootfs/data
+	@export \
+	  SERVICE_LABEL=$(SERVICE_LABEL) \
+	  SERVICE_VERSION=$(SERVICE_VERSION) \
+	  SERVICE_LOG_LEVEL=${SERVICE_LOG_LEVEL} \
+        && cat $< | envsubst > $@
 
 ## development
 
@@ -173,12 +189,12 @@ push: build # login
 
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
-build: Dockerfile build.json $(SERVICE_JSON) makefile
+build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
 	@if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^-]*-\(.*\)/\1/') ]; then \
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	else \
-	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
+	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" | tee ${BUILD_OUT}; \
         fi
 
 build-service: build
@@ -418,7 +434,7 @@ distclean: service-clean
 ## BOOKKEEPING
 ##
 
-.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish ${DIR}/service.definition.json ${DIR}/pattern.json
+.PHONY: tidy default all depend build run check test push build-service test-service push-service publish-service verify-service start-service stop-service service-start service-stop service-test service-publish service-build service-verify pattern-publish pattern-verify nodes nodes-undo nodes-list nodes-clean nodes-purge $(TEST_NODE_NAMES) clean distclean publish ${DIR}/service.definition.json ${DIR}/pattern.json ${SERVICE_OPTIONS}
 
 ##
 ## COLORS

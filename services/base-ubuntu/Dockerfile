@@ -12,12 +12,19 @@ ENV \
     TERM="xterm"
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    apt-utils \
+    software-properties-common \
     curl \
     socat \
     jq \
-  \
-  && rm -fr \
-    /tmp/*
+    bc 
+
+# cleanup
+RUN apt clean -qq -y && apt autoremove -qq -y && \
+      rm -fr \
+      /tmp/* \
+      /var/{cache,log}/* \
+      /var/lib/apt/lists/*
 
 # Copy root file-system
 COPY rootfs /

@@ -4,7 +4,7 @@
   "description": "Provide MQTT service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt/README.md",
   "url": "com.github.dcmartin.open-horizon.mqtt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -23,7 +23,7 @@
       "mqtt": {
         "environment": [
           "SERVICE_LABEL=mqtt",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.2.0"
         ],
         "specific_ports": [ { "HostPort": "1882:80/tcp", "HostIP": "0.0.0.0" }, { "HostPort": "1883/tcp", "HostIP": "0.0.0.0" } ],
         "image": null,

@@ -1,16 +1,19 @@
 {
   "squash": false,
   "build_from": {
-    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "arm64-10.0": "${DOCKER_REPOSITORY}/arm64-10.0_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "arm64-10.2": "${DOCKER_REPOSITORY}/arm64-10.2_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "arm64-11.0": "${DOCKER_REPOSITORY}/arm64-11.0_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "amd64-9.2": "${DOCKER_REPOSITORY}/amd64-9.2_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "amd64-10.0": "${DOCKER_REPOSITORY}/amd64-10.0_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "amd64-10.2": "${DOCKER_REPOSITORY}/amd64-10.2_com.github.dcmartin.open-horizon.yolo:0.1.2",
-    "amd64-11.0": "${DOCKER_REPOSITORY}/amd64-11.0_com.github.dcmartin.open-horizon.yolo:0.1.2"
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "armv7": "${DOCKER_REPOSITORY}/armv7_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "armhf": "${DOCKER_REPOSITORY}/armhf_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "i386": "${DOCKER_REPOSITORY}/i386_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64-10.0": "${DOCKER_REPOSITORY}/arm64-10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64-10.2": "${DOCKER_REPOSITORY}/arm64-10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64-11.0": "${DOCKER_REPOSITORY}/arm64-11.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64-9.2": "${DOCKER_REPOSITORY}/amd64-9.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64-10.0": "${DOCKER_REPOSITORY}/amd64-10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64-10.2": "${DOCKER_REPOSITORY}/amd64-10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64-11.0": "${DOCKER_REPOSITORY}/amd64-11.0_com.github.dcmartin.open-horizon.yolo:0.2.0"
   },
   "args": {}
 }

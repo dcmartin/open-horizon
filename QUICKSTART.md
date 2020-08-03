@@ -1,5 +1,13 @@
 # `QUICKSTART.md`
-This set of instructions works on the following:
+
+
+## Installation on `macOS`
+To install using Apple Mac computers the Xcode command-line tools will need to be installed; it is highly recommended to utilize [brew](http://brew.sh) to install both those tools as well as the following: `git`, `jq`, `...`.
+
+The `apt` command is not applicable; utilize the `brew` commmand as appropriate.
+
+## Installation on LINUX `ubuntu18.04`
+This set of instructions works on the following configuration of [VirtualBox](http://virtualbox.org) running under `macOS`:
 
 + Ubuntu 18.04
 + 4 vCPU (`amd64` _only_)
