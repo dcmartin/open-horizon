@@ -1,0 +1,40 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "homeassistant",
+  "description": "Home Assistant server",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/homeassistant/README.md",
+  "url": "com.github.dcmartin.open-horizon.homeassistant",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "multiple",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "HOMEASSISTANT_HOST", "label": "", "type": "string", "defaultValue": "localhost" },
+    { "name": "HOMEASSISTANT_PORT", "label": "", "type": "int", "defaultValue": "8123" },
+    { "name": "HOMEASSISTANT_TIMEZONE", "label": "Timezone", "type": "string", "defaultValue": "America/Los_Angeles" },
+    { "name": "HOMEASSISTANT_PERIOD", "label": "", "type": "int", "defaultValue": "30" },
+    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
+    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
+    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" }
+  ],
+  "deployment": {
+    "services": {
+      "homeassistant": {
+        "environment": [
+          "SERVICE_LABEL=homeassistant",
+          "SERVICE_VERSION=0.0.1",
+          "SERVICE_PORT=8123"
+        ],
+        "specific_ports": [
+          { "HostPort": "8123:8123/tcp", "HostIP": "0.0.0.0" }
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}
