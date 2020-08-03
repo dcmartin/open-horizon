@@ -1,0 +1,44 @@
+{
+  "org": "",
+  "label": "timescale",
+  "description": "The TimeScaleDBservice",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/timescale/README.md",
+  "url": "com.github.dcmartin.open-horizon.timescale",
+  "version": "0.2.0",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    {
+      "name": "POSTGRES_PASSWORD",
+      "label": "Password for postgres",
+      "type": "string",
+      "defaultValue": "password"
+    }
+  ],
+  "deployment": {
+    "services": {
+      "timescaledb": {
+        "environment": [
+          "SERVICE_LABEL=timescale",
+          "SERVICE_VERSION=0.2.0",
+          "SERVICE_PORT=5432"
+        ],
+        "binds": [
+          "db-data:/data/db",
+          "log-data:/edgex/logs",
+          "consul-config:/consul/config",
+          "consul-data:/consul/data"
+        ],
+        "specific_ports": [
+          {
+            "HostPort": "5432/tcp",
+            "HostIP": "0.0.0.0"
+          }
+        ],
+        "image": "timescale/timescaledb"
+      }
+    }
+  }
+}
