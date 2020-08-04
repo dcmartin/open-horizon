@@ -47,7 +47,7 @@ hzn::service.init()
   local file=$(hzn::service.config.file)
 
   if [ -s "${file}" ]; then
-    bashio::log.warning "${FUNCNAME[0]}: service re-initializing; file: ${file}"
+    bashio::log.notice "${FUNCNAME[0]}: service re-initializing; file: ${file}"
   fi
 
   if [ ! -z "${config}" ]; then
@@ -57,7 +57,7 @@ hzn::service.init()
     if [ -s ${file} ]; then
       bashio::log.notice "${FUNCNAME[0]}: service initialized; file: ${file}; config: ${config}"
     else
-      bashio::log.warning "${FUNCNAME[0]}: invalid configuration; zero-length configuration file: ${file}; config: ${config}"
+      bashio::log.error "${FUNCNAME[0]}: invalid configuration; zero-length configuration file: ${file}; config: ${config}"
     fi
   else
     bashio::log.error "${FUNCNAME[0]}: zero-length configuration"
@@ -80,11 +80,11 @@ hzn::service.config()
   local config
 
   if [ ! -s ${file:-} ]; then
-    bashio::log.warning "${FUNCNAME[0]}: service not configured"
+    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL} has not been configured"
   else
     config=$(jq -c '.' ${file})
   fi
-  echo '{"config":'${config:-null}',"service":{"label":"'$(hzn::service.label)'","version":"'$(hzn::service.version)'","port":'$(hzn::service.port)'}}' 
+  echo '{"config":'${config:-null}',"service":{"label":"'$(hzn::service.label)'","version":"'$(hzn::service.version)'","port":'$(hzn::service.port)'}}'
 }
 
 ## output

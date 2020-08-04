@@ -9,7 +9,7 @@
 source /usr/bin/service-tools.sh
 
 ## configuration
-main()
+base::main()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -44,4 +44,4 @@ bashio::log.notice "${0} ${*}"
 # TMPDIR
 if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${TMPDIR:-/tmp}; fi
 
-main ${*}
+base::main ${*}
