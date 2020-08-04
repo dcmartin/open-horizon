@@ -7,30 +7,19 @@
 source /usr/bin/service-tools.sh
 source /usr/bin/yolo-tools.sh
 
-main()
+yolo::loop()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
-  local config=$(echo "${init}" | jq '.resolution="'${WEBCAM_RESOLUTION:-384x288}'"|.device="'${WEBCAM_DEVICE:-/dev/video0}'"')
-  local output=$(mktemp)
-  local init
+  local jpeg=$(mktemp).jpg
+  local output=$(mktemp).json
+  local seconds
+  local iteration
 
-  hzn::service.init "${config}"
-  bashio::log.debug "${FUNCNAME[0]}: ${SERVICE_NAME:-null} initialialized:" $($(hzn::service.config) | jq -c '.')
-
-  ## initialize YOLO
-  init=$(yolo_init ${YOLO_CONFIG:-tiny})
-  if [ ! -z "${init:-}" ]; then
-    local jpeg=$(mktemp)
-    local seconds
-    local iteration
-
-    ## initialize
-    echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${output}"
+  ## initialize
+  echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${output}"
   
-    bashio::log.notice "${FUNCNAME[0]}: starting loop"
-  
-    while true; do
+  while true; do
       # when we start
       local DATE=$(date +%s)
       local yolo
@@ -41,7 +30,7 @@ main()
   
       # process image payload into JSON
       if [ -z "${iteration:-}" ]; then iteration=0; else iteration=$((iteration+1)); fi
-      yolo=$(yolo_process "${jpeg}" "${iteration}")
+      yolo=$(yolo::process "${jpeg}" "${iteration}")
       if [ -s "${yolo}" ]; then
         bashio::log.debug "${FUNCNAME[0]}: YOLO success; output: ${yolo}"
         jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) "${yolo}" > "${output}"
@@ -59,8 +48,26 @@ main()
         bashio::log.debug "${FUNCNAME[0]}: sleeping for ${seconds} seconds"
         sleep ${seconds}
       fi
+  done
+}
 
-    done
+yolo::main()
+{
+  bashio::log.trace "${FUNCNAME[0]} ${*}"
+
+  ## initialize service
+  local init=$(yolo::init ${YOLO_CONFIG:-tiny})
+
+  if [ ! -z "${init:-}" ]; then
+    local config='{"log_level":"'${SERVICE_LOG_LEVEL:-}'", "timestamp":"'$(date -u +%FT%TZ)'", "date":'$(date +%s)',"'${SERVICE_LABEL}'":'${init}',"services":'"${SERVICES:-null}"'}'
+
+    hzn::service.init "${config}"
+    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
+
+    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
+    yolo::loop
+    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} exiting loop"
+
   else
     bashio::log.error "${FUNCNAME[0]}: YOLO did not initialize"
   fi
@@ -90,4 +97,6 @@ if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny-v2"; fi
 
 bashio::log.notice "Starting ${0} ${*}"
 
-main ${*}
+yolo::main ${*}
+
+exit 1

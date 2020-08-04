@@ -1,12 +1,12 @@
 #!/usr/bin/with-contenv bashio
 
-yolo_init() 
+yolo::init() 
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
   ## configure YOLO
   local which=${1:-tiny-v2}
-  local darknet=$(yolo_config ${which})
+  local darknet=$(yolo::config ${which})
 
   local weights=$(echo "${darknet}" | jq -r '.weights')
   local weights_url=$(echo "${darknet}" | jq -r '.weights_url')
@@ -42,7 +42,7 @@ yolo_init()
 
   if [ ! -s "${weights}" ]; then
     bashio::log.warning "${FUNCNAME[0]}: YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:-tiny-v2}"
-    yolo_config ${YOLO_DEFAULT:-tiny-v2}
+    yolo::config ${YOLO_DEFAULT:-tiny-v2}
   fi
 
   # get namefile of entities that can be detected
@@ -56,11 +56,10 @@ yolo_init()
   fi
 
   # done
-  echo '{"log_level":"'${LOGLEVEL:-}'","timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","services":'"${SERVICES:-null}"',"darknet":'"${darknet}"',"names":'${NAMES}'}'
-
+  echo '{"darknet":'"${darknet}"', "period":'${YOLO_PERIOD:-null}', "entity":"'${YOLO_ENTITY:-}'", "scale":"'${YOLO_SCALE:-}'", "resolution":"'${YOLO_RESOLUTION:-384x288}'","device":"'${YOLO_DEVICE:-/dev/video0}'", "names":'"${NAMES}"'}'
 }
 
-yolo_config()
+yolo::config()
 {
   bashio::log.trace "${FUNCNAME[0]}" "${*}"
 
@@ -106,7 +105,7 @@ yolo_config()
   echo '{"threshold":'${YOLO_THRESHOLD:-}',"weights_url":"'${YOLO_WEIGHTS_URL:-}'","weights":"'${YOLO_WEIGHTS:-}'","weights_md5":"'${YOLO_WEIGHTS_MD5:-}'","cfg":"'${YOLO_CFG_FILE:-}'","data":"'${YOLO_DATA:-}'","names":"'${YOLO_NAMES:-}'"}'
 }
 
-yolo_process()
+yolo::process()
 {
   bashio::log.trace "${FUNCNAME[0]}" "${*}"
 
@@ -140,7 +139,7 @@ yolo_process()
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
 
-  local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
+  local config='{"scale":"'${YOLO_SCALE:-}'","threshold":"'${YOLO_THRESHOLD:-}'"}'
 
   ## do YOLO
   local before=$(date +%s.%N)
@@ -166,37 +165,37 @@ yolo_process()
       local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
       bashio::log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
-
-      # initiate output
-      result=$(mktemp).result
-      echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
+    else
+      bashio::log.debug "${FUNCNAME[0]}: nothing seen"
+    fi
+  
+    # initiate output
+    result=$(mktemp).result
+    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
         | jq '.info='"${info:-null}" \
         | jq '.config='"${config:-null}" > ${result}
   
-      # annotated image
-      local annotated=$(yolo_annotate ${OUT} ${JPEG})
+    # annotated image
+    local annotated=$(yolo::annotate ${OUT} ${JPEG})
   
-      if [ "${annotated:-null}" != 'null' ]; then
-        local b64file=$(mktemp).b64
+    if [ "${annotated:-null}" != 'null' ]; then
+      local b64file=$(mktemp).b64
   
-        echo -n '{"image":"' > "${b64file}"
-        base64 -w 0 -i ${annotated} >> "${b64file}"
-        echo '"}' >> "${b64file}"
-        jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
-        rm -f ${b64file} ${annotated}
-      fi
-      rm -f "${JPEG}" "${OUT}"
-    else
-      bashio::log.debug "${FUNCNAME[0]}: yolo failed: $(cat ${err})"
+      echo -n '{"image":"' > "${b64file}"
+      base64 -w 0 -i ${annotated} >> "${b64file}"
+      echo '"}' >> "${b64file}"
+      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+      rm -f ${b64file} ${annotated}
     fi
+    rm -f "${JPEG}" "${OUT}"
   else
-    bashio::log.error "${FUNCNAME[0]}: yolo failed:" $(cat "${TMPDIR:-/tmp}/yolo.$$.out")
+    bashio::log.error "${FUNCNAME[0]}: yolo failed:" $(cat ${err})
   fi
 
   echo "${result:-}"
 }
 
-yolo_annotate()
+yolo::annotate()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
