@@ -151,59 +151,63 @@ hzn::service.output()
   local OUTPUT=${1:-}
   local HCF=$(mktemp).hcf
   local SCF=$(mktemp).scf
+  local SOF=$(mktemp).sof
+  local RSOF=$(mktemp).rsof
 
   # get horizon config
   hzn::config > "${HCF}"
-  bashio::log.debug "${FUNCNAME[0]}: horizon configuration: ${HCF}:" $(jq -c '.' ${HCF}")"
+  bashio::log.debug "${FUNCNAME[0]}: horizon configuration: ${HCF}:" $(jq -c '.' ${HCF})
   # get service config
   hzn::service.config > "${SCF}"
-  bashio::log.debug "${FUNCNAME[0]}: service configuration: ${SCF}:" $(jq -c '.' ${SCF}")"
+  bashio::log.debug "${FUNCNAME[0]}: service configuration: ${SCF}:" $(jq -c '.' ${SCF})
 
   if [ -s "${HCF}" ] && [ -s "${SCF}" ]; then
     # add configurations together
     jq -s add "${HCF}" "${SCF}" > "${OUTPUT}"
-    bashio::log.debug "${FUNCNAME[0]}: merged configurations:" $(jq -c '.' ${OUTPUT}}
-
-      local file=$(hzn::service.output.file)
-      local SOF=$(mktemp).sof
-
-      # get service output
-      if [ -s ${file} ]; then
-        bashio::log.debug "${FUNCNAME[0]}: ${SERVICE_LABEL}: valid: $(hzn::service.output.file)"
-        echo '{"'${SERVICE_LABEL:-}'":' > "${SOF}"
-        cat ${file} >> "${SOF}"
-        echo '}' >> "${SOF}"
-      else
-        bashio::log.warning "${FUNCNAME[0]}: no existing service output"
-      fi
-  
-      local RSOF=$(mktemp).rsof
-      # get required services
-      if [ $(hzn::service.output.otherServices ${RSOF}) != 0 ]; then
-        bashio::log.warning "${FUNCNAME[0]}: required services; no output"
-      else
-        # add required services
-        bashio::log.debug "${FUNCNAME[0]}: adding required services:" $(jq -c '.'  ${RSOF})
-        jq -s add "${RSOF}" "${SOF}" > "${SOF}.$$" && mv -f "${SOF}.$$" "${SOF}"
-      fi
-      if [ -s "${SOF:-}" ]; then
-        # add consolidated services
-        bashio::log.debug "${FUNCNAME[0]}: consolidating service output"
-        jq -s add "${SOF}" "${OUTPUT}" > "${OUTPUT}.$$" && mv -f "${OUTPUT}.$$" "${OUTPUT}"
-      elif [ -s "${RSOF}" ]; then
-        bashio::log.debug "${FUNCNAME[0]}: adding required services only"
-        jq -s add "${RSOF}" "${OUTPUT}" > "${OUTPUT}.$$" && mv -f "${OUTPUT}.$$" "${OUTPUT}"
-      else
-        bashio::log.warning "${FUNCNAME[0]}: no service output"
-      fi
-      rm -f ${SCF} ${RSOF} ${SOF}
-    fi
-    # cleanup
-    rm -f ${SCF}
+    bashio::log.debug "${FUNCNAME[0]}: merged configurations:" $(jq -c '.' ${OUTPUT})
   else
-    bashio::log.error "${FUNCNAME[0]}: no horizon configuration"
+    bashio::log.error "${FUNCNAME[0]}: missing configurations; horizon: $(jq -c '.' ${HCF}); service: $(jq -c '.' ${SCF})"
+    echo '{}' > ${OUTPUT}
   fi
-  rm -f ${HCF}
+  rm -f ${HCF} ${SCF}
+
+  local file=$(hzn::service.output.file)
+
+  # get service output
+  if [ -s ${file} ]; then
+    echo '{"'${SERVICE_LABEL:-}'":' > "${SOF}"
+    cat ${file} >> "${SOF}"
+    echo '}' >> "${SOF}"
+    bashio::log.debug "${FUNCNAME[0]}: ${SERVICE_LABEL}; output:" $(jq -c '.' ${SOF})
+  else
+    bashio::log.warning "${FUNCNAME[0]}: ${SERVICE_LABEL}; no output"
+    echo '{}' > ${SOF}
+  fi
+ 
+  # get required services
+  if [ $(hzn::service.output.otherServices ${RSOF}) != 0 ]; then
+    bashio::log.warning "${FUNCNAME[0]}: required services; no output"
+  else
+    # add required services
+    jq -s add "${RSOF}" "${SOF}" > "${SOF}.$$" \
+      && \
+      mv -f "${SOF}.$$" "${SOF}" \
+      && \
+      bashio::log.debug "${FUNCNAME[0]}: added required services:" $(jq -c '.'  ${SOF}) \
+      || \
+      bashio::log.error "${FUNCNAME[0]}: failed to add required services"
+  fi
+
+  if [ -s "${SOF:-}" ]; then
+    # add consolidated services
+    jq -s add "${SOF}" "${OUTPUT}" > "${OUTPUT}.$$" && mv -f "${OUTPUT}.$$" "${OUTPUT}"
+    bashio::log.debug "${FUNCNAME[0]}: consolidated service output" $(jq -c '.' ${OUTPUT})
+  else
+    bashio::log.warning "${FUNCNAME[0]}: no service output"
+  fi
+
+  # cleanup
+  rm -f ${HCF} ${SCF} ${RSOF} ${SOF}
 }
 
 ## update service output
