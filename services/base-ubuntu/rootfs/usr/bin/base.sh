@@ -13,7 +13,7 @@ base::main()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
-  local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${HZN_LOG_LEVEL:-info}'"}'
+  local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-info}'"}'
   local output=$(mktemp)
 
   hzn::service.init ${config}

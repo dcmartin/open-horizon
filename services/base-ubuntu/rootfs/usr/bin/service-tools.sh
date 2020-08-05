@@ -47,7 +47,7 @@ hzn::service.init()
   local file=$(hzn::service.config.file)
 
   if [ -s "${file}" ]; then
-    bashio::log.notice "${FUNCNAME[0]}: service re-initializing; file: ${file}"
+    bashio::log.debug "${FUNCNAME[0]}: service re-initializing; file: ${file}"
   fi
 
   if [ ! -z "${config}" ]; then
@@ -55,7 +55,7 @@ hzn::service.init()
     echo "${config}" | jq -c '.' > ${file}
 
     if [ -s ${file} ]; then
-      bashio::log.notice "${FUNCNAME[0]}: service initialized; file: ${file}; config: ${config}"
+      bashio::log.debug "${FUNCNAME[0]}: service initialized; file: ${file}; config: ${config}"
     else
       bashio::log.error "${FUNCNAME[0]}: invalid configuration; zero-length configuration file: ${file}; config: ${config}"
     fi
@@ -193,15 +193,20 @@ hzn::service.output()
       && \
       mv -f "${SOF}.$$" "${SOF}" \
       && \
-      bashio::log.debug "${FUNCNAME[0]}: added required services:" $(jq -c '.'  ${SOF}) \
+      bashio::log.debug "${FUNCNAME[0]}: added required services" \
       || \
       bashio::log.error "${FUNCNAME[0]}: failed to add required services"
   fi
 
   if [ -s "${SOF:-}" ]; then
     # add consolidated services
-    jq -s add "${SOF}" "${OUTPUT}" > "${OUTPUT}.$$" && mv -f "${OUTPUT}.$$" "${OUTPUT}"
-    bashio::log.debug "${FUNCNAME[0]}: consolidated service output" $(jq -c '.' ${OUTPUT})
+    jq -s add "${SOF}" "${OUTPUT}" > "${OUTPUT}.$$" \
+      && \
+      mv -f "${OUTPUT}.$$" "${OUTPUT}" \
+      && \
+      bashio::log.debug "${FUNCNAME[0]}: consolidated service output" \
+      || \
+      bashio::log.error "${FUNCNAME[0]}: failed to consolidate services"
   else
     bashio::log.warning "${FUNCNAME[0]}: no service output"
   fi
