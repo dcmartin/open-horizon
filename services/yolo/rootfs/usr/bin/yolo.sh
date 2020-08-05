@@ -84,16 +84,16 @@ if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${T
 if [ -z "${DARKNET:-}" ]; then bashio::log.error "${0}: DARKNET unspecified; set environment variable for testing"; fi
 
 # defaults for testing
-if [ -z "${YOLO_PERIOD:-}" ]; then YOLO_PERIOD=0; fi
-if [ -z "${YOLO_ENTITY:-}" ]; then YOLO_ENTITY=person; fi
-if [ -z "${YOLO_THRESHOLD:-}" ]; then YOLO_THRESHOLD=0.25; fi
-if [ -z "${YOLO_SCALE:-}" ]; then YOLO_SCALE="320x240"; fi
-if [ -z "${YOLO_NAMES:-}" ]; then YOLO_NAMES=""; fi
-if [ -z "${YOLO_DATA:-}" ]; then YOLO_DATA=""; fi
-if [ -z "${YOLO_CFG_FILE:-}" ]; then YOLO_CFG_FILE=""; fi
-if [ -z "${YOLO_WEIGHTS:-}" ]; then YOLO_WEIGHTS=""; fi
-if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then YOLO_WEIGHTS_URL=""; fi
-if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny-v2"; fi
+if [ -z "${YOLO_PERIOD:-}" ]; then export YOLO_PERIOD=0; fi
+if [ -z "${YOLO_ENTITY:-}" ]; then export YOLO_ENTITY=person; fi
+if [ -z "${YOLO_THRESHOLD:-}" ]; then export YOLO_THRESHOLD=0.25; fi
+if [ -z "${YOLO_SCALE:-}" ]; then export YOLO_SCALE="320x240"; fi
+if [ -z "${YOLO_NAMES:-}" ]; then export YOLO_NAMES=""; fi
+if [ -z "${YOLO_DATA:-}" ]; then export YOLO_DATA=""; fi
+if [ -z "${YOLO_CFG_FILE:-}" ]; then export YOLO_CFG_FILE=""; fi
+if [ -z "${YOLO_WEIGHTS:-}" ]; then export YOLO_WEIGHTS=""; fi
+if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then export YOLO_WEIGHTS_URL=""; fi
+if [ -z "${YOLO_CONFIG}" ]; then export YOLO_CONFIG="tiny-v2"; fi
 
 bashio::log.notice "Starting ${0} ${*}"
 

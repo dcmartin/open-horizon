@@ -56,7 +56,7 @@ yolo::init()
   fi
 
   # done
-  echo '{"darknet":'"${darknet}"', "period":'${YOLO_PERIOD:-null}', "entity":"'${YOLO_ENTITY:-}'", "scale":"'${YOLO_SCALE:-}'", "resolution":"'${YOLO_RESOLUTION:-384x288}'","device":"'${YOLO_DEVICE:-/dev/video0}'", "names":'"${NAMES}"'}'
+  echo '{"darknet":'"${darknet}"', "period":'${YOLO_PERIOD:-null}', "entity":"'${YOLO_ENTITY:-}'", "scale":"'${YOLO_SCALE:-none}'", "resolution":"'${YOLO_RESOLUTION:-384x288}'","device":"'${YOLO_DEVICE:-/dev/video0}'", "names":'"${NAMES}"'}'
 }
 
 yolo::config()
@@ -130,7 +130,13 @@ yolo::process()
 
   # scale image
   if [ "${YOLO_SCALE:-none}" != 'none' ]; then
-    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
+    local err=$(mktemp)
+    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}" &> ${err}
+    if [ ! -s ${JPEG} ]; then
+      bashio::log.error "${FUNCNAME[0]}: scale conversion failed; reverting to original; error: " $(cat err)
+      cp -f "${PAYLOAD}" "${JPEG}"
+    fi
+    rm -f ${err}
   else
     cp -f "${PAYLOAD}" "${JPEG}"
   fi
@@ -139,7 +145,7 @@ yolo::process()
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
 
-  local config='{"scale":"'${YOLO_SCALE:-}'","threshold":"'${YOLO_THRESHOLD:-}'"}'
+  local config='{"scale":"'${YOLO_SCALE:-none}'","threshold":"'${YOLO_THRESHOLD:-}'"}'
 
   ## do YOLO
   local before=$(date +%s.%N)
@@ -152,14 +158,15 @@ yolo::process()
 
   local after=$(date +%s.%N)
   local seconds=$(echo "${after} - ${before}" | bc -l)
-  bashio::log.debug "${FUNCNAME[0]} - time: ${seconds}; output: $(cat ${OUT})"
+
+  bashio::log.debug "${FUNCNAME[0]}: time: ${seconds}; output:" $(jq -c '.' ${OUT})
 
   # test for output
   if [ -s "${OUT}" ]; then
     local count=$(jq -r '.count' ${OUT})
     local results=$(jq '.results' ${OUT})
 
-    bashio::log.debug "${FUNCNAME[0]} - COUNT: ${count}; RESULTS: ${results}"
+    bashio::log.info "${FUNCNAME[0]}: COUNT: ${count}; RESULTS:" $(echo "${results}" | jq -c '.')
 
     if [ ! -z "${count:-}" ] && [ "${results:-null}" != 'null' ]; then
       local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
