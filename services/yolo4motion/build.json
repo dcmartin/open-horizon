@@ -7,13 +7,13 @@
     "i386": "${DOCKER_REPOSITORY}/i386_com.github.dcmartin.open-horizon.yolo:0.2.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.yolo:0.2.0",
     "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "arm64-10.0": "${DOCKER_REPOSITORY}/arm64-10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "arm64-10.2": "${DOCKER_REPOSITORY}/arm64-10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "arm64-11.0": "${DOCKER_REPOSITORY}/arm64-11.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "amd64-9.2": "${DOCKER_REPOSITORY}/amd64-9.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "amd64-10.0": "${DOCKER_REPOSITORY}/amd64-10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "amd64-10.2": "${DOCKER_REPOSITORY}/amd64-10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "amd64-11.0": "${DOCKER_REPOSITORY}/amd64-11.0_com.github.dcmartin.open-horizon.yolo:0.2.0"
+    "arm64_10.0": "${DOCKER_REPOSITORY}/arm64_10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64_10.2": "${DOCKER_REPOSITORY}/arm64_10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "arm64_11.0": "${DOCKER_REPOSITORY}/arm64_11.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64_9.2": "${DOCKER_REPOSITORY}/amd64_9.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64_10.0": "${DOCKER_REPOSITORY}/amd64_10.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64_10.2": "${DOCKER_REPOSITORY}/amd64_10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
+    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0_com.github.dcmartin.open-horizon.yolo:0.2.0"
   },
   "args": {}
 }
