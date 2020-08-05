@@ -28,7 +28,7 @@
     { "name": "YOLO_SCALE", "label": "size WIDTHxHEIGHT for image", "type": "string", "defaultValue": "none" },
     { "name": "YOLO_THRESHOLD", "label": "threshold for detection", "type": "int", "defaultValue": "0.25" },
     { "name": "YOLO_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "60" },
-    { "name": "LOGLEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
