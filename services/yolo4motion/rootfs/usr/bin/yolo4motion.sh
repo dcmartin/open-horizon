@@ -7,7 +7,7 @@ source /usr/bin/service-tools.sh
 ## process JSON motion event
 yolo4motion::process()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local payload="${1}"
   local config="${2}"
@@ -30,24 +30,24 @@ yolo4motion::process()
   jq -r '.event.image' ${payload} > ${b64file}
   if [ -s "${b64file}" ]; then
     cat ${b64file} | base64 --decode > ${ijf}
-    bashio::log.debug "${FUNCNAME[0]}: decoded image; file: ${ijf}"
+    hzn::log.debug "${FUNCNAME[0]}: decoded image; file: ${ijf}"
   else
-    bashio::log.error "${FUNCNAME[0]}: zero-length BASE64-encoded image; payload:" $(jq -c '.event' ${payload})
+    hzn::log.error "${FUNCNAME[0]}: zero-length BASE64-encoded image; payload:" $(jq -c '.event' ${payload})
   fi
   rm -f ${b64file}
 
   ## process image through yolo
   if [ -z "${ijf:-}" ] || [ ! -s "${ijf}" ]; then
-    bashio::log.error "${FUNCNAME[0]} - no BASE64-decoded image; skipping"
+    hzn::log.error "${FUNCNAME[0]} - no BASE64-decoded image; skipping"
   else
     local id=$(identify ${ijf})
     local ok=$?
 
     if [ "${ok:-}" == 0 ]; then
-      bashio::log.debug "${FUNCNAME[0]} - processing image file: ${ijf}; id: ${id}"
+      hzn::log.debug "${FUNCNAME[0]} - processing image file: ${ijf}; id: ${id}"
       yjf=$(yolo::process ${ijf})
     else
-      bashio::log.error "${FUNCNAME[0]} - invalid JPEG image: ${ijf}"
+      hzn::log.error "${FUNCNAME[0]} - invalid JPEG image: ${ijf}"
     fi
     rm -f ${ijf}
   fi
@@ -64,9 +64,9 @@ yolo4motion::process()
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_PAYLOAD}/${YOLO_ENTITY}"
 
       mosquitto_pub -q 2 ${mqtt_args} -t "${topic}" -f ${ojf} &
-      bashio::log.debug "${FUNCNAME[0]}: published JPEG; topic: ${topic}; JPEG: ${ojf}"
+      hzn::log.debug "${FUNCNAME[0]}: published JPEG; topic: ${topic}; JPEG: ${ojf}"
     else
-      bashio::log.warning "${FUNCNAME[0]}: failed to publish JPEG; invalid image"
+      hzn::log.warning "${FUNCNAME[0]}: failed to publish JPEG; invalid image"
     fi
     rm -f "${ojf}"
 
@@ -79,16 +79,16 @@ yolo4motion::process()
       local topic="${MOTION_GROUP}/${device}/${camera}/${YOLO4MOTION_TOPIC_EVENT}/${YOLO_ENTITY}"
 
       mosquitto_pub -q 2 ${mqtt_args} -t "${topic}" -f "${sjf}" &
-      bashio::log.info "${FUNCNAME[0]}: published JSON; topic: ${topic}; JSON: ${sjf}"
+      hzn::log.info "${FUNCNAME[0]}: published JSON; topic: ${topic}; JSON: ${sjf}"
     else
-      bashio::log.error "${FUNCNAME[0]}: failed to publish JSON; invalid service output"
+      hzn::log.error "${FUNCNAME[0]}: failed to publish JSON; invalid service output"
     fi
     rm -f ${yjf}
   elif [ ! -z "${yjf:-}" ]; then
-    bashio::log.error "${FUNCNAME[0]}: zero-length output"
+    hzn::log.error "${FUNCNAME[0]}: zero-length output"
     rm -f "${yjf}"
   else 
-    bashio::log.error "${FUNCNAME[0]}: no output"
+    hzn::log.error "${FUNCNAME[0]}: no output"
   fi
 
   # update service status
@@ -101,7 +101,7 @@ yolo4motion::process()
 ## loop forever on MQTT
 yolo4motion::loop()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
   local config="${*}"
   local sjf=$(mktemp).service.json
   local payload=$(mktemp).payload.json
@@ -128,7 +128,7 @@ yolo4motion::loop()
   topic="service/$(hzn::service.label)/$(hostname -s)"
   message=$(echo "$(hzn::service.config)" | jq -c '.hostname="'$(hostname -s)'"')
   mosquitto_pub -r -q 2 ${mqtt_args} -t "${topic}" -m "${message}"
-  bashio::log.info "${FUNCNAME[0]}: announced; host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
+  hzn::log.info "${FUNCNAME[0]}: announced; host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
 
   ## forever process MQTT
   while true; do
@@ -137,38 +137,38 @@ yolo4motion::loop()
     # update service status
     echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${sjf}
     hzn::service.update "${sjf}"
-    bashio::log.debug "${FUNCNAME[0]}: initial service update: ${SERVICE_LABEL}; output:" $(jq -c '.' ${sjf})
+    hzn::log.debug "${FUNCNAME[0]}: initial service update: ${SERVICE_LABEL}; output:" $(jq -c '.' ${sjf})
   
     ## process payloads from inherent queue
-    bashio::log.info "${FUNCNAME[0]}: listening; host: ${MQTT_HOST}; topic: ${topic}"
+    hzn::log.info "${FUNCNAME[0]}: listening; host: ${MQTT_HOST}; topic: ${topic}"
     mosquitto_sub ${mqtt_args} -t "${topic}" | while read; do
 
       # test for null
-      if [ -z "${REPLY:-}" ]; then bashio::log.debug "${FUNCNAME[0]}: zero-length REPLY; continuing"; continue; fi
+      if [ -z "${REPLY:-}" ]; then hzn::log.debug "${FUNCNAME[0]}: zero-length REPLY; continuing"; continue; fi
 
       # convert buffer to file
       echo '{"event":' > ${payload}
       echo "${REPLY}" >> "${payload}"
       echo '}' >> "${payload}"
       if [ ! -s "${payload}" ]; then
-        bashio::log.warning "${FUNCNAME[0]}: invalid JSON; continuing; REPLY: ${REPLY}"
+        hzn::log.warning "${FUNCNAME[0]}: invalid JSON; continuing; REPLY: ${REPLY}"
         continue
       fi
-      bashio::log.debug "${FUNCNAME[0]}: received JSON; bytes:" $(wc -c ${payload} | awk '{ print $1 }')
+      hzn::log.debug "${FUNCNAME[0]}: received JSON; bytes:" $(wc -c ${payload} | awk '{ print $1 }')
     
       ## test for image
       if [ $(jq '.event.image!=null' ${payload}) != 'true' ]; then
-        bashio::log.error "${FUNCNAME[0]}: invalid payload: no image; payload: $(cat ${payload})"
+        hzn::log.error "${FUNCNAME[0]}: invalid payload: no image; payload: $(cat ${payload})"
         continue
       fi
     
       ## test if too old
       ts=$(jq -r '.event.timestamp.publish' "${payload}")
       if [ "${ts:-null}" = 'null' ]; then
-        bashio::log.warning "${FUNCNAME[0]}: invalid payload; no timestamp.publish:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
+        hzn::log.warning "${FUNCNAME[0]}: invalid payload; no timestamp.publish:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
         ts=$(jq -r '.event.timestamp' "${payload}")
         if [ "${ts:-null}" = 'null' ]; then
-          bashio::log.error "${FUNCNAME[0]}: invalid payload; no event.timestamp:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
+          hzn::log.error "${FUNCNAME[0]}: invalid payload; no event.timestamp:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
           continue
         fi
       fi
@@ -178,7 +178,7 @@ yolo4motion::loop()
       now=$(date +%s) && ago=$((now - thatdate))
       # test if too old 
       if [ ${ago} -gt ${YOLO4MOTION_TOO_OLD:-300} ]; then 
-        bashio::log.warning "${FUNCNAME[0]}: Too old; ${ago} > ${YOLO4MOTION_TOO_OLD:-300}; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' "${payload}")
+        hzn::log.warning "${FUNCNAME[0]}: Too old; ${ago} > ${YOLO4MOTION_TOO_OLD:-300}; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' "${payload}")
         continue
       fi
 
@@ -188,13 +188,13 @@ yolo4motion::loop()
       camera=$(jq -r '.event.camera' "${payload}")
       # test
       if [ "${dt:-null}" == 'null' ]; then
-        bashio::log.error "${FUNCNAME[0]}: bad date; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
+        hzn::log.error "${FUNCNAME[0]}: bad date; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
         continue
       elif [ "${device:-null}" == 'null' ] || [ "${camera:-null}" == 'null' ]; then
-        bashio::log.error "${FUNCNAME[0]}: invalid device or camera; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
+        hzn::log.error "${FUNCNAME[0]}: invalid device or camera; continuing; payload:" $(jq -c '.event.image=(.event.image!=null)' ${payload})
         continue
       else
-        bashio::log.debug "${FUNCNAME[0]}: received event from device: ${device}; camera: ${camera}; ago: ${ago}"
+        hzn::log.debug "${FUNCNAME[0]}: received event from device: ${device}; camera: ${camera}; ago: ${ago}"
       fi
       # process payload as motion end event
       yolo4motion::process "${payload}" "${config}" $((dt + ago))
@@ -206,7 +206,7 @@ yolo4motion::loop()
 
 yolo4motion::options()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
   local config="${*}"
   local result
   local options=$(jq '.' ${options})
@@ -217,7 +217,7 @@ yolo4motion::options()
 ## main function
 yolo4motion::main()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   ## initialize service
   local init=$(yolo::init ${YOLO_CONFIG:-tiny})
@@ -228,14 +228,14 @@ yolo4motion::main()
     local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-}'","group":"'${MOTION_GROUP:-}'","client":"'${MOTION_CLIENT:-}'","camera":"'${YOLO4MOTION_CAMERA:-}'","event":"'${YOLO4MOTION_TOPIC_EVENT:-}'","old":'${YOLO4MOTION_TOO_OLD:-300}',"payload":"'${YOLO4MOTION_TOPIC_PAYLOAD:-}'","topic":"'${YOLO4MOTION_TOPIC:-}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"'${SERVICE_LABEL}'":'${init}'}'
 
     hzn::service.init "${config}"
-    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
+    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
 
-    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
+    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
     yolo4motion::loop ${config}
-    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} exiting loop"
+    hzn::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} exiting loop"
 
   else
-    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} did not initialize"
+    hzn::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} did not initialize"
   fi
 }
 
@@ -259,7 +259,7 @@ if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${T
 ## derived
 export YOLO4MOTION_TOPIC="${MOTION_GROUP}/${MOTION_CLIENT}/${YOLO4MOTION_CAMERA}"
 
-bashio::log.notice "Starting ${0} ${*}: ${SERVICE_LABEL:-null}"
+hzn::log.notice "Starting ${0} ${*}: ${SERVICE_LABEL:-null}"
 
 yolo4motion::main ${*}
 
