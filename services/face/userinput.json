@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.face",
+      "url": "face",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "FACE_PERIOD": 15,

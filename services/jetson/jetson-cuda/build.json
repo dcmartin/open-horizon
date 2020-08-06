@@ -1,7 +1,7 @@
 {
   "squash": false,
   "build_from": {
-    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.jetson-jetpack:0.0.1",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_jetson-jetpack:0.0.1",
     "amd64": null,
     "arm": null,
     "386": null,

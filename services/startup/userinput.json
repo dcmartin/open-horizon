@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.startup",
+      "url": "startup",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
 	"STARTUP_HOST_USER": "${USER}",
@@ -18,7 +18,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.cpu",
+      "url": "cpu",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "CPU_PERIOD": 60,
@@ -29,7 +29,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.hal",
+      "url": "hal",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "HAL_PERIOD": 43200,
@@ -40,7 +40,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.wan",
+      "url": "wan",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "WAN_PERIOD": 14400,

@@ -5,28 +5,28 @@ Provides an initial pattern for a new device to become a node; includes the `cpu
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.startup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.startup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_startup.svg)](https://microbadger.com/images/dcmartin/amd64_startup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_startup.svg)](https://microbadger.com/images/dcmartin/amd64_startup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.startup
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.startup.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_startup
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_startup.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.startup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.startup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_startup.svg)](https://microbadger.com/images/dcmartin/arm_startup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_startup.svg)](https://microbadger.com/images/dcmartin/arm_startup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.startup
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.startup.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_startup
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_startup.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.startup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.startup.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.startup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_startup.svg)](https://microbadger.com/images/dcmartin/arm64_startup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_startup.svg)](https://microbadger.com/images/dcmartin/arm64_startup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.startup
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.startup.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_startup
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_startup.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -34,7 +34,7 @@ Provides an initial pattern for a new device to become a node; includes the `cpu
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.startup`
++ `url` - `startup`
 + `version` - `0.0.1`
 
 ## Service ports
@@ -191,9 +191,9 @@ Starting the service using the `hzn dev service start` command is performed thro
 
 ```
 % make start
->>> MAKE -- 10:31:09 -- stop: amd64_com.github.dcmartin.open-horizon.startup-beta
+>>> MAKE -- 10:31:09 -- stop: amd64_startup-beta
 >>> MAKE -- 10:31:09 -- stop-service: startup-beta; directory: horizon/
->>> MAKE -- 10:31:09 -- stop: amd64_com.github.dcmartin.open-horizon.startup-beta
+>>> MAKE -- 10:31:09 -- stop: amd64_startup-beta
 Created horizon metadata files in /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon. Edit these files to define and configure your new service.
 >>> MAKE -- 10:31:10 -- fetching dependencies; service: startup; dir: horizon
 >>> MAKE -- 10:31:11 -- starting service: startup-beta; directory: horizon
@@ -201,9 +201,9 @@ Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified
 Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified.
 Service project /Volumes/dcmartin/GIT/open-horizon/beta/startup/horizon verified.
 File sync service container openhorizon.hzn-dev.css-api listening on host port 8580
-Start service: service(s) hal with instance id prefix com.github.dcmartin.open-horizon.hal-beta_0.0.3_ef956903-2af5-4e5d-9cd2-d90499c724e5
+Start service: service(s) hal with instance id prefix hal-beta_0.0.3_ef956903-2af5-4e5d-9cd2-d90499c724e5
 Running service.
-Start service: service(s) wan with instance id prefix com.github.dcmartin.open-horizon.wan-beta_0.0.3_fee3e95d-2da7-4681-a83a-a4556537d81a
+Start service: service(s) wan with instance id prefix wan-beta_0.0.3_fee3e95d-2da7-4681-a83a-a4556537d81a
 Running service.
 Start service: service(s) startup with instance id prefix 9ae15635734a85149a2faebebfd0a7d11d6fead7d4c25da2971104245b5ac8dd
 Running service.

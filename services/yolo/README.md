@@ -7,28 +7,28 @@ Provides entity count information as micro-service; updates periodically (defaul
 ### CPU _only_
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo)
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_yolo.svg)](https://microbadger.com/images/dcmartin/amd64_yolo)
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_yolo.svg)](https://microbadger.com/images/dcmartin/amd64_yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_yolo
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_yolo.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_yolo.svg)](https://microbadger.com/images/dcmartin/arm_yolo)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_yolo.svg)](https://microbadger.com/images/dcmartin/arm_yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.yolo
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.yolo.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_yolo
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_yolo.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_yolo.svg)](https://microbadger.com/images/dcmartin/arm64_yolo)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_yolo.svg)](https://microbadger.com/images/dcmartin/arm64_yolo "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_yolo
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_yolo.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -36,26 +36,26 @@ Provides entity count information as micro-service; updates periodically (defaul
 
 ### GPU _accelerated_
 
-[docker-cuda]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda
-[pulls-cuda]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda.svg
+[docker-cuda]: https://hub.docker.com/r/dcmartin/amd64_yolo-cuda
+[pulls-cuda]: https://img.shields.io/docker/pulls/dcmartin/amd64_yolo-cuda.svg
 [cuda-shield]: https://img.shields.io/badge/cuda-yes-green.svg
 [![Supports cuda Architecture][cuda-shield]](../yolo-cuda/README.md)
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda)
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_yolo-cuda.svg)](https://microbadger.com/images/dcmartin/amd64_yolo-cuda)
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_yolo-cuda.svg)](https://microbadger.com/images/dcmartin/amd64_yolo-cuda "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-cuda]][docker-cuda]
 
-[docker-tegra]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra
-[pulls-tegra]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra.svg
+[docker-tegra]: https://hub.docker.com/r/dcmartin/arm64_yolo-tegra
+[pulls-tegra]: https://img.shields.io/docker/pulls/dcmartin/arm64_yolo-tegra.svg
 [tegra-shield]: https://img.shields.io/badge/tegra-yes-green.svg
 [![Supports tegra Architecture][tegra-shield]](../yolo-tegra/README.md)
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_yolo-tegra.svg)](https://microbadger.com/images/dcmartin/arm64_yolo-tegra)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_yolo-tegra.svg)](https://microbadger.com/images/dcmartin/arm64_yolo-tegra "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-tegra]][docker-tegra]
 
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.yolo`
++ `url` - `yolo`
 + `version` - `0.1.2`
 
 ## Service variables

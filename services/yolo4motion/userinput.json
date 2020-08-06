@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.yolo4motion",
+      "url": "yolo4motion",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
 	"MQTT_HOST": "mqtt.dcmartin.com",

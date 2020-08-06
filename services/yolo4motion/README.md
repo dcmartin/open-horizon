@@ -7,28 +7,28 @@ Provides entity count information as micro-service; updates periodically (defaul
 ### CPU _only_
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion)
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion )
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_yolo4motion.svg)](https://microbadger.com/images/dcmartin/amd64_yolo4motion)
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_yolo4motion.svg)](https://microbadger.com/images/dcmartin/amd64_yolo4motion )
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo4motion.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_yolo4motion
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_yolo4motion.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion)
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm_yolo4motion)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm_yolo4motion)
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.yolo4motion.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_yolo4motion
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_yolo4motion.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion )
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm64_yolo4motion)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_yolo4motion.svg)](https://microbadger.com/images/dcmartin/arm64_yolo4motion )
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo4motion.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_yolo4motion
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_yolo4motion.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -36,25 +36,25 @@ Provides entity count information as micro-service; updates periodically (defaul
 
 ### GPU _accelerated_
 
-[docker-cuda]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion
-[pulls-cuda]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion.svg
+[docker-cuda]: https://hub.docker.com/r/dcmartin/amd64_yolo-cuda4motion
+[pulls-cuda]: https://img.shields.io/docker/pulls/dcmartin/amd64_yolo-cuda4motion.svg
 [cuda-shield]: https://img.shields.io/badge/cuda-yes-green.svg
 [![Supports cuda Architecture][cuda-shield]](../yolo-cuda4motion/README.md)
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion)
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo-cuda4motion )
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_yolo-cuda4motion.svg)](https://microbadger.com/images/dcmartin/amd64_yolo-cuda4motion)
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_yolo-cuda4motion.svg)](https://microbadger.com/images/dcmartin/amd64_yolo-cuda4motion )
 [![Docker Pulls][pulls-cuda]][docker-cuda]
 
-[docker-tegra]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion
-[pulls-tegra]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg
+[docker-tegra]: https://hub.docker.com/r/dcmartin/arm64_yolo-tegra4motion
+[pulls-tegra]: https://img.shields.io/docker/pulls/dcmartin/arm64_yolo-tegra4motion.svg
 [tegra-shield]: https://img.shields.io/badge/tegra-yes-green.svg
 [![Supports tegra Architecture][tegra-shield]](../yolo-tegra4motion/README.md)
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion)
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo-tegra4motion)
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_yolo-tegra4motion)
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_yolo-tegra4motion.svg)](https://microbadger.com/images/dcmartin/arm64_yolo-tegra4motion)
 [![Docker Pulls][pulls-tegra]][docker-tegra]
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.yolo4motion`
++ `url` - `yolo4motion`
 + `version` - `0.1.2`
 
 ## Service variables 

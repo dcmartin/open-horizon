@@ -8,28 +8,28 @@ Monitor the OH exchange and organization patterns, services, and nodes.  This co
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_hznmonitor.svg)](https://microbadger.com/images/dcmartin/amd64_hznmonitor "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_hznmonitor.svg)](https://microbadger.com/images/dcmartin/amd64_hznmonitor "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.hznmonitor.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_hznmonitor
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_hznmonitor.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm_hznmonitor "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm_hznmonitor "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.hznmonitor.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_hznmonitor
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_hznmonitor.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm64_hznmonitor "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_hznmonitor.svg)](https://microbadger.com/images/dcmartin/arm64_hznmonitor "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.hznmonitor.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_hznmonitor
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_hznmonitor.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -37,7 +37,7 @@ Monitor the OH exchange and organization patterns, services, and nodes.  This co
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.hznmonitor`
++ `url` - `hznmonitor`
 + `version` - `0.0.1`
 
 ## Service ports
@@ -180,7 +180,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
   "description": "monitor horizon organization",
   "services": [
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceUrl": "hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [
@@ -190,7 +190,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
       ]
     },
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceUrl": "hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [
@@ -200,7 +200,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
       ]
     },
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.hznmonitor",
+      "serviceUrl": "hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [
@@ -248,7 +248,7 @@ Create a `userinput.json` file containing the environment variables for each ser
  "services": [
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.hznmonitor",
+     "url": "hznmonitor",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { 
        "HZNMONITOR_EXCHANGE_URL": "http://exchange:3090/v1/",
@@ -323,7 +323,7 @@ Verify operation of device as node running pattern of services, for example:
 % hzn service list
 [
   {
-    "url": "com.github.dcmartin.open-horizon.hznmonitor",
+    "url": "hznmonitor",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.1",
     "arch": "amd64",

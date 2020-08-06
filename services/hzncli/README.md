@@ -5,28 +5,28 @@ This container may be run locally using Docker, pushed to a Docker registry, and
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_hzncli.svg)](https://microbadger.com/images/dcmartin/amd64_hzncli "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_hzncli.svg)](https://microbadger.com/images/dcmartin/amd64_hzncli "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_hzncli
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_hzncli.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_hzncli.svg)](https://microbadger.com/images/dcmartin/arm_hzncli "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_hzncli.svg)](https://microbadger.com/images/dcmartin/arm_hzncli "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.hzncli.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_hzncli
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_hzncli.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_hzncli.svg)](https://microbadger.com/images/dcmartin/arm64_hzncli "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_hzncli.svg)](https://microbadger.com/images/dcmartin/arm64_hzncli "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.hzncli.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_hzncli
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_hzncli.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -34,7 +34,7 @@ This container may be run locally using Docker, pushed to a Docker registry, and
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.hzncli`
++ `url` - `hzncli`
 + `version` - `0.0.3`
 
 ## Service variables
@@ -106,12 +106,12 @@ make test
 The output of the test:
 
 ```
->>> MAKE -- 11:15:37 -- testing container: hzncli; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli:0.0.3
-./test.sh "dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli:0.0.3"
+>>> MAKE -- 11:15:37 -- testing container: hzncli; tag: dcmartin/amd64_hzncli:0.0.3
+./test.sh "dcmartin/amd64_hzncli:0.0.3"
 --- INFO -- ./test.sh 55960 -- No host specified; assuming 127.0.0.1
 +++ WARN ./test.sh 55960 -- No port specified; assuming port 80
 +++ WARN ./test.sh 55960 -- No protocol specified; assuming http
---- INFO -- ./test.sh 55960 -- Testing hzncli in container tagged: dcmartin/amd64_com.github.dcmartin.open-horizon.hzncli:0.0.3 at Wed Apr 3 11:15:37 PDT 2019
+--- INFO -- ./test.sh 55960 -- Testing hzncli in container tagged: dcmartin/amd64_hzncli:0.0.3 at Wed Apr 3 11:15:37 PDT 2019
 {"hzncli":{"nodes":"null"},"date":"number","hzn":{"agreementid":"string","arch":"string","cpus":"number","device_id":"string","exchange_url":"string","host_ips":["string","string","string","string"],"organization":"string","ram":"number","pattern":"null"},"config":{"log_level":"string","debug":"boolean","period":"string","services":"null"},"service":{"label":"string","version":"string"}}
 !!! SUCCESS -- ./test.sh 55960 -- test /Volumes/dcmartin/GIT/master/open-horizon/hzncli/test-hzncli.sh returned true
 true
@@ -120,7 +120,7 @@ true
 The resulting status JSON file may also be inspected; it will be named (or something similar):
 
 ```
-test.amd64_com.github.dcmartin.open-horizon.hzncli:0.0.3.json
+test.amd64_hzncli:0.0.3.json
 ```
 
 ### Example `hzncli` status

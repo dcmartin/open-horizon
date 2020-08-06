@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "",
-      "url": "com.github.dcmartin.open-horizon.edgex",
+      "url": "edgex",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "EXPORT_DISTRO_CLIENT_HOST": "export-client",

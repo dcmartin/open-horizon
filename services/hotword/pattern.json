@@ -2,14 +2,14 @@
   "label": "hotword",
   "description": "hotword as a pattern",
   "services": [
-    { "serviceUrl": "com.github.dcmartin.open-horizon.hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.1" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.3" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.3" } ] },
-    { "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.3" } ] }
+    { "serviceUrl": "hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "hotword", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "noize", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.1" } ] },
+    { "serviceUrl": "mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.0.3" } ] },
+    { "serviceUrl": "mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.0.3" } ] },
+    { "serviceUrl": "mqtt2mqtt", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.0.3" } ] }
   ]
 }

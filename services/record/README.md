@@ -5,28 +5,28 @@ Monitors attached microphone and provides `arecord` functionality as micro-servi
 ## Status &#128679;
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.record "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.record "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_record.svg)](https://microbadger.com/images/dcmartin/amd64_record "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_record.svg)](https://microbadger.com/images/dcmartin/amd64_record "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.record
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.record.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_record
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_record.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.record "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.record "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_record.svg)](https://microbadger.com/images/dcmartin/arm_record "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_record.svg)](https://microbadger.com/images/dcmartin/arm_record "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.record
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.record.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_record
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_record.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.record "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.record.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.record "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_record.svg)](https://microbadger.com/images/dcmartin/arm64_record "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_record.svg)](https://microbadger.com/images/dcmartin/arm64_record "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.record
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.record.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_record
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_record.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -34,7 +34,7 @@ Monitors attached microphone and provides `arecord` functionality as micro-servi
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.record`
++ `url` - `record`
 + `version` - `0.0.1`
 
 ## Service variables

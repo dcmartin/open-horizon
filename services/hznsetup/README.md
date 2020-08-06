@@ -8,28 +8,28 @@ Configure new devices into Open Horizon nodes in the specified _organization_ an
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_hznsetup.svg)](https://microbadger.com/images/dcmartin/amd64_hznsetup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_hznsetup.svg)](https://microbadger.com/images/dcmartin/amd64_hznsetup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.hznsetup.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_hznsetup
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_hznsetup.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_hznsetup.svg)](https://microbadger.com/images/dcmartin/arm_hznsetup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_hznsetup.svg)](https://microbadger.com/images/dcmartin/arm_hznsetup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.hznsetup.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_hznsetup
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_hznsetup.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_hznsetup.svg)](https://microbadger.com/images/dcmartin/arm64_hznsetup "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_hznsetup.svg)](https://microbadger.com/images/dcmartin/arm64_hznsetup "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.hznsetup.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_hznsetup
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_hznsetup.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -37,7 +37,7 @@ Configure new devices into Open Horizon nodes in the specified _organization_ an
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.hznsetup`
++ `url` - `hznsetup`
 + `version` - `0.0.1`
 
 ## Service variables

@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+      "url": "mqtt2mqtt",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "MQTT_HOST": "mqtt",
@@ -22,7 +22,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "url": "mqtt",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "MQTT_PORT": 1883,
