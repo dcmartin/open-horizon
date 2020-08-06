@@ -26,7 +26,7 @@ source /usr/bin/service-tools.sh
 ## process JPEG image through FACE
 process_face()
 {
-  hzn.log.debug "${FUNCNAME[0]} ${*}"
+  hzn::log.debug "${FUNCNAME[0]} ${*}"
 
   local input_jpeg_file=${1}
   local face_json_file=$(face_process "${input_jpeg_file}")
@@ -38,7 +38,7 @@ process_face()
 ## process JSON motion event
 process_motion_event()
 {
-  hzn.log.debug "${FUNCNAME[0]} ${*}"
+  hzn::log.debug "${FUNCNAME[0]} ${*}"
 
   local payload="${1}"
   local config="${2}"
@@ -52,7 +52,7 @@ process_motion_event()
   # create service update
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
 
-  hzn.log.debug "Decoding image provided in motion event"
+  hzn::log.debug "Decoding image provided in motion event"
   jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
 
   # add event to service status
@@ -68,10 +68,10 @@ process_motion_event()
     jq -r '.image' "${face_json_file}" | base64 --decode > ${output_jpeg}
     if [ -s "${output_jpeg}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${FACE4MOTION_TOPIC_PAYLOAD%%/*}/face/${FACE_PATTERN:-all}"
-      hzn.log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
+      hzn::log.debug "Publishing JPEG; topic: ${topic}; JPEG: ${output_jpeg}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f ${output_jpeg}
     else
-      hzn.log.error "Zero-length output JPEG file"
+      hzn::log.error "Zero-length output JPEG file"
     fi
     rm -f "${output_jpeg}"
 
@@ -80,14 +80,14 @@ process_motion_event()
     # test for success
     if [ -s "${service_json_file}" ]; then
       local topic="${MOTION_GROUP}/${device}/${camera}/${FACE4MOTION_TOPIC_EVENT%%/*}/face/${FACE_PATTERN:-all}"
-      hzn.log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
+      hzn::log.debug "Publishing JSON; topic: ${topic}; JSON: ${service_json_file}"
       mosquitto_pub -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -f "${service_json_file}"
     else
-      hzn.log.error "Failed to add JSON: ${service_json_file} and ${face_json_file}"
+      hzn::log.error "Failed to add JSON: ${service_json_file} and ${face_json_file}"
     fi
 
   else
-    hzn.log.error "Zero-length output JSON file"
+    hzn::log.error "Zero-length output JSON file"
   fi
 
   # update service status
@@ -128,12 +128,12 @@ service_update "${SERVICE_JSON_FILE}"
 MOSQUITTO_ARGS="-h ${MQTT_HOST} -p ${MQTT_PORT}"
 if [ ! -z "${MQTT_USERNAME:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -u ${MQTT_USERNAME}"; fi
 if [ ! -z "${MQTT_PASSWORD:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -P ${MQTT_PASSWORD}"; fi
-hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVENT}"
+hzn::log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVENT}"
 
 ## announce service
 topic="service/$(service_label)/$(hostname -s)"
 message=$(echo "$(service_config)" | jq -c '.')
-hzn.log.notice "Announcing on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
+hzn::log.notice "Announcing on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
 mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -m "${message}"
 
 ## listen forever
@@ -141,7 +141,7 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVE
 
   # test for null
   if [ -z "${REPLY:-}" ]; then 
-    hzn.log.debug "Zero-length REPLY; continuing"
+    hzn::log.debug "Zero-length REPLY; continuing"
     continue
   else
     PAYLOAD=$(mktemp)
@@ -150,15 +150,15 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVE
     echo '}' >> "${PAYLOAD}"
   fi
   if [ ! -s "${PAYLOAD}" ]; then
-    hzn.log.debug "Invalid JSON; continuing; REPLY: ${REPLY}"
+    hzn::log.debug "Invalid JSON; continuing; REPLY: ${REPLY}"
     continue
   else
-    hzn.log.debug "Received JSON; bytes:" $(wc -c ${PAYLOAD} | awk '{ print $1 }')
+    hzn::log.debug "Received JSON; bytes:" $(wc -c ${PAYLOAD} | awk '{ print $1 }')
   fi
 
   # check for image
   if [ $(jq '.event.image!=null' ${PAYLOAD}) != 'true' ]; then
-    hzn.log.error "INVALID PAYLOAD: no image; payload: $(cat ${PAYLOAD})"
+    hzn::log.error "INVALID PAYLOAD: no image; payload: $(cat ${PAYLOAD})"
     continue
   fi
 
@@ -166,15 +166,15 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVE
   THISZONE=$(date +%Z)
   TIMESTAMP=$(jq -r '.event.timestamp.publish' "${PAYLOAD}")
   if [ "${TIMESTAMP:-null}" = 'null' ]; then
-    hzn.log.warn "INVALID PAYLOAD; no timestamp.publish: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
+    hzn::log.warn "INVALID PAYLOAD; no timestamp.publish: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
     TIMESTAMP=$(jq -r '.event.timestamp' "${PAYLOAD}")
     if [ "${TIMESTAMP:-null}" = 'null' ]; then
-      hzn.log.error "INVALID PAYLOAD; no event.timestamp: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
+      hzn::log.error "INVALID PAYLOAD; no event.timestamp: $(jq -c '.event.image=(.event.image!=null)' ${PAYLOAD})"
       continue
     fi
   fi
 
-  hzn.log.debug "Timezone: ${THISZONE}; Timestamp: ${TIMESTAMP}"
+  hzn::log.debug "Timezone: ${THISZONE}; Timestamp: ${TIMESTAMP}"
   THATDATE=$(echo "${TIMESTAMP}" | dateutils.dconv -z ${THISZONE} -f %s)
 
   # calculate ago and age
@@ -182,7 +182,7 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVE
 
   # test if too old
   if [ ${AGO} -gt ${FACE4MOTION_TOO_OLD} ]; then 
-    hzn.log.warn "Too old; ${AGO} > ${FACE4MOTION_TOO_OLD}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
+    hzn::log.warn "Too old; ${AGO} > ${FACE4MOTION_TOO_OLD}; continuing; PAYLOAD:" $(jq -c '.event.image=="redacted"' "${PAYLOAD}")
     continue
   fi
 
@@ -192,13 +192,13 @@ mosquitto_sub ${MOSQUITTO_ARGS} -t "${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVE
   DATE=$(jq -r '.event.date' "${PAYLOAD}")
 
   if [ -z "${DATE:-}" ] || [ "${DATE:-}" == 'null' ]; then
-    hzn.log.error "Bad date; continuing; PAYLOAD:" $(jq -c '.' "${PAYLOAD}")
+    hzn::log.error "Bad date; continuing; PAYLOAD:" $(jq -c '.' "${PAYLOAD}")
     continue
   elif [ -z "${device}" ] || [ -z "${camera}" ] || [ "${device}" == 'null' ] || [ "${camera}" == 'null' ]; then
-    hzn.log.error "Invalid device or camera; continuing; JSON:" $(jq -c '.' "${PAYLOAD}")
+    hzn::log.error "Invalid device or camera; continuing; JSON:" $(jq -c '.' "${PAYLOAD}")
     continue
   else
-    hzn.log.debug "Received event from device: ${device}; camera: ${camera}; AGO: ${AGO}"
+    hzn::log.debug "Received event from device: ${device}; camera: ${camera}; AGO: ${AGO}"
     DATE=$((DATE + AGO))
   fi
 

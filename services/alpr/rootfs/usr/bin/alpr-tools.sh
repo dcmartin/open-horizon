@@ -12,7 +12,7 @@ if [ -z "${ALPR_PERIOD:-}" ]; then ALPR_PERIOD=30; fi
 
 alpr_init() 
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   local names=$(find ${OPENALPR}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
   local countries
@@ -31,7 +31,7 @@ alpr_init()
 
 alpr_config()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   case ${1} in
     us)
@@ -47,21 +47,21 @@ alpr_config()
       ALPR_DATA="${OPENALPR_EU_DATA}"
     ;;
     *)
-      hzn.log.error "Invalid ALPR_COUNTRY: ${1}"
+      hzn::log.error "Invalid ALPR_COUNTRY: ${1}"
     ;;
   esac
   if [ ! -z "${ALPR_WEIGHTS:-}" ] && [ ! -s "${ALPR_WEIGHTS}" ]; then
-    hzn.log.debug "ALPR config: ${1}; updating ${ALPR_WEIGHTS} from ${OPENALPR_WEIGHTS}"
+    hzn::log.debug "ALPR config: ${1}; updating ${ALPR_WEIGHTS} from ${OPENALPR_WEIGHTS}"
     curl -fsSL ${OPENALPR_WEIGHTS} -o ${ALPR_WEIGHTS}
     if [ ! -s "${ALPR_WEIGHTS}" ]; then
-      hzn.log.error "ALPR config: ${1}; failed to download: ${OPENALPR_WEIGHTS}"
+      hzn::log.error "ALPR config: ${1}; failed to download: ${OPENALPR_WEIGHTS}"
     fi
   fi
 }
 
 alpr_process()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   local PAYLOAD="${1}"
   local ITERATION="${2:-}"
@@ -78,9 +78,9 @@ alpr_process()
   if [ ! -s "${PAYLOAD}" ]; then 
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    hzn.log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
+    hzn::log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
     MOCK="${MOCKS[${MOCK_INDEX}]}"
-    hzn.log.debug "MOCK image: ${MOCK}"
+    hzn::log.debug "MOCK image: ${MOCK}"
     cp -f "${MOCK}" ${PAYLOAD}
     # update output to be mock
     mock=${MOCK##*/}
@@ -92,7 +92,7 @@ alpr_process()
   else
     cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn::log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
@@ -104,7 +104,7 @@ alpr_process()
   local config='{"scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","pattern":"'${ALPR_PATTERN}'","cfg_file":"'${ALPR_CFG_FILE}'"}'
 
   ## do ALPR
-  hzn.log.debug "OPENALPR: alpr --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG}"
+  hzn::log.debug "OPENALPR: alpr --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG}"
   alpr --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${ALPR_TOPN} ${JPEG} > "${OUT}" 2> "${TMPDIR}/alpr.$$.out"
 
   # test for output
@@ -124,7 +124,7 @@ alpr_process()
       done
       if [ "${detected:-null}" != 'null' ]; then detected="${detected}"']'; fi
     fi
-    hzn.log.debug "DETECTED: ${detected}"
+    hzn::log.debug "DETECTED: ${detected}"
     # initiate output
     result=$(mktemp)
     echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'$(jq '.results' ${OUT})',"time":'${time_ms:-null}'}' \
@@ -146,7 +146,7 @@ alpr_process()
     rm -f "${JPEG}" "${OUT}" 
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
-    hzn.log.debug "alpr failed:" $(cat "${TMPDIR}/alpr.$$.out")
+    hzn::log.debug "alpr failed:" $(cat "${TMPDIR}/alpr.$$.out")
   fi
 
   echo "${result:-}"
@@ -182,7 +182,7 @@ alpr_annotate()
       output=${jpeg%%.*}-$((count+1)).jpg
       convert -font DejaVu-Sans-Mono -pointsize 24 -stroke ${colors[${count}]} -fill none -strokewidth 5 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} rotate 40 path 'M 10,0  l +15,+5  -5,-5  +5,-5  -15,+5  m +10,0 +20,0' translate 40,0 rotate -40 stroke none fill ${colors[${count}]} text 3,6 '${t}' pop graphic-context" ${file} ${output}
       if [ ! -s "${output}" ]; then
-        hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+        hzn::log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
         output=""
         break
       fi

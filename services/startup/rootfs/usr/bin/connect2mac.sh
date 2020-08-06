@@ -4,7 +4,7 @@ source /usr/bin/hzn-tools.sh
 
 scan4ble()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   T=$(mktemp -t "${FUNCNAME[0]}-XXXXXX")
   S=$(mktemp -t "${FUNCNAME[0]}-XXXXXX")
@@ -19,10 +19,10 @@ scan4ble()
 
 connect2macs()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   MACS=$(scan4ble ${1:-5})
-  hzn.log.info "Found MACS: ${MACS}"
+  hzn::log.info "Found MACS: ${MACS}"
   macs=$(echo "${MACS:-null}" | jq -r '.[]')
   for mac in ${macs}; do
     echo "${mac}"
@@ -34,7 +34,7 @@ connect2macs()
     sleep ${1:-5}
     U=$(cat ${T})
     rm -f ${T} ${S}
-    hzn.log.info "MAC: ${mac}; result: ${U}"
+    hzn::log.info "MAC: ${mac}; result: ${U}"
   done
 }
 

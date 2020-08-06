@@ -10,7 +10,7 @@ if [ -z "${FACE_PERIOD:-}" ]; then FACE_PERIOD=30; fi
 
 face_init() 
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   if [ -d "${OPENFACE}/runtime_data/config" ]; then
     local names=$(find ${OPENFACE}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
@@ -31,7 +31,7 @@ face_init()
 
 face_config()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   case ${1} in
     us)
@@ -47,21 +47,21 @@ face_config()
       FACE_DATA="${OPENFACE_EU_DATA}"
     ;;
     *)
-      hzn.log.info "Default configuration"
+      hzn::log.info "Default configuration"
     ;;
   esac
   if [ ! -z "${FACE_WEIGHTS:-}" ] && [ ! -s "${FACE_WEIGHTS}" ]; then
-    hzn.log.debug "FACE config: ${1}; updating ${FACE_WEIGHTS} from ${OPENFACE_WEIGHTS}"
+    hzn::log.debug "FACE config: ${1}; updating ${FACE_WEIGHTS} from ${OPENFACE_WEIGHTS}"
     curl -fsSL ${OPENFACE_WEIGHTS} -o ${FACE_WEIGHTS}
     if [ ! -s "${FACE_WEIGHTS}" ]; then
-      hzn.log.error "FACE config: ${1}; failed to download: ${OPENFACE_WEIGHTS}"
+      hzn::log.error "FACE config: ${1}; failed to download: ${OPENFACE_WEIGHTS}"
     fi
   fi
 }
 
 face_process()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   local PAYLOAD="${1}"
   local ITERATION="${2:-}"
@@ -78,9 +78,9 @@ face_process()
   if [ ! -s "${PAYLOAD}" ]; then 
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    hzn.log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
+    hzn::log.debug "MOCK index: ${MOCK_INDEX} of ${#MOCKS[@]}"
     MOCK="${MOCKS[${MOCK_INDEX}]}"
-    hzn.log.debug "MOCK image: ${MOCK}"
+    hzn::log.debug "MOCK image: ${MOCK}"
     cp -f "${MOCK}" ${PAYLOAD}
     # update output to be mock
     mock=${MOCK##*/}
@@ -92,7 +92,7 @@ face_process()
   else
     cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
+  hzn::log.debug "JPEG: ${JPEG}; size:" $(wc -c "${JPEG}" | awk '{ print $1 }')
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
@@ -104,7 +104,7 @@ face_process()
   local config='{"scale":"'${FACE_SCALE}'","threshold":"'${FACE_THRESHOLD}'"}'
 
   ## do FACE
-  hzn.log.debug "OPENFACE: face --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${FACE_THRESHOLD} ${JPEG}"
+  hzn::log.debug "OPENFACE: face --clock --json ${CFG_FILE} ${CONFIG} ${PATTERN} -n ${FACE_THRESHOLD} ${JPEG}"
   face ${JPEG} > "${OUT}" 2> "${TMPDIR}/face.$$.out"
 
   # test for output
@@ -113,7 +113,7 @@ face_process()
     local count=$(jq '.count' ${OUT})
     local detected=$(jq '[.results[].confidence]' ${OUT})
     
-    hzn.log.debug "${FUNCNAME[0]} - SECONDS: ${seconds}; COUNT: ${count}; DETECTED: ${detected}"
+    hzn::log.debug "${FUNCNAME[0]} - SECONDS: ${seconds}; COUNT: ${count}; DETECTED: ${detected}"
 
     # initiate output
     result=$(mktemp)
@@ -136,7 +136,7 @@ face_process()
     rm -f "${JPEG}" "${OUT}" 
   else
     echo "+++ WARN $0 $$ -- no output:" $(cat ${OUT}) &> /dev/stderr
-    hzn.log.debug "face failed:" $(cat "${TMPDIR}/face.$$.out")
+    hzn::log.debug "face failed:" $(cat "${TMPDIR}/face.$$.out")
   fi
 
   echo "${result:-}"
@@ -144,7 +144,7 @@ face_process()
 
 face_annotate()
 {
-  hzn.log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local json=${1}
   local jpeg=${2}
@@ -180,7 +180,7 @@ face_annotate()
         output=${jpeg%%.*}-$((i+1)).jpg
         convert -font DejaVu-Sans-Mono -pointsize 16 -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${right},${bottom} text 3,6 '${confidence}' pop graphic-context" ${file} ${output}
         if [ ! -s "${output}" ]; then
-          hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+          hzn::log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
           output=""
           break
         fi

@@ -204,16 +204,6 @@ yolo4motion::loop()
   rm -f ${sjf}
 }
 
-yolo4motion::options()
-{
-  hzn::log.trace "${FUNCNAME[0]} ${*}"
-  local config="${*}"
-  local result
-  local options=$(jq '.' ${options})
-
-  
-}
-
 ## main function
 yolo4motion::main()
 {
@@ -259,7 +249,7 @@ if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${T
 ## derived
 export YOLO4MOTION_TOPIC="${MOTION_GROUP}/${MOTION_CLIENT}/${YOLO4MOTION_CAMERA}"
 
-hzn::log.notice "Starting ${0} ${*}: ${SERVICE_LABEL:-null}"
+hzn::log.notice "Starting ${0} ${*}: ${SERVICE_LABEL:-null}; version: ${SERVICE_VERSION:-null}"
 
 yolo4motion::main ${*}
 

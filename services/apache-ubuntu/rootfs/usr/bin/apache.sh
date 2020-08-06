@@ -46,11 +46,11 @@ while [ true ]; do
     if [ "${DEBUG:-}" = true ]; then echo "+++ WARN -- $0 $$ -- no PID file defined" > /dev/stderr; fi
   fi
   # create output
-  hzn.log.debug "Requesting server status"
+  hzn::log.debug "Requesting server status"
   echo -n '{"pid":'${PID:-0}',"status":"' > ${OUTPUT_FILE}
   curl -fsSL "localhost:${APACHE_PORT}/server-status" | base64 -w 0 >> ${OUTPUT_FILE}
   echo '"}' >> ${OUTPUT_FILE}
-  hzn.log.debug "Updating service with " $(cat ${OUTPUT_FILE})
+  hzn::log.debug "Updating service with " $(cat ${OUTPUT_FILE})
   service_update ${OUTPUT_FILE}
   sleep ${APACHE_PERIOD:-30}
 

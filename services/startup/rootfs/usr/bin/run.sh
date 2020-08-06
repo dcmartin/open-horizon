@@ -9,7 +9,7 @@ source /usr/bin/hzn-tools.sh
 
 # initialize horizon
 if [ -z "$(hzn_init)" ]; then
-  hzn.log.error "horizon initilization failure; exiting"
+  hzn::log.error "horizon initilization failure; exiting"
   exit 1
 else
   export HZN=$(hzn_config)
@@ -22,14 +22,14 @@ if [ ! -z "${SERVICE_LABEL:-}" ]; then
     ${CMD} &
   fi
 else
-  hzn.log.warn "executable ${SERVICE_LABEL:-}.sh not found"
+  hzn::log.warn "executable ${SERVICE_LABEL:-}.sh not found"
 fi
 
 # port
 if [ -z "${SERVICE_PORT:-}" ]; then 
   SERVICE_PORT=80
 else
-  hzn.log.warn "using localhost port ${SERVICE_PORT}"
+  hzn::log.warn "using localhost port ${SERVICE_PORT}"
 fi
 
 # start listening

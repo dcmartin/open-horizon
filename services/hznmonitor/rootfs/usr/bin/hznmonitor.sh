@@ -18,31 +18,31 @@ source /usr/bin/apache-tools.sh
 
 mqtt_pub()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
-  if [ -z "${MQTT_DEVICE:-}" ]; then MQTT_DEVICE=$(hostname) && hzn.log.debug "MQTT_DEVICE unspecified; using hostname: ${MQTT_DEVICE}"; fi
+  if [ -z "${MQTT_DEVICE:-}" ]; then MQTT_DEVICE=$(hostname) && hzn::log.debug "MQTT_DEVICE unspecified; using hostname: ${MQTT_DEVICE}"; fi
   ARGS=${*}
   if [ ! -z "${ARGS}" ]; then
-    hzn.log.trace "got arguments: ${ARGS}"
+    hzn::log.trace "got arguments: ${ARGS}"
     if [ ! -z "${HZNMONITOR_MQTT_USERNAME}" ]; then
       ARGS='-u '"${HZNMONITOR_MQTT_USERNAME}"' '"${ARGS}"
-      hzn.log.trace "set username: ${ARGS}"
+      hzn::log.trace "set username: ${ARGS}"
     fi
     if [ ! -z "${HZNMONITOR_MQTT_PASSWORD}" ]; then
       ARGS='-P '"${HZNMONITOR_MQTT_PASSWORD}"' '"${ARGS}"
-      hzn.log.trace "set password: ${ARGS}"
+      hzn::log.trace "set password: ${ARGS}"
     fi
-    hzn.log.debug "publishing as ${MQTT_DEVICE} to ${HZNMONITOR_MQTT_HOST} port ${HZNMONITOR_MQTT_PORT} using arguments: ${ARGS}"
+    hzn::log.debug "publishing as ${MQTT_DEVICE} to ${HZNMONITOR_MQTT_HOST} port ${HZNMONITOR_MQTT_PORT} using arguments: ${ARGS}"
     mosquitto_pub -i "${MQTT_DEVICE}" -h "${HZNMONITOR_MQTT_HOST}" -p "${HZNMONITOR_MQTT_PORT}" ${ARGS}
   else
-    hzn.log.notice "nothing to send"
+    hzn::log.notice "nothing to send"
   fi
 }
 
 ## process a status payload from any conformant pattern/service
 hznmonitor_process_payload()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   NOW=$(date +%s)
   DEVICES="${*}"
@@ -57,7 +57,7 @@ hznmonitor_process_payload()
     ELAPSED=$((NOW-BEGIN))
 
     if [ ${ELAPSED} -ne 0 ]; then BPS=$(echo "${TOTAL_BYTES} / ${ELAPSED}" | bc -l); else BPS=1; fi
-    hzn.log.trace "### DATA $0 $$ -- received at: $(date +%T); bytes: ${BYTES}; total bytes: ${TOTAL_BYTES}; bytes/sec: ${BPS}"
+    hzn::log.trace "### DATA $0 $$ -- received at: $(date +%T); bytes: ${BYTES}; total bytes: ${TOTAL_BYTES}; bytes/sec: ${BPS}"
 
     # get payload generic
     DATE=$(jq -r '.date' ${PAYLOAD})
@@ -92,20 +92,20 @@ hznmonitor_process_payload()
 	    if [ $(jq '.cpu?!=null' ${PAYLOAD}) = true ]; then CPU=$(jq '.cpu' ${PAYLOAD}) && CPU_PERCENT=$(echo "${CPU}" | jq -r '.percent'); fi
 	    ;;
 	  *)
-	    hzn.log.warn "unknown service: ${DS}"
+	    hzn::log.warn "unknown service: ${DS}"
 	    ;; 
 	esac
       done
     fi
 
-    hzn.log.trace "device: ${ID:-undefined}; started: ${STARTED}; ips: [${HOST_IPS:-}]; download: ${WAN_DOWNLOAD:-undefined}; percent: ${CPU_PERCENT:-undefined}; product: ${HAL_PRODUCT:-undefined}"
+    hzn::log.trace "device: ${ID:-undefined}; started: ${STARTED}; ips: [${HOST_IPS:-}]; download: ${WAN_DOWNLOAD:-undefined}; percent: ${CPU_PERCENT:-undefined}; product: ${HAL_PRODUCT:-undefined}"
 
     # have we seen this before
     if [ ! -z "${ID:-}" ] && [ ! -z "${DEVICES:-}" ] && [ "${DEVICES}" != '[]' ]; then
-      hzn.log.trace "LOOKING FOR ${ID}"
+      hzn::log.trace "LOOKING FOR ${ID}"
       THIS=$(echo "${DEVICES}" | jq '.[]|select(.id=="'${ID}'")')
       if [ -z "${THIS}" ]; then
-        hzn.log.trace "DID NOT FIND ${ID}"
+        hzn::log.trace "DID NOT FIND ${ID}"
       fi
     fi
     if [ -z "${THIS}" ]; then
@@ -120,13 +120,13 @@ hznmonitor_process_payload()
     THAT=$(cat ${PAYLOAD} | hznmonitor_process_startup ${THIS}) && THIS="${THAT}"
 
     # send copy of payload
-    hzn.log.trace "sending payload to topic ${HZNMONITOR_MQTT_TOPIC}/payload"
+    hzn::log.trace "sending payload to topic ${HZNMONITOR_MQTT_TOPIC}/payload"
     mqtt_pub -t "${HZNMONITOR_MQTT_TOPIC}/payload" -f ${PAYLOAD}
 
     # remove payload
     rm -f ${PAYLOAD}
   else
-    hzn.log.trace  "received null payload:" $(date +%T)
+    hzn::log.trace  "received null payload:" $(date +%T)
     THIS=
   fi
   echo "${THIS:-}"
@@ -134,7 +134,7 @@ hznmonitor_process_payload()
 
 hznmonitor_process_startup()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   THIS="${*}"
   PAYLOAD=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
@@ -150,11 +150,11 @@ hznmonitor_process_startup()
 
   # process payload
   if [ $(jq '.startup.docker!=null' ${PAYLOAD}) = true ]; then
-    hzn.log.trace "${ID}: docker is true"
+    hzn::log.trace "${ID}: docker is true"
     CONTAINERS=$(jq '.startup.docker.containers|length' ${PAYLOAD})
     CONTAINERS_COUNT=$((CONTAINERS_COUNT+CONTAINERS))
   else
-    hzn.log.warn "${ID}: no docker output"
+    hzn::log.warn "${ID}: no docker output"
   fi
   # increment count of measurements
   COUNT=$(echo "${THIS}" | jq '.count') && CONTAINERS_AVERAGE=$((CONTAINERS_COUNT/COUNT))
@@ -179,17 +179,17 @@ hznmonitor_process_startup()
 ## update service
 hznmonitor_service_update()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
     # test for PID file
     if [ ! -z "${APACHE_PID_FILE:-}" ]; then
       if [ -s "${APACHE_PID_FILE}" ]; then
 	PID=$(cat ${APACHE_PID_FILE})
       else
-	hzn.log.warn "empty PID file: ${APACHE_PID_FILE}"
+	hzn::log.warn "empty PID file: ${APACHE_PID_FILE}"
       fi
     else
-      hzn.log.warn "no PID file defined"
+      hzn::log.warn "no PID file defined"
     fi
     # create output
     TEMP=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
@@ -202,7 +202,7 @@ hznmonitor_service_update()
 
 hznmonitor_poll()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   # globals
   DEVICES=
@@ -210,7 +210,7 @@ hznmonitor_poll()
   BEGIN=$(date +%s)
   TEMP=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
 
-  hzn.log.notice "listening: ${HZNMONITOR_KAFKA_TOPIC:-unspecified}; ${HZNMONITOR_KAFKA_APIKEY:-unspecified}; ${HZNMONITOR_KAFKA_BROKER:-unspecified}"
+  hzn::log.notice "listening: ${HZNMONITOR_KAFKA_TOPIC:-unspecified}; ${HZNMONITOR_KAFKA_APIKEY:-unspecified}; ${HZNMONITOR_KAFKA_BROKER:-unspecified}"
   kafkacat -E -u -C -q -o end -f "%s\n" -b "${HZNMONITOR_KAFKA_BROKER}" \
     -X "security.protocol=sasl_ssl" \
     -X "sasl.mechanisms=PLAIN" \
@@ -228,14 +228,14 @@ hznmonitor_poll()
 	ID=$(echo "${THIS}" | jq -r '.id')
 	THAT=$(echo "${DEVICES}" | jq '.[]|select(.id=="'${ID}'")')
 	if [ ! -z "${THAT}" ]; then
-	  hzn.log.trace "updating device ${ID}"
+	  hzn::log.trace "updating device ${ID}"
 	  DEVICES=$(echo "${DEVICES}" | jq '(.[]|select(.id=="'${ID}'"))|='"${THIS}")
 	else
-	  hzn.log.trace "adding device ${ID}"
+	  hzn::log.trace "adding device ${ID}"
 	  DEVICES=$(echo "${DEVICES}" | jq '.+=['"${THIS}"']')
 	fi
       else
-	hzn.log.warn "no existing devices"
+	hzn::log.warn "no existing devices"
 	DEVICES='['"${THIS}"']'
       fi 
 
@@ -266,7 +266,7 @@ hznmonitor_poll()
 ###
 
 ## initialize horizon
-hzn.log.notice "initializing horizon"
+hzn::log.notice "initializing horizon"
 hzn_init
 
 ## defaults
@@ -278,7 +278,7 @@ if [ -z "${APACHE_ADMIN:-}" ]; then export APACHE_ADMIN="${HZN_ORG_ID}"; fi
 CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","period":'${HZNMONITOR_PERIOD:-900}',"tmpdir":"'${TMPDIR}'", "logto":"'${LOGTO:-}'", "log_level":"'${LOG_LEVEL:-}'", "services":'"${SERVICES:-null}"', "debug":'${DEBUG:-true}', "org":"'${HZNMONITOR_EXCHANGE_ORG:-none}'", "exchange":"'${HZNMONITOR_EXCHANGE_URL:-none}'", "db":"'${HZNMONITOR_DB}'", "username":"'${HZNMONITOR_DB_USERNAME:-none}'", "apache":{"conf":"'${APACHE_CONF}'", "htdocs": "'${APACHE_HTDOCS}'", "cgibin": "'${APACHE_CGIBIN}'", "host": "'${APACHE_HOST}'", "port": "'${APACHE_PORT}'", "admin": "'${APACHE_ADMIN}'", "pidfile":"'${APACHE_PID_FILE:-none}'", "rundir":"'${APACHE_RUN_DIR:-none}'"}, "kafka":{"admin":"'${HZNMONITOR_KAFKA_ADMIN_URL:-unspecified}'", "broker":"'${HZNMONITOR_KAFKA_BROKER:-unspecified}'", "apikey":"'${HZNMONITOR_KAFKA_APIKEY:-unspecified}'", "topic":"'${HZNMONITOR_KAFKA_TOPIC:-unspecified}'"}, "mqtt":{"host":"'${HZNMONITOR_MQTT_HOST:-unspecified}'", "port":'${HZNMONITOR_MQTT_PORT:-1883}', "username":"'${HZNMONITOR_MQTT_USERNAME:-unspecified}'", "password":"'${HZNMONITOR_MQTT_PASSWORD:-unspecified}'", "topic":"'${HZNMONITOR_MQTT_TOPIC:-unspecified}'"}}'
 
 ## initialize service
-hzn.log.notice "initializing service" $(echo "${CONFIG}" | jq -c '.')
+hzn::log.notice "initializing service" $(echo "${CONFIG}" | jq -c '.')
 service_init ${CONFIG}
 
 ## setup environment for apache CGI scripts

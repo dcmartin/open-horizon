@@ -3,7 +3,7 @@
 ## START HTTPD
 apache_start()
 {
-  hzn.log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local PID=0
 
@@ -26,19 +26,19 @@ apache_start()
     # make /run/apache2 for PID file
     mkdir -p ${APACHE_RUN_DIR}
 
-    hzn.log.notice "Starting HTTP daemon"
+    hzn::log.notice "Starting HTTP daemon"
 
     # start HTTP daemon 
     apachectl -DFOREGROUND -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f ${APACHE_CONF} &
     PID=$!
 
-    hzn.log.notice "Started HTTP daemon; PID: ${PID}"
+    hzn::log.notice "Started HTTP daemon; PID: ${PID}"
 
     # store PID
     mkdir -p ${APACHE_PID_FILE%/*}
     echo "${PID}" > ${APACHE_PID_FILE}
   else
-    hzn.log.error "No configuration file: ${APACHE_CONF}"
+    hzn::log.error "No configuration file: ${APACHE_CONF}"
   fi
   echo "${PID:-0}"
 }

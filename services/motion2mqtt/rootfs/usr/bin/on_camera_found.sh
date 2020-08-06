@@ -16,7 +16,7 @@ source /usr/bin/motion-tools.sh
 ### MAIN
 ###
 
-hzn.log.trace "started program"
+hzn::log.trace "started program"
 
 CN="${1}"
 YR="${2}"
@@ -30,7 +30,7 @@ TS="${YR}${MO}${DY}${HR}${MN}${SC}"
 # get time
 NOW=$($dateconv -i '%Y%m%d%H%M%S' -f "%s" "$TS")
 
-hzn.log.debug "got timestamp: ${TS} and time: ${NOW}"
+hzn::log.debug "got timestamp: ${TS} and time: ${NOW}"
 
 MOTION_DEVICE=${MOTION_DEVICE:-$(hostname)}
 
@@ -43,4 +43,4 @@ mqtt_pub -q 2 -r -t "${MOTION_GROUP}/${MOTION_DEVICE}/${CN}/image" -f "/etc/moti
 # test pattern to `image-animated`
 mqtt_pub -q 2 -r -t "$MOTION_GROUP/$MOTION_DEVICE/$CN/image-animated" -f "/etc/motion/test.gif"
 
-hzn.log.trace "completed program"
+hzn::log.trace "completed program"

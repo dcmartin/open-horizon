@@ -16,13 +16,13 @@ if [ -z "${HZN_SETUP_ORG:-}" ]; then HZN_SETUP_ORG="${HZN_ORG_ID:-none}"; fi
 if [ -z "${HZN_SETUP_APIKEY:-}" ]; then HZN_SETUP_APIKEY="${HZN_EXCHANGE_APIKEY}"; fi
 if [ -z "${HZN_SETUP_APPROVE:-}" ]; then HZN_SETUP_APPROVE="auto"; fi
 if [ -z "${HZN_SETUP_DB:-}" ]; then HZN_SETUP_DB="https://515bed78-9ddc-408c-bf41-32502db2ddf8-bluemix.cloudant.com"; fi
-if [ -z "${HZN_SETUP_DB:-}" ]; then hzn.log.warn "no database"; fi
-if [ -z "${HZN_SETUP_USERNAME:-}" ]; then hzn.log.warn "no database username"; fi
-if [ -z "${HZN_SETUP_PASSWORD:-}" ]; then hzn.log.warn "no database password"; fi
-if [ -z "${HZN_SETUP_BASENAME:-}" ]; then hzn.log.info "no client basename"; fi
-if [ -z "${HZN_SETUP_PATTERN:-}" ]; then hzn.log.info "no initial pattern"; fi
-if [ -z "${HZN_SETUP_PORT:-}" ]; then HZN_SETUP_PORT=3093; hzn.log.info "using default port: ${HZN_SETUP_PORT}"; fi
-if [ -z "${HZN_SETUP_PERIOD:-}" ]; then HZN_SETUP_PERIOD=30; hzn.log.info "using default period: ${HZN_SETUP_PERIOD}"; fi
+if [ -z "${HZN_SETUP_DB:-}" ]; then hzn::log.warn "no database"; fi
+if [ -z "${HZN_SETUP_USERNAME:-}" ]; then hzn::log.warn "no database username"; fi
+if [ -z "${HZN_SETUP_PASSWORD:-}" ]; then hzn::log.warn "no database password"; fi
+if [ -z "${HZN_SETUP_BASENAME:-}" ]; then hzn::log.info "no client basename"; fi
+if [ -z "${HZN_SETUP_PATTERN:-}" ]; then hzn::log.info "no initial pattern"; fi
+if [ -z "${HZN_SETUP_PORT:-}" ]; then HZN_SETUP_PORT=3093; hzn::log.info "using default port: ${HZN_SETUP_PORT}"; fi
+if [ -z "${HZN_SETUP_PERIOD:-}" ]; then HZN_SETUP_PERIOD=30; hzn::log.info "using default period: ${HZN_SETUP_PERIOD}"; fi
 
 ## setup response script
 if [ -z "${HZN_SETUP_SCRIPT:-}" ]; then HZN_SETUP_SCRIPT="hznsetup-node.sh"; fi
@@ -51,23 +51,23 @@ service_update "${OUTPUT_FILE}"
 while true; do
   DATE=$(date +%s)
   # report in
-  hzn.log.info "checking socat; port ${HZN_SETUP_PORT:-NONE}; script: ${HZN_SETUP_SCRIPT:-NONE}"
+  hzn::log.info "checking socat; port ${HZN_SETUP_PORT:-NONE}; script: ${HZN_SETUP_SCRIPT:-NONE}"
   PID=$(ps x | egrep 'socat' | egrep "${HZN_SETUP_SCRIPT}" | awk '{ print $1 }' | head -1)
   if [ -z "${PID:-}" ]; then
-    hzn.log.info "starting socat; port ${HZN_SETUP_PORT:-NONE}; script: ${HZN_SETUP_SCRIPT:-NONE}"
+    hzn::log.info "starting socat; port ${HZN_SETUP_PORT:-NONE}; script: ${HZN_SETUP_SCRIPT:-NONE}"
     # start listening
     socat TCP4-LISTEN:${HZN_SETUP_PORT},fork EXEC:${HZN_SETUP_SCRIPT} &
     PID=$(ps x | egrep 'socat' | egrep "${HZN_SETUP_SCRIPT}" | awk '{ print $1 }' | head -1)
-    hzn.log.info "started socat; PID: ${PID}; port ${HZN_SETUP_PORT}"
+    hzn::log.info "started socat; PID: ${PID}; port ${HZN_SETUP_PORT}"
   else
     PS=$(ps x | egrep socat | egrep "${HZN_SETUP_SCRIPT}")
-    hzn.log.info "found ${HZN_SETUP_SCRIPT:-NONE}: ${PS}"
+    hzn::log.info "found ${HZN_SETUP_SCRIPT:-NONE}: ${PS}"
   fi
 
   if [ ! -z "${PID:-}" ]; then
-    hzn.log.debug "socat running; PID: ${PID}; port ${HZN_SETUP_PORT}"
+    hzn::log.debug "socat running; PID: ${PID}; port ${HZN_SETUP_PORT}"
   else
-    hzn.log.warn "socat failed; PID: ${PID}"
+    hzn::log.warn "socat failed; PID: ${PID}"
   fi
 
   # update service
@@ -77,7 +77,7 @@ while true; do
   # wait for ..
   SECONDS=$((HZN_SETUP_PERIOD - $(($(date +%s) - DATE))))
   if [ ${SECONDS} -gt 0 ]; then
-    hzn.log.debug "sleep ${SECONDS}"
+    hzn::log.debug "sleep ${SECONDS}"
     sleep ${SECONDS}
   fi
 

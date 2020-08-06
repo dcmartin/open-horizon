@@ -15,7 +15,7 @@ source /usr/bin/motion-tools.sh
 
 # on_motion_detected on_motion_detect.sh %$ %v %Y %m %d %H %M %S
 
-hzn.log.debug "$0 $$ - start"
+hzn::log.debug "$0 $$ - start"
 
 # get arguments
 CAMERA_NAME="${1}"
@@ -27,4 +27,4 @@ HOUR="${6}"
 MINUTE="${7}"
 SECOND="${8}"
 
-hzn.log.debug "$0 $$ - done"
+hzn::log.debug "$0 $$ - done"
