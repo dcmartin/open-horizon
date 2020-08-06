@@ -4,7 +4,7 @@ source /usr/bin/service-tools.sh
 
 service()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local RESPONSE_FILE=$(mktemp)
   local SIZ
@@ -12,7 +12,7 @@ service()
   hzn::service.output ${RESPONSE_FILE}
   SIZ=$(wc -c "${RESPONSE_FILE}" | awk '{ print $1 }')
 
-  bashio::log.trace "${FUNCNAME[0]}: HTTP RESPONSE: ${RESPONSE_FILE}; size: ${SIZ}"
+  hzn::log.trace "${FUNCNAME[0]}: HTTP RESPONSE: ${RESPONSE_FILE}; size: ${SIZ}"
 
   echo "HTTP/1.1 200 OK"
   echo "Content-Type: application/json; charset=ISO-8859-1"
@@ -27,7 +27,7 @@ service()
 ### MAIN
 ###
 
-bashio::log.notice "${0} ${*}"
+hzn::log.notice "${0} ${*}"
 
 # TMPDIR
 if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${TMPDIR:-/tmp}; fi

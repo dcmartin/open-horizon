@@ -6,7 +6,7 @@ source /usr/bin/hzn-tools.sh
 
 hzn::service.otherServices()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local OUTPUT=
   local CONFIG=$(hzn::service.config)
@@ -18,21 +18,21 @@ hzn::service.otherServices()
 
 hzn::service.label()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "${SERVICE_LABEL:-}"
 }
 
 hzn::service.version()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "${SERVICE_VERSION:-}"
 }
 
 hzn::service.port()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "${SERVICE_PORT:-0}"
 }
@@ -41,26 +41,26 @@ hzn::service.port()
 
 hzn::service.init()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local config="${*}"
   local file=$(hzn::service.config.file)
 
   if [ -s "${file}" ]; then
-    bashio::log.debug "${FUNCNAME[0]}: service re-initializing; file: ${file}"
+    hzn::log.debug "${FUNCNAME[0]}: service re-initializing; file: ${file}"
   fi
 
   if [ ! -z "${config}" ]; then
-    bashio::log.debug "${FUNCNAME[0]}: updating service configuration; file: ${file}; config: ${config}"
+    hzn::log.debug "${FUNCNAME[0]}: updating service configuration; file: ${file}; config: ${config}"
     echo "${config}" | jq -c '.' > ${file}
 
     if [ -s ${file} ]; then
-      bashio::log.debug "${FUNCNAME[0]}: service initialized; file: ${file}; config: ${config}"
+      hzn::log.debug "${FUNCNAME[0]}: service initialized; file: ${file}; config: ${config}"
     else
-      bashio::log.error "${FUNCNAME[0]}: invalid configuration; zero-length configuration file: ${file}; config: ${config}"
+      hzn::log.error "${FUNCNAME[0]}: invalid configuration; zero-length configuration file: ${file}; config: ${config}"
     fi
   else
-    bashio::log.error "${FUNCNAME[0]}: zero-length configuration"
+    hzn::log.error "${FUNCNAME[0]}: zero-length configuration"
   fi
 }
 
@@ -68,19 +68,19 @@ hzn::service.init()
 
 hzn::service.config.file()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
   echo "/var/run/horizon.$(hzn::service.label).config.json"
 }
 
 hzn::service.config()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local file=$(hzn::service.config.file)
   local config
 
   if [ ! -s ${file:-} ]; then
-    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL} has not been configured"
+    hzn::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL} has not been configured"
   else
     config=$(jq -c '.' ${file})
   fi
@@ -90,7 +90,7 @@ hzn::service.config()
 ## output
 hzn::service.output.otherServices()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local os=$(hzn::service.otherServices)
   local result=${1}
@@ -99,13 +99,13 @@ hzn::service.output.otherServices()
     local svcs=$(echo "${os:-null}" | jq -r '.[]|.name')
 
     if [ ${svcs:-null} != 'null' ]; then
-      bashio::log.debug "${FUNCNAME[0]}: processing other services: ${svcs}"
+      hzn::log.debug "${FUNCNAME[0]}: processing other services: ${svcs}"
       local file=$(mktemp)
       local output=$(mktemp)
 
       echo '{}' > "${result}"
       for S in ${svcs}; do
-        bashio::log.debug "${FUNCNAME[0]}: processing service: ${S}"
+        hzn::log.debug "${FUNCNAME[0]}: processing service: ${S}"
 
         local url=$(echo "${os}" | jq -r '.[]|select(.name=="'${S}'").url')
   
@@ -120,17 +120,17 @@ hzn::service.output.otherServices()
           echo '}' >> ${output}
           jq -s add "${output}" "${result}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
         else
-          bashio::log.warning "${FUNCNAME[0]}: no url; service: ${S}"
+          hzn::log.warning "${FUNCNAME[0]}: no url; service: ${S}"
         fi
       done
       # cleanup
       rm -f ${file}
       rm -f ${output}
     else
-      bashio::log.info "${FUNCNAME[0]}: no other service names"
+      hzn::log.info "${FUNCNAME[0]}: no other service names"
     fi
   else
-    bashio::log.info "${FUNCNAME[0]}: no other services"
+    hzn::log.info "${FUNCNAME[0]}: no other services"
   fi
   if [ -s "${result}" ]; then echo 0; else echo 1; fi
 }
@@ -138,7 +138,7 @@ hzn::service.output.otherServices()
 ## service output file
 hzn::service.output.file()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "/var/run/$(hzn::service.label).output.json"
 }
@@ -146,7 +146,7 @@ hzn::service.output.file()
 ## provide response in supplied file
 hzn::service.output()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local OUTPUT=${1:-}
   local HCF=$(mktemp).hcf
@@ -156,17 +156,17 @@ hzn::service.output()
 
   # get horizon config
   hzn::config > "${HCF}"
-  bashio::log.debug "${FUNCNAME[0]}: horizon configuration: ${HCF}:" $(jq -c '.' ${HCF})
+  hzn::log.debug "${FUNCNAME[0]}: horizon configuration: ${HCF}:" $(jq -c '.' ${HCF})
   # get service config
   hzn::service.config > "${SCF}"
-  bashio::log.debug "${FUNCNAME[0]}: service configuration: ${SCF}:" $(jq -c '.' ${SCF})
+  hzn::log.debug "${FUNCNAME[0]}: service configuration: ${SCF}:" $(jq -c '.' ${SCF})
 
   if [ -s "${HCF}" ] && [ -s "${SCF}" ]; then
     # add configurations together
     jq -s add "${HCF}" "${SCF}" > "${OUTPUT}"
-    bashio::log.debug "${FUNCNAME[0]}: merged configurations:" $(jq -c '.' ${OUTPUT})
+    hzn::log.debug "${FUNCNAME[0]}: merged configurations:" $(jq -c '.' ${OUTPUT})
   else
-    bashio::log.error "${FUNCNAME[0]}: missing configurations; horizon: $(jq -c '.' ${HCF}); service: $(jq -c '.' ${SCF})"
+    hzn::log.error "${FUNCNAME[0]}: missing configurations; horizon: $(jq -c '.' ${HCF}); service: $(jq -c '.' ${SCF})"
     echo '{}' > ${OUTPUT}
   fi
   rm -f ${HCF} ${SCF}
@@ -178,24 +178,24 @@ hzn::service.output()
     echo '{"'${SERVICE_LABEL:-}'":' > "${SOF}"
     cat ${file} >> "${SOF}"
     echo '}' >> "${SOF}"
-    bashio::log.debug "${FUNCNAME[0]}: ${SERVICE_LABEL}; output:" $(jq -c '.' ${SOF})
+    hzn::log.debug "${FUNCNAME[0]}: ${SERVICE_LABEL}; output:" $(jq -c '.' ${SOF})
   else
-    bashio::log.warning "${FUNCNAME[0]}: ${SERVICE_LABEL}; no output"
+    hzn::log.warning "${FUNCNAME[0]}: ${SERVICE_LABEL}; no output"
     echo '{}' > ${SOF}
   fi
  
   # get required services
   if [ $(hzn::service.output.otherServices ${RSOF}) != 0 ]; then
-    bashio::log.warning "${FUNCNAME[0]}: required services; no output"
+    hzn::log.warning "${FUNCNAME[0]}: required services; no output"
   else
     # add required services
     jq -s add "${RSOF}" "${SOF}" > "${SOF}.$$" \
       && \
       mv -f "${SOF}.$$" "${SOF}" \
       && \
-      bashio::log.debug "${FUNCNAME[0]}: added required services" \
+      hzn::log.debug "${FUNCNAME[0]}: added required services" \
       || \
-      bashio::log.error "${FUNCNAME[0]}: failed to add required services"
+      hzn::log.error "${FUNCNAME[0]}: failed to add required services"
   fi
 
   if [ -s "${SOF:-}" ]; then
@@ -204,11 +204,11 @@ hzn::service.output()
       && \
       mv -f "${OUTPUT}.$$" "${OUTPUT}" \
       && \
-      bashio::log.debug "${FUNCNAME[0]}: consolidated service output" \
+      hzn::log.debug "${FUNCNAME[0]}: consolidated service output" \
       || \
-      bashio::log.error "${FUNCNAME[0]}: failed to consolidate services"
+      hzn::log.error "${FUNCNAME[0]}: failed to consolidate services"
   else
-    bashio::log.warning "${FUNCNAME[0]}: no service output"
+    hzn::log.warning "${FUNCNAME[0]}: no service output"
   fi
 
   # cleanup
@@ -218,7 +218,7 @@ hzn::service.output()
 ## update service output
 hzn::service.update()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local input="${1:-}"
   local update=$(mktemp)
@@ -226,13 +226,13 @@ hzn::service.update()
   if [ -s "${input}" ]; then
     jq -c '.' ${input} > "${update}"
     if [ ! -s "${update}" ]; then
-      bashio::log.error "${FUNCNAME[@]}: invalid JSON:" $(cat "${input}")
+      hzn::log.error "${FUNCNAME[@]}: invalid JSON:" $(cat "${input}")
     else
-      bashio::log.debug "${FUNCNAME[0]}: success" $(wc -c "${update}")
+      hzn::log.debug "${FUNCNAME[0]}: success" $(wc -c "${update}")
     fi
   fi
   if [ ! -s "${update}" ]; then
-    bashio::log.warning "${FUNCNAME[0]}: no update; using timestamp and date only"
+    hzn::log.warning "${FUNCNAME[0]}: no update; using timestamp and date only"
     echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${update}"
   fi
   mv -f ${update} $(hzn::service.output.file)
