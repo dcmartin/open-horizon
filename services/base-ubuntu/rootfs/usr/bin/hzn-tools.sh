@@ -160,76 +160,73 @@ function hzn::option() {
 }
 
 function hzn::option.exists() {
-  bashio::config.exists() { ${*}
+  bashio::config.exists ${*}
 }
 
 function hzn::option.has_value() {
-  bashio::config.has_value() { ${*}
+  bashio::config.has_value ${*}
 }
 
 function hzn::option.is_empty() {
-  bashio::config.is_empty() { ${*}
+  bashio::config.is_empty ${*}
 }
 
 function hzn::option.equals() {
-  bashio::config.equals() { ${*}
+  bashio::config.equals ${*}
 }
 
 function hzn::option.true() {
-  bashio::config.true() { ${*}
+  bashio::config.true ${*}
 }
 
 function hzn::option.false() {
-  bashio::config.false() { ${*}
+  bashio::config.false ${*}
 }
 
 function hzn::option.is_safe_password() {
-  bashio::config.is_safe_password() { ${*}
+  bashio::config.is_safe_password ${*}
 }
 
 function hzn::option.require() {
-  bashio::config.require() { ${*}
+  bashio::config.require ${*}
 }
 
 function hzn::option.suggest() {
-  bashio::config.suggest() { ${*}
+  bashio::config.suggest ${*}
 }
 
 function hzn::option.suggest.true() {
-  bashio::config.suggest.true() { ${*}
+  bashio::config.suggest.true ${*}
 }
 
 function hzn::option.suggest.false() {
-  bashio::config.suggest.false() { ${*}
+  bashio::config.suggest.false ${*}
 }
 
 function hzn::option.require.username() {
-  bashio::config.require.username() { ${*}
+  bashio::config.require.username ${*}
 }
 
 function hzn::option.suggest.username() {
-  bashio::config.suggest.username() { ${*}
+  bashio::config.suggest.username ${*}
 }
 
 function hzn::option.require.password() {
-  bashio::config.require.password() { ${*}
+  bashio::config.require.password ${*}
 }
 
 function hzn::option.suggest.password() {
-  bashio::config.suggest.password() { ${*}
+  bashio::config.suggest.password ${*}
 }
 
 function hzn::option.require.safe_password() {
-  bashio::config.require.safe_password() { ${*}
+  bashio::config.require.safe_password ${*}
 }
 
 function hzn::option.suggest.safe_password() {
-  bashio::config.suggest.safe_password() { ${*}
+  bashio::config.suggest.safe_password ${*}
 }
 
 function hzn::option.require.ssl() {
-  bashio::config.require.ssl() { ${*}
+  bashio::config.require.ssl ${*}
 }
-
-
-
