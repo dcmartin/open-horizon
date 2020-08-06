@@ -98,71 +98,138 @@ function hzn::log.level()
   echo "${log_level}"
 }
 
-function hzn::log.red()
-{
+function hzn::log.red() {
   bashio::log.red ${*}
 }
 
-function hzn::log.green()
-{
+function hzn::log.green() {
   bashio::log.green ${*}
 }
 
-function hzn::log.yellow()
-{
+function hzn::log.yellow() {
   bashio::log.yellow ${*}
 }
 
-function hzn::log.blue()
-{
+function hzn::log.blue() {
   bashio::log.blue ${*}
 }
 
-function hzn::log.magenta()
-{
+function hzn::log.magenta() {
   bashio::log.magenta ${*}
 }
 
-function hzn::log.cyan()
-{
+function hzn::log.cyan() {
   bashio::log.cyan ${*}
 }
 
-function hzn::log()
-{
+function hzn::log() {
   bashio::log ${*}
 }
 
-function hzn::log.trace()
-{
+function hzn::log.trace() {
   bashio::log.trace ${*}
 }
-function hzn::log.debug()
-{ 
+function hzn::log.debug() { 
   bashio::log.debug ${*}
 }
 
-function hzn::log.info()
-{ 
+function hzn::log.info() { 
   bashio::log.info ${*}
 }
 
-function hzn::log.notice()
-{ 
+function hzn::log.notice() { 
   bashio::log.notice ${*}
 }
 
-function hzn::log.warning()
-{ 
+function hzn::log.warning() { 
   bashio::log.warning ${*}
 }
 
-function hzn::log.error()
-{ 
+function hzn::log.error() { 
   bashio::log.error ${*}
 }
 
-function hzn::log.fatal()
-{ 
+function hzn::log.fatal() { 
   bashio::log.fatal ${*}
 }
+
+## OPTIONS
+
+function hzn::option() {
+  bashio::config ${*}
+}
+
+function hzn::option.exists() {
+  bashio::config.exists() { ${*}
+}
+
+function hzn::option.has_value() {
+  bashio::config.has_value() { ${*}
+}
+
+function hzn::option.is_empty() {
+  bashio::config.is_empty() { ${*}
+}
+
+function hzn::option.equals() {
+  bashio::config.equals() { ${*}
+}
+
+function hzn::option.true() {
+  bashio::config.true() { ${*}
+}
+
+function hzn::option.false() {
+  bashio::config.false() { ${*}
+}
+
+function hzn::option.is_safe_password() {
+  bashio::config.is_safe_password() { ${*}
+}
+
+function hzn::option.require() {
+  bashio::config.require() { ${*}
+}
+
+function hzn::option.suggest() {
+  bashio::config.suggest() { ${*}
+}
+
+function hzn::option.suggest.true() {
+  bashio::config.suggest.true() { ${*}
+}
+
+function hzn::option.suggest.false() {
+  bashio::config.suggest.false() { ${*}
+}
+
+function hzn::option.require.username() {
+  bashio::config.require.username() { ${*}
+}
+
+function hzn::option.suggest.username() {
+  bashio::config.suggest.username() { ${*}
+}
+
+function hzn::option.require.password() {
+  bashio::config.require.password() { ${*}
+}
+
+function hzn::option.suggest.password() {
+  bashio::config.suggest.password() { ${*}
+}
+
+function hzn::option.require.safe_password() {
+  bashio::config.require.safe_password() { ${*}
+}
+
+function hzn::option.suggest.safe_password() {
+  bashio::config.suggest.safe_password() { ${*}
+}
+
+function hzn::option.require.ssl() {
+  bashio::config.require.ssl() { ${*}
+}
+
+
+

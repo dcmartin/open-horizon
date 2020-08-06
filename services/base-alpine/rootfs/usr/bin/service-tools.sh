@@ -34,7 +34,7 @@ hzn::service.port()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
-  echo "${SERVICE_PORT:-0}"
+  echo "${SERVICE_PORT:-80}"
 }
 
 ## initialization
