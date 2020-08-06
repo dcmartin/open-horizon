@@ -9,7 +9,7 @@ source /usr/bin/yolo-tools.sh
 
 yolo::loop()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local jpeg=$(mktemp).jpg
   local output=$(mktemp).json
@@ -26,16 +26,16 @@ yolo::loop()
   
       # get image from camera device
       fswebcam --device "${WEBCAM_DEVICE}" --no-banner "${jpeg}" &> /dev/null
-      if [ ! -s "${jpeg}" ]; then bashio::log.warning "${FUNCNAME[0]}: no image captured"; fi
+      if [ ! -s "${jpeg}" ]; then hzn::log.warning "${FUNCNAME[0]}: no image captured"; fi
   
       # process image payload into JSON
       if [ -z "${iteration:-}" ]; then iteration=0; else iteration=$((iteration+1)); fi
       yolo=$(yolo::process "${jpeg}" "${iteration}")
       if [ -s "${yolo}" ]; then
-        bashio::log.debug "${FUNCNAME[0]}: YOLO success; output: ${yolo}"
+        hzn::log.debug "${FUNCNAME[0]}: YOLO success; output: ${yolo}"
         jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) "${yolo}" > "${output}"
       else
-        bashio::log.warning "${FUNCNAME[0]}: no YOLO output"
+        hzn::log.warning "${FUNCNAME[0]}: no YOLO output"
         echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${output}"
       fi
   
@@ -45,7 +45,7 @@ yolo::loop()
       # wait for ..
       seconds=$((YOLO_PERIOD - $(($(date +%s) - DATE))))
       if [ ${seconds} -gt 0 ]; then
-        bashio::log.debug "${FUNCNAME[0]}: sleeping for ${seconds} seconds"
+        hzn::log.debug "${FUNCNAME[0]}: sleeping for ${seconds} seconds"
         sleep ${seconds}
       fi
   done
@@ -53,7 +53,7 @@ yolo::loop()
 
 yolo::main()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   ## initialize service
   local init=$(yolo::init ${YOLO_CONFIG:-tiny})
@@ -62,14 +62,14 @@ yolo::main()
     local config='{"log_level":"'${SERVICE_LOG_LEVEL:-}'", "timestamp":"'$(date -u +%FT%TZ)'", "date":'$(date +%s)',"'${SERVICE_LABEL}'":'${init}',"services":'"${SERVICES:-null}"'}'
 
     hzn::service.init "${config}"
-    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
+    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
 
-    bashio::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
+    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
     yolo::loop
-    bashio::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} exiting loop"
+    hzn::log.error "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} exiting loop"
 
   else
-    bashio::log.error "${FUNCNAME[0]}: YOLO did not initialize"
+    hzn::log.error "${FUNCNAME[0]}: YOLO did not initialize"
   fi
 }
 
@@ -81,7 +81,7 @@ yolo::main()
 if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${TMPDIR:-/tmp}; fi
 
 # test
-if [ -z "${DARKNET:-}" ]; then bashio::log.error "${0}: DARKNET unspecified; set environment variable for testing"; fi
+if [ -z "${DARKNET:-}" ]; then hzn::log.error "${0}: DARKNET unspecified; set environment variable for testing"; fi
 
 # defaults for testing
 if [ -z "${YOLO_PERIOD:-}" ]; then export YOLO_PERIOD=0; fi
@@ -95,7 +95,7 @@ if [ -z "${YOLO_WEIGHTS:-}" ]; then export YOLO_WEIGHTS=""; fi
 if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then export YOLO_WEIGHTS_URL=""; fi
 if [ -z "${YOLO_CONFIG}" ]; then export YOLO_CONFIG="tiny-v2"; fi
 
-bashio::log.notice "Starting ${0} ${*}"
+hzn::log.notice "Starting ${0} ${*}"
 
 yolo::main ${*}
 

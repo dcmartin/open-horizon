@@ -2,7 +2,7 @@
 
 yolo::init() 
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   ## configure YOLO
   local which=${1:-tiny-v2}
@@ -19,39 +19,39 @@ yolo::init()
   local NAMES
   local attempts=0
 
-  bashio::log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}; attempts: ${YOLO_ATTEMPTS:-2}"
+  hzn::log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}; attempts: ${YOLO_ATTEMPTS:-2}"
 
   while [ ${attempts} -le ${YOLO_ATTEMPTS:-2} ]; do
     if [ -s "${weights}" ]; then
       local md5=$(md5sum ${weights} | awk '{ print $1 }')
 
       if [ "${md5}" != "${weights_md5}" ]; then
-        bashio::log.warning "${FUNCNAME[0]}: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
+        hzn::log.warning "${FUNCNAME[0]}: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
         rm -f ${weights}
       else
-        bashio::log.info "${FUNCNAME[0]}: downloaded; model: ${which}; weights: ${weights}"
+        hzn::log.info "${FUNCNAME[0]}: downloaded; model: ${which}; weights: ${weights}"
         break
       fi
     fi
 
     # download
-    bashio::log.notice "${FUNCNAME[0]}: config: ${which}; downloading ${weights} from ${weights_url}"
+    hzn::log.notice "${FUNCNAME[0]}: config: ${which}; downloading ${weights} from ${weights_url}"
     curl -fsSL ${weights_url} -o ${weights}
     attempts=$((attempts+1))
   done
 
   if [ ! -s "${weights}" ]; then
-    bashio::log.warning "${FUNCNAME[0]}: YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:-tiny-v2}"
+    hzn::log.warning "${FUNCNAME[0]}: YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:-tiny-v2}"
     yolo::config ${YOLO_DEFAULT:-tiny-v2}
   fi
 
   # get namefile of entities that can be detected
   if [ -s "${namefile}" ]; then
-    bashio::log.debug "${FUNCNAME[0]}: model: ${which}; names: ${namefile}"
+    hzn::log.debug "${FUNCNAME[0]}: model: ${which}; names: ${namefile}"
     NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${namefile}" | sed 's|""|","|g')']'
   fi
   if [ -z "${NAMES:-}" ]; then 
-    bashio::log.warning "${FUNCNAME[0]}: NO NAMES; using 'person'; model: ${which}; names: ${namefile}"
+    hzn::log.warning "${FUNCNAME[0]}: NO NAMES; using 'person'; model: ${which}; names: ${namefile}"
     NAMES='["person"]'
   fi
 
@@ -61,7 +61,7 @@ yolo::init()
 
 yolo::config()
 {
-  bashio::log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   local model=${1:-tiny}
 
@@ -99,7 +99,7 @@ yolo::config()
       YOLO_NAMES="${DARKNET_V3_NAMES}"
     ;;
     *)
-      bashio::log.error "${FUNCNAME[0]}: unknown model: ${model}"
+      hzn::log.error "${FUNCNAME[0]}: unknown model: ${model}"
     ;;
   esac
   echo '{"threshold":'${YOLO_THRESHOLD:-}',"weights_url":"'${YOLO_WEIGHTS_URL:-}'","weights":"'${YOLO_WEIGHTS:-}'","weights_md5":"'${YOLO_WEIGHTS_MD5:-}'","cfg":"'${YOLO_CFG_FILE:-}'","data":"'${YOLO_DATA:-}'","names":"'${YOLO_NAMES:-}'"}'
@@ -107,7 +107,7 @@ yolo::config()
 
 yolo::process()
 {
-  bashio::log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
   local PAYLOAD="${1:-}"
   local ITERATION="${2:-}"
@@ -121,7 +121,7 @@ yolo::process()
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK=${MOCKS[${MOCK_INDEX}]}
-    bashio::log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
+    hzn::log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
     cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
     MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
   else
@@ -133,14 +133,14 @@ yolo::process()
     local err=$(mktemp)
     convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}" &> ${err}
     if [ ! -s ${JPEG} ]; then
-      bashio::log.error "${FUNCNAME[0]}: scale conversion failed; reverting to original; error: " $(cat err)
+      hzn::log.error "${FUNCNAME[0]}: scale conversion failed; reverting to original; error: " $(cat err)
       cp -f "${PAYLOAD}" "${JPEG}"
     fi
     rm -f ${err}
   else
     cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  bashio::log.debug "${FUNCNAME[0]}: PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
+  hzn::log.debug "${FUNCNAME[0]}: PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
@@ -153,27 +153,27 @@ yolo::process()
   local err=$(mktemp)
 
   ## TODO: Change to Detector3 to check use with gifs
-  bashio::log.debug "${FUNCNAME[0]}: OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
+  hzn::log.debug "${FUNCNAME[0]}: OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
   cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> ${err}
 
   local after=$(date +%s.%N)
   local seconds=$(echo "${after} - ${before}" | bc -l)
 
-  bashio::log.debug "${FUNCNAME[0]}: time: ${seconds}; output:" $(jq -c '.' ${OUT})
+  hzn::log.debug "${FUNCNAME[0]}: time: ${seconds}; output:" $(jq -c '.' ${OUT})
 
   # test for output
   if [ -s "${OUT}" ]; then
     local count=$(jq -r '.count' ${OUT})
     local results=$(jq '.results' ${OUT})
 
-    bashio::log.info "${FUNCNAME[0]}: COUNT: ${count}; RESULTS:" $(echo "${results}" | jq -c '.')
+    hzn::log.info "${FUNCNAME[0]}: COUNT: ${count}; RESULTS:" $(echo "${results}" | jq -c '.')
 
     if [ ! -z "${count:-}" ] && [ "${results:-null}" != 'null' ]; then
       local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-      bashio::log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
+      hzn::log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
     else
-      bashio::log.debug "${FUNCNAME[0]}: nothing seen"
+      hzn::log.debug "${FUNCNAME[0]}: nothing seen"
     fi
   
     # initiate output
@@ -196,7 +196,7 @@ yolo::process()
     fi
     rm -f "${JPEG}" "${OUT}"
   else
-    bashio::log.error "${FUNCNAME[0]}: yolo failed:" $(cat ${err})
+    hzn::log.error "${FUNCNAME[0]}: yolo failed:" $(cat ${err})
   fi
 
   echo "${result:-}"
@@ -204,7 +204,7 @@ yolo::process()
 
 yolo::annotate()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local json=${1}
   local jpeg=${2}
@@ -246,7 +246,7 @@ yolo::annotate()
         output=${jpeg%%.*}-$((i+1)).jpg
         convert -font DejaVu-Sans-Mono -pointsize ${pointsize} -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${left},$((top+pointsize/2)) text 3,6 '${display}' pop graphic-context" ${file} ${output}
         if [ ! -s "${output}" ]; then
-          bashio::log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+          hzn::log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
           output=""
           break
         fi
