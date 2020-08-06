@@ -3,13 +3,13 @@
   "label": "hotword",
   "description": "detect hotword from noize",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hotword/README.md",
-  "url": "com.github.dcmartin.open-horizon.hotword",
+  "url": "hotword",
   "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
+    { "url": "mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
     { "name": "NOIZE_GROUP", "label": "group for client", "type": "string", "defaultValue": "hotword" },
