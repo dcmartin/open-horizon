@@ -2,10 +2,11 @@
   "squash": false,
   "build_from": {
     "arm": "hassioaddons/ubuntu-base-armv7:5.2.1",
-    "armhf": "hassioaddons/ubuntu-base-armhf:5.2.1",
+    "armhf": "hassioaddons/ubuntu-base-armhf:2.3.1",
     "armv7": "hassioaddons/ubuntu-base-armv7:5.2.1",
     "aarch64": "hassioaddons/ubuntu-base-aarch64:5.2.1",
     "amd64": "hassioaddons/ubuntu-base-amd64:5.2.1",
+    "amd64_11.0": "hassioaddons/ubuntu-base-amd64:5.2.1",
     "i386": "hassioaddons/ubuntu-base-i386:5.2.1"
   },
   "args": {}

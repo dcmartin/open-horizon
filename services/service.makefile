@@ -4,7 +4,7 @@ BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 CUDA := $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
-BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}-${CUDA},${BUILD_ARCH})
+BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}_${CUDA},${BUILD_ARCH})
 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))

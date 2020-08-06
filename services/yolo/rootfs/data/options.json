@@ -1,5 +1,5 @@
 {
-  "log_level": "trace",
+  "log_level": "debug",
   "stage": "experimental",
   "version": "0.2.0",
   "slug": "yolo",

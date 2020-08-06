@@ -6,6 +6,7 @@
     "armhf": "${DOCKER_REPOSITORY}/armhf_com.github.dcmartin.open-horizon.apache-ubuntu:0.1.0",
     "i386": "${DOCKER_REPOSITORY}/i386_com.github.dcmartin.open-horizon.apache-ubuntu:0.1.0",
     "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.apache-ubuntu:0.1.0",
+    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0_com.github.dcmartin.open-horizon.apache-ubuntu:0.1.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.apache-ubuntu:0.1.0"
   },
   "args": {}
