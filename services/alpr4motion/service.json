@@ -27,9 +27,7 @@
     { "name": "ALPR_TOPN", "label": "", "type": "int", "defaultValue": "10" },
     { "name": "ALPR_SCALE", "label": "size WIDTHxHEIGHT for image", "type": "string", "defaultValue": "none" },
     { "name": "ALPR_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "10" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug true/false", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

@@ -25,9 +25,7 @@
     { "name": "HZNSETUP_MASTER", "label": "", "type": "string", "defaultValue": ""},
     { "name": "HZNSETUP_PORT", "label": "", "type": "int", "defaultValue": "3093" },
     { "name": "HZNSETUP_PERIOD", "label": "seconds between watchdog checks", "type": "int", "defaultValue": "30" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

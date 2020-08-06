@@ -27,9 +27,7 @@
     { "name": "HZNMONITOR_EXCHANGE_USER", "label": "exchange server", "type": "string", "defaultValue": "iamapikey" },
     { "name": "HZNMONITOR_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
     { "name": "HZNMONITOR_PERIOD", "label": "update interval", "type": "int", "defaultValue": "900" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

@@ -11,9 +11,7 @@
   "requiredServices": [],
   "userInput": [
     { "name": "BASE_PERIOD", "label": "periodicity", "type": "int", "defaultValue": "30" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
-    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

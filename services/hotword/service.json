@@ -16,9 +16,7 @@
     { "name": "NOIZE_CLIENT", "label": "client identifier within group", "type": "string", "defaultValue": "" },
     { "name": "HOTWORD_MODEL", "label": "hotword detection model", "type": "string", "defaultValue": "alexa" },
     { "name": "HOTWORD_MOCK", "label": "use mock data", "type": "boolean", "defaultValue": "false" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "logging output; default to /tmp/hotword.sh.log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

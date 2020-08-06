@@ -14,9 +14,7 @@
     { "name": "HZN_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "http://exchange:3090/v1" },
     { "name": "HZN_ORG_ID", "label": "exchange server", "type": "string", "defaultValue": "" },
     { "name": "HZN_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

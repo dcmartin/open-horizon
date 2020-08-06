@@ -25,9 +25,7 @@
     { "name": "NOIZE_INCLUDE_WAV", "label": "include audio", "type": "boolean", "defaultValue": "true" },
     { "name": "NOIZE_INCLUDE_PNG", "label": "include audio", "type": "boolean", "defaultValue": "true" },
     { "name": "NOIZE_MOCK", "label": "use mock data", "type": "boolean", "defaultValue": "true" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "logging output; default to /tmp/noize.sh.log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

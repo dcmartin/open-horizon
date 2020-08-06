@@ -24,9 +24,7 @@
     { "name": "FACE4MOTION_TOO_OLD", "label": "events too old; in seconds", "type": "int", "defaultValue": "300" },
     { "name": "FACE_THRESHOLD", "label": "minimum threshold percent", "type": "int", "defaultValue": "10" },
     { "name": "FACE_SCALE", "label": "size WIDTHxHEIGHT for image", "type": "string", "defaultValue": "none" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug true/false", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {

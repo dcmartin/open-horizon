@@ -25,9 +25,7 @@
     { "name": "MQTT_PORT", "label": "port number", "type": "int", "defaultValue": "1883" },
     { "name": "MQTT_USERNAME", "label": "username", "type": "string", "defaultValue": "" },
     { "name": "MQTT_PASSWORD", "label": "password", "type": "string", "defaultValue": "" },
-    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "true" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
