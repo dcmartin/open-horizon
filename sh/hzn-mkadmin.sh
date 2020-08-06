@@ -1,5 +1,26 @@
 #!/bin/bash
 
+if [ -z "${HZN_EXCHANGE_URL:-}" ]; then
+  HZN_EXCHANGE_URL="http://exchange:3090/v1"
+  if [ -s HZN_EXCHANGE_URL ]; then
+    HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL)
+  fi
+fi
+
+if [ -z "${HZN_EXCHANGE_APIKEY:-}" ]; then
+  HZN_EXCHANGE_APIKEY="whocares"
+  if [ -s HZN_EXCHANGE_APIKEY ]; then
+    HZN_EXCHANGE_APIKEY=$(cat HZN_EXCHANGE_APIKEY)
+  fi
+fi
+
+if [ -z "${HZN_ORG_ID:-}" ]; then
+  HZN_ORG_ID="${USER}"
+  if [ -s HZN_ORG_ID ]; then
+    HZN_ORG_ID=$(cat HZN_ORG_ID)
+  fi
+fi
+
 user="$1"
 org="${HZN_ORG_ID}"
 
