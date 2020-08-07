@@ -1,5 +1,5 @@
 {
-  "log_level": "info",
+  "log_level": "trace",
   "stage": "experimental",
   "version": "0.2.0",
   "slug": "base",
