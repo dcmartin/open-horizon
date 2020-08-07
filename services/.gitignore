@@ -2,5 +2,5 @@ yolov2.weights
 yolov3-tiny.weights
 yolov3.weights
 yolov2-tiny-voc.weights
-*/rootfs/data
+*/rootfs/data/options.json
 SERVICE_LOG_LEVEL
