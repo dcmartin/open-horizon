@@ -6,13 +6,14 @@ kafka_make_topic()
 {
   hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
-  topic=
-  if [ ! -z "${1:-}" ]; then 
-    topic='{"name":"'${1}'"}'
+  topic='{"name":"'${1}'"}'
+  if [ ! -z "${1:-}" ] && [ ! -z "${STARTUP_KAFKA_ADMIN_URL:-}; then 
     response=$(curl -sSL -H 'Content-Type: application/json' -H "X-Auth-Token: ${STARTUP_KAFKA_APIKEY:-}" "${STARTUP_KAFKA_ADMIN_URL:-}/admin/topics" -d "${topic}")
     if [ "$(echo "${response}" | jq '.errorCode!=null')" == 'true' ]; then
-      hzn::log.warn "topic: ${topic}; message:" $(echo "${response}" | jq -r '.errorMessage')
+      hzn::log.warn "${FUNCNAME[0]}: topic: ${topic}; message:" $(echo "${response}" | jq -r '.errorMessage')
     fi
+  else
+    hzn::log.warn "${FUNCNAME[0]}: no STARTUP_KAFKA_ADMIN_URL; assuming autocreate; topic: ${topic}"
   fi
   echo "${topic}"
 }
@@ -29,15 +30,18 @@ kafka_send_payload()
     jq -c '.' ${JSON} > ${PAYLOAD}
     hzn::log.debug "payload size:" $(wc -c ${PAYLOAD})
     if [ -s ${PAYLOAD} ]; then 
-      kafkacat "${PAYLOAD}" \
+
+#        -X api.version.request=true \
+#        -X security.protocol=sasl_ssl \
+#        -X sasl.mechanisms=PLAIN \
+#        -X sasl.username=${STARTUP_KAFKA_APIKEY:0:16}\
+#        -X sasl.password="${STARTUP_KAFKA_APIKEY:16}" \
+
+      kafkacat \
         -P \
         -b "${STARTUP_KAFKA_BROKER}" \
-        -X api.version.request=true \
-        -X security.protocol=sasl_ssl \
-        -X sasl.mechanisms=PLAIN \
-        -X sasl.username=${STARTUP_KAFKA_APIKEY:0:16}\
-        -X sasl.password="${STARTUP_KAFKA_APIKEY:16}" \
-        -t "${STARTUP_KAFKA_TOPIC}"
+        -t "${STARTUP_KAFKA_TOPIC}" \
+        "${PAYLOAD}"
       RESULT=$?
     else
       hzn::log.warn "zero-sized payload: ${PAYLOAD}"

@@ -211,12 +211,13 @@ hznmonitor_poll()
   TEMP=$(mktemp -t "${0##*/}-${FUNCNAME[0]}-XXXXXX")
 
   hzn::log.notice "listening: ${HZNMONITOR_KAFKA_TOPIC:-unspecified}; ${HZNMONITOR_KAFKA_APIKEY:-unspecified}; ${HZNMONITOR_KAFKA_BROKER:-unspecified}"
-  kafkacat -E -u -C -q -o end -f "%s\n" -b "${HZNMONITOR_KAFKA_BROKER}" \
-    -X "security.protocol=sasl_ssl" \
-    -X "sasl.mechanisms=PLAIN" \
-    -X "sasl.username=${HZNMONITOR_KAFKA_APIKEY:0:16}" \
-    -X "sasl.password=${HZNMONITOR_KAFKA_APIKEY:16}" \
-    -t "${HZNMONITOR_KAFKA_TOPIC}" | while read -r; do
+#    -X "security.protocol=sasl_ssl" \
+#    -X "sasl.mechanisms=PLAIN" \
+#    -X "sasl.username=${HZNMONITOR_KAFKA_APIKEY:0:16}" \
+#    -X "sasl.password=${HZNMONITOR_KAFKA_APIKEY:16}" \
+  kafkacat -E -u -C -q -o end -f "%s\n" -b "${HZNMONITOR_KAFKA_BROKER}" -t "${HZNMONITOR_KAFKA_TOPIC}" \
+    | \
+    while read -r; do
 
     # process payload into summary
     THIS=$(echo "${REPLY}" | hznmonitor_process_payload "${DEVICES}")
