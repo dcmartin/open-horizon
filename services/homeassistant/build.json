@@ -6,7 +6,6 @@
     "armhf": "homeassistant/home-assistant:stable",
     "i386": "homeassistant/home-assistant:stable",
     "amd64": "homeassistant/home-assistant:stable",
-    "amd64_11.0": "homeassistant/home-assistant:stable",
     "arm64": "homeassistant/home-assistant:stable"
   },
   "args": {}

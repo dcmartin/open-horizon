@@ -1,13 +1,11 @@
 {
   "squash": false,
   "build_from": {
-    "arm": "homeassistant/armv7-base:3.11",
-    "arm64": "homeassistant/aarch64-base:3.11",
-    "armhf": "homeassistant/armhf-base:3.11",
-    "armv7": "homeassistant/armv7-base:3.11",
-    "i386": "homeassistant/i386-base:3.11",
-    "amd64": "homeassistant/amd64-base:3.11",
-    "amd64_11.0": "homeassistant/amd64-base:3.11"
+    "arm64": "arm64v8/alpine:3.12.0",
+    "amd64": "amd64/alpine:3.12.0",
+    "armhf": "arm32v6/alpine:3.12.0",
+    "armv7": "arm32v7/alpine:3.12.0",
+    "i386": "i386/alpine:3.12.0"
   },
   "args": {}
 }

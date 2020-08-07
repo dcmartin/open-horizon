@@ -1,10 +1,9 @@
 ## ARCHITECTURE
-BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
+ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
-CUDA := $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
+CUDA ?= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
-BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}_${CUDA},${BUILD_ARCH})
 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))
@@ -27,7 +26,6 @@ GIT_REMOTE_URL=$(shell git remote get-url origin)
 ## HZN
 IBM ?= $(shell ibmcloud account show | egrep "Account Owner" | sed 's/.*:[ ]*\([^ ]*\) /\1/g')
 DIR ?= horizon
-TAG ?= $(if $(wildcard ../TAG),$(shell cat ../TAG),)
 
 ## SERVICE
 SERVICE_JSON := $(if $(wildcard service.json),service.json,"/dev/null")
@@ -41,16 +39,15 @@ DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_N
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
 SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),"UNKNOWN_SERVICE")
-SERVICE_NAME = $(if ${TAG},${SERVICE_LABEL}-${TAG},${SERVICE_LABEL})
+SERVICE_NAME = ${SERVICE_LABEL}
 SERVICE_VERSION = $(shell jq -r '.version' $(SERVICE_JSON) | envsubst)
 SERVICE_TAG = "${DOCKER_NAMESPACE}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
 SERVICE_URI := $(shell jq -r '.url' $(SERVICE_JSON) | envsubst)
-SERVICE_URL = $(if ${TAG},${SERVICE_URI}-${TAG},${SERVICE_URI})
+SERVICE_URL = ${SERVICE_URI}
 SERVICE_REQVARS := $(shell jq -r '.userInput[]|select(.defaultValue==null).name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_VARIABLES := $(shell jq -r '.userInput[].name' $(SERVICE_JSON) 2> /dev/null)
 SERVICE_LOG_LEVEL:= $(if $(wildcard SERVICE_LOG_LEVEL),$(shell cat SERVICE_LOG_LEVEL),$(shell jq -r '.userInput[]|select(.name=="SERVICE_LOG_LEVEL").defaultValue' $(SERVICE_JSON)))
 SERVICE_ARCH_SUPPORT := $(shell jq -r '.build_from|to_entries[]|select(.value!=null).key' build.json 2> /dev/null)
-SERVICE_BUILD_FROM := $(shell jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json 2> /dev/null)
 
 ## KEYS
 PRIVATE_KEY_FILE := $(if $(wildcard ../${HZN_ORG_ID}*.key),$(wildcard ../${HZN_ORG_ID}*.key),${HZN_ORG_ID}.key)
@@ -72,21 +69,24 @@ DOCKER_CONFIG := $(if $(wildcard ~/.docker/config.json),$(shell jq -r '.auths|to
 DOCKER_LOGIN ?= $(if $(DOCKER_CONFIG),$(shell echo $(DOCKER_CONFIG) | jq -r '.value.auth' | base64 --decode | awk -F: '${ print $1 }'),)
 DOCKER_PASSWORD ?= $(if $(DOCKER_CONFIG),$(shell echo $(DOCKER_CONFIG) | jq -r '.value.auth' | base64 --decode | awk -F: '${ print $2 }'),)
 DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
-DOCKER_TAG := $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
+DOCKER_TAG = $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
+
+## BUILD
+BUILD_BASE := $(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${ARCH}'").value' build.json | envsubst)
+BUILD_CUDA := $(if ${CUDA},$(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${ARCH}_${CUDA}'").value' build.json | envsubst),)
+BUILD_BASE := $(if ${BUILD_CUDA},${BUILD_CUDA},$(if ${BUILD_BASE},${BUILD_BASE},BUILD_BASE_NOT_FOUND))
+BUILD_ARCH := $(if ${BUILD_CUDA},${ARCH}_${CUDA},${ARCH})
+BUILD_ORG := $(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
+SAME_ORG := $(shell if [ $(BUILD_ORG) = $(DOCKER_REPOSITORY) ]; then echo ${DOCKER_REPOSITORY}; else echo ""; fi)
+BUILD_PKG := $(shell echo $(BUILD_BASE) | sed "s|.*/\([^:]*\):.*|\1|")
+BUILD_TAG := $(shell echo $(BUILD_BASE) | sed "s|.*/[^:]*:\(.*\)|\1|")
+BUILD_FROM = ${BUILD_BASE}
 
 ## ports
 DOCKER_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' $(SERVICE_JSON) | sed 's/\([0-9]*\).*/\1/' | sed 's/null//')
 SERVICE_PORT ?= $(shell jq -r '.deployment.services."'${SERVICE_LABEL}'".specific_ports?|first|.HostPort' $(SERVICE_JSON) | sed 's/[0-9]*[:]*\([0-9]*\).*/\1/' | sed 's/null//')
 SERVICE_PORT := $(if ${SERVICE_PORT},${SERVICE_PORT},$(if ${DOCKER_PORT},${DOCKER_PORT},80))
 DOCKER_PORT := $(if ${DOCKER_PORT},${DOCKER_PORT},$(shell echo "( $$$$ + 5000 ) % 32000 + 32000" | bc))
-
-## BUILD
-BUILD_BASE=$(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json | envsubst)
-BUILD_ORG=$(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
-SAME_ORG=$(shell if [ $(BUILD_ORG) = $(DOCKER_REPOSITORY) ]; then echo ${DOCKER_REPOSITORY}; else echo ""; fi)
-BUILD_PKG=$(shell echo $(BUILD_BASE) | sed "s|.*/\([^:]*\):.*|\1|")
-BUILD_TAG=$(shell echo $(BUILD_BASE) | sed "s|.*/[^:]*:\(.*\)|\1|")
-BUILD_FROM=$(if ${TAG},$(if ${SAME_ORG},${BUILD_ORG}/${BUILD_PKG}-${TAG}:${BUILD_TAG},${BUILD_BASE}),${BUILD_BASE})
 
 ## TEST
 TEST_JQ_FILTER ?= $(if $(wildcard TEST_JQ_FILTER),$(shell egrep -v '^\#' TEST_JQ_FILTER | head -1),".")
@@ -135,7 +135,7 @@ ${DIR}/service.definition.json: ${SERVICE_JSON}
 	@export HZN_ORG_ID=${HZN_ORG_ID} \
 	&& \
 	jq '.org="'${HZN_ORG_ID}'"|.label="'${SERVICE_LABEL}'"|.arch="'${BUILD_ARCH}'"|.url="'${SERVICE_URL}'"|.deployment.services=([.deployment.services|to_entries[]|select(.key=="'${SERVICE_LABEL}'")|.key="'${SERVICE_LABEL}'"|.value.image="'${DOCKER_TAG}'"]|from_entries)' $(SERVICE_JSON) | envsubst > ${DIR}/service.definition.json
-	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} TAG=${TAG} && ./sh/fixservice.sh ${DIR}
+	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && ./sh/fixservice.sh ${DIR}
 
 ${DIR}/userinput.json: userinput.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
@@ -144,11 +144,11 @@ ${DIR}/userinput.json: userinput.json
 
 ${DIR}/pattern.json: pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- $@""${NC}" > /dev/stderr
-	-@export HZN_ORG_ID=${HZN_ORG_ID} TAG=${TAG} && ./sh/fixpattern.sh ${DIR}
+	-@export HZN_ORG_ID=${HZN_ORG_ID} && ./sh/fixpattern.sh ${DIR}
 
 depend: $(APIKEY) ${DIR}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- fetching dependencies; service: ${SERVICE_LABEL}; dir: ${DIR}""${NC}" > /dev/stderr
-	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_ORG_ID=${HZN_ORG_ID} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} HZN_EXCHANGE_USERAUTH=${HZN_ORG_ID}/${HZN_USER_ID}:$(shell cat $(APIKEY)) TAG=${TAG} && ./sh/mkdepend.sh ${DIR}
+	@export HZN_USER_ID=${HZN_USER_ID} HZN_VERSION=${HZN_VERSION} HZN_ORG_ID=${HZN_ORG_ID} HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} HZN_EXCHANGE_USERAUTH=${HZN_ORG_ID}/${HZN_USER_ID}:$(shell cat $(APIKEY)) && ./sh/mkdepend.sh ${DIR}
 
 ##
 ## CONTAINERS
@@ -190,7 +190,7 @@ push: build # login
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
 	@if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^-]*-\(.*\)/\1/') ]; then \
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	else \
@@ -205,18 +205,18 @@ build-service: build
 service-build:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	done
 
 ## push
 
 push-service: 
-	@$(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
+	@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
 
 service-push: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pushing service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
+	  $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
 	done
 
 ## start & stop
@@ -254,7 +254,7 @@ TEST_OUTPUT = ./test.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.json
 service-test:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-test: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) DOCKER_PORT=$(DOCKER_PORT) SERVICE_PORT=$(SERVICE_PORT) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$(BUILD_ARCH)" test-service; \
+	  $(MAKE) DOCKER_PORT=$(DOCKER_PORT) SERVICE_PORT=$(SERVICE_PORT)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$(BUILD_ARCH)" test-service; \
 	done
 
 test-service: start-service test
@@ -270,7 +270,7 @@ test:
 service-publish: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-publish: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  BUILD_ARCH="$${arch}" $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) publish-service; \
+	  BUILD_ARCH="$${arch}" $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) publish-service; \
 	done
 
 publish-service: publish
@@ -288,7 +288,7 @@ publish: ${DIR} ${DIR}/service.definition.json $(APIKEY) $(KEYS)
 service-verify: 
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-verify : ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" verify-service; \
+	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" verify-service; \
 	done
 
 verify-service: verify
@@ -302,7 +302,7 @@ verify:$(APIKEY) $(KEYS)
 service-clean:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-clean: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" clean; \
+	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" clean; \
 	done
 
 exchange-clean: ${DIR}
