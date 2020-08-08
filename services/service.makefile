@@ -4,6 +4,13 @@ ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aar
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 CUDA ?= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
+UNAME := $(shell uname | tr "[:upper:]" "[:lower:]")
+
+ifeq ($(UNAME),darwin)
+MULTIARCH := true
+else
+MULTIARCH :=
+endif
 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))
@@ -191,11 +198,15 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	@if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\(.*\)/\1/') ]; then \
-	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ "${ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\(.*\)/\1/') ]; then \
+	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no architecture support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	else \
-	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
-        fi
+	  if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\(.*\)/\1/') ]; then \
+	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	  else \
+	    export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
+          fi; \
+	fi
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
@@ -205,7 +216,7 @@ build-service: build
 service-build:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	    $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	done
 
 ## push
