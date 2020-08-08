@@ -3,7 +3,7 @@
   "build_from": {
     "amd64_10.0": "nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04",
     "amd64_10.2": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04",
-    "amd64_11.0": "nvidia/cuda:11.0-cudnn7-devel-ubuntu18.04",
+    "amd64_11.0": "nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04",
     "amd64_9.2": "nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04",
     "amd64": "ubuntu:bionic-20200403",
     "arm64_10.0": "nvcr.io/nvidia/l4t-base:r32.3.1",
