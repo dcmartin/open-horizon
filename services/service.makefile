@@ -79,10 +79,8 @@ DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
 DOCKER_TAG = $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
 
 ## BUILD
-BUILD_BASE := $(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${ARCH}'").value' build.json | envsubst)
-BUILD_CUDA := $(if ${CUDA},$(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${ARCH}_${CUDA}'").value' build.json | envsubst),)
-BUILD_BASE := $(if ${BUILD_CUDA},${BUILD_CUDA},$(if ${BUILD_BASE},${BUILD_BASE},BUILD_BASE_NOT_FOUND))
-BUILD_ARCH := $(if ${BUILD_CUDA},${ARCH}_${CUDA},${ARCH})
+BUILD_ARCH ?= ${ARCH}
+BUILD_BASE := $(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json | envsubst)
 BUILD_ORG := $(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
 SAME_ORG := $(shell if [ $(BUILD_ORG) = $(DOCKER_REPOSITORY) ]; then echo ${DOCKER_REPOSITORY}; else echo ""; fi)
 BUILD_PKG := $(shell echo $(BUILD_BASE) | sed "s|.*/\([^:]*\):.*|\1|")
@@ -197,25 +195,26 @@ push: build # login
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ "${ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\(.*\)/\1/') ]; then \
-	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no architecture support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	@if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ "${ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/\([^_]*\)_.*/\1/') ]; then \
+	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}; not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	elif [ $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\([^_]*\).*/\1/') = '${BUILD_ARCH}' ]; then \
+	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: none""${NC}" > /dev/stderr; \
+	  export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
+	elif [ $(if ${CUDA},1,0) -eq 1 ] && [ '${CUDA}' = $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\([^_]*\).*/\1/') ]; then \
+	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
+	  export CUDA=${CUDA} GPU=1 DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
 	else \
-	  if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\(.*\)/\1/') ]; then \
-	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
-	  else \
-	    export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
-          fi; \
+	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; CUDA: ${CUDA}; not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	fi
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
-	-@export ID="${DOCKER_NAME}" && IMAGES=$$(mktemp) && docker images | egrep "$${ID}" > $${IMAGES} && COUNT=$$(cat $${IMAGES} | wc -l) && LATEST=$$(head -1 $${IMAGES} | awk '{ print $$2,$$3,$$4,$$5,$$6 }') && if [ -z "$${LATEST}" ]; then echo ">>> MAKE --" $$(date +%T) "-- failed; no image found; id: $${ID}"; else echo ">>> MAKE --" $$(date +%T) "-- built; $${COUNT} image(s) found; id: $${ID}; latest: $${LATEST}"; fi
+	-@export ID="${DOCKER_NAME}" && IMAGES=$$(mktemp) && docker images | egrep "$${ID}" > $${IMAGES} && COUNT=$$(cat $${IMAGES} | wc -l) && LATEST=$$(head -1 $${IMAGES} | awk '{ print $$2,$$3,$$4,$$5,$$6 }') && if [ -z "$${LATEST}" ]; then echo ">>> MAKE --" $$(date +%T) "-- failed; no image found; id: $${ID}"; else echo "${GREEN}"">>> MAKE --" $$(date +%T) "-- built; $${COUNT} image(s) found; id: $${ID}; latest: $${LATEST}""${NC}"; fi
 	-@if [ "$${DEBUG:-}" = 'true' ]; then if [ -s "${BUILD_OUT}" ]; then cat ${BUILD_OUT}; else echo ">>> MAKE --" $$(date +%T) "-- no output: ${BUILD_OUT}" > /dev/stderr; fi; fi
 
 service-build:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
-	@for arch in $(SERVICE_ARCH_SUPPORT); do \
+	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	    $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	done
 
