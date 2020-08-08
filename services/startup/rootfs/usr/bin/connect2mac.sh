@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bashio
+
 
 source /usr/bin/hzn-tools.sh
 
