@@ -196,7 +196,7 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	@if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ "${ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/\([^_]*\)_.*/\1/') ]; then \
-	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}; not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	  echo "${BLACK}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}; not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	elif [ $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\([^_]*\).*/\1/') = '${BUILD_ARCH}' ]; then \
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: none""${NC}" > /dev/stderr; \
 	  export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
@@ -204,7 +204,7 @@ build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
 	  export CUDA=${CUDA} GPU=1 DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
 	else \
-	  echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; CUDA: $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\([^_]*\).*/\1/'); not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	  echo "${BLACK}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; CUDA: $$(echo "${BUILD_ARCH}" | sed 's/[^_]*_\([^_]*\).*/\1/'); not supported; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	fi
 
 build-service: build
@@ -213,21 +213,27 @@ build-service: build
 	-@if [ "$${DEBUG:-}" = 'true' ]; then if [ -s "${BUILD_OUT}" ]; then cat ${BUILD_OUT}; else echo ">>> MAKE --" $$(date +%T) "-- no output: ${BUILD_OUT}" > /dev/stderr; fi; fi
 
 service-build:
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build; service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	    $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	done
 
 ## push
 
 push-service: 
-	@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
+	-@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
 
 service-push: 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pushing service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
-	@for arch in $(SERVICE_ARCH_SUPPORT); do \
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push; repository: ${DOCKER_REPOSITORY}; service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
+	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	  $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
-	done
+	done && \
+	  for arch in $(SERVICE_ARCH_SUPPORT); do \
+	    amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}_${SERVICE_URL}:${SERVICE_VERSION}"; \
+	  done \
+	    && echo "AMENDMENTS: $${amendments}" && \
+	    docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION} $${amendments} && \
+	    docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}
 
 ## start & stop
 
@@ -324,7 +330,7 @@ exchange-clean: ${DIR}
 ##
 
 pattern.json:
-	@echo "${RED}>>> MAKE --" $$(date +%T) "-- not a Pattern; no pattern.json; skipping""${NC}" > /dev/stderr
+	-@echo "${BLACK}>>> MAKE --" $$(date +%T) "-- not a Pattern; no pattern.json; skipping""${NC}" > /dev/stderr
 
 pattern-publish: ${DIR} ${APIKEY} pattern.json ${DIR}/pattern.json
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- pattern-publish: ${SERVICE_NAME}; organization: ${HZN_ORG_ID}; exchange: ${HZN_EXCHANGE_URL}""${NC}" > /dev/stderr
@@ -379,7 +385,7 @@ nodes-undo:
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- unregistering $${machine}" "${NC}"; \
 	  ping -W 1 -c 1 $${machine} > /dev/null \
 	    && export HZN_EXCHANGE_URL=${HZN_EXCHANGE_URL} && ssh $${machine} 'hzn unregister -fr > ~/undo.log &' \
-	    || echo "${RED}>>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
+	    || echo "${BLACK}>>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
 	done
 
 nodes-clean: nodes-undo
@@ -388,7 +394,7 @@ nodes-clean: nodes-undo
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- cleaning $${machine}" "${NC}"; \
 	  ping -W 1 -c 1 $${machine} > /dev/null \
 	    && ssh $${machine} 'IDS=$$(docker ps --format "{{.ID}}") && if [ ! -z "$${IDS}" ]; then docker rm -f $${IDS}; fi || docker system prune -fa > ~/prune.log &' \
-	    || echo "${RED}>>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
+	    || echo "${BLACK}>>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
 	done
 
 nodes-purge: # nodes-undo nodes-clean
@@ -397,7 +403,7 @@ nodes-purge: # nodes-undo nodes-clean
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- purging $${machine}" "${NC}" > /dev/stderr; \
 	  ping -W 1 -c 1 $${machine} > /dev/null \
 	    && ssh $${machine} 'docker system prune -fa && sudo apt-get remove -y bluehorizon horizon horizon-cli > ~/remove.log || sudo apt-get purge -y bluehorizon horizon horizon-cli > ~/purge.log &' \
-	    || echo "${RED}"">>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
+	    || echo "${BLACK}"">>> MAKE **" $$(date +%T) "** not found $${machine}""${NC}" > /dev/stderr; \
 	done
 
 ##

@@ -7,8 +7,7 @@
     "arm64": "${DOCKER_REPOSITORY}/arm64_yolo:0.2.0",
     "arm64_10.2": "${DOCKER_REPOSITORY}/arm64_10.2_yolo:0.2.0",
     "arm64_11.0": "${DOCKER_REPOSITORY}/arm64_11.0_yolo:0.2.0",
-    "arm": "${DOCKER_REPOSITORY}/arm_yolo:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7_yolo:0.2.0"
+    "arm": "${DOCKER_REPOSITORY}/arm_yolo:0.2.0"
   },
   "args": {}
 }

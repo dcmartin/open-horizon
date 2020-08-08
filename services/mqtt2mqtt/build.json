@@ -2,7 +2,6 @@
   "squash": false,
   "build_from": { 
     "arm": "${DOCKER_REPOSITORY}/arm_base-alpine:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7_base-alpine:0.2.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_base-alpine:0.2.0",
     "amd64": "${DOCKER_REPOSITORY}/amd64_base-alpine:0.2.0"
   },

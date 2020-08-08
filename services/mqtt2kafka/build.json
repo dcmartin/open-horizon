@@ -2,7 +2,6 @@
   "squash": false,
   "build_from": {
     "arm": "${DOCKER_REPOSITORY}/arm_base-ubuntu:0.1.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7_base-ubuntu:0.1.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_base-ubuntu:0.1.0",
     "amd64": "${DOCKER_REPOSITORY}/amd64_base-ubuntu:0.1.0"
   },

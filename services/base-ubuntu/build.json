@@ -7,8 +7,7 @@
     "arm64": "arm64v8/ubuntu:bionic-20200403",
     "arm64_10.2": "nvcr.io/nvidia/l4t-base:r32.4.2",
     "arm64_11.0": "nvcr.io/nvidia/l4t-base:r32.4.2",
-    "arm": "arm32v7/ubuntu:bionic-20200403",
-    "armv7": "arm32v7/ubuntu:bionic-20200403"
+    "arm": "arm32v7/ubuntu:bionic-20200403"
   },
   "args": {}
 }

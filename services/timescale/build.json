@@ -3,8 +3,7 @@
   "build_from": { 
     "amd64": "${DOCKER_REPOSITORY}/amd64_base-ubuntu:0.2.0",
     "arm": "${DOCKER_REPOSITORY}/arm_base-ubuntu:0.2.0",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_base-ubuntu:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7_base-ubuntu:0.2.0"
+    "arm64": "${DOCKER_REPOSITORY}/arm64_base-ubuntu:0.2.0"
   },
   "args": {}
 }
