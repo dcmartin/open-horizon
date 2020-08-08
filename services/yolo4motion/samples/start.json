@@ -1,0 +1,78 @@
+{
+  "config": {
+    "timestamp": "2020-05-18T18:14:21Z",
+    "log_level": "info",
+    "debug": false,
+    "group": "motion",
+    "client": "+",
+    "camera": "+",
+    "event": "event/end",
+    "old": 300,
+    "payload": "image/end",
+    "topic": "motion/+/+",
+    "services": [
+      {
+        "name": "mqtt",
+        "url": "http://mqtt"
+      }
+    ],
+    "mqtt": {
+      "host": "192.168.1.50",
+      "port": 1883,
+      "username": "username",
+      "password": "password"
+    },
+    "yolo": {
+      "log_level": "info",
+      "debug": false,
+      "timestamp": "2020-05-18T18:14:22Z",
+      "date": 1589825662,
+      "period": 60,
+      "entity": "all",
+      "scale": "none",
+      "config": "tiny",
+      "services": [
+        {
+          "name": "mqtt",
+          "url": "http://mqtt"
+        }
+      ],
+      "darknet": {
+        "threshold": 0.25,
+        "weights_url": "http://pjreddie.com/media/files/yolov2-tiny-voc.weights",
+        "weights": "/openyolo/darknet/yolov2-tiny-voc.weights",
+        "weights_md5": "fca33deaff44dec1750a34df42d2807e",
+        "cfg": "/openyolo/darknet/cfg/yolov2-tiny-voc.cfg",
+        "data": "/openyolo/darknet/cfg/voc.data",
+        "names": "/openyolo/darknet/data/voc.names"
+      },
+      "names": [
+        "aeroplane",
+        "bicycle",
+        "bird",
+        "boat",
+        "bottle",
+        "bus",
+        "car",
+        "cat",
+        "chair",
+        "cow",
+        "diningtable",
+        "dog",
+        "horse",
+        "motorbike",
+        "person",
+        "pottedplant",
+        "sheep",
+        "sofa",
+        "train",
+        "tvmonitor"
+      ]
+    }
+  },
+  "service": {
+    "label": "yolo4motion",
+    "version": "0.1.2",
+    "port": 0
+  }
+}
