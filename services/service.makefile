@@ -194,6 +194,7 @@ push: build # login
 BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
 	@export CUDA=${CUDA} GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
 
 
@@ -221,13 +222,21 @@ service-build:
 
 ## push
 
-push-service: 
-	-@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
-
-service-push: 
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push; repository: ${DOCKER_REPOSITORY}; service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
-	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
+service-push:
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push; service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
+	@for arch in $(SERVICE_ARCH_SUPPORT); do \
+	  if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ '${ARCH}' != $$(echo "$${arch}" | sed 's/\([^_]*\)_.*/\1/') ]; then \
+	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; architecture: $${arch}; not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    continue; \
+	  elif [ $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') = "$${arch}" ]; then \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: none""${NC}" > /dev/stderr; \
+	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ '${CUDA}' = $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') ]; then \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
+	  else \
+	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; CUDA: $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/'); not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    continue; \
+	  fi; \
+	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
 	done
 	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	    amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}_${SERVICE_URL}:${SERVICE_VERSION}"; \
@@ -235,6 +244,9 @@ service-push:
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push; manifest: ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr && \
 	    docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION} $${amendments} && \
 	    docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}
+
+push-service: 
+	-@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
 
 ## start & stop
 
