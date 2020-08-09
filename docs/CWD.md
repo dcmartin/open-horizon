@@ -6,7 +6,7 @@ An introductory video series called _Coding with Dave_ is on YouTube:
 1.|From the Top|[&#128250;](https://youtu.be/38-FrQCajPg)
 1.|Make A Little|[&#128250;](https://youtu.be/qrYhJ9jNcOA)
 3.|Node Control|[&#128250;](https://youtu.be/TpS4xQN6WUE)
-4.|Make (lots of) Nodes|[&#128250;](https://youtu.be/865nI-0gDY)
+4.|Make (lots of) Nodes|[&#128250;](https://youtu.be/8_65nI-0gDY)
 5.|Machine debugging|[&#128250;](https://youtu.be/tLjk4blTLbQ)
 6.|YOLO4motion time-lapse study|[&#128250;](https://youtu.be/7PS1hM8GTjg)
 7.|**BYO** OpenHorizon _exchange_|[&#128250;](https://youtu.be/yfOGy3YjLuw)
