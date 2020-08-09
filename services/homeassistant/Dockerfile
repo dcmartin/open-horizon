@@ -29,7 +29,7 @@ LABEL \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="homeassistant" \
     org.label-schema.description="home-assistant" \ 
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/homeassistant/" \ 
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/homeassistant/" \ 
     org.label-schema.vcs-ref="${BUILD_REF}" \ 
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

@@ -36,8 +36,8 @@ LABEL \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="alpr" \
-    org.label-schema.description="alpr listening to MQTT" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/alpr4motion/" \
+    org.label-schema.description="ALPR listening to MQTT" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/alpr4motion/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

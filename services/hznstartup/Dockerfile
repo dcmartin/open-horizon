@@ -35,9 +35,9 @@ LABEL \
     org.label-schema.schema-version="1.0" \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
-    org.label-schema.name="apache4startup" \
-    org.label-schema.description="Apache Web server for the startup service/pattern" \ 
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/apache4startup/" \ 
+    org.label-schema.name="hznstartup" \
+    org.label-schema.description="Horizon startup service" \ 
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/hznstartup/" \ 
     org.label-schema.vcs-ref="${BUILD_REF}" \ 
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"
