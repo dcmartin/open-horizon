@@ -229,7 +229,7 @@ service-push:
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; architecture: $${arch}; not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	    continue; \
 	  elif [ $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') = "$${arch}" ]; then \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: none""${NC}" > /dev/stderr; \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr; \
 	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ '${CUDA}' = $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
 	  else \
