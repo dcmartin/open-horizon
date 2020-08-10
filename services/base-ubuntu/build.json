@@ -1,18 +1,13 @@
 {
   "squash": false,
   "build_from": {
-    "amd64_10.0": "nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04",
+    "amd64": "ubuntu:bionic-20200403",
     "amd64_10.2": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04",
     "amd64_11.0": "nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04",
-    "amd64_9.2": "nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04",
-    "amd64": "ubuntu:bionic-20200403",
-    "arm64_10.0": "nvcr.io/nvidia/l4t-base:r32.3.1",
+    "arm64": "arm64v8/ubuntu:bionic-20200403",
     "arm64_10.2": "nvcr.io/nvidia/l4t-base:r32.4.2",
     "arm64_11.0": "nvcr.io/nvidia/l4t-base:r32.4.2",
-    "arm64": "arm64v8/ubuntu:bionic-20200403",
-    "arm": "arm32v7/ubuntu:bionic-20200403",
-    "armv7": "arm32v7/ubuntu:bionic-20200403",
-    "i386": "i386/ubuntu:bionic-20200403"
+    "arm": "arm32v7/ubuntu:bionic-20200403"
   },
   "args": {}
 }

@@ -6,7 +6,7 @@
 if bashio::supervisor.ping; then
     bashio::log.blue \
         '-----------------------------------------------------------'
-    bashio::log.blue " Hass.io Add-on: $(bashio::addon.name)"
+    bashio::log.blue " Add-on: $(bashio::addon.name)"
     bashio::log.blue " $(bashio::addon.description)"
     bashio::log.blue \
         '-----------------------------------------------------------'

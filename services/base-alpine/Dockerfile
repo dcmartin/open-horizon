@@ -103,8 +103,8 @@ LABEL \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.name="base-alpine" \
-    org.label-schema.description="base alpine container" \ 
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/base-alpine/" \ 
+    org.label-schema.description="Base container for Alpine" \ 
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/base-alpine/" \ 
     org.label-schema.vcs-ref="${BUILD_REF}" \ 
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

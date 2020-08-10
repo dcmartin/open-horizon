@@ -3,7 +3,7 @@
   "label": "mqtt2kafka",
   "description": "Route traffic from MQTT to Kafka",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt2kafka/README.md",
-  "url": "mqtt2kafka",
+  "url": "com.github.dcmartin.open-horizon.mqtt2kafka",
   "version": "0.2.0",
   "arch": null,
   "public": false,

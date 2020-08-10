@@ -1,12 +1,9 @@
 {
   "squash": false,
   "build_from": { 
-    "arm": "${DOCKER_REPOSITORY}/arm_apache-alpine:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7_apache-alpine:0.2.0",
-    "armhf": "${DOCKER_REPOSITORY}/armhf_apache-alpine:0.2.0",
-    "i386": "${DOCKER_REPOSITORY}/i386_apache-alpine:0.2.0",
-    "amd64": "${DOCKER_REPOSITORY}/amd64_apache-alpine:0.2.0",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_apache-alpine:0.2.0"
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.apache-alpine:0.2.0",
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.apache-alpine:0.2.0",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.apache-alpine:0.2.0"
   },
   "args": {}
 }
