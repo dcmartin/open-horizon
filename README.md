@@ -2,7 +2,7 @@
 
 # `open-horizon`  _edge fabric_ services & patterns
 
-This [repository][repository] contains [Open Horizon](http://github.com/open-horizon) services and patterns, including:
+This [repository][repository] contains [Open Horizon](https://www.lfedge.org/projects/openhorizon/) services and patterns, including:
 
 + [`yolo4motion`](services/yolo4motion/README.md) - A service to process MQTT messages through the **[OpenYOLO](https://github.com/dcmartin/openyolo/)** object detector and classifier
 + [`alpr4motion`](services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
