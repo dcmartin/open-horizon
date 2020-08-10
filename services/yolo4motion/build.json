@@ -5,7 +5,7 @@
     "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0_com.github.dcmartin.open-horizon.yolo:0.2.0",
     "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.yolo:0.2.0",
     "arm64_10.2": "${DOCKER_REPOSITORY}/arm64_10.2_com.github.dcmartin.open-horizon.yolo:0.2.0",
-    "arm": "${DOCKER_REPOSITORY}/arm_yolo:0.2.0"
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.yolo:0.2.0"
   },
   "args": {}
 }

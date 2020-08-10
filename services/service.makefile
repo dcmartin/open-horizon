@@ -224,26 +224,31 @@ service-build:
 
 service-push:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push; service: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
-	@for arch in $(SERVICE_ARCH_SUPPORT); do \
+	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	  if [ $(if ${MULTIARCH},1,0) -eq 0 ] && [ '${ARCH}' != $$(echo "$${arch}" | sed 's/\([^_]*\)_.*/\1/') ]; then \
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; architecture: $${arch}; not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	    continue; \
 	  elif [ $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') = "$${arch}" ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr; \
+	    arches="$${arches:-} $${arch}"; \
 	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ '${CUDA}' = $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
+	    arches="$${arches:-} $${arch}"; \
 	  else \
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; CUDA: $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/'); not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	    continue; \
 	  fi; \
 	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
-	done
-	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
+	done \
+	&& \
+	for arch in ${SERVICE_ARCH_SUPPORT}; do \
 	    amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}_${SERVICE_URL}:${SERVICE_VERSION}"; \
-	  done && \
-	    echo "${IC}>>> MAKE --" $$(date +%T) "-- service-push; manifest: ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr && \
-	    docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION} $${amendments} && \
-	    docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}
+	done; \
+	echo "${IC}>>> MAKE --" $$(date +%T) "-- service-push; manifest: ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr; \
+	docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION} $${amendments} && \
+	docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}
+
+#	for arch in $${arches:-}; do \
 
 push-service: 
 	-@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
