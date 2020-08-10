@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
-## START HTTPD
-apache_start()
+apache::start()
 {
-  if [ -s "${APACHE_CONF}" ]; then
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
+
+  local PID=0
+
+  if [ -s "${APACHE_CONF:-}" ]; then
     # edit defaults
     sed -i 's|^Listen \(.*\)|Listen '${APACHE_PORT}'|' "${APACHE_CONF}"
     sed -i 's|^ServerName \(.*\)|ServerName '"${APACHE_HOST}:${APACHE_PORT}"'|' "${APACHE_CONF}"
@@ -17,13 +20,28 @@ apache_start()
       eval=$(eval "echo \$$evar") 
       echo "SetEnv ${evar} ${eval}"  >> "${APACHE_CONF}"
     done
+    # make log directory
+    mkdir -p ${APACHE_LOG_DIR:-/var/www/logs}
     # make /run/apache2 for PID file
     mkdir -p ${APACHE_RUN_DIR}
+
     # start HTTP daemon 
-    httpd -E /dev/stderr -e ${LOG_LEVEL:-debug} -f "${APACHE_CONF}" &
-    PID=$!
+    if [ ! -z "$(command -v apachectl)" ]; then
+      apachectl -DFOREGROUND -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f ${APACHE_CONF} &
+      PID=$!
+    else
+      httpd -E /dev/stderr -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f "${APACHE_CONF}" &
+      PID=$!
+    fi
+
+
+    hzn::log.debug "${FUNCNAME[0]}: started HTTP daemon; PID: ${PID}"
+
+    # store PID
+    mkdir -p ${APACHE_PID_FILE%/*}
+    echo "${PID}" > ${APACHE_PID_FILE}
   else
-    if [ "${DEBUG:-}" = true ]; then echo "+++ WARN -- $0 $$ -- no configuration: ${APACHE_CONF}" > /dev/stderr; fi
+    hzn::log.error "${FUNCNAME[0]}: no configuration file: ${APACHE_CONF:-}"
   fi
   echo "${PID:-0}"
 }
