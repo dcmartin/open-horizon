@@ -241,7 +241,7 @@ service-push:
 	-@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	    amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}_${SERVICE_URL}:${SERVICE_VERSION}"; \
 	  done && \
-	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-push; manifest: ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr && \
+	    echo "${IC}>>> MAKE --" $$(date +%T) "-- service-push; manifest: ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr && \
 	    docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION} $${amendments} && \
 	    docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_URL}:${SERVICE_VERSION}
 
@@ -472,6 +472,7 @@ MC=${LIGHT_CYAN}
 TB=${LIGHT_RED}
 TG=${LIGHT_GREEN}
 WC=${YELLOW}
+IC=${PURPLE}
 NC=${NO_COLOR}
 
 NO_COLOR=\033[0m
