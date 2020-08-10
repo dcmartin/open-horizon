@@ -26,8 +26,14 @@ apache::start()
     mkdir -p ${APACHE_RUN_DIR}
 
     # start HTTP daemon 
-    apachectl -DFOREGROUND -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f ${APACHE_CONF:-} &
-    PID=$!
+    if [ ! -z "$(command -v apachectl)" ]; then
+      apachectl -DFOREGROUND -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f ${APACHE_CONF} &
+      PID=$!
+    else
+      httpd -E /dev/stderr -E /dev/stderr -e ${APACHE_LOG_LEVEL:-info} -f "${APACHE_CONF}" &
+      PID=$!
+    fi
+
 
     hzn::log.debug "${FUNCNAME[0]}: started HTTP daemon; PID: ${PID}"
 
