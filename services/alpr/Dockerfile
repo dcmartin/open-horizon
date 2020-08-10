@@ -23,6 +23,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
   jq \
   bc \
   software-properties-common \
+  cmake \
+  build-essential \
   git
 
 RUN add-apt-repository ppa:alex-p/tesseract-ocr && apt update -qq -y
@@ -31,8 +33,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install -qq -y --no-install-recommends \
   libopencv-dev \
   libtesseract-dev \
-  cmake \
-  build-essential \
   libleptonica-dev
 
 RUN DEBIAN_FRONTEND=noninteractive \
