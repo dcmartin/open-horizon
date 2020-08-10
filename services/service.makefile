@@ -2,8 +2,8 @@
 ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
-CUDA ?= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
-CUDA ?= $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
+NVER:= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
+CUDA ?= $(if ${NVER},$(shell echo "${NVER}" | awk '{ print $$2 }'),)
 UNAME := $(shell uname | tr "[:upper:]" "[:lower:]")
 
 ifeq ($(UNAME),darwin)
@@ -79,7 +79,8 @@ DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
 DOCKER_TAG = $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
 
 ## BUILD
-BUILD_ARCH ?= $(if ${CUDA},${ARCH}_${CUDA},${ARCH})
+#BUILD_ARCH ?= $(if ${CUDA},$(shell echo '${ARCH}_${CUDA}'),${ARCH})
+BUILD_ARCH ?= ${ARCH}
 BUILD_BASE := $(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json | envsubst)
 BUILD_ORG := $(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
 SAME_ORG := $(shell if [ $(BUILD_ORG) = $(DOCKER_REPOSITORY) ]; then echo ${DOCKER_REPOSITORY}; else echo ""; fi)
@@ -195,7 +196,7 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
-	@export CUDA=${CUDA} DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$(if ${CUDA},1,0) --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}
+	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
 
 
 build-service: build
@@ -210,16 +211,14 @@ service-build:
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architecture: $${arch}; not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	    continue; \
 	  elif [ $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') = "$${arch}" ]; then \
-	    export cuda=''; \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr; \
 	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ '${CUDA}' = $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/') ]; then \
-	    export cuda=$$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/'); \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; from: ${BUILD_FROM}; tag: ${DOCKER_TAG}; CUDA: ${CUDA}""${NC}" > /dev/stderr; \
 	  else \
 	    echo "${WC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; CUDA: $$(echo "$${arch}" | sed 's/[^_]*_\([^_]*\).*/\1/'); not supported; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	    continue; \
 	  fi; \
-	  $(MAKE) CUDA=$${cuda} HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  $(MAKE) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	done
 
 ## push
@@ -442,12 +441,12 @@ css-test: css-get css-put
 
 # get the data sent by the container (default: model)
 css-get:
-	@export OID=$$(hostname) HZN_EXCHANGE_APIKEY=${APIKEY} HZN_ORG_ID=${HZN_ORG_ID} && OID=$${OID%%.*} \
+	export OID=$$(hostname) HZN_EXCHANGE_APIKEY=${APIKEY} HZN_ORG_ID=${HZN_ORG_ID} && OID=$${OID%%.*} \
 	  && ./sh/css-get.sh $${OID} ${CSS_OBJECT_GET} ${CSS_SERVICE} $${OID}.json
 
 # send data back to the container
 css-put: css-get
-	@export OID=$$(hostname) HZN_EXCHANGE_APIKEY=${APIKEY} HZN_ORG_ID=${HZN_ORG_ID} && OID=$${OID%%.*} && jq '.config|.hostkey="'$$(base64 ${SERVICE_LABEL})'"' $${OID}.json \
+	export OID=$$(hostname) HZN_EXCHANGE_APIKEY=${APIKEY} HZN_ORG_ID=${HZN_ORG_ID} && OID=$${OID%%.*} && jq '.config|.hostkey="'$$(base64 ${SERVICE_LABEL})'"' $${OID}.json \
 	  | ./sh/css-put.sh $${OID} ${CSS_OBJECT_PUT} ${CSS_SERVICE}
 
 ##
