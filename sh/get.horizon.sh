@@ -53,7 +53,9 @@ install_linux()
   # LINUX specifics
   local arch=$(dpkg --print-architecture)
   local platform=$(lsb_release -a 2> /dev/null | egrep 'Distributor ID:' | awk '{ print $3 }' | tr '[:upper:]' '[:lower:]')
+  if [ "${platform}" = 'ubuntu' ]; then platform='debian'; fi
   local dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
+  if [ "${dist}" = 'focal' ]; then dist='buster'; fi
   local repo=http://pkg.bluehorizon.network/linux
   local dir=pool/main/h/horizon
   local  packages=()
@@ -80,7 +82,9 @@ install_linux()
       if [ ! -s ${p}.deb ]; then
         if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
         package=${dir}/${p}
-        curl -sSL ${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb -o ${p}.deb &> /dev/stderr
+        deb=${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb
+        echo "Downloading ${deb} into ${p}.deb ..." &> /dev/stderr
+        curl -sSL "${deb}" -o ${p}.deb &> /dev/stderr
       fi
       echo "Installing ${p} ..." &> /dev/stderr
       dpkg --force-all -i ${p}.deb &> /dev/stderr
