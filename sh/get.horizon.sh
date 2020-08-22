@@ -62,7 +62,7 @@ install_linux()
 
   case ${type:-cli} in
     all)
-      packages=(horizon-cli horizon bluehorizon)
+      packages=(horizon-cli horizon)
       ;;
     cli)
       packages=(horizon-cli)
@@ -74,13 +74,13 @@ install_linux()
   esac
   
   if [ ! -z "$(command -v hzn)" ]; then
-    echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge bluehorizon horizon horizon-cli"' &> /dev/stderr
+    echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge '${packages}'"' &> /dev/stderr
   else
     # download packages
     for p in ${packages[@]}; do
       echo "Downloading ${p} ..." &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
-        if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
+        dep=${arch}
         package=${dir}/${p}
         deb=${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb
         echo "Downloading ${deb} into ${p}.deb ..." &> /dev/stderr
@@ -92,17 +92,10 @@ install_linux()
   fi
   result=$(update_defaults)
   if [ "${result:-1}" -eq 0 ]; then 
-    linux_start
+    agent_start
   fi
 
   echo ${result:-0}
-}
-
-linux_start()
-{
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
-
-  systemctl restart horizon
 }
 
 ## DARWIN
@@ -149,12 +142,12 @@ install_darwin()
     echo "Unable to download certificate; URL: ${crt}" &> /dev/stderr
   fi
   if [ "${result:-1}" -eq 0 ]; then
-    darwin_start
+    agent_start
   fi
   echo ${result:-1}
 }
 
-darwin_start()
+agent_start()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
