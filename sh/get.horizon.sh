@@ -55,7 +55,7 @@ install_linux()
   local platform=$(lsb_release -a 2> /dev/null | egrep 'Distributor ID:' | awk '{ print $3 }' | tr '[:upper:]' '[:lower:]')
   if [ "${platform}" = 'ubuntu' ]; then platform='debian'; fi
   local dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
-  if [ "${dist}" = 'focal' ]; then dist='buster'; fi
+  if [ "${dist}" = 'focal' ] || [ "${dist}" = 'bionic' ]; then dist='buster'; fi
   local repo=http://pkg.bluehorizon.network/linux
   local dir=pool/main/h/horizon
   local  packages=()
@@ -282,5 +282,5 @@ if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z 
     echo 'Success'
   fi
 else
-  echo 'USAGE: '${0}' [all|cli]'
+  echo 'USAGE: HZN_EXCHANGE_URL=http://exchange:3090/v1 '${0}' [all|cli]'
 fi
