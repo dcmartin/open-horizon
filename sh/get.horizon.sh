@@ -271,6 +271,8 @@ if [ -s "${CONFIG:-}" ]; then
   else
     HZN_AGENT_VERSION="${VER}"
   fi
+else
+  echo "WARNING: configuration file not found; file: ${CONFIG}" &> /dev/stderr
 fi
 
 if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z "${HZN_AGENT_VERSION:-}" ]; then
