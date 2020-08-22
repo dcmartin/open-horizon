@@ -152,7 +152,7 @@ agent_start()
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
   if [ -z "$(command -v socat)" ]; then
-    echo 'WARNING: install "socat"' &> /dev/stderr
+    echo 'WARNING: not installed: socat' &> /dev/stderr
   fi
 
   if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
