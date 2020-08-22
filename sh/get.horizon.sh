@@ -151,16 +151,19 @@ agent_start()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
 
+  if [ -z "$(command -v socat)" ]; then
+    echo 'WARNING: install "socat"' &> /dev/stderr
+  fi
+
   if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
     echo 'Running "horizon-container stop"' &> /dev/stderr
     horizon-container stop &> /dev/stderr
   fi
-  if [ -z "$(command -v socat)" ]; then
-    echo 'Install "socat"; and run "horizon-container start"' &> /dev/stderr
-  else
-    echo 'Running "horizon-container start"' &> /dev/stderr
+
+  echo 'Starting agent; version: ${HZN_AGENT_VERSION}' &> /dev/stderr
+  export HC_DOCKER_TAG=${HZN_AGENT_VERSION:-latest} \
+    && \
     horizon-container start &> /dev/stderr
-  fi
 }
 
 ##
