@@ -9,32 +9,15 @@
 source /usr/bin/service-tools.sh
 source /usr/bin/apache-tools.sh
 
-###
-### MAIN
-###
-
-apache::main()
+apache::service.update()
 {
-  hzn::log.trace "${FUNCNAME[0]} ${*}"
+  local output=${1:-}"
 
-  local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-info}'","conf":"'${APACHE_CONF:-}'","htdocs": "'${APACHE_HTDOCS:-}'","cgibin": "'${APACHE_CGIBIN:-}'","host": "'${APACHE_HOST:-}'","port": "'${APACHE_PORT:-}'","admin": "'${APACHE_ADMIN:-}'","pidfile":"'${APACHE_PID_FILE:-none}'","rundir":"'${APACHE_RUN_DIR:-none}'"}'
-  local output=$(mktemp)
-  local tmp=$(mktemp)
-  local err=$(mktemp)
-  local PID
+  if [ -z "${output}" ] || [ ! -e "${output}" ]; then
+    hzn::log.error "${FUNCNAME[0]}: no file; output: ${output}"
+  else
+    local PID
 
-  hzn::service.init ${config}
-  hzn::log.info "${FUNCNAME[0]}: initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
-
-  # start apache
-  apache::start
-
-  # wait for apache
-  hzn::log.info "${FUNCNAME[0]}: waiting for Apache server; 5 seconds..."
-  sleep 5
-
-  # loop while node is alive
-  while [ true ]; do
     # test for PID file
     if [ ! -z "${APACHE_PID_FILE:-}" ]; then
       if [ -s "${APACHE_PID_FILE}" ]; then
@@ -45,15 +28,17 @@ apache::main()
     else
       hzn::log.error "${FUNCNAME[0]}: APACHE_PID_FILE is undefined"
     fi
-
+  
     # create output
     echo -n '{"pid":'${PID:-0}',"status":"' > ${output}
-
+  
     # get status
     if [ ${PID:-0} -ne 0 ]; then
+      local tmp=$(mktemp)
+      local err=$(mktemp)
+  
       # request server status
       hzn::log.notice "${FUNCNAME[0]}: Apache PID: ${PID:-};requesting Apache server status: http://localhost:${APACHE_PORT:-}/server-status"
-
       curl -fkqsSL "http://localhost:${APACHE_PORT:-}/server-status" -o ${tmp} 2> ${err}
       # test server output
       if [ -s "${tmp}" ]; then
@@ -65,11 +50,36 @@ apache::main()
     else
       hzn::log.error "${FUNCNAME[0]}: No Apache PID"
     fi
-
+  
     # terminate output
     echo '"}' >> ${output}
+  fi
+}
 
-    # update service
+###
+### MAIN
+###
+
+apache::main()
+{
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
+
+  local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-}'","conf":"'${APACHE_CONF:-}'","htdocs": "'${APACHE_HTDOCS:-}'","cgibin": "'${APACHE_CGIBIN:-}'","host": "'${APACHE_HOST:-}'","port": "'${APACHE_PORT:-}'","admin": "'${APACHE_ADMIN:-}'","pidfile":"'${APACHE_PID_FILE:-}'","rundir":"'${APACHE_RUN_DIR:-}'","period":'${APACHE_PERIOD:-30}'}'
+  local output=$(mktemp)
+
+  hzn::log.notice "${FUNCNAME[0]}: initializing service: ${SERVICE_LABEL:-}" $(echo "${config}" | jq -c '.' || echo "INVALID: ${config}")
+  hzn::service.init ${config}
+
+  # start apache
+  apache::start
+
+  # loop while node is alive
+  while [ true ]; do
+
+    # update apache status
+    apache::service.update ${output}
+
+    # update horizon
     hzn::log.info "${FUNCNAME[0]}: updating service:" $(jq -c '.' ${output})
     hzn::service.update ${output}
 

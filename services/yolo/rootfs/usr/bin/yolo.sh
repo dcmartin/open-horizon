@@ -61,8 +61,8 @@ yolo::main()
   if [ ! -z "${init:-}" ]; then
     local config='{"log_level":"'${SERVICE_LOG_LEVEL:-}'", "timestamp":"'$(date -u +%FT%TZ)'", "date":'$(date +%s)',"'${SERVICE_LABEL}'":'${init}',"services":'"${SERVICES:-null}"'}'
 
+    hzn::log.notice "${FUNCNAME[0]}: initializing service: ${SERVICE_LABEL:-}" $(echo "${config}" | jq -c '.' || echo "INVALID: ${config}")
     hzn::service.init "${config}"
-    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
 
     hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
     yolo::loop

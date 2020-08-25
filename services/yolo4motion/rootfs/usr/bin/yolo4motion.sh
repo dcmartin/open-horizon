@@ -217,8 +217,8 @@ yolo4motion::main()
     local MQTT='{"host":"'${MQTT_HOST:-mqtt}'","port":'${MQTT_PORT:-1883}',"username":"'${MQTT_USERNAME:-}'","password":"'${MQTT_PASSWORD:-}'"}'
     local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-}'","group":"'${MOTION_GROUP:-}'","client":"'${MOTION_CLIENT:-}'","camera":"'${YOLO4MOTION_CAMERA:-}'","event":"'${YOLO4MOTION_TOPIC_EVENT:-}'","old":'${YOLO4MOTION_TOO_OLD:-300}',"payload":"'${YOLO4MOTION_TOPIC_PAYLOAD:-}'","topic":"'${YOLO4MOTION_TOPIC:-}'","services":'"${SERVICES:-null}"',"mqtt":'"${MQTT}"',"'${SERVICE_LABEL}'":'${init}'}'
 
+    hzn::log.notice "${FUNCNAME[0]}: initializing service: ${SERVICE_LABEL:-}" $(echo "${config}" | jq -c '.' || echo "INVALID: ${config}")
     hzn::service.init "${config}"
-    hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} initialized:" $(echo "$(hzn::service.config)" | jq -c '.')
 
     hzn::log.info "${FUNCNAME[0]}: ${SERVICE_LABEL:-null} starting loop..."
     yolo4motion::loop ${config}
