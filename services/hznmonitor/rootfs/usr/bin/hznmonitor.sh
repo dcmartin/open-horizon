@@ -186,15 +186,22 @@ hznmonitor::service.update()
   if [ ${APACHE_PERIOD:-30} -gt ${ELAPSED:-0} ]; then
     local apache=$(mktemp)
 
-    apache::service.update ${apache}
-    if [ -s "${apache}" ]; then
-      jq -s '.[0] * .[1]' ${output} ${apache} > ${output}.$$ && mv -f ${output}.$$ ${output}
+    apache::service.update "${apache}"
+    if [ ! -z "${output:-}" ] && [ -s "${output}" ] && [ -s "${apache}" ]; then
+      jq -cs '.[0] * .[1]' "${output}" "${apache}" > "${output}.$$" && mv -f "${output}.$$" "${output}"
+      hzn::service.update "${output}"
+    elif [ ! -z "${output:-}" ] && [ -e "${output}" ] && [ -s "${apache}" ]; then
+      cat "${apache}" > "${output}"
+      hzn::service.update "${output}"
+    elif [ -s "${apache}" ]; then
+      hzn::service.update "${apache}"
+    else
+      hzn::log.error "${FUNCNAME[0]}: no update"
     fi
     rm -f "${apache}"
   else
     hzn::log.debug "${FUNCNAME[0]}: skipping Apache update"
   fi
-  hzn::service.update ${output}
 }
 
 hznmonitor::poll()
@@ -208,7 +215,7 @@ hznmonitor::poll()
   local TEMP=$(mktemp)
   local output=$(mktemp)
 
-  hzn::log.notice "listening: ${HZNMONITOR_KAFKA_TOPIC:-}; ${HZNMONITOR_KAFKA_APIKEY:-}; ${HZNMONITOR_KAFKA_BROKER:-}"
+  hzn::log.notice "${FUNCNAME[0]}: listening; broker: ${HZNMONITOR_KAFKA_BROKER:-}; topic: ${HZNMONITOR_KAFKA_TOPIC:-}"
 #    -X "security.protocol=sasl_ssl" \
 #    -X "sasl.mechanisms=PLAIN" \
 #    -X "sasl.username=${HZNMONITOR_KAFKA_APIKEY:0:16}" \
@@ -281,7 +288,7 @@ hznmonitor::main()
 
   hzn::log.notice "${FUNCNAME[0]}: updating; service: ${SERVICE_LABEL:-}"
   # update service
-  hznmonitor::service.update
+  hznmonitor::service.update ""
 
   # forever poll
   hzn::log.notice "${FUNCNAME[0]}: polling; service: ${SERVICE_LABEL:-}"

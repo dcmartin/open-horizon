@@ -54,7 +54,7 @@ apache::service.update()
 { 
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
-  local output=${1:-}"
+  local output=${1:-}
 
   if [ -z "${output}" ] || [ ! -e "${output}" ]; then
     hzn::log.error "${FUNCNAME[0]}: no file; output: ${output}"
@@ -81,11 +81,11 @@ apache::service.update()
       local err=$(mktemp)
   
       # request server status
-      hzn::log.notice "${FUNCNAME[0]}: Apache PID: ${PID:-};requesting Apache server status: http://localhost:${APACHE_PORT:-}/server-status"
+      hzn::log.notice "${FUNCNAME[0]}: Apache PID: ${PID:-}; requesting Apache server status: http://localhost:${APACHE_PORT:-}/server-status"
       curl -fkqsSL "http://localhost:${APACHE_PORT:-}/server-status" -o ${tmp} 2> ${err}
       # test server output
       if [ -s "${tmp}" ]; then
-        hzn::log.debug "${FUNCNAME[0]}: RECEIVED: server status:" $(cat ${tmp})
+        hzn::log.trace "${FUNCNAME[0]}: RECEIVED: server status:" $(cat ${tmp})
         cat "${tmp}" | base64 -w 0 >> ${output}
       else
         hzn::log.warning "${FUNCNAME[0]}: FAILED: no server status; error:" $(cat ${err})
