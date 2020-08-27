@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bashio
 
 # TMPDIR
 if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
@@ -11,18 +11,18 @@ source /usr/bin/service-tools.sh
 ###
 
 ## initialize horizon
-hzn_init
+hzn::init
 
 ## configure service w/ defaults
 CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-info}'","debug":'${DEBUG:-false}',"period":"'${CPU_PERIOD:-30}'","interval":"'${CPU_INTERVAL:-1}'","services":'"${SERVICES:-null}"'}'
 
 ## initialize servive
-service_init ${CONFIG}
+hzn::service.init ${CONFIG}
 
 ## create initial output
 OUTPUT_FILE=$(mktemp -t "${0##*/}-XXXXXX")
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
-service_update "${OUTPUT_FILE}"
+hzn::service.update "${OUTPUT_FILE}"
 
 # iterate forever
 while true; do
@@ -44,7 +44,7 @@ while true; do
   # output
   echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"percent":'${PERCENT:-null}'}' > "${OUTPUT_FILE}"
   # update service
-  service_update "${OUTPUT_FILE}"
+  hzn::service.update "${OUTPUT_FILE}"
   # wait for ..
   SECONDS=$((CPU_PERIOD - $(($(date +%s) - DATE))))
   if [ ${SECONDS} -gt 0 ]; then
