@@ -6,7 +6,6 @@
 
 source /usr/bin/service-tools.sh
 
-
 hal::loop()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
