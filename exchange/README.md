@@ -3,6 +3,11 @@
 # Introduction
 This directory contains information and tools to utilize the [Open Horizon](https://github.com/open-horizon) software using Docker.
 
+The following software is required:
+
++ Docker - the community-edition version 18, or better
++ LINUX - Ubuntu 18.04; `amd64` only
+
 ## Services
 Below is a list of the Open Horizon microservices, their ports, and “ping” URLs.
 
@@ -14,12 +19,7 @@ Cloud Sync Service API|css-api|9443|[http://[host]:9443/v1](http://localhost:944
 Cloud Sync Service DB|css-db|9443|[http://[host]:9443/v1](http://localhost:9443/v1)
 Anax Agent|agbot|3091|[http://[host]:3091/v1](http://localhost:3091/v1)
 
-# Part &#10122;  -  Installing Open Horizon
-
-The following software is required:
-
-+ Docker - the community-edition version 18, or better
-+ LINUX - Ubuntu 18.04; `amd64` only
+# Installation
 
 ## Step 0
 Use the "standard" Docker installation script (see below) or appropriate mechanism for your platform; see [docker.com](https://www.docker.com/get-started) for more information.
