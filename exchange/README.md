@@ -3,28 +3,29 @@
 # Introduction
 This directory contains information and tools to utilize the [Open Horizon](https://github.com/open-horizon) software using Docker.
 
-**THESE INSTRUCTIONS ARE DEPRECATED**; see these [instructions](https://github.com/dcmartin/open-horizon-integration/blob/master/hub/01-horizon-services-setup.md)
-
 ## Services
 Below is a list of the Open Horizon microservices, their ports, and “ping” URLs.
 
-Microservice|Container|Name|Port|URL
-:-------|-------:|-------:|-------:|-------:
-Exchange API|exchange-api|oh-exchange|8080|[http://[host]:8080/v1](http://localhost:8080/v1)
+Microservice|Container|Port|URL
+:-------|-------:|-------:|-------:|
+Exchange API|exchange-api|3090|[http://[host]:3090/v1](http://localhost:3090/v1)
+Exchange DB|exchange-db|5432|[http://[host]:5432/v1](http://localhost:5432/v1)
+Cloud Sync Service API|css-api|9443|[http://[host]:9443/v1](http://localhost:9443/v1)
+Cloud Sync Service DB|css-db|9443|[http://[host]:9443/v1](http://localhost:9443/v1)
+Anax Agent|agbot|3091|[http://[host]:3091/v1](http://localhost:3091/v1)
 
 # Part &#10122;  -  Installing Open Horizon
 
 The following software is required:
 
 + Docker - the community-edition version 18, or better
-+ UNIX - either the LINUX operating system or another supported platform, e.g. macOS
-
++ LINUX - Ubuntu 18.04; `amd64` only
 
 ## Step 0
 Use the "standard" Docker installation script (see below) or appropriate mechanism for your platform; see [docker.com](https://www.docker.com/get-started) for more information.
 
 ```
-wget get.docker.com | sudo bash -s
+curl -sSL get.docker.com | sudo bash -s
 ```
 
 Install `htpasswd` from the `apache2-utils` package
@@ -85,55 +86,38 @@ docker-compose ps
 Example output:
 
 ```
+    Name                  Command               State                       Ports
+----------------------------------------------------------------------------------------------
+agbot          /bin/sh -c /usr/horizon/bi ...   Up      0.0.0.0:3091->3091/tcp
+css-api        /home/cssuser/cloud-sync-s ...   Up      0.0.0.0:9443->9443/tcp
+css-db         docker-entrypoint.sh mongod      Up      0.0.0.0:27017->27017/tcp
+exchange-api   /opt/docker/bin/exchange-api     Up      0.0.0.0:3090->8080/tcp
+exchange-db    docker-entrypoint.sh postgres    Up      5432/tcp
 ```
 
 ## Step 5
-To get a list of the Docker Compose names of the containers (as they are in the docker-compose.yml file):
-
-```
-docker-compose config --services
-```
-
-Example output:
-
-```
-```
-
-## Step 6
-Check for "ping" from each service port, for example:
-
-```
-```
-
-Example output:
-
-```
-```
-
-
-## Step 7
 To stop all Open Horizon containers:
 
 ```
 make stop
 ```
 
-## Step 8
+## Step 6
 To start all Open Horizon containers:
 
 ```
 make start
 ```
 
-## Step 9
-To stop and deconstruct (remove) all the Open Horizon Foundry containers, call on “docker-compose down”. Docker shows the containers being stopped and then removed. Note, you may wish to stop (versus stop and remove) all the Open Horizon Containers. See more details in the Advanced Open Horizon Foundry User Command below.
+## Step 7
+To stop and remove all Open Horizon containers:
 
 ```
 make down
 ```
 
 ## &#9989; DONE
-You have now setup the Open Horizon Foundry components as Docker containers and verified success.
+You have now setup the Open Horizon components as Docker containers and verified success.
 
 # Changelog & Releases
 
