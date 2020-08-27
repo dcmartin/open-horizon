@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bashio
 
 # TMPDIR
 if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
@@ -10,25 +10,25 @@ if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
 source /usr/bin/service-tools.sh
 
 ## initialize horizon
-hzn_init
+hzn::init
 
 ## configure service
 
-CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-false}',"period":"'${WAN_PERIOD:-1800}'","services":'"${SERVICES:-null}"'}'
+CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-info}'","period":"'${WAN_PERIOD:-1800}'","services":'"${SERVICES:-null}"'}'
 
 ## initialize servive
-service_init ${CONFIG}
+hzn::service.init ${CONFIG}
 
 ###
 ### MAIN
 ###
 
 ## initialize
-OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
+OUTPUT_FILE=$(mktemp)
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
 
 ## update service
-service_update "${OUTPUT_FILE}"
+hzn::service.update "${OUTPUT_FILE}"
 
 ## iterate forever
 while true; do
@@ -36,7 +36,7 @@ while true; do
   SPEEDTEST=$(speedtest --json)
   # update output
   echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"speedtest":'${SPEEDTEST:-null}'}' > "${OUTPUT_FILE}"
-  service_update ${OUTPUT_FILE}
+  hzn::service.update ${OUTPUT_FILE}
   # wait for ..
   SECONDS=$((WAN_PERIOD - $(($(date +%s) - DATE))))
   if [ ${SECONDS} -gt 0 ]; then

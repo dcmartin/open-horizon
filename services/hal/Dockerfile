@@ -21,7 +21,7 @@ RUN \
         curl \
         jq \
         coreutils \
-        lshw \
+        lshw@edge \
         i2c-tools@edge \
         py-pip \
         socat \

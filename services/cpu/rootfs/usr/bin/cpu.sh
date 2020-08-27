@@ -14,13 +14,13 @@ source /usr/bin/service-tools.sh
 hzn::init
 
 ## configure service w/ defaults
-CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-info}'","debug":'${DEBUG:-false}',"period":"'${CPU_PERIOD:-30}'","interval":"'${CPU_INTERVAL:-1}'","services":'"${SERVICES:-null}"'}'
+CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-info}'","period":"'${CPU_PERIOD:-30}'","interval":"'${CPU_INTERVAL:-1}'","services":'"${SERVICES:-null}"'}'
 
 ## initialize servive
 hzn::service.init ${CONFIG}
 
 ## create initial output
-OUTPUT_FILE=$(mktemp -t "${0##*/}-XXXXXX")
+OUTPUT_FILE=$(mktemp)
 echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
 hzn::service.update "${OUTPUT_FILE}"
 
