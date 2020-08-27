@@ -25,8 +25,10 @@ BASES ?= base-alpine base-ubuntu apache-alpine apache-ubuntu
 SERVICES ?= \
 	yolo \
 	yolo4motion \
+	hznmonitor \
 	cpu hal wan mqtt \
-        startup hznsetup hznmonitor \
+	startup\
+	hznsetup \
 	alpr \
 	alpr4motion \
 	face \
