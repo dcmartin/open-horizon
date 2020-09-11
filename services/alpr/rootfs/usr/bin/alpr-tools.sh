@@ -1,20 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
-# sanity
-if [ -z "${OPENALPR}" ]; then echo "*** ERROR -- $0 $$ -- OPENALPR unspecified; set environment variable for testing"; fi
-
-# defaults for testing
-if [ -z "${ALPR_COUNTRY}" ]; then ALPR_COUNTRY="us"; fi
-if [ -z "${ALPR_PATTERN:-}" ]; then ALPR_PATTERN=""; fi
-if [ -z "${ALPR_TOPN:-}" ]; then ALPR_TOPN=10; fi
-if [ -z "${ALPR_SCALE:-}" ]; then ALPR_SCALE="320x240"; fi
-if [ -z "${ALPR_PERIOD:-}" ]; then ALPR_PERIOD=30; fi
-
-alpr_init() 
+alpr::countries() 
 {
   hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
-  local names=$(find ${OPENALPR}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
+  local names=$(find ${OPENALPR:-}/runtime_data/config -name '*.conf' -print | while read; do file=${REPLY##*/} && echo "${file%%.*}"; done)
   local countries
 
   for name in ${names}; do
@@ -23,13 +13,10 @@ alpr_init()
   done
   if [ ! -z "${countries:-}" ]; then countries="${countries}"']'; else countries='null'; fi
 
-  # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${ALPR_PERIOD}',"pattern":"'${ALPR_PATTERN}'","scale":"'${ALPR_SCALE}'","country":"'${ALPR_COUNTRY}'","topn":'${ALPR_TOPN}',"services":'"${SERVICES:-null}"',"countries":'${countries:-null}'}'
-
-  echo "${CONFIG}"
+  echo "${countries:-null}"
 }
 
-alpr_config()
+alpr::config()
 {
   hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
@@ -59,7 +46,7 @@ alpr_config()
   fi
 }
 
-alpr_process()
+alpr::process()
 {
   hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
@@ -132,7 +119,7 @@ alpr_process()
       | jq '.config='"${config:-null}" > ${result}
 
     # annotated image
-    local annotated=$(alpr_annotate ${OUT} ${JPEG})
+    local annotated=$(alpr::annotate ${OUT} ${JPEG})
 
     if [ "${annotated:-null}" != 'null' ]; then
       local b64file=$(mktemp)
@@ -152,7 +139,7 @@ alpr_process()
   echo "${result:-}"
 }
 
-alpr_annotate()
+alpr::annotate()
 {
   local json=${1}
   local jpeg=${2}

@@ -27,14 +27,14 @@ SERVICES ?= \
 	yolo4motion \
 	hznmonitor \
 	cpu hal wan mqtt \
-	startup\
-	hznsetup \
 	alpr \
 	alpr4motion \
 	face \
 	face4motion \
         mqtt2mqtt \
-        motion2mqtt
+        motion2mqtt \
+	startup\
+	hznsetup
 
 #	nmap \
 #	record \

@@ -37,6 +37,10 @@ RUN \
     && rm -f -r \
       /tmp/*
 
+## SAMBA
+
+RUN apk add --no-cache samba
+#RUN rc-update add samba
 
 # Copy root file-system
 COPY rootfs /
