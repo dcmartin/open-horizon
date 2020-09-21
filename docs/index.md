@@ -2,18 +2,15 @@
 
 # `open-horizon`  _edge fabric_ services & patterns
 
-This [repository][repository] contains [Open Horizon](https://www.lfedge.org/projects/openhorizon/) services and patterns, including:
+This repository contains [Open Horizon](https://www.lfedge.org/projects/openhorizon/) services and patterns, including:
 
-+ [`yolo4motion`](services/yolo4motion/README.md) - A service to process MQTT messages through the **[OpenYOLO](https://github.com/dcmartin/openyolo/)** object detector and classifier
-+ [`alpr4motion`](services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
-+ [`face4motion`](services/face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
++ [`yolo4motion`](https://github.com/dcmartin/open-horizon/blob/master/services/yolo4motion/README.md) - A service to process MQTT messages through the **[OpenYOLO](https://github.com/dcmartin/openyolo/)** object detector and classifier
++ [`alpr4motion`](https://github.com/dcmartin/open-horizon/blob/master/services/alpr4motion/README.md) - A service to process MQTT messages through the **[OpenALPR](http://github.com/dcmartin/openalpr)** automated license plate reader
++ [`face4motion`](https://github.com/dcmartin/open-horizon/blob/master/services/face4motion/README.md) - A service to process MQTT messages through the **[OpenFACE](http://github.com/dcmartin/openface)** face detector
 
-Please see the ["hello world"](docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
+Please see the ["hello world"](https://github.com/dcmartin/open-horizon/blob/master/docs/HELLO_WORLD.md) example for an introduction to developing for [Open Horizon](http://github.com/open-horizon)
 
-### To run a sample Open Horizon _exchange_, follow the [Quick Start](QUICKSTART.md) instructions
-[design-md]: https://github.com/dcmartin/open-horizon/tree/master/docs/DESIGN.md
-
-# 1. [Status][status-md] 
+### To run a sample Open Horizon _exchange_, follow the [Quick Start](https://github.com/dcmartin/open-horizon/blob/master/QUICKSTART.md) instructions
 
 ![](https://img.shields.io/github/license/dcmartin/open-horizon.svg?style=flat)
 ![](https://img.shields.io/github/release/dcmartin/open-horizon.svg?style=flat)
