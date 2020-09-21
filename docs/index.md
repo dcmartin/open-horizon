@@ -1,4 +1,4 @@
-<img src="docs/matrix.gif" width="90%">
+<img src="https://github.com/dcmartin/open-horizon/raw/master/docs/matrix.gif" width="90%">
 
 # `open-horizon`  _edge fabric_ services & patterns
 
