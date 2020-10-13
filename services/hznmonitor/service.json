@@ -16,7 +16,7 @@
     { "name": "HZNMONITOR_KAFKA_APIKEY", "label": "", "type": "string", "defaultValue": "" },
     { "name": "HZNMONITOR_KAFKA_TOPIC", "label": "", "type": "string", "defaultValue": "startup" },
     { "name": "HZNMONITOR_KAFKA_ADMIN_URL", "label": "administrative URL", "type": "string", "defaultValue": "" },
-    { "name": "HZNMONITOR_KAFKA_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "http://kafka:9092" },
+    { "name": "HZNMONITOR_KAFKA_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "kafka:9092" },
     { "name": "HZNMONITOR_MQTT_HOST", "label": "", "type": "string", "defaultValue": "mqtt" },
     { "name": "HZNMONITOR_MQTT_TOPIC", "label": "", "type": "string", "defaultValue": "startup" },
     { "name": "HZNMONITOR_MQTT_PORT", "label": "", "type": "int", "defaultValue": "1883" },
