@@ -1,0 +1,13 @@
+{
+  "msg": "Exchange server operating normally",
+  "numberOfUsers": 84,
+  "numberOfNodes": 176,
+  "numberOfNodeAgreements": 73,
+  "numberOfNodeMsgs": 10,
+  "numberOfAgbots": 3,
+  "numberOfAgbotAgreements": 107,
+  "numberOfAgbotMsgs": 0,
+  "dbSchemaVersion": 17,
+  "org": "github@dcmartin.com",
+  "url": "https://alpha.edge-fabric.com/v1/"
+}

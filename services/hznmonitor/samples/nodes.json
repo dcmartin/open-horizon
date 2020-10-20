@@ -1,0 +1,3333 @@
+{
+  "nodes": [
+    {
+      "token": "********",
+      "name": "test-sdr-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:26:24.984Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAolo95mPbzxpnbVSKz2MDOnDJurtPDEsrc/zM5rKer+BTL2hGb52q6wk7GV7351rVOcQdy1DTgkLQZ54WT7v4FmHLdCfGrR/VGzCn1EKNUCN3F6gjnvLWwBC3yuf3DBWYaVMyJZTMTD25LpA5gL57FONqaKMJBVib3TKw5FhzETf6VqA65E9gAAAt3HMMW1Q6Uymizuf6JHnVfrlYiAOGDu4Nm05+lvIsLuLOlw5EQol/q2aoE2Yx5X8J3sPdQEk7mA7erA7FGGMIP1ULg/Ox2V4BuswJln7n3Y6XOM3tT4quStAUpENGD+o/a1bUjGrp28bBx4cXeA8qOIHm/mlxAQIDAQAB",
+      "id": "github@dcmartin.com/test-sdr-1"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-3",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:26:24.621Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqBYVVSJq3rXZ+00Od4Gl65lIpwb35ObUC1QD4sG+LHSZKRL0SBCnbwJNugnaX1JgpGxlKZBwdhdOAoAMNLZ3Ygiv9BBkGQXOxGmlRDzIkh/grupLhcYmaAVqPzQRjHxZViuoY0vLua/3ULToyI/S8oLGzCYI+1eLcU7Cazp8GCsEHd0MSXbl16ZEmEcfRcTfufiymtEXDw7Y4pOlCWkot2c2j8a9UxYdgZQsGpv2psZ71j6Oo34xs9MVn39SHKy1tsIA8tI5rV6w95ECFsVZDv4PNZf3p0OQmMGrdSq0TehB+tncccC00QEZWDqsPT5ENQleZRfHpT1qwLJRGf8UOwIDAQAB",
+      "id": "github@dcmartin.com/test-cpu-3"
+    },
+    {
+      "token": "********",
+      "name": "test-arm-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/yolo2msghub-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.8\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.8",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "numAgreements": 5,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.11\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":5,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.11",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:26:23.298Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3yDcWajn/jPKYRlOpnI3Q1MhfHGOW3cLRH45xbF+AmTiRgxHrdrbkKNVMpdmovIqe1g6dx1IShG4R9UA4tmIBCEXB+0/xGdlD6MOLZauI10filKVyHuA4VO1ZoxHYvzhUUoPGtN3j/d4z1eV+32kJzq1cfMrzxeAGWM7vFP7t29z/6RlWvOeH1OakioJlyJLg7eYeAQzSmEMVFzRr3u/nq/skFVwwmNksNz/dBl7KT0aFNnHhjl+/SPaWcPpfKwMAIVXwbgjW8BUgrS0RfddOJFc8imfdsanYHWygk+jKXu8BBh0kOzpQd8VKUwbUOXg7oxjoYhvYm3JaezprC7wzQIDAQAB",
+      "id": "github@dcmartin.com/test-arm-1"
+    },
+    {
+      "token": "********",
+      "name": "dcm-newman-cpu",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/cpu2msghub",
+      "registeredServices": [
+        {
+          "url": "IBM/github.com.open-horizon.examples.cpu2msghub",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.cpu2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu2msghub\",\"organization\":\"IBM\",\"version\":\"1.2.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.cpu",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.cpu\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu\",\"organization\":\"IBM\",\"version\":\"1.2.2\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.2",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:26:21.524Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt6O7uUwPMRsAIs0Hh1SpJAhEcLdNanTxUHQviWIWsVO3rGdj2ylVJ7uz/ESMZjyna6ZVF8ZRJcva0Y5CPiV8PqkVPNZfFE2uFUcYtzwJWE5wSm96E4gJTns7J+2rwtyxVE0mj4fgwDg3ajv4r5xxRutruvpZ3zRTGtsWmJ27pZsnemb3hMR9zjiRzRWh5IjKfuNe3CE4svGjuA8T9qbWRWBAk6IOif34AicoXRqwX2kn+51SVOuqCQWoXWwqALTNV5i5Nwhj3hXwW1ReP472oHsTF8hpYUrvRYLU9COIFKiqtuBkmMDFhdMCLkx2iBr2silEmtm43DJUFtKXQy2rXQIDAQAB",
+      "id": "github@dcmartin.com/dcm-newman-cpu"
+    },
+    {
+      "token": "********",
+      "name": "nano-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/yolo2msghub-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.11\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.11",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.8\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.8",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:26:21.073Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvTUR2AScfmXkXCK9KhKXbKBh4Lj8pPZii4eb55a8dR5VeM/cZEil2DxzuO4rI46fqEyb7cQZMcIyhE3JpJhW+oH0tuQrvfYc9HXRF0ku1s6nhnbUdPDBz3I/+P/9AcLKeaFGeQRicb/xMfYNha8RVf2ynpmo/OLwRQ/Y2u4wnDVS9Ei4P3kLr3PidIGFT/Hq/OLIdR9/rnC+8Oo0t0jDiUdu9hmWgBWmQ+IXzcZPjQL1+oZ9tkiGdtFLLk9tPbs1eKUR1YBKQ21Pwu4+zZF1MDZCDjpL4XWGUqSmRyNVdPTkTEIl/5LIx0z4IXpjr1B+0/HhxoWdaMBwtMibwi1UpQIDAQAB",
+      "id": "github@dcmartin.com/nano-1"
+    },
+    {
+      "token": "********",
+      "name": "test-sdr-4",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:48.216Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5zFotXKeCL6I8EBNUuh7IMDUYNCR6x0T0iGZyHcqfNU60U6sZ/CeRGB/rrFBccJvmxdQuLF/FPITyN6KRTHT25mxs6D8g8DBNFIN5E0NZPV2hFvyM1WrbNA53XqfP8poIhLJuCNZD2nMcQQT9PGEHCjd0FiodjUc3996by/xQyoZZrDFXyVHdaRQZl2kaOdoRngRxV91USsc/ggVZ3gX2howm1ErZXkR2D51hXhQg08Aak7bgjMdGTNHiF13YB44cE6TAyzK0atU4fmdZ9PZWhqFCV6Fo2CD77Np/TKuEhvtTrm7BxNl3nD6j67sxbRJiqWEFXvF8NqoomoBn3P4wIDAQAB",
+      "id": "github@dcmartin.com/test-sdr-4"
+    },
+    {
+      "token": "********",
+      "name": "nano-2",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:47.902Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwY2cv6WyIYJu8CrlWtvEtQLBT9haNd2n8L6gwBP1Yz0I+4x316p4Zb7HhpO3rnqR8U+ThUw4ohWJAqLTv2vsq2KlnbrwlEhSf33kmWRIFUWA9GgsIRW+8HbnaB33JklEfGP8saXVj0bJDpjlfSKqX1ZCVhfgzS0HGpZlUiyubszlEcVMwD24c+KswXaQFhLpJVuNHsJ8QBUA7B732wdyNjUS/bcGBuVshELVuGzu+uicLufB+LC1IOvXJkdai1B5pw+Gmyp/iHCcxA0A6IXdkLePFxi7k4V/Elba+RyuCz2b0r6kgOoeMU3AfzHaPEmNuH3QYXbfsuxHoOCNO4TgDwIDAQAB",
+      "id": "github@dcmartin.com/nano-2"
+    },
+    {
+      "token": "********",
+      "name": "test-amd64-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/yolo2msghub-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.8\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.8",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "numAgreements": 5,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.11\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":5,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.11",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:47.784Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnPlZVprquQd+vz5N6xvKvD6psnhOhJ0fKDbGTofOTzIHU+E+yVPzQ76Z2ldk9M0Gay51jrcA3N2bDrFPvHJX9HbbTuSMAgGl8xmLbN+vibuLrmfDVHWko8K0sG1ndI34y0BO3DSdR9u70GiPikOkfCBx8LRgTAg/cVzj85/lDp7OGbq+xMLRAqz7xs4VBPykAIcDHR06XXMBS2EGLe68HvfHeyQZum4/GeT2xJHTsTrYugITSDLsnZ/YE6N/qhskS4CUw4fkmL13RIz2JoAst2qODYBbigdJyFagmwXpNrvf3JMBl3z3PUrY8Yz9VN7ioOHjfXPmwoD1/bZwsqF7rQIDAQAB",
+      "id": "github@dcmartin.com/test-amd64-1"
+    },
+    {
+      "token": "********",
+      "name": "dcm-cpu-horizon",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/cpu2msghub",
+      "registeredServices": [
+        {
+          "url": "github.com.open-horizon.examples.cpu2msghub",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.cpu2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu2msghub\",\"organization\":\"IBM\",\"version\":\"1.2.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.cpu",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.cpu\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu\",\"organization\":\"IBM\",\"version\":\"1.2.2\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.2",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:46.942Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnZS7bEmgUevc30v2Ocumy47WinndMTNwivX8gjFLecBgAgx4xhiBGLAo55evsLMBPf5NQ48fRhHyNExVTfW4YdkLXlMAF1enKNzgG69qtWsA6wAPlBZrSFEkMEO7SV6dTNRsjHoJYtCmSY87IT6nOvz+hlTj1VdZXqmmCIwdPXyEv07tzLrguwNDCZpJgEaqt4I9f1YC8NwGXHx17AlFqx2JrpqM5KVSfNP78ymp7j3KIOGYrXJadsSSykQ3WgbHBah2SnysI0zjO2n3v66ea0ZmUFCCZPBy+0RwffE0tJQ3Q1PNN0DLeTy80qI7sL70cb2AoKNObsyVyoTqaZmKdwIDAQAB",
+      "id": "github@dcmartin.com/dcm-cpu-horizon"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-B",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/sdr2msghub",
+      "registeredServices": [
+        {
+          "url": "IBM/github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.sdr",
+          "numAgreements": 1,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.sdr\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr\",\"organization\":\"IBM\",\"version\":\"0.0.7\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":1,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.7",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.sdr2msghub",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.sdr2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr2msghub\",\"organization\":\"IBM\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:30.669Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv/Zwhl8EwSnQ26GRwP6ErGibMzy2UjPIXuS1UJTPxiajIgngrqjtklvyGy1UyIiuQR2vMPkR33rJR0v4Svm20S4W6yIo53fcQpGls5lYalYWE0fUit5zXWhRoJ+ja4gSFQOIAtyATTS+M6VbSh5eah6rBCilUTP+t9nYqaP5EBHu/2glTsaZ854dg+G/2bzpimcnT4l6Bzc+5jhgzbir9h0z3+W0Ank5sadfs9KvaJiUQ23LSlcH1yVf6j+qg5J9fGbjPpeKntl3Ao8hEayW/Z0WZG+o4trUXdmE01iF8hMJABi2MpxAjvMztQSVviYFZyWGsHpyX6gllQNm2bKN9wIDAQAB",
+      "id": "github@dcmartin.com/dcm-p40-sdr-B"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-6",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:28.152Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwY548osLyyJjxR0JuMewKEBSUXX/phcoGXYOk3jaujwcQ0i3oWHx6sPnSDFPAraQpescO9pVc242kFedecK1ipyljG/omQ/b4PgrRBUNEiYgDTAbtMAMDFybA/DbmNyjcGWovch5jF0NZaORNMKOgEPUoyBToULIa6tJs8LoFNnLP2Nn9LhDqk8JbT1+qoFHSeK4Zc6hUnBP38C5e2L94wFb5hzsNTCb4z2eLWMZz+nQgVCLMh6OmGSJntwnmlM9gFnbAdjsrIom+lZYSlQ9IZRm1xZPqabyoo1a/hxVMPy//FUNekz2OaWFla732PmDdYPFyiZuhKsZToxDpypqYQIDAQAB",
+      "id": "github@dcmartin.com/test-cpu-6"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-2",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/yolo2msghub-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo2msghub-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.11\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.11",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.8\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.8",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-29T15:25:25.786Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5xwV/aaI4PsjqFwYlcWcXPSUYDjlgrtcRkx79gaBVO0Ua/txrn4Hs1IuzfJZqOJlkGkLXg45mypvhJAr3ATccHagWyZ1CGcpGhR76tTDT8+O52ouNJhp5EHa2nFLNAO7cxU3bwH9lE+SioPA8OAJAXRCV6NC8gjvy+o18Kr2D6Ib9ABxruSRp/RsWJgf10nvR1TKiTJHWibZgV4tA1dojS75ePSocenmSBWaaF4TC84nsxq9K2cL1jtwYC4i46ldeteTYoKoWcSSA1fH0BbUsjHm8RLmdWqt/zAFv+CI2hErjmVXMcaPrXOpC89/SX0I1N9OfnVZaqQdXM2V9QH1OQIDAQAB",
+      "id": "github@dcmartin.com/test-cpu-2"
+    },
+    {
+      "token": "********",
+      "name": "localhost",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/hznsetup-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hznsetup-beta",
+          "numAgreements": 5,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hznsetup-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hznsetup-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":5,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T19:32:40.678Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxuaSyGO+5Cf61iQhvkIWu84gYyX0cmuXOkfQBkBD3ohGUXB1iVaNh8jleIk/OBzL0StChf0QlabHNcWyTM0nQfsEg/3ohTocUDx2y9ZyGL4gOW4q43VxopcHwOlfLY3lXyiAuAcl+FXEjo6f3iYnRM4+/ZQ84vGbaOeBKDf6358BOZxmr731TAbrRLa2oKQ7O36r5OOijTU/J97Cx20eN0OQ9ZGMlnHG/Wm6AE+5GF4L1nPVV1fmMB3BDd0+4Z9M7D8fW4Hcn+sCeM4Eh5JWD9xAWEMtz9zJgbEdFk3TXG932v18t8uRa/fIk3aXQyrxaySBCgDHYMN1jlsqHR+VHQIDAQAB",
+      "id": "github@dcmartin.com/localhost"
+    },
+    {
+      "token": "********",
+      "name": "test-00044bcc4aa6",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T19:19:25.088Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-00044bcc4aa6"
+    },
+    {
+      "token": "********",
+      "name": "test-00044bcc4899",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:40:46.953Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-00044bcc4899"
+    },
+    {
+      "token": "********",
+      "name": "node-00044bcc4899",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:38:08.956Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-00044bcc4899"
+    },
+    {
+      "token": "********",
+      "name": "node-00044bcc4aa6",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:38:03.929Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-00044bcc4aa6"
+    },
+    {
+      "token": "********",
+      "name": "node-b827eba26fd9",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:16:31.523Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827eba26fd9"
+    },
+    {
+      "token": "********",
+      "name": "node-b827eb145115",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:08:31.225Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827eb145115"
+    },
+    {
+      "token": "********",
+      "name": "node-b827eb6817fb",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:03:37.807Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827eb6817fb"
+    },
+    {
+      "token": "********",
+      "name": "node-b827eb25f052",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-27T00:00:40.286Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827eb25f052"
+    },
+    {
+      "token": "********",
+      "name": "node-b827ebedf055",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-26T23:57:10.250Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827ebedf055"
+    },
+    {
+      "token": "********",
+      "name": "node-b8",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-26T23:16:07.798Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b8"
+    },
+    {
+      "token": "********",
+      "name": "node-b827ebb8a500",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-25T23:23:00.058Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/node-b827ebb8a500"
+    },
+    {
+      "token": "********",
+      "name": "null",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-25T21:11:32.442Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/null"
+    },
+    {
+      "token": "********",
+      "name": "test",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-04-25T19:40:16.415Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-A",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/sdr2msghub",
+      "registeredServices": [
+        {
+          "url": "IBM/github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.sdr",
+          "numAgreements": 1,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.sdr\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr\",\"organization\":\"IBM\",\"version\":\"0.0.7\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":1,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.7",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "IBM/github.com.open-horizon.examples.sdr2msghub",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for IBM_github.com.open-horizon.examples.sdr2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr2msghub\",\"organization\":\"IBM\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-31T15:40:12.131Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-A"
+    },
+    {
+      "token": "********",
+      "name": "tx2",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "github@dcmartin.com/motion2mqtt-beta",
+      "registeredServices": [
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.cpu-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.cpu-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.cpu-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.hal-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.hal-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.hal-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.motion2mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.13\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.13",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.mqtt2kafka-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.1\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.1",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.wan-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.wan-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.wan-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.3\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.3",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github@dcmartin.com/com.github.dcmartin.open-horizon.yolo4motion-beta",
+          "numAgreements": 0,
+          "configState": "",
+          "policy": "{\"header\":{\"name\":\"Policy for github@dcmartin.com_com.github.dcmartin.open-horizon.yolo4motion-beta\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"com.github.dcmartin.open-horizon.yolo4motion-beta\",\"organization\":\"github@dcmartin.com\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"arm64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "arm64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-28T17:14:56.457Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArqqLTGq1UszLzwk+AqSoVlEdk3R0rm0QbUi+p6RQuMJRGDn1wi1Il3jqaKy1qvuFuJS//ZT/p4Mc5Ot94s0z+LKB/9h95I7y0LEJjSSnY14YG8ng6jnh60cfT75PFM2UtyCwxXqF8tc2IrrU7QM4RQkfzIk/mExJz2T0INva3NYGp6XF730qc4qCSZSz3Pi62pHHhDooC+J84npyC8c7xW7xUYxZ1HCvNCXa5UzrWDO6zoQASSam8s4LJPyAOTqoxUcYPnCM50VvzN5fxJ0gOAraVE5/0z7v5QpTZ7quD6we18qV8YM12q/cKQSRVkihzh3MgiXIsFboMHzgKW35zwIDAQAB",
+      "id": "github@dcmartin.com/tx2"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-e",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-23T19:42:11.435Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-e"
+    },
+    {
+      "token": "********",
+      "name": "dcm-newman-cpu-a",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/cpu2msghub",
+      "registeredServices": [
+        {
+          "url": "github.com.open-horizon.examples.cpu2msghub",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.cpu2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu2msghub\",\"organization\":\"IBM\",\"version\":\"1.2.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.cpu",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.cpu\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.cpu\",\"organization\":\"IBM\",\"version\":\"1.2.2\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"ram\",\"value\":\"0\"},{\"name\":\"cpus\",\"value\":\"1\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "1.2.2",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-22T02:29:31.474Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvemuQ8xnsX1t1hE07hKstwH4qPNUj7i3CaF5Fsg3gwa+1u/r/rZdg6yV65W7fIm/pi0hXjQV94iuAIKG07Um9Sppli0bnpbjUZIc4iDOm333E6p3PHIi5c2kCYyRtlITcYHNwOkbI1XKVXNFbSIhkIvASaaV8RSO5qjQEA+04SEDnLaynVqq1wGN+/FVUFANzlPUenBI1U8aCVwNCOZp5KpUIWh4nSlpHESmDYXWgGs9cp8kBstJYxsPrAhKUuGhLobwEVSaYKYFBy2KR1IrjPmkKJNEShL9UHDfKeTRU0XAB7TpY0cPi20w3HVN8fwsXxpLtUyXzVHXnrB5wXaIvwIDAQAB",
+      "id": "github@dcmartin.com/dcm-newman-cpu-a"
+    },
+    {
+      "token": "********",
+      "name": "dcm-cpu-052116004212",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-15T02:33:32.157Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-cpu-052116004212"
+    },
+    {
+      "token": "********",
+      "name": "dcm-newman-cpu-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-14T22:09:16.845Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-newman-cpu-1"
+    },
+    {
+      "token": "********",
+      "name": "00000000c4a26fd9",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-09T23:10:15.756Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/00000000c4a26fd9"
+    },
+    {
+      "token": "********",
+      "name": "0000000045410440",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-03-09T23:09:50.567Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/0000000045410440"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-d",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-02-28T01:15:36.836Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-d"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-c",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-02-21T15:42:13.158Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-c"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-b",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-02-19T05:23:27.006Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-b"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-a",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-02-09T06:24:05.830Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-a"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-0",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-01-31T01:03:38.077Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-0"
+    },
+    {
+      "token": "********",
+      "name": "name",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-01-24T21:49:56.966Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/name"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "IBM/sdr2msghub",
+      "registeredServices": [
+        {
+          "url": "github.com.open-horizon.examples.gps",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.gps\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.gps\",\"organization\":\"IBM\",\"version\":\"2.0.5\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "2.0.5",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.sdr",
+          "numAgreements": 1,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.sdr\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr\",\"organization\":\"IBM\",\"version\":\"0.0.7\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"maxAgreements\":1,\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.7",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        },
+        {
+          "url": "github.com.open-horizon.examples.sdr2msghub",
+          "numAgreements": 0,
+          "configState": "active",
+          "policy": "{\"header\":{\"name\":\"Policy for github.com.open-horizon.examples.sdr2msghub\",\"version\":\"2.0\"},\"apiSpec\":[{\"specRef\":\"github.com.open-horizon.examples.sdr2msghub\",\"organization\":\"IBM\",\"version\":\"0.0.4\",\"exclusiveAccess\":true,\"arch\":\"amd64\"}],\"valueExchange\":{},\"resourceLimits\":{},\"dataVerification\":{\"metering\":{}},\"proposalRejection\":{},\"properties\":[{\"name\":\"cpus\",\"value\":\"1\"},{\"name\":\"ram\",\"value\":\"0\"}],\"ha_group\":{},\"nodeHealth\":{}}",
+          "properties": [
+            {
+              "name": "version",
+              "value": "0.0.4",
+              "propType": "version",
+              "op": "in"
+            },
+            {
+              "name": "cpus",
+              "value": "1",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "ram",
+              "value": "0",
+              "propType": "string",
+              "op": "in"
+            },
+            {
+              "name": "arch",
+              "value": "amd64",
+              "propType": "string",
+              "op": "in"
+            }
+          ]
+        }
+      ],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-01-18T18:58:09.383Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr-1"
+    },
+    {
+      "token": "********",
+      "name": "e3976a854abe75eb28d28769b99199e3bce3728e",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-01-17T21:57:22.963Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/e3976a854abe75eb28d28769b99199e3bce3728e"
+    },
+    {
+      "token": "********",
+      "name": "id",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2019-01-17T21:54:44.658Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/id"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-sdr",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-29T04:44:18.737Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-sdr"
+    },
+    {
+      "token": "********",
+      "name": "dcm-p40-real-sdr",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-23T16:10:48.140Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-p40-real-sdr"
+    },
+    {
+      "token": "********",
+      "name": "dcm-amd64-real-sdr",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-21T17:14:01.914Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-amd64-real-sdr"
+    },
+    {
+      "token": "********",
+      "name": "dcm-sdr-p40",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-19T14:42:26.697Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-sdr-p40"
+    },
+    {
+      "token": "********",
+      "name": "horizon.dcmartin.com",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-06T20:10:12.779Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/horizon.dcmartin.com"
+    },
+    {
+      "token": "********",
+      "name": "test-sdr-5",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-06T01:13:48.792Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-sdr-5"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-4",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-05T16:47:37.015Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-cpu-4"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-5",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-05T16:29:01.900Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-cpu-5"
+    },
+    {
+      "token": "********",
+      "name": "test-sdr-3",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-05T04:38:41.978Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-sdr-3"
+    },
+    {
+      "token": "********",
+      "name": "cb7b3237-sdr2msghub-192168140",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-04T00:52:21.579Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/cb7b3237-sdr2msghub-192168140"
+    },
+    {
+      "token": "********",
+      "name": "test-cpu-1",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-12-02T05:42:29.825Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/test-cpu-1"
+    },
+    {
+      "token": "********",
+      "name": "cb7b3237-sdr2msghub-192-168-1-40",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-29T03:29:46.491Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/cb7b3237-sdr2msghub-192-168-1-40"
+    },
+    {
+      "token": "********",
+      "name": "cb7b3237-cpu2msghub-192168147",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-28T19:50:13.489Z[UTC]",
+      "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuNYKuSdL1DJQTi0aE8zl1vkf5AtlSXW+aDT5P2un82cNqA1M4Z4dQFclL+5yDso0H8VwTzTdq2CmiNcWZzkiQhI5Hwt8JQG7+Lc4cOn88DLHDfjrW+hOeKH4VMgRQaw19wUMip08Tus2faz6pXrEC5ly3axw/5rCg2RI2DDlhgnf46/O40niNYuW1329R1W9zx0Z9mBXtzLk6yP86fCWxEfM3jp5HxERKRp78qqZiHir0CgzLxba4K91HbHvSzXV7l3CveDeiB2rLt2/msUMi967gbt/rqTe4NbLoxS2SU/zer3CLRTkflnU5XJa4rZwuV5/cS93usmzFITwAAoVTQIDAQAB",
+      "id": "github@dcmartin.com/cb7b3237-cpu2msghub-192168147"
+    },
+    {
+      "token": "********",
+      "name": "dcm-sdrlive",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-22T23:21:11.702Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/dcm-sdrlive"
+    },
+    {
+      "token": "********",
+      "name": "production",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-22T22:33:08.233Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/production"
+    },
+    {
+      "token": "********",
+      "name": "cb7b3237-cpu2msghub-192-168-1-199",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-22T21:08:26.048Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/cb7b3237-cpu2msghub-192-168-1-199"
+    },
+    {
+      "token": "********",
+      "name": "cb7b3237-cpu2msghub-192-168-1-201",
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "pattern": "",
+      "registeredServices": [],
+      "msgEndPoint": "",
+      "softwareVersions": {},
+      "lastHeartbeat": "2018-11-22T06:52:33.854Z[UTC]",
+      "publicKey": "",
+      "id": "github@dcmartin.com/cb7b3237-cpu2msghub-192-168-1-201"
+    }
+  ]
+}

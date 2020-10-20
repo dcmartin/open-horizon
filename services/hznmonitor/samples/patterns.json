@@ -1,0 +1,571 @@
+{
+  "patterns": [
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "hznsetup-beta",
+      "description": "hznsetup as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.hznsetup-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-04-27T19:32:06.670Z[UTC]",
+      "id": "github@dcmartin.com/hznsetup-beta"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "motion2mqtt-beta",
+      "description": "motion2mqtt as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.13",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.13",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.13",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.mqtt2kafka-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-04-26T03:01:20.751Z[UTC]",
+      "id": "github@dcmartin.com/motion2mqtt-beta"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "yolo2msghub",
+      "description": "yolo and friends as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-04-23T01:57:42.068Z[UTC]",
+      "id": "github@dcmartin.com/yolo2msghub"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "yolo2msghub-beta",
+      "description": "yolo and friends as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.11",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-04-12T03:38:24.323Z[UTC]",
+      "id": "github@dcmartin.com/yolo2msghub-beta"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "hello",
+      "description": "hello",
+      "public": false,
+      "services": [
+        {
+          "serviceUrl": "hello-dcmartin",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "hello-dcmartin",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "hello-dcmartin",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-04-11T17:40:42.595Z[UTC]",
+      "id": "github@dcmartin.com/hello"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "jetson-yolo-beta",
+      "description": "yolo and friends as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.jetson-yolo-beta",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.1",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-03-11T23:22:16.212Z[UTC]",
+      "id": "github@dcmartin.com/jetson-yolo-beta"
+    },
+    {
+      "owner": "github@dcmartin.com/github@dcmartin.com",
+      "label": "motion2mqtt",
+      "description": "motion2mqtt as a pattern",
+      "public": true,
+      "services": [
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "amd64",
+          "serviceVersions": [
+            {
+              "version": "0.0.12",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm",
+          "serviceVersions": [
+            {
+              "version": "0.0.12",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        },
+        {
+          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt",
+          "serviceOrgid": "github@dcmartin.com",
+          "serviceArch": "arm64",
+          "serviceVersions": [
+            {
+              "version": "0.0.12",
+              "deployment_overrides": "",
+              "deployment_overrides_signature": "",
+              "priority": {},
+              "upgradePolicy": {}
+            }
+          ],
+          "dataVerification": {
+            "metering": {}
+          },
+          "nodeHealth": {
+            "missing_heartbeat_interval": 600,
+            "check_agreement_status": 120
+          }
+        }
+      ],
+      "agreementProtocols": [
+        {
+          "name": "Basic"
+        }
+      ],
+      "lastUpdated": "2019-03-11T16:18:05.917Z[UTC]",
+      "id": "github@dcmartin.com/motion2mqtt"
+    }
+  ]
+}
