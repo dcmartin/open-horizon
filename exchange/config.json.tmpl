@@ -17,7 +17,7 @@
   "services": {
     "agbot": {
       "name": "agbot",
-      "image": "openhorizon/amd64_agbot",
+      "image": "openhorizon/${BUILD_ARCH}_agbot",
       "tag": "${AGBOT_TAG}",
       "stable": "2.24.18",
       "port": 3091,
@@ -29,7 +29,7 @@
     },
     "css": {
       "name": "css-api",
-      "image": "openhorizon/amd64_cloud-sync-service",
+      "image": "dcmartin/edge-sync-service",
       "tag": "${CSS_TAG}",
       "stable": "1.0.18",
       "port": 9443,
@@ -38,7 +38,7 @@
     },
     "exchange": {
       "name": "exchange-api",
-      "image": "openhorizon/amd64_exchange-api",
+      "image": "openhorizon/${BUILD_ARCH}_exchange-api",
       "tag": "${EXCHANGE_TAG}",
       "stable": "2.12.3",
       "version": "v1",
@@ -57,7 +57,7 @@
     "cssdb": {
       "name": "css-db",
       "image": "mongo",
-      "tag": "4.0.6",
+      "tag": "4.4.1",
       "database": "css-db",
       "volume": "cssdb"
     },

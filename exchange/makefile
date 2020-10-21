@@ -4,6 +4,8 @@
 ### Uses the default `docker-compose.yml` file in current directory
 ###
 
+BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
+
 ##
 ## TARGETS:
 ##
@@ -160,6 +162,7 @@ CONFIGS := \
 	  ${CWD}/default.horizon
 
 exchange-fix: EXCHANGE_PASSWORD_ENCODED ${EXCHANGE_CONFIG_FILE}
+	@if [ -z "$$(command -v htpasswd)" ]; then echo "htpasswd not installed; sudo apt install -qq -y apache2-utils"; fi
 	@echo "making $@"
 	@temp=$(shell mktemp) \
 	  && jq '.|.api.root.password="$(shell cat EXCHANGE_PASSWORD_ENCODED)"' ${EXCHANGE_CONFIG_FILE} > $${temp} \
@@ -267,6 +270,7 @@ ${CONFIGS}: ${CONFIG_JSON} makefile
 	  CSS_CONTAINER_NAME="${CSS_CONTAINER_NAME}" \
 	  CSS_CONTAINER_IMAGE="${CSS_CONTAINER_IMAGE}" \
 	  CSS_TAG="${CSS_TAG}" \
+	  BUILD_ARCH="${BUILD_ARCH}" \
 	  CSS_KEYS_DIR="${CSS_KEYS_DIR}" \
 	  CSS_CONFIG_DIR="${CSS_CONFIG_DIR}" \
 	  CSS_CONFIG_FILE="${CSS_CONFIG_FILE}" \
