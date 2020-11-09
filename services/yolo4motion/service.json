@@ -47,6 +47,7 @@
     }
   },
   "mount": [
+    {"source":"${PWD}/yolov2-tiny-voc.weights","target":"/openyolo/darknet/yolov2-tiny-voc.weights"},
     {"source":"${PWD}/yolov3-tiny.weights","target":"/openyolo/darknet/yolov3-tiny.weights"},
     {"source":"${PWD}/yolov2.weights","target":"/openyolo/darknet/yolov2.weights"},
     {"source":"${PWD}/yolov3.weights","target":"/openyolo/darknet/yolov3.weights"}
