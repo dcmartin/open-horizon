@@ -149,8 +149,8 @@ while true; do
   ## announce service
   topic="service/$(service_label)/$(hostname -s)"
   message=$(echo "$(service_config)" | jq -c '.hostname="'$(hostname -s)'"')
-  hzn.log.notice "Announcing on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
   mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -m "${message}"
+  hzn.log.notice "Announced on MQTT host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"
 
   mosquitto_sub ${MOSQUITTO_ARGS} -t "${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}" | while read; do
   
