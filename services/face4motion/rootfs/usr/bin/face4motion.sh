@@ -52,6 +52,9 @@ process_motion_event()
   # create service update
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
 
+  # update service status
+  service_update "${service_json_file}"
+
   hzn.log.debug "Decoding image provided in motion event"
   jq -r '.event.image' ${payload} | base64 --decode > "${input_jpeg_file}"
 
@@ -89,9 +92,6 @@ process_motion_event()
   else
     hzn.log.error "Zero-length output JSON file"
   fi
-
-  # update service status
-  service_update "${service_json_file}"
 
   # cleanup
   rm -f ${payload} ${input_jpeg_file} ${face_json_file} ${service_json_file}
