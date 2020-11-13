@@ -4,7 +4,7 @@
   "description": "face service with local MQTT broker (usage optional)",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/face4motion/README.md",
   "url": "com.github.dcmartin.open-horizon.face4motion",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -33,7 +33,7 @@
       "face4motion": {
         "environment": [
           "SERVICE_LABEL=face4motion",
-          "SERVICE_VERSION=0.0.1"
+          "SERVICE_VERSION=0.0.2"
         ],
         "specific_ports": [],
         "devices": [],
