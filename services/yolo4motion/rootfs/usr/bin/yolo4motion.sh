@@ -39,6 +39,10 @@ process_motion_event()
 
   hzn.log.debug "${FUNCNAME[0]} - initializing service update"
   echo "${config}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='${now} > ${service_json_file}
+
+  # update service status
+  service_update "${service_json_file}"
+
   hzn.log.debug "${FUNCNAME[0]} - adding event to service status"
   jq -s add "${service_json_file}" "${payload}" > "${service_json_file}.$$" && mv -f "${service_json_file}.$$" "${service_json_file}"
 
@@ -105,8 +109,6 @@ process_motion_event()
     rm -f ${yolo_json_file}
   fi
 
-  # update service status
-  service_update "${service_json_file}"
   rm -f ${service_json_file}
 }
 
