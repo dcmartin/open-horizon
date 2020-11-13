@@ -191,7 +191,10 @@ service-build:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	  cuda=$$(echo "$${arch}" | sed 's/[^-]*-\(.*\)/\1/'); \
-	  if [ "$${arch}" = "$${cuda:-}" ]; then \
+	  base=$$(echo "$${arch}" | sed 's/\([^-]*\)-.*/\1/'); \
+	  if [ "${ARCH}" != "$${base:-}" ] && [ $$(uname -s) != 'Darwin' ]; then \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${arch} not supported: $${base}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	  elif [ "$${arch}" = "$${cuda:-}" ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; building: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ "${CUDA}" = "$${cuda}" ]; then \
