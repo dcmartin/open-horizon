@@ -193,7 +193,7 @@ service-build:
 	  cuda=$$(echo "$${arch}" | sed 's/[^-]*-\(.*\)/\1/'); \
 	  base=$$(echo "$${arch}" | sed 's/\([^-]*\)-.*/\1/'); \
 	  if [ "${ARCH}" != "$${base:-}" ] && [ $$(uname -s) != 'Darwin' ]; then \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${arch} not supported: $${base}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${arch} not supported: $${base:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	  elif [ "$${arch}" = "$${cuda:-}" ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; building: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
@@ -201,7 +201,7 @@ service-build:
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} supported: ${CUDA}; building: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	  else \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
           fi; \
 	done
 
