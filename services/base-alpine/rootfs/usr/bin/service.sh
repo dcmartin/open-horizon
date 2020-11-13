@@ -15,6 +15,6 @@ echo "HTTP/1.1 200 OK"
 echo "Content-Type: application/json; charset=ISO-8859-1"
 echo "Content-length: ${SIZ}" 
 echo "Access-Control-Allow-Origin: *"
-echo ""
+echo -e '\r\n'
 cat "${RESPONSE_FILE}"
 rm -f ${RESPONSE_FILE}
