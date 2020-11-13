@@ -1,11 +1,11 @@
 ## ARCHITECTURE
 ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/')
-BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(ARCH))
+ARCH := $(if $(wildcard ARCH),$(shell cat ARCH),$(ARCH))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 CUDA := $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA := $(if ${CUDA},$(shell echo "${CUDA}" | awk '{ print $$2 }'),)
-BUILD_ARCH := $(if ${CUDA},${BUILD_ARCH}-${CUDA},${BUILD_ARCH})
+BUILD_ARCH ?= $(if ${CUDA},${ARCH}-${CUDA},${ARCH})
 
 ## HORIZON EXCHANGE
 HZN_USER_ID ?= $(if $(wildcard ../HZN_USER_ID),$(shell cat ../HZN_USER_ID),$(shell whoami))
@@ -177,7 +177,7 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 build: Dockerfile build.json $(SERVICE_JSON) makefile
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
 	@if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^-]*-\(.*\)/\1/') ]; then \
-	  echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; no CUDA support; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
+	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; no CUDA; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	else \
 	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
         fi
@@ -190,7 +190,16 @@ build-service: build
 service-build:
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
-	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  cuda=$$(echo "$${arch}" | sed 's/[^-]*-\(.*\)/\1/'); \
+	  if [ "$${arch}" = "$${cuda:-}" ]; then \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; building: $${arch}""${NC}" > /dev/stderr; \
+	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  elif [ $(if ${CUDA},1,0) -eq 1 ] && [ "${CUDA}" = "$${cuda}" ]; then \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} supported: ${CUDA}; building: $${arch}""${NC}" > /dev/stderr; \
+	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
+	  else \
+	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+          fi; \
 	done
 
 ## push
