@@ -179,7 +179,7 @@ build: Dockerfile build.json $(SERVICE_JSON) makefile
 	@if [ $(if ${CUDA},1,0) -eq 0 ] && [ "${BUILD_ARCH}" != $$(echo "${BUILD_ARCH}" | sed 's/[^-]*-\(.*\)/\1/') ]; then \
 	  echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; no CUDA; SKIPPING: ${BUILD_ARCH}""${NC}" > /dev/stderr; \
 	else \
-	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" > ${BUILD_OUT}; \
+	  export GPU=$(if ${CUDA},1,0) DOCKER_TAG="${DOCKER_TAG}" && docker build --build-arg GPU=$${GPU} --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" | tee ${BUILD_OUT}; \
         fi
 
 build-service: build
