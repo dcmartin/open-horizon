@@ -4,7 +4,7 @@
   "description": "alpr service with local MQTT broker (usage optional)",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/alpr4motion/README.md",
   "url": "com.github.dcmartin.open-horizon.alpr4motion",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -36,7 +36,7 @@
       "alpr4motion": {
         "environment": [
           "SERVICE_LABEL=alpr4motion",
-          "SERVICE_VERSION=0.0.2"
+          "SERVICE_VERSION=0.0.3"
         ],
         "specific_ports": [],
         "devices": [],

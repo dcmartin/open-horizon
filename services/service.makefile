@@ -162,10 +162,6 @@ login: ~/.docker/config.json
 	    || docker login 2> /dev/null \
 	    || echo "${YELLOW}>>>${NC} MAKE **" $$(date +%T) "** docker login failed ${DOCKER_SERVER}""${NC}" > /dev/stderr; \
 
-push: build # login
-	@echo "${MC}>>> MAKE --" $$(date +%T) "-- push: ${DOCKER_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
-	@docker push ${DOCKER_TAG}
-
 ##
 ## SERVICES
 ##
@@ -207,6 +203,10 @@ service-build:
 
 ## push
 
+push: build # login
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- push: ${DOCKER_NAME}; tag: ${DOCKER_TAG}""${NC}" > /dev/stderr
+	@docker push ${DOCKER_TAG}
+
 push-service: 
 	@$(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push
 
@@ -215,6 +215,15 @@ service-push:
 	@for arch in $(SERVICE_ARCH_SUPPORT); do \
 	  $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
 	done
+
+service-manifest: #service-push
+	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-manifest: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
+	for arch in ${SERVICE_ARCH_SUPPORT}; do \
+	  amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}-${SERVICE_LABEL}:${SERVICE_VERSION}"; \
+	done; \
+	echo "${IC}>>> MAKE --" $$(date +%T) "-- service-manifest: ${DOCKER_NAMESPACE}/${SERVICE_LABEL}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr; \
+	docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_LABEL}:${SERVICE_VERSION} $${amendments} && \
+	docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_LABEL}:${SERVICE_VERSION}
 
 ## start & stop
 

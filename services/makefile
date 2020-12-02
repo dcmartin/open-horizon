@@ -56,7 +56,7 @@ ALL = $(BASES) $(SERVICES)
 ## targets
 ##
 
-TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-publish service-verify service-test service-stop service-clean horizon
+TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-manifest service-publish service-verify service-test service-stop service-clean horizon
 
 ## actual
 
