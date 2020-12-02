@@ -271,9 +271,10 @@ yolo_process()
     local MOCKS=( dog giraffe kite eagle horses person scream )
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
+    MOCK=${MOCKS[${MOCK_INDEX}]}
     cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
     hzn.log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
+    MOCK='"'${MOCK}'"'
   else
     MOCK=null
   fi
@@ -334,13 +335,13 @@ yolo_process()
         jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
         rm -f ${b64file} ${annotated}
       fi
-      rm -f "${JPEG}" "${OUT}"
     else
       hzn.log.debug "yolo failed: $(cat ${OUT})"
     fi
   else
     hzn.log.error "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
   fi
+  rm -f "${JPEG:-}" "${OUT:-}" "${TMPDIR}/yolo.$$.out"
 
   echo "${result:-}"
 }
