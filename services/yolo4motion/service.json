@@ -39,7 +39,7 @@
           "SERVICE_LABEL=yolo4motion",
           "SERVICE_VERSION=0.1.5"
         ],
-        "specific_ports": [],
+        "specific_ports": [{"HostPort":"4662:80"}],
         "devices": [],
         "image": null,
         "privileged": true
