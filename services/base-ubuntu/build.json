@@ -10,7 +10,7 @@
     "arm64-11.1": "nvcr.io/nvidia/l4t-base:r32.4.4",
     "amd64-10.0": "nvidia/cuda:10.0-cudnn8-devel-ubuntu18.04",
     "amd64-10.2": "nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04",
-    "amd64-11.0": "nvidia/cuda:11.1-cudnn8-runtime-ubuntu18.04",
+    "amd64-11.0": "nvidia/cuda:11.0-cudnn8-runtime-ubuntu18.04",
     "amd64-11.1": "nvidia/cuda:11.1-cudnn8-runtime-ubuntu18.04"
   },
   "args": {}

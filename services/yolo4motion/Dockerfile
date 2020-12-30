@@ -18,7 +18,8 @@ RUN \
   bc \
   inotify-tools \
   dateutils \
-  mosquitto-clients
+  mosquitto-clients \
+  iproute2
 
 ARG GPU
 ENV GPU=${GPU}

@@ -137,6 +137,7 @@ cd ${DARKNET}
 ## listen forever
 while true; do
 
+
   # update service status
   SERVICE_JSON_FILE=$(mktemp).json
   echo "${CONFIG}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date -u +%s)'|.event=null' > ${SERVICE_JSON_FILE}
@@ -149,8 +150,9 @@ while true; do
   hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}"
   
   ## announce service
+  ipaddr=$(ip addr | egrep -A4 UP | egrep 'inet ' | egrep -v 'scope host lo' | egrep -v 'scope global docker' | awk '{ print $2 }')
+  message=$(echo "$(service_config)" | jq -c '.hostname="'$(hostname -s)'"|.ipaddr="'${ipaddr}'"')
   topic="service/$(service_label)/$(hostname -s)"
-  message=$(echo "$(service_config)" | jq -c '.hostname="'$(hostname -s)'"')
   mosquitto_pub -r -q 2 ${MOSQUITTO_ARGS} -t "${topic}" -m "${message}"
   hzn.log.notice "Announced on MQTT: ${MOSQUITTO_ARGS}; topic: ${topic}; message: ${message}"
 
