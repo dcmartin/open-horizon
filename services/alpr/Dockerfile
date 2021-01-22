@@ -11,19 +11,21 @@ ENV \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
     TERM="xterm"
 
-RUN DEBIAN_FRONTEND=noninteractive \
-  apt-get update && apt-get install -qq -y --no-install-recommends \
-  apt-utils \
-  ca-certificates \
-  curl \
-  build-essential \
-  socat \
-  imagemagick \
-  fswebcam \
-  jq \
-  bc \
-  software-properties-common \
-  git
+RUN apt update -qq -y
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y --no-install-recommends \
+    apt-utils \
+    bc \
+    build-essential \
+    ca-certificates \
+    curl \
+    fswebcam \
+    git \
+    imagemagick \
+    jq \
+    socat \
+    software-properties-common
 
 RUN add-apt-repository ppa:alex-p/tesseract-ocr && apt update -qq -y
 
