@@ -1,16 +1,11 @@
 {
   "squash": false,
   "build_from": {
-    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "arm64-10.0": "${DOCKER_REPOSITORY}/arm64-10.0_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "arm64-10.2": "${DOCKER_REPOSITORY}/arm64-10.2_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "arm64-11.0": "${DOCKER_REPOSITORY}/arm64-11.0_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64-9.2": "${DOCKER_REPOSITORY}/amd64-9.2_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64-10.0": "${DOCKER_REPOSITORY}/amd64-10.0_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64-10.2": "${DOCKER_REPOSITORY}/amd64-10.2_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64-11.0": "${DOCKER_REPOSITORY}/amd64-11.0_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0"
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "arm64_10.2": "${DOCKER_REPOSITORY}/arm64_10.2_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0"
   },
   "args": {}
 }

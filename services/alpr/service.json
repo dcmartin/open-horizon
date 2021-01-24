@@ -4,7 +4,7 @@
   "description": "Provide ALPR license plate recognition service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/alpr/README.md",
   "url": "com.github.dcmartin.open-horizon.alpr",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -17,16 +17,14 @@
     { "name": "ALPR_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "30" },
     { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
     { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
       "alpr": {
         "environment": [
           "SERVICE_LABEL=alpr",
-          "SERVICE_VERSION=0.0.1"
+          "SERVICE_VERSION=0.2.0"
         ],
         "specific_ports": [],
         "devices": [

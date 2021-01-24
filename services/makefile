@@ -13,7 +13,7 @@ HZN_USER_ID ?= $(if $(wildcard HZN_USER_ID),$(shell cat HZN_USER_ID),HZN_USER_ID
 TAG ?= $(if $(wildcard TAG),$(shell cat TAG),)
 
 # hard code architecture for build environment
-BUILD_ARCH ?= $(if $(wildcard BUILD_ARCH),$(shell cat BUILD_ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
+ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRuntime=="nvidia"')
 
 ##
@@ -21,27 +21,27 @@ NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRunt
 ##
 
 BASES ?= base-alpine base-ubuntu apache-alpine apache-ubuntu 
+
 SERVICES ?= \
 	yolo \
 	yolo4motion \
+	hznmonitor \
+	cpu hal wan mqtt \
 	alpr \
 	alpr4motion \
 	face \
-	face4motion
+	face4motion \
+        mqtt2mqtt \
+        motion2mqtt \
+	startup\
+	hznsetup
 
-#	cpu hal wan \
-#	mqtt \
-#	mqtt2mqtt \
-#	motion2mqtt \
 #	nmap \
 #	record \
-#	herald \
-#	hznmonitor \
 #	noize \
-#	hotword \
 #	fft \
-#	hznsetup \
-#	startup \
+#	hotword \
+#	herald \
 #	hzncli \
 #	mqtt2kafka \
 #	yolo2msghub 
@@ -56,7 +56,7 @@ ALL = $(BASES) $(SERVICES)
 ## targets
 ##
 
-TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-manifest service-publish service-verify service-test service-stop service-clean horizon
+TARGETS = all tidy clean distclean build push publish verify build-service push-service start-service publish-service test-service verify-service clean-service service-build service-push service-publish service-verify service-test service-stop service-clean horizon
 
 ## actual
 

@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.herald",
+      "url": "herald",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "LOG_LEVEL": "info",

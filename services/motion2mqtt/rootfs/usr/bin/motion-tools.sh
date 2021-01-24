@@ -175,9 +175,9 @@ fi
 
 mqtt_pub()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
-  if [ -z "${MQTT_DEVICE:-}" ]; then MQTT_DEVICE=$(hostname) && hzn.log.notice "MQTT_DEVICE unspecified; using hostname: ${MQTT_DEVICE}"; fi
+  if [ -z "${MQTT_DEVICE:-}" ]; then MQTT_DEVICE=$(hostname) && hzn::log.notice "MQTT_DEVICE unspecified; using hostname: ${MQTT_DEVICE}"; fi
   ARGS=${*}
   if [ ! -z "${ARGS}" ]; then
     if [ ! -z "${MQTT_USERNAME}" ]; then
@@ -186,7 +186,7 @@ mqtt_pub()
     if [ ! -z "${MQTT_PASSWORD}" ]; then
       ARGS='-P '"${MQTT_PASSWORD}"' '"${ARGS}"
     fi
-    hzn.log.debug "mosquitto_pub -i ${MQTT_DEVICE} -h ${MQTT_HOST} -p ${MQTT_PORT} ${ARGS}"
+    hzn::log.debug "mosquitto_pub -i ${MQTT_DEVICE} -h ${MQTT_HOST} -p ${MQTT_PORT} ${ARGS}"
     mosquitto_pub -i "${MQTT_DEVICE}" -h "${MQTT_HOST}" -p "${MQTT_PORT}" ${ARGS}
   fi
 }
@@ -214,52 +214,52 @@ HZN_TIMESTAMP_FORMAT="${HZN_TIMESTAMP_FORMAT:-${HZN_TIMESTAMP_DEFAULT}}"
 
 # logging by level
 
-hzn.log.emerg()
+hzn::log.emerg()
 {
-  hzn.log.logto ${HZN_LEVEL_EMERG} "${*}"
+  hzn::log.logto ${HZN_LEVEL_EMERG} "${*}"
 }
 
-hzn.log.alert()
+hzn::log.alert()
 {
-  hzn.log.logto ${HZN_LEVEL_ALERT} "${*}"
+  hzn::log.logto ${HZN_LEVEL_ALERT} "${*}"
 }
 
-hzn.log.crit()
+hzn::log.crit()
 {
-  hzn.log.logto ${HZN_LEVEL_CRIT} "${*}"
+  hzn::log.logto ${HZN_LEVEL_CRIT} "${*}"
 }
 
-hzn.log.error()
+hzn::log.error()
 {
-  hzn.log.logto ${HZN_LEVEL_ERROR} "${*}"
+  hzn::log.logto ${HZN_LEVEL_ERROR} "${*}"
 }
 
-hzn.log.warn()
+hzn::log.warn()
 {
-  hzn.log.logto ${HZN_LEVEL_WARN} "${*}"
+  hzn::log.logto ${HZN_LEVEL_WARN} "${*}"
 }
 
-hzn.log.notice()
+hzn::log.notice()
 {
-  hzn.log.logto ${HZN_LEVEL_NOTICE} "${*}"
+  hzn::log.logto ${HZN_LEVEL_NOTICE} "${*}"
 }
 
-hzn.log.info()
+hzn::log.info()
 {
-  hzn.log.logto ${HZN_LEVEL_INFO} "${*}"
+  hzn::log.logto ${HZN_LEVEL_INFO} "${*}"
 }
 
-hzn.log.debug()
+hzn::log.debug()
 {
-  hzn.log.logto ${HZN_LEVEL_DEBUG} "${*}"
+  hzn::log.logto ${HZN_LEVEL_DEBUG} "${*}"
 }
 
-hzn.log.trace()
+hzn::log.trace()
 {
-  hzn.log.logto ${HZN_LEVEL_TRACE} "${*}"
+  hzn::log.logto ${HZN_LEVEL_TRACE} "${*}"
 }
 
-hzn.log.level()
+hzn::log.level()
 {
   case "${HZN_LEVEL}" in
     emerg) LL=${HZN_LEVEL_EMERG} ;;
@@ -276,18 +276,18 @@ hzn.log.level()
   echo ${LL:-${HZN_LEVEL_ALL}}
 }
 
-hzn.log.logto()
+hzn::log.logto()
 {
   local level="${1:-0}"
-  local current=$(hzn.log.level)
+  local current=$(hzn::log.level)
   local exp='^[0-9]+$'
 
   if ! [[ ${level} =~ ${exp} ]] ; then
-   echo "hzn.log.logto: error: level ${level} not a number ${FUNCNAME}" &> ${LOGTO}
+   echo "hzn::log.logto: error: level ${level} not a number ${FUNCNAME}" &> ${LOGTO}
    level=
   fi
   if ! [[ ${current} =~ ${exp} ]] ; then
-   echo "hzn.log.logto: error: current ${current} not a number ${FUNCNAME}" &> ${LOGTO}
+   echo "hzn::log.logto: error: current ${current} not a number ${FUNCNAME}" &> ${LOGTO}
    current=
   fi
   if [ "${level:-0}" -le ${current:-9} ]; then

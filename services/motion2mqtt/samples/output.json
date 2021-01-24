@@ -113,7 +113,7 @@
       "public": true,
       "services": [
         {
-          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceUrl": "motion2mqtt-beta",
           "serviceOrgid": "github@dcmartin.com",
           "serviceArch": "amd64",
           "serviceVersions": [
@@ -134,7 +134,7 @@
           }
         },
         {
-          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceUrl": "motion2mqtt-beta",
           "serviceOrgid": "github@dcmartin.com",
           "serviceArch": "arm",
           "serviceVersions": [
@@ -155,7 +155,7 @@
           }
         },
         {
-          "serviceUrl": "com.github.dcmartin.open-horizon.motion2mqtt-beta",
+          "serviceUrl": "motion2mqtt-beta",
           "serviceOrgid": "github@dcmartin.com",
           "serviceArch": "arm64",
           "serviceVersions": [

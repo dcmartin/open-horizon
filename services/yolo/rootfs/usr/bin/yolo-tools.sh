@@ -1,85 +1,71 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
-# temporary directory
-if [ -d /tmpfs ]; then export TMPDIR=/tmpfs; fi
-
-# test
-if [ -z "${DARKNET}" ]; then hzn.log.error "DARKNET unspecified; set environment variable for testing"; fi
-
-# defaults for testing
-if [ -z "${YOLO_PERIOD:-}" ]; then YOLO_PERIOD=0; fi
-if [ -z "${YOLO_ENTITY:-}" ]; then YOLO_ENTITY=person; fi
-if [ -z "${YOLO_THRESHOLD:-}" ]; then YOLO_THRESHOLD=0.25; fi
-if [ -z "${YOLO_SCALE:-}" ]; then YOLO_SCALE="320x240"; fi
-if [ -z "${YOLO_NAMES:-}" ]; then YOLO_NAMES=""; fi
-if [ -z "${YOLO_DATA:-}" ]; then YOLO_DATA=""; fi
-if [ -z "${YOLO_CFG_FILE:-}" ]; then YOLO_CFG_FILE=""; fi
-if [ -z "${YOLO_WEIGHTS:-}" ]; then YOLO_WEIGHTS=""; fi
-if [ -z "${YOLO_WEIGHTS_URL:-}" ]; then YOLO_WEIGHTS_URL=""; fi
-if [ -z "${YOLO_CONFIG}" ]; then YOLO_CONFIG="tiny-v2"; fi
-
-# temporary image and output
-JPEG="${TMPDIR}/${0##*/}.$$.jpeg"
-OUT="${TMPDIR}/${0##*/}.$$.out"
-CONF_FILE=/etc/yolo.conf
-
-yolo_init() 
+yolo::init() 
 {
-  hzn.log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   ## configure YOLO
   local which=${1:-tiny-v2}
-  local darknet=$(yolo_config ${which})
+  local darknet=$(yolo::config ${which})
 
   local weights=$(echo "${darknet}" | jq -r '.weights')
   local weights_url=$(echo "${darknet}" | jq -r '.weights_url')
   local weights_md5=$(echo "${darknet}" | jq -r '.weights_md5')
   local namefile=$(echo "${darknet}" | jq -r '.names')
+
+  local OUT="$(mktemp).$$.out"
+  local CONF_FILE=/etc/yolo.conf
+  local CONFIG
+  local NAMES
   local attempts=0
 
-  hzn.log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}"
+  hzn::log.debug "${FUNCNAME[0]} config: ${which}; weights: ${weights}; attempts: ${YOLO_ATTEMPTS:-2}"
 
   while [ ${attempts} -le ${YOLO_ATTEMPTS:-2} ]; do
     if [ -s "${weights}" ]; then
       local md5=$(md5sum ${weights} | awk '{ print $1 }')
 
       if [ "${md5}" != "${weights_md5}" ]; then
-        hzn.log.notice "YOLO config: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
+        hzn::log.warning "${FUNCNAME[0]}: ${which}; attempt: ${attempts}; failed checksum: ${md5} != ${weights_md5}"
         rm -f ${weights}
       else
+        hzn::log.info "${FUNCNAME[0]}: downloaded; model: ${which}; weights: ${weights}"
         break
       fi
     fi
 
     # download
-    hzn.log.notice "YOLO config: ${which}; downloading ${weights} from ${weights_url}"
+    hzn::log.notice "${FUNCNAME[0]}: config: ${which}; downloading ${weights} from ${weights_url}"
     curl -fsSL ${weights_url} -o ${weights}
     attempts=$((attempts+1))
   done
+
   if [ ! -s "${weights}" ]; then
-    hzn.log.notice "YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:tiny}"
-    yolo_config ${YOLO_DEFAULT:-tiny-v2}
-  else
-    hzn.log.notice "YOLO config: ${which}; downloaded: ${weights}"
+    hzn::log.warning "${FUNCNAME[0]}: YOLO config: ${which}; failed to download after ${YOLO_ATTEMPTS:-2}; defaulting to ${YOLO_DEFAULT:-tiny-v2}"
+    yolo::config ${YOLO_DEFAULT:-tiny-v2}
   fi
 
-  # build configuation
-  CONFIG='{"log_level":"'${LOG_LEVEL:-}'","debug":'${DEBUG:-}',"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"period":'${YOLO_PERIOD}',"entity":"'${YOLO_ENTITY}'","scale":"'${YOLO_SCALE}'","config":"'${YOLO_CONFIG}'","services":'"${SERVICES:-null}"',"darknet":'"${darknet}"'}'
   # get namefile of entities that can be detected
   if [ -s "${namefile}" ]; then
-    hzn.log.info "Processing ${namefile}"
+    hzn::log.debug "${FUNCNAME[0]}: model: ${which}; names: ${namefile}"
     NAMES='['$(awk -F'|' '{ printf("\"%s\"", $1) }' "${namefile}" | sed 's|""|","|g')']'
   fi
-  if [ -z "${NAMES:-}" ]; then NAMES='["person"]'; fi
-  CONFIG=$(echo "${CONFIG}" | jq '.names='"${NAMES}")
-  echo "${CONFIG}" | tee ${CONF_FILE}
+  if [ -z "${NAMES:-}" ]; then 
+    hzn::log.warning "${FUNCNAME[0]}: NO NAMES; using 'person'; model: ${which}; names: ${namefile}"
+    NAMES='["person"]'
+  fi
+
+  # done
+  echo '{"darknet":'"${darknet}"', "period":'${YOLO_PERIOD:-null}', "entity":"'${YOLO_ENTITY:-}'", "scale":"'${YOLO_SCALE:-none}'", "resolution":"'${YOLO_RESOLUTION:-384x288}'","device":"'${YOLO_DEVICE:-/dev/video0}'", "names":'"${NAMES}"'}'
 }
 
-yolo_config()
+yolo::config()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
-  case ${1} in
+  local model=${1:-tiny}
+
+  case ${model} in
     tiny|tiny-v2)
       YOLO_WEIGHTS_URL="${DARKNET_TINYV2_WEIGHTS_URL}"
       YOLO_WEIGHTS_MD5="${DARKNET_TINYV2_WEIGHTS_MD5}"
@@ -113,242 +99,112 @@ yolo_config()
       YOLO_NAMES="${DARKNET_V3_NAMES}"
     ;;
     *)
-      hzn.log.error "Invalid YOLO_CONFIG: ${1}"
+      hzn::log.error "${FUNCNAME[0]}: unknown model: ${model}"
     ;;
   esac
-  echo '{"threshold":'${YOLO_THRESHOLD}',"weights_url":"'${YOLO_WEIGHTS_URL}'","weights":"'${YOLO_WEIGHTS}'","weights_md5":"'${YOLO_WEIGHTS_MD5}'","cfg":"'${YOLO_CFG_FILE}'","data":"'${YOLO_DATA}'","names":"'${YOLO_NAMES}'"}'
+  echo '{"threshold":'${YOLO_THRESHOLD:-}',"weights_url":"'${YOLO_WEIGHTS_URL:-}'","weights":"'${YOLO_WEIGHTS:-}'","weights_md5":"'${YOLO_WEIGHTS_MD5:-}'","cfg":"'${YOLO_CFG_FILE:-}'","data":"'${YOLO_DATA:-}'","names":"'${YOLO_NAMES:-}'"}'
 }
 
-## ORIGINAL 
-
-darknet_detector_test()
+yolo::process()
 {
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
+  hzn::log.trace "${FUNCNAME[0]}" "${*}"
 
-  local data=${1}
-  local cfg=${2}
-  local weights=${3}
-  local threshold=${4}
-  local JPEG=${5}
-
-  local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.')
-  local result='{"info":'"${info}"'}'
-
-  hzn.log.debug "PROCESSING: ${JPEG}: " $(echo "${info}" | jq -c '.')
-
-  ## do YOLO
-  local out=$(mktemp)
-  local err=$(mktemp)
-  hzn.log.debug "DARKNET: cd ${DARKNET} && ./darknet detector test ${data} ${cfg} ${weights} -thresh ${threshold} ${JPEG}"
-  cd ${DARKNET} && ./darknet detector test "${data}" "${cfg}" "${weights}" -thresh "${threshold}" "${JPEG}" > "${out}" 2> "${err}"
-
-  # test for output
-  if [ -s "${out}" ]; then
-    hzn.log.trace "DARKNET: output:" $(cat ${out})
-
-    # extract processing time in seconds
-    TIME=$(cat "${out}" | egrep "Predicted" | sed 's/.*Predicted in \([^ ]*\).*/\1/')
-    if [ -z "${TIME}" ]; then 
-      hzn.log.warn "No time in output" $(cat ${out})
-      TIME=0
-    else
-      hzn.log.debug "TIME: ${TIME}"
-    fi
-
-    TOTAL=0
-    case ${YOLO_ENTITY} in
-      all)
-	# find entities in output
-	cat "${out}" | tr '\n' '\t' | sed 's/.*Predicted in \([^ ]*\) seconds. */time: \1/' | tr '\t' '\n' | tail +2 > "${out}.$$"
-	FOUND=$(cat "${out}.$$" | awk -F: '{ print $1 }' | sort | uniq)
-	if [ ! -z "${FOUND}" ]; then
-	  hzn.log.debug "Detected:" $(echo "${FOUND}" | fmt -1000)
-	  JSON=
-	  for F in ${FOUND}; do
-	    if [ -z "${JSON:-}" ]; then JSON='['; else JSON="${JSON}"','; fi
-	    C=$(egrep '^'"${F}" "${out}.$$" | wc -l | awk '{ print $1 }')
-	    COUNT='{"entity":"'"${F}"'","count":'${C}'}'
-	    JSON="${JSON}""${COUNT}"
-	    TOTAL=$((TOTAL+C))
-	  done
-	  rm -f "${out}.$$"
-	  if [ -z "${JSON}" ]; then JSON='null'; else JSON="${JSON}"']'; fi
-	  DETECTED="${JSON}"
-	else
-	  hzn.log.debug "Detected nothing"
-	  DETECTED='null'
-	fi
-	;;
-      *)
-	# count single entity
-	C=$(egrep '^'"${YOLO_ENTITY}" "${out}" | wc -l | awk '{ print $1 }')
-	COUNT='{"entity":"'"${YOLO_ENTITY}"'","count":'${C}'}'
-	TOTAL=$((TOTAL+C))
-	DETECTED='['"${COUNT}"']'
-	;;
-    esac
-    result=$(echo "${result}" | jq '.count='${TOTAL:-null}'|.detected='"${DETECTED:-null}"'|.time='${TIME:-null})
-  else
-    echo "+++ WARN $0 $$ -- no output:" $(cat ${out}) &> /dev/stderr
-    hzn.log.debug "darknet failed:" $(cat "${TMPDIR}/darknet.$$.out")
-    result=$(echo "${result}" | jq '.count=0|.detected=null|.time=0')
-  fi
-  echo "${result}"
-}
-
-yolo_process_old()
-{
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
-
-  local PAYLOAD="${1}"
-  local ITERATION="${2}"
+  local PAYLOAD="${1:-}"
+  local ITERATION="${2:-}"
   local output='{}'
   local MOCK=
   local JPEG=$(mktemp).jpeg
-
-  # test image 
-  if [ ! -s "${PAYLOAD}" ]; then 
-    local MOCKS=( dog giraffe kite eagle horses person scream )
-    if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
-    if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
-    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
-    cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
-    hzn.log.debug "MOCK: ${DARKNET}/data/${MOCK}"
-  else
-    MOCK=null
-  fi
-
-  # scale image
-  if [ "${YOLO_SCALE:-none}" != 'none' ]; then
-    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
-  else
-    cp -f "${PAYLOAD}" "${JPEG}"
-  fi
-  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
-
-  # get image information
-
-  local data=$(jq -r '.darknet.data' ${CONF_FILE})
-  local weights=$(jq -r '.darknet.weights' ${CONF_FILE})
-  local cfg=$(jq -r '.darknet.cfg' ${CONF_FILE})
-  local threshold=$(jq -r '.darknet.threshold' ${CONF_FILE})
-
-  output=$(darknet_detector_test ${data} ${cfg} ${weights} ${threshold} ${JPEG})
-
-  # capture annotated image as BASE64 encoded string
-  local IMAGE=$(mktemp)
-  local TEMP=$(mktemp)
-
-  echo -n '{"mock": '${MOCK}', "image":"' > "${IMAGE}"
-  if [ -s "predictions.jpg" ]; then
-    base64 -w 0 -i predictions.jpg >> "${IMAGE}"
-  fi
-  echo '"}' >> "${IMAGE}"
-
-  echo "${output}" > "${TEMP}"
-  jq -s add "${TEMP}" "${IMAGE}" > "${TEMP}.$$" && mv -f "${TEMP}.$$" "${IMAGE}"
-  rm -f "${TEMP}"
-
-  # cleanup
-  rm -f "${JPEG}" "${out}" predictions.jpg
-
-  # return JSON payload response
-  echo "${IMAGE}"
-}
-
-yolo_process()
-{
-  hzn.log.trace "${FUNCNAME[0]}" "${*}"
-
-  local PAYLOAD="${1}"
-  local ITERATION="${2}"
-  local output='{}'
-  local MOCK=
-  local JPEG=$(mktemp).jpeg
+  local MOCKS=( dog giraffe kite eagle horses person scream )
 
   # test image
   if [ ! -s "${PAYLOAD}" ]; then
-    local MOCKS=( dog giraffe kite eagle horses person scream )
     if [ -z "${ITERATION}" ]; then MOCK_INDEX=0; else MOCK_INDEX=$((ITERATION % ${#MOCKS[@]})); fi
     if [ ${MOCK_INDEX} -ge ${#MOCKS[@]} ]; then MOCK_INDEX=0; fi
     MOCK=${MOCKS[${MOCK_INDEX}]}
+    hzn::log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
     cp -f "${DARKNET}/data/${MOCK}.jpg" ${PAYLOAD}
-    hzn.log.debug "${FUNCNAME[0]} - no payload; using mock: ${DARKNET}/data/${MOCK}.jpg"
-    MOCK='"'${MOCK}'"'
+    MOCK='"'${MOCKS[${MOCK_INDEX}]}'"'
   else
     MOCK=null
   fi
 
   # scale image
   if [ "${YOLO_SCALE:-none}" != 'none' ]; then
-    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}"
+    local err=$(mktemp)
+    convert -scale "${YOLO_SCALE}" "${PAYLOAD}" "${JPEG}" &> ${err}
+    if [ ! -s ${JPEG} ]; then
+      hzn::log.error "${FUNCNAME[0]}: scale conversion failed; reverting to original; error: " $(cat err)
+      cp -f "${PAYLOAD}" "${JPEG}"
+    fi
+    rm -f ${err}
   else
     cp -f "${PAYLOAD}" "${JPEG}"
   fi
-  hzn.log.debug "PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
+  hzn::log.debug "${FUNCNAME[0]}: PAYLOAD: ${PAYLOAD}; size: $(wc -c ${PAYLOAD} | awk '{ print $1 }'); JPEG: ${JPEG}; size: $(wc -c ${JPEG} | awk '{ print $1 }')"
 
   # image information
   local info=$(identify "${JPEG}" | awk '{ printf("{\"type\":\"%s\",\"size\":\"%s\",\"bps\":\"%s\",\"color\":\"%s\"}", $2, $3, $5, $6) }' | jq -c '.mock="'${mock:-false}'"')
 
-  local config='{"scale":"'${YOLO_SCALE}'","threshold":"'${YOLO_THRESHOLD}'"}'
+  local config='{"scale":"'${YOLO_SCALE:-none}'","threshold":"'${YOLO_THRESHOLD:-}'"}'
 
   ## do YOLO
   local before=$(date +%s.%N)
+  local OUT=$(mktemp)
+  local err=$(mktemp)
 
-  hzn.log.debug "OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
-  cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
-
-  #hzn.log.debug "OPENYOLO: ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}"
-  #cd ${OPENYOLO} && ./example/detector.py ${JPEG} ${YOLO_CONFIG} ${YOLO_THRESHOLD}> "${OUT}" 2> "${TMPDIR}/yolo.$$.out"
+  ## TODO: Change to Detector3 to check use with gifs
+  hzn::log.debug "${FUNCNAME[0]}: OPENYOLO: /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG}"
+  cd ${OPENYOLO} && /usr/bin/detector.py ${JPEG} ${YOLO_THRESHOLD} ${YOLO_CONFIG} > "${OUT}" 2> ${err}
 
   local after=$(date +%s.%N)
   local seconds=$(echo "${after} - ${before}" | bc -l)
-  hzn.log.debug "${FUNCNAME[0]} - time: ${seconds}; output: $(cat ${OUT})"
+
+  hzn::log.debug "${FUNCNAME[0]}: time: ${seconds}; output:" $(jq -c '.' ${OUT})
 
   # test for output
   if [ -s "${OUT}" ]; then
     local count=$(jq -r '.count' ${OUT})
     local results=$(jq '.results' ${OUT})
 
-    hzn.log.debug "${FUNCNAME[0]} - COUNT: ${count}; RESULTS: ${results}"
+    hzn::log.info "${FUNCNAME[0]}: COUNT: ${count}; RESULTS:" $(echo "${results}" | jq -c '.')
 
     if [ ! -z "${count:-}" ] && [ "${results:-null}" != 'null' ]; then
       local detected=$(for e in $(jq -r '.results|map(.entity)|unique[]' ${OUT}); do jq '{"entity":"'${e}'","count":[.results[]|select(.entity=="'${e}'")]|length}' ${OUT} ; done | jq -s '.')
 
-      hzn.log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
-
-      # initiate output
-      result=$(mktemp)
-      echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
+      hzn::log.debug "${FUNCNAME[0]} - DETECTED:" $(echo "${detected}" | jq -c '.')
+    else
+      hzn::log.debug "${FUNCNAME[0]}: nothing seen"
+    fi
+  
+    # initiate output
+    result=$(mktemp).result
+    echo '{"count":'${count:-null}',"detected":'"${detected:-null}"',"results":'${results:-null}',"time":'${time_ms:-null}'}' \
         | jq '.info='"${info:-null}" \
         | jq '.config='"${config:-null}" > ${result}
   
-      # annotated image
-      local annotated=$(yolo_annotate ${OUT} ${JPEG})
+    # annotated image
+    local annotated=$(yolo::annotate ${OUT} ${JPEG})
   
-      if [ "${annotated:-null}" != 'null' ]; then
-        local b64file=$(mktemp)
+    if [ "${annotated:-null}" != 'null' ]; then
+      local b64file=$(mktemp).b64
   
-        echo -n '{"image":"' > "${b64file}"
-        base64 -w 0 -i ${annotated} >> "${b64file}"
-        echo '"}' >> "${b64file}"
-        jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
-        rm -f ${b64file} ${annotated}
-      fi
-    else
-      hzn.log.debug "yolo failed: $(cat ${OUT})"
+      echo -n '{"image":"' > "${b64file}"
+      base64 -w 0 -i ${annotated} >> "${b64file}"
+      echo '"}' >> "${b64file}"
+      jq -s add "${result}" "${b64file}" > "${result}.$$" && mv -f "${result}.$$" "${result}"
+      rm -f ${b64file} ${annotated}
     fi
+    rm -f "${JPEG}" "${OUT}"
   else
-    hzn.log.error "yolo failed:" $(cat "${TMPDIR}/yolo.$$.out")
+    hzn::log.error "${FUNCNAME[0]}: yolo failed:" $(cat ${err})
   fi
-  rm -f "${JPEG:-}" "${OUT:-}" "${TMPDIR}/yolo.$$.out"
 
   echo "${result:-}"
 }
 
-yolo_annotate()
+yolo::annotate()
 {
-  hzn.log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local json=${1}
   local jpeg=${2}
@@ -390,7 +246,7 @@ yolo_annotate()
         output=${jpeg%%.*}-$((i+1)).jpg
         convert -font DejaVu-Sans-Mono -pointsize ${pointsize} -stroke ${colors[${count}]} -fill none -strokewidth 2 -draw "rectangle ${left},${top} ${right},${bottom} push graphic-context stroke ${colors[${count}]} fill ${colors[${count}]} translate ${left},$((top+pointsize/2)) text 3,6 '${display}' pop graphic-context" ${file} ${output}
         if [ ! -s "${output}" ]; then
-          hzn.log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
+          hzn::log.error "${FUNCNAME[0]} - failure to annotate image; jpeg: ${jpeg}; json: " $(echo "${json}" | jq -c '.')
           output=""
           break
         fi

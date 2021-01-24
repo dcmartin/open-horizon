@@ -1,0 +1,219 @@
+{
+  "startup": {
+    "period": 900,
+    "timestamp": "2019-06-26T17:04:39Z",
+    "date": "1561568679",
+    "activity": [
+      {
+        "id": "startup-beta-test-vm-sanjose16",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.188",
+          "169.44.157.10",
+          "172.17.0.1",
+          "172.19.0.1"
+        ],
+        "download": 856086522.8599192,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:46:46Z",
+        "configure": "2019-06-25T15:46:47Z",
+        "timestamp": "2019-06-26T17:04:39Z",
+        "period": 600,
+        "date": 1561477606,
+        "containers": 32,
+        "last": 1561477606,
+        "first": 1561477606,
+        "average": 4
+      },
+      {
+        "id": "startup-beta-test-vm-sanjose11",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.163",
+          "169.45.114.44",
+          "172.17.0.1",
+          "192.168.64.1"
+        ],
+        "download": 231393528.65743482,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-26T02:58:36Z",
+        "configure": "2019-06-26T02:58:36Z",
+        "timestamp": "2019-06-26T17:04:37Z",
+        "period": 600,
+        "date": 1561517916,
+        "containers": 32,
+        "last": 1561517916,
+        "first": 1561517916,
+        "average": 4
+      },
+      {
+        "id": "startup-beta-test-vm-washington",
+        "count": 11,
+        "ips": [
+          "127.0.0.1",
+          "10.190.87.57",
+          "169.62.57.61",
+          "172.17.0.1"
+        ],
+        "download": 1171800523.0216267,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:44:13Z",
+        "configure": "2019-06-25T15:44:13Z",
+        "timestamp": "2019-06-26T17:04:36Z",
+        "period": 600,
+        "date": 1561477453,
+        "containers": 33,
+        "last": 1561477453,
+        "first": 1561477453,
+        "average": 3
+      },
+      {
+        "id": "startup-beta-test-vm-sanjose",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.158",
+          "169.44.157.15",
+          "172.17.0.1",
+          "172.19.0.1"
+        ],
+        "download": 326006440.59481305,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:59:46Z",
+        "configure": "2019-06-25T15:59:46Z",
+        "timestamp": "2019-06-26T17:04:33Z",
+        "period": 600,
+        "date": 1561478386,
+        "containers": 32,
+        "last": 1561478386,
+        "first": 1561478386,
+        "average": 4
+      },
+      {
+        "id": "startup-beta-test-vm-sanjose8",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.182",
+          "169.44.157.25",
+          "172.17.0.1",
+          "172.29.0.1"
+        ],
+        "download": 911875171.2377201,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:46:12Z",
+        "configure": "2019-06-25T15:46:13Z",
+        "timestamp": "2019-06-26T17:04:31Z",
+        "period": 600,
+        "date": 1561477572,
+        "containers": 32,
+        "last": 1561477572,
+        "first": 1561477572,
+        "average": 4
+      },
+      {
+        "id": "startup-beta-test-vm-washington15",
+        "count": 9,
+        "ips": [
+          "127.0.0.1",
+          "10.190.87.48",
+          "169.62.57.59",
+          "172.17.0.1"
+        ],
+        "download": 969695494.0931603,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:38:08Z",
+        "configure": "2019-06-25T15:38:08Z",
+        "timestamp": "2019-06-26T17:04:30Z",
+        "period": 600,
+        "date": 1561477088,
+        "containers": 27,
+        "last": 1561477088,
+        "first": 1561477088,
+        "average": 3
+      },
+      {
+        "id": "startup-beta-test-vm-sanjose10",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.181",
+          "169.45.114.38",
+          "172.17.0.1",
+          "192.168.0.1"
+        ],
+        "download": 744063108.5117375,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:45:49Z",
+        "configure": "2019-06-25T15:45:50Z",
+        "timestamp": "2019-06-26T17:04:28Z",
+        "period": 600,
+        "date": 1561477549,
+        "containers": 32,
+        "last": 1561477549,
+        "first": 1561477549,
+        "average": 4
+      },
+      {
+        "id": "startup-beta-test-vm-brasil20",
+        "count": 8,
+        "ips": [
+          "127.0.0.1",
+          "10.150.208.93",
+          "169.57.145.78",
+          "172.17.0.1"
+        ],
+        "download": 1631849447.922786,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:37:54Z",
+        "configure": "2019-06-25T15:37:54Z",
+        "timestamp": "2019-06-26T17:04:26Z",
+        "period": 600,
+        "date": 1561477074,
+        "containers": 24,
+        "last": 1561477074,
+        "first": 1561477074,
+        "average": 3
+      },
+      {
+        "id": "startup-beta-test-vm-sanjose3",
+        "count": 4,
+        "ips": [
+          "127.0.0.1",
+          "10.160.175.149",
+          "169.45.114.45",
+          "172.19.0.1",
+          "172.21.0.1",
+          "192.168.64.1",
+          "172.23.0.1",
+          "172.25.0.1",
+          "172.22.0.1",
+          "172.17.0.1",
+          "172.31.0.1"
+        ],
+        "download": 534720332.0744939,
+        "percent": 0,
+        "product": "HVM domU",
+        "status": "2019-06-25T15:43:38Z",
+        "configure": "2019-06-25T15:43:38Z",
+        "timestamp": "2019-06-26T17:04:18Z",
+        "period": 600,
+        "date": 1561477418,
+        "containers": 40,
+        "last": 1561477418,
+        "first": 1561477418,
+        "average": 10
+      }
+    ]
+  }
+}

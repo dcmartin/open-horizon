@@ -3,7 +3,7 @@
   "description": "yolo and friends as a pattern",
   "services": [
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.jetson-yolo",
+      "serviceUrl": "jetson-yolo",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [

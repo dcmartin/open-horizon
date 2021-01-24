@@ -1,9 +1,9 @@
 {
   "squash": false,
   "build_from": {
-    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.alpr:0.0.1",
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.alpr:0.0.1",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.alpr:0.0.1"
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.alpr:0.2.0",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.alpr:0.2.0",
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.alpr:0.2.0"
   },
   "args": {}
 }

@@ -4,14 +4,15 @@
   "description": "Provides motion-project.io as service sending output via MQTT",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/motion2mqtt/README.md",
   "url": "com.github.dcmartin.open-horizon.motion2mqtt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.mqtt", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
+    { "url": "mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
+    { "name": "HZN_EXCHANGE_APIKEY", "label": "exchange API key", "type": "string", "defaultValue": "" },
     { "name": "MOTION_TIMEZONE", "label": "database and group name for devices", "type": "string", "defaultValue": "GMT" },
     { "name": "MOTION_GROUP", "label": "database and group name for clients", "type": "string", "defaultValue": "motion" },
     { "name": "MOTION_CLIENT", "label": "name of host; empty string default is hostname", "type": "string", "defaultValue": "" },
@@ -31,17 +32,14 @@
     { "name": "MQTT_USERNAME", "label": "username", "type": "string", "defaultValue": "" },
     { "name": "MQTT_PASSWORD", "label": "password", "type": "string", "defaultValue": "" },
     { "name": "LOCALHOST_PORT", "label": "localhost port", "type": "int", "defaultValue": "8082" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
-    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "" },
-    { "name": "HZN_EXCHANGE_APIKEY", "label": "exchange API key", "type": "string", "defaultValue": "" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
       "motion2mqtt": {
         "environment": [
           "SERVICE_LABEL=motion2mqtt",
-          "SERVICE_VERSION=0.1.0",
+          "SERVICE_VERSION=0.2.0",
           "SERVICE_PORT=8082"
         ],
         "binds": null,

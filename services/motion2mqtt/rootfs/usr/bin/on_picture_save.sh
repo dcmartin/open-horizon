@@ -21,7 +21,7 @@ source /usr/bin/motion-tools.sh
 ### MAIN
 ###
 
-hzn.log.trace "$0 $$ - started program"
+hzn::log.trace "$0 $$ - started program"
 
 # get arguments
 CN="${1}"
@@ -42,7 +42,7 @@ SN=$(echo "${ID}" | sed 's/.*-..-\(.*\).*/\1/')
 NOW=$($dateconv -i '%Y%m%d%H%M%S' -f "%s" "$TS")
 MOTION_DEVICE=${MOTION_DEVICE:-$(hostname)}
 
-hzn.log.debug "device: ${MOTION_DEVICE}; timestamp: ${TS}; now: ${NOW}"
+hzn::log.debug "device: ${MOTION_DEVICE}; timestamp: ${TS}; now: ${NOW}"
 
 ## create JSON
 IJ="${IF%.*}.json"
@@ -57,4 +57,4 @@ if [ $(jq -r '.post_pictures' "$MOTION_JSON_FILE") = "on" ]; then
 fi
 
 
-hzn.log.trace "$0 $$ - completed program"
+hzn::log.trace "$0 $$ - completed program"

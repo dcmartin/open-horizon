@@ -37,6 +37,10 @@ RUN \
     && rm -f -r \
       /tmp/*
 
+## SAMBA
+
+RUN apk add --no-cache samba
+#RUN rc-update add samba
 
 # Copy root file-system
 COPY rootfs /
@@ -54,8 +58,8 @@ LABEL \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="motion2mqtt" \
-    org.label-schema.description="motion-project.io as a service" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/motion2mqtt/" \
+    org.label-schema.description="Motion detection and transmission via MQTT" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/motion2mqtt/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

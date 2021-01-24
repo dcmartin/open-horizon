@@ -1,0 +1,22 @@
+{
+  "exchange": "https://stg.edge-fabric.com/v1/",
+  "org": "dcmartin@us.ibm.com",
+  "users": [
+    {
+      "password": "********",
+      "admin": true,
+      "email": "dcmartin@us.ibm.com",
+      "lastUpdated": "2019-06-03T14:30:36.481Z[UTC]",
+      "updatedBy": "",
+      "id": "dcmartin@us.ibm.com/dcmartin@us.ibm.com"
+    },
+    {
+      "password": "********",
+      "admin": true,
+      "email": "vburani@us.ibm.com",
+      "lastUpdated": "2019-06-03T14:57:55.621Z[UTC]",
+      "updatedBy": "",
+      "id": "dcmartin@us.ibm.com/varatep"
+    }
+  ]
+}

@@ -57,6 +57,7 @@ services:
   exchange-api:
     image:  ${EXCHANGE_CONTAINER_IMAGE}:${EXCHANGE_TAG}
     container_name: ${EXCHANGE_CONTAINER_NAME}
+    restart: always
     ports:
       - ${EXCHANGE_PORT}:8080
     networks:
@@ -117,3 +118,19 @@ services:
       ${EXCHANGE_NETWORK}:
         aliases:
           - ${EXCHANGE_NAMESPACE}-css-db
+  ##
+  ## kafka
+  ##
+  kafka:
+    image: spotify/kafka
+    container_name: kafka
+    restart: always
+    ports:
+      - 9092:9092
+      - 2181:2181
+    environment:
+      - LOG_RETENTION_HOURS=168
+      - LOG_RETENTION_BYTES=1073741824
+      - ADVERTISED_HOST=${EXCHANGE_HOSTNAME}
+      - ADVERTISED_PORT=9092
+      - AUTO_CREATE_TOPICS=true

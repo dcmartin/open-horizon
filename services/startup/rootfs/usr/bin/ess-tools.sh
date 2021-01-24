@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
 ## validate environment
 ess_verify()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   if [ ! -z "${1:-}" ]; then
@@ -20,7 +20,7 @@ ess_verify()
 ## initialize ESS
 ess_init()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ ! -z "${HZN_AGREEMENTID:-}" ] \
     && [ $(ess_verify 'HZN_RAM') ] \
@@ -35,26 +35,26 @@ ess_init()
     && [ $(ess_verify 'HZN_ESS_AUTH' ) ] \
     && [ $(ess_verify 'HZN_ESS_CERT' ) ]
   then
-    hzn.log.debug all environment variables specified"
+    hzn::log.debug "${FUNCNAME[0]}: all environment variables specified"
     if [ ! -z "${1}" ]; then
       org="${1}"
       ess_org "${org}" &> /dev/null
     fi
   else
-    hzn.log.warn "no HZN_AGREEMENTID; not running as a service"
+    hzn::log.warn "${FUNCNAME[0]}: no HZN_AGREEMENTID; not running as a service"
   fi
 }
 
 ess_org()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ ! -z "${1}" ]; then
     if [ -z "${ESS_SYNC_ORG}" ]; then
       export ESS_SYNC_ORG="${1}"
     else 
       export ESS_SYNC_ORG="${1}"
-      hzn.log.debug "changing ESS_SYNC_ORG: ${ESS_SYNC_ORG}"
+      hzn::log.debug "changing ESS_SYNC_ORG: ${ESS_SYNC_ORG}"
     fi
   fi
   echo "${ESS_SYNC_ORG:-${HZN_ORGANIZATION}}"
@@ -62,26 +62,26 @@ ess_org()
 
 ess_url()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ ! -z "${HZN_ESS_API_ADDRESS:-}" ]; then
-    hzn.log.warn "ess_url(): HZN_ESS_API_ADDRESS: ${HZN_ESS_API_ADDRESS}"
+    hzn::log.warn "${FUNCNAME[0]}: HZN_ESS_API_ADDRESS: ${HZN_ESS_API_ADDRESS:-}"
   else
-    hzn.log.warn "ess_url(): HZN_ESS_API_ADDRESS: undefined"
+    hzn::log.warn "${FUNCNAME[0]}: HZN_ESS_API_ADDRESS: undefined"
   fi
   echo "https://localhost/api/v1"
 }
 
 ess_get()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   if [ ! -z "${HZN_ESS_AUTH:-}" ] && [ ! -z "${1}" ]; then
     item="${1}"
     args="${2:-}"
 
-    hzn.log.debug "ess_get(): item: ${item}; args: ${args}"
+    hzn::log.debug "${FUNCNAME[0]}: item: ${item}; args: ${args}"
 
     if [ ! -z "${args}" ]; then
       url="$(ess_url)/${item}/${args}"
@@ -105,29 +105,29 @@ ess_get()
     case ${HTTP_CODE} in
       200)
         if [ -s ${TEMP} ]; then
-          hzn.log.debug "ess_get(): received response; size: " $(wc -c ${TEMP})
+          hzn::log.debug "${FUNCNAME[0]}: received response; size: " $(wc -c ${TEMP})
           RESULT="$(cat ${TEMP})"
         else
-          hzn.log.debug "ess_get(): no response"
+          hzn::log.debug "${FUNCNAME[0]}: no response"
 	  RESULT=
         fi
 	;;
       404)
-        hzn.log.warn "ess_get(): not found: ${url}"
+        hzn::log.warn "${FUNCNAME[0]}: not found: ${url}"
 	RESULT=
 	;;
       500)
-        hzn.log.warn "ess_get(): failure: ${url}; HTTP: ${HTTP_CODE}"
+        hzn::log.warn "${FUNCNAME[0]}: failure: ${url}; HTTP: ${HTTP_CODE}"
 	RESULT=
 	;;
       *)
-        hzn.log.warn "ess_get(): failure: ${url}; unexpected HTTP code: ${HTTP_CODE}"
+        hzn::log.warn "${FUNCNAME[0]}: failure: ${url}; unexpected HTTP code: ${HTTP_CODE}"
 	RESULT=
 	;;
     esac
     rm -f ${TEMP}
   else
-    hzn.log.debug "ess_get(): invalid environment or arguments: ${*}"
+    hzn::log.debug "${FUNCNAME[0]}: invalid environment or arguments: ${*}"
     RESULT=
   fi
   echo "${RESULT}"
@@ -135,14 +135,14 @@ ess_get()
 
 ess_health()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   echo $(ess_get 'health')
 }
 
 ess_object_list()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ -z "${1:-}" ]; then type='model'; else type="${1}"; fi
   if [ "${2:-}" = true ]; then 
@@ -150,13 +150,13 @@ ess_object_list()
   else
     DATA=$(ess_get "objects" "${type}")
   fi
-  hzn.log.debug "ess_objects(): type: ${type}; received: ${2:-false}"
+  hzn::log.debug "${FUNCNAME[0]}: type: ${type}; received: ${2:-false}"
   echo "${DATA}"
 }
 
 ess_object_about()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ -z "${1:-}" ]; then objectType='model'; else type="${1}"; fi
   if [ ! -z "${2:-}" ]; then 
@@ -168,7 +168,7 @@ ess_object_about()
 
 ess_object_delete()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ -z "${1:-}" ]; then objectType='model'; else type="${1}"; fi
   if [ ! -z "${2:-}" ]; then 
@@ -191,7 +191,7 @@ ess_object_delete()
 
 ess_object_receipt()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=
   if [ "${HZN_ESS_AUTH:-null}" != 'null' ]; then
@@ -215,14 +215,14 @@ ess_object_receipt()
 	"${url}")
       case ${HTTP_CODE} in
 	204)
-	  hzn.log.debug "ess_object_receipt(): success; output: " $(cat ${TEMP})
+	  hzn::log.debug "${FUNCNAME[0]}: success; output: " $(cat ${TEMP})
           RESULT=true
 	  ;;
 	500)
-	  hzn.log.warn "ess_object_receipt(): failed; output: " $(cat ${TEMP})
+	  hzn::log.warn "${FUNCNAME[0]}: failed; output: " $(cat ${TEMP})
 	  ;;
 	*)
-	  hzn.log.warn "ess_object_receipt(): failed; code: ${HTTP_CODE}; output: " $(cat ${TEMP})
+	  hzn::log.warn "${FUNCNAME[0]}: failed; code: ${HTTP_CODE}; output: " $(cat ${TEMP})
 	  ;;
       esac
       rm -f ${TEMP}
@@ -233,13 +233,13 @@ ess_object_receipt()
 
 ess_object_data_get()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   TEMP=
   if [ ! -z "${1}" ]; then
     objectID="${1}"
     if [ -z "${2:-}" ]; then objectType='model'; else objectType="${2}"; fi
-    hzn.log.debug "ess_object_data_get(): ID: ${objectID}; type: ${objectType}"
+    hzn::log.debug "${FUNCNAME[0]}: ID: ${objectID}; type: ${objectType}"
     if [ "${HZN_ESS_AUTH:-null}" != 'null' ]; then
       url="$(ess_url)/objects/${objectType}/${objectID}/data"
 
@@ -257,10 +257,10 @@ ess_object_data_get()
 	"${url}")
       case ${HTTP_CODE} in
         200)
-	  hzn.log.debug "ess_object_data_get(): success; size: " $(wc -c ${TEMP})
+	  hzn::log.debug "${FUNCNAME[0]}: success; size: " $(wc -c ${TEMP})
 	  ;;
 	500)
-	  hzn.log.debug "ess_object_data_get(): failed to download"
+	  hzn::log.debug "${FUNCNAME[0]}: failed to download"
 	  ;;
       esac
     fi
@@ -281,7 +281,7 @@ ess_object_data_get()
 #
 ess_object_status()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   objectID=${1}
   objectType="${2:-model}"
@@ -303,11 +303,11 @@ ess_object_status()
       "$(ess_url)/objects/${objectType}/${objectID}")
     case ${HTTP_CODE} in
       200)
-        hzn.log.debug "ess_object_status(): success; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: success; http_code: ${HTTP_CODE}"
         RESULT="$(cat ${TEMP})"
         ;;
       *)
-        hzn.log.debug "ess_object_status(): failure; unexpected HTTP code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: failure; unexpected HTTP code: ${HTTP_CODE}"
 	RESULT=
         ;;
     esac
@@ -323,11 +323,11 @@ ess_object_status()
 #
 ess_object_lookup()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   objectID=${1}
   objectType="${2:-model}"
-  hzn.log.debug "ess_object_lookup(): objectID: ${objectID}; objectType: ${objectType}"
+  hzn::log.debug "${FUNCNAME[0]}: objectID: ${objectID}; objectType: ${objectType}"
   if [ ! -z "${HZN_ESS_AUTH:-}" ]; then
     USER=$(cat ${HZN_ESS_AUTH} | jq -r ".id")
     PSWD=$(cat ${HZN_ESS_AUTH} | jq -r ".token")
@@ -343,15 +343,15 @@ ess_object_lookup()
       "$(ess_url)/objects/${objectType}/${objectID}")
     case ${HTTP_CODE} in
       200)
-        hzn.log.debug "ess_object_find(): success; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: success; http_code: ${HTTP_CODE}"
         RESULT="$(cat ${TEMP})"
         ;;
       400)
-        hzn.log.debug "ess_object_find(): not found; ID: ${objectID}; type: ${objectType}"
+        hzn::log.debug "${FUNCNAME[0]}: not found; ID: ${objectID}; type: ${objectType}"
         RESULT=
         ;;
       *)
-        hzn.log.debug "ess_object_find(): failure; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: failure; http_code: ${HTTP_CODE}"
         RESULT=
         ;;
     esac
@@ -362,7 +362,7 @@ ess_object_lookup()
 
 ess_object_create()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   objectID=${1:-none}
   objectType=${2:-blob}
@@ -370,7 +370,7 @@ ess_object_create()
   nodeID="${4:-${HZN_DEVICE_ID}}"
   nodeType="${5:-${HZN_PATTERN:-test}}"
 
-  hzn.log.debug "ess_object_create(): objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
+  hzn::log.debug "${FUNCNAME[0]}: objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
 
   if [ ! -z "${HZN_ESS_AUTH:-}" ]; then
     USER=$(cat ${HZN_ESS_AUTH} | jq -r ".id")
@@ -379,7 +379,7 @@ ess_object_create()
     # object definition
     OBJECT=$(mktemp -t "${FUNCNAME[0]}-XXXXXX")
     echo '{"data": [],"meta":{"objectID":"'${objectID}'","objectType": "'${objectType}'","destinationID":"'${nodeID}'","destinationType":"'${nodeType}'","version": "'${objectVersion}'", "description":"created at '$(date -u +%FT%TZ)'"}}' > ${OBJECT}
-    hzn.log.debug "ess_object_create; object: " $(jq -c '.' ${OBJECT})
+    hzn::log.debug "ess_object_create; object: " $(jq -c '.' ${OBJECT})
 
     TEMP=$(mktemp -t "${FUNCNAME[0]}-XXXXXX")
     url="$(ess_url)/objects/${objectType}/${objectID}"
@@ -398,14 +398,14 @@ ess_object_create()
 
     case ${HTTP_CODE} in
       204)
-        hzn.log.debug "ess_object_create(): success; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: success; http_code: ${HTTP_CODE}"
         RESULT=true
         ;;
       500)
-        hzn.log.warn "ess_object_create(): failed; http_code: ${HTTP_CODE}"
+        hzn::log.warn "${FUNCNAME[0]}: failed; http_code: ${HTTP_CODE}"
         ;;
       *)
-        hzn.log.warn "ess_object_create(): unexpected failure; http_code: ${HTTP_CODE}"
+        hzn::log.warn "${FUNCNAME[0]}: unexpected failure; http_code: ${HTTP_CODE}"
         ;;
     esac
   fi
@@ -414,24 +414,24 @@ ess_object_create()
 
 ess_object_update()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   objectID=${1}
   objectType=${2}
   objectVersion=${3}
 
-  hzn.log.debug "ess_object_update(): objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
+  hzn::log.debug "${FUNCNAME[0]}: objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
 
   object=$(ess_object_lookup ${objectID} ${objectType}) 
   if [ ! -z "${object:-}" ]; then
-    hzn.log.debug "ess_object_update(); found; object: " $(echo "${object}" | jq -c '.')
+    hzn::log.debug "${FUNCNAME[0]}: " $(echo "${object}" | jq -c '.')
     ver=$(echo "${object}" | jq -r '.version')
     if [ ! -z "${ver}" ]; then
       if [ "${ver}" = "${objectVersion}" ]; then
         has_data=$(echo "${object}" | jq '.data|length!=0')
         if [ "${has_data:-false}" = true ]; then
-          hzn.log.debug "updating object with data; object: ${objectID}; type: ${objectType}; version: ${objectVersion}"
+          hzn::log.debug "updating object with data; object: ${objectID}; type: ${objectType}; version: ${objectVersion}"
         fi
       fi
     fi
@@ -466,23 +466,23 @@ ess_object_update()
     rm -f ${OBJECT}
     case ${HTTP_CODE} in
       204)
-        hzn.log.debug "ess_object_update(): success; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: success; http_code: ${HTTP_CODE}"
         RESULT="$(cat ${TEMP})"
         ;;
       *)
-        hzn.log.debug "ess_object_update(): failure; http_code: ${HTTP_CODE}"
+        hzn::log.debug "${FUNCNAME[0]}: failure; http_code: ${HTTP_CODE}"
         ;;
     esac
     rm -f ${TEMP}
   else
-    hzn.log.debug "ess_object_update(): no object: ${objectID}"
+    hzn::log.debug "${FUNCNAME[0]}: no object: ${objectID}"
   fi
   echo "${RESULT}"
 }
 
 ess_object_data_put()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   if [ ! -z "${1}" ] && [ ! -z "${2}" ] && [ ! -z "${3}" ] && [ ! -z "${4}" ]; then
@@ -490,7 +490,7 @@ ess_object_data_put()
     objectID=${2}
     objectType=${3}
     objectVersion=${4}
-    hzn.log.debug "ess_object_data_put(): file: ${pn}; objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
+    hzn::log.debug "${FUNCNAME[0]}: file: ${pn}; objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
 
     USER=$(cat ${HZN_ESS_AUTH} | jq -r ".id")
     PSWD=$(cat ${HZN_ESS_AUTH} | jq -r ".token")
@@ -509,15 +509,15 @@ ess_object_data_put()
         "$(ess_url)/objects/${objectType}/${objectID}/data")
       case ${HTTP_CODE} in
         204)
-          hzn.log.debug "ess_object_data_put(): success; http_code: ${HTTP_CODE}"
+          hzn::log.debug "${FUNCNAME[0]}: success; http_code: ${HTTP_CODE}"
           RESULT=true
           ;;
         *)
-          hzn.log.debug "ess_object_data_put(): failure; http_code: ${HTTP_CODE}"
+          hzn::log.debug "${FUNCNAME[0]}: failure; http_code: ${HTTP_CODE}"
           ;;
       esac
     else
-      hzn.log.debug "ess_object_data_put(): failed to update object; ID: ${objectId}"
+      hzn::log.debug "${FUNCNAME[0]}: failed to update object; ID: ${objectId}"
     fi
   fi
   echo "${RESULT}"
@@ -530,7 +530,7 @@ ess_object_data_put()
 # returns true or false
 ess_object_upload()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   if [ ! -z "${1}" ] && [ -s "${1}" ] && [ ! -z "${2}" ] && [ ! -z "${3}" ]; then
@@ -539,17 +539,17 @@ ess_object_upload()
     objectVersion=${3}
     objectType=${4:-status}
 
-    hzn.log.debug "ess_object_upload(): file: ${pn}; size: $(wc -c ${pn}); objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
+    hzn::log.debug "${FUNCNAME[0]}: file: ${pn}; size: $(wc -c ${pn}); objectID: ${objectID}; objectType: ${objectType}; objectVersion: ${objectVersion}"
 
     if [ $(ess_object_update ${objectID} ${objectType} ${objectVersion}) ]; then
       if [ $(ess_object_data_put ${pn} ${objectID} ${objectType} ${objectVersion}) ]; then
-        hzn.log.debug "ess_object_upload(): object data sent"
+        hzn::log.debug "${FUNCNAME[0]}: object data sent"
         RESULT=true
       else
-        hzn.log.warn "ess_object_upload(): object data NOT sent"
+        hzn::log.warn "${FUNCNAME[0]}: object data NOT sent"
       fi
     else
-      hzn.log.warn "ess_object_upload(): object NOT updated"
+      hzn::log.warn "${FUNCNAME[0]}: object NOT updated"
     fi
   fi
   echo ${RESULT}
@@ -558,7 +558,7 @@ ess_object_upload()
 # returns a file pathname
 ess_object_download()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ ! -z "${1}" ]; then
     objectID=${1}
@@ -566,14 +566,14 @@ ess_object_download()
 
     TEMP=$(ess_object_data_get ${objectID} ${objectType}) 
     if [ ! -z "${TEMP:-}" ] && [ -s "${TEMP}" ]; then
-      hzn.log.debug "ess_object_download(): object retrieved: " $(wc -c ${TEMP})
+      hzn::log.debug "${FUNCNAME[0]}: object retrieved: " $(wc -c ${TEMP})
       if [ $(ess_object_receipt ${objectID} ${objectType}) ]; then
-        hzn.log.debug "ess_object_download(): object receipt sent"
+        hzn::log.debug "${FUNCNAME[0]}: object receipt sent"
       else
-        hzn.log.warn "ess_object_download(): object data NOT retrieved"
+        hzn::log.warn "${FUNCNAME[0]}: object data NOT retrieved"
       fi
     else
-      hzn.log.warn "ess_object_download(): object NOT found"
+      hzn::log.warn "${FUNCNAME[0]}: object NOT found"
     fi
   fi
   echo "${TEMP:-}"
@@ -585,7 +585,7 @@ ess_object_download()
 
 ess_status_upload()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   pn="${1}"
   RESULT=false
@@ -610,7 +610,7 @@ ess_config_download()
       if [ -s ${TEMP} ]; then
         mv -f ${TEMP} ${pn} && RESULT=true;
       else
-        hzn.log.warn "ess_config_download(): NOT found; object: ${fn}; type: config"
+        hzn::log.warn "${FUNCNAME[0]}: NOT found; object: ${fn}; type: config"
       fi
     fi
     rm -f ${TEMP}
@@ -625,7 +625,7 @@ ess_config_download()
 ## get model specified by /<path>/<objectID>.<objectVersion>
 ess_model_download()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   RESULT=false
   if [ ! -z "${1}" ]; then
@@ -644,7 +644,7 @@ ess_model_download()
 ## put model specified by /<path>/<objectID>.<objectVersion>
 ess_model_feedback()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   if [ ! -z "${1}" ]; then
     pn="${1}"

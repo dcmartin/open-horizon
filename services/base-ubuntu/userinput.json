@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.base-ubuntu",
+      "url": "base-ubuntu",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
       }

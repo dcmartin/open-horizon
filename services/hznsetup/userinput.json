@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.hznsetup",
+      "url": "hznsetup",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "HZNSETUP_EXCHANGE_URL": "${HZN_EXCHANGE_URL}",
@@ -22,7 +22,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.hznmonitor",
+      "url": "hznmonitor",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "HZNMONITOR_EXCHANGE_URL": "${HZN_EXCHANGE_URL}",

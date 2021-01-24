@@ -32,7 +32,7 @@ face_config ${FACE_CONFIG:-}
 # start in face
 cd ${OPENFACE}
 
-hzn.log.notice "processing images from /dev/video0 every ${FACE_PERIOD} seconds"
+hzn::log.notice "processing images from /dev/video0 every ${FACE_PERIOD} seconds"
 
 if [ -z "${WEBCAM_DEVICE}" ]; then WEBCAM_DEVICE="/dev/video0"; fi
 if [ -z "${WEBCAM_RESOLUTION}" ]; then WEBCAM_RESOLUTION="320x240"; fi
@@ -46,7 +46,7 @@ while true; do
   # capture image payload from /dev/video0
   # fswebcam --resolution "${WEBCAM_RESOLUTION}" --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
 
-  hzn.log.debug "Attempting to capture image"
+  hzn::log.debug "Attempting to capture image"
   fswebcam --device "${WEBCAM_DEVICE}" --no-banner "${JPEG_FILE}" &> /dev/null
 
   # process image payload into JSON
@@ -61,7 +61,7 @@ while true; do
     jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) "${FACE_OUTPUT_FILE}" > "${OUTPUT_FILE}"
     # update
   else
-    hzn.log.error "No output"
+    hzn::log.error "No output"
     echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
   fi
   # update
@@ -70,7 +70,7 @@ while true; do
   # wait for ..
   SECONDS=$((FACE_PERIOD - $(($(date +%s) - DATE))))
   if [ ${SECONDS} -gt 0 ]; then
-    hzn.log.debug "sleep ${SECONDS}"
+    hzn::log.debug "sleep ${SECONDS}"
     sleep ${SECONDS}
   fi
 done

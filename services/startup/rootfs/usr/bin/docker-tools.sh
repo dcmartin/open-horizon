@@ -1,53 +1,54 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
+
 
 source /usr/bin/hzn-tools.sh
 
 ## docker container functions
 docker_container_list()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/json)
 }
 
 docker_container_inspect()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/${1}/json)
 }
 
 docker_container_top()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/${1}/top)
 }
 
 docker_container_logs()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/${1}/logs)
 }
 
 docker_container_changes()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/${1}/changes)
 }
 
 docker_container_stats()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL --unix-socket /var/run/docker.sock http://localhost/containers/${1}/stats?stream=false)
 }
 
 docker_container_create()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   echo $(curl -sSL -X POST --unix-socket /var/run/docker.sock -d '{"Image":"'${1}'"}' -H 'Content-Type: application/json' http://localhost/containers/create)
 }
@@ -55,7 +56,7 @@ docker_container_create()
 ## composite docker status
 docker_status()
 {
-  hzn.log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
  
   # create ouput
   TEMP=$(mktemp -t "${FUNCNAME[0]}-XXXXXX")

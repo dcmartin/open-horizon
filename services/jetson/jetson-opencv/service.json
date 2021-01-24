@@ -3,7 +3,7 @@
   "label": "jetson-opencv",
   "description": "Provide OpenCV on Jetson TX2 with JetPack and CUDA",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-opencv/README.md",
-  "url": "com.github.dcmartin.open-horizon.jetson-opencv",
+  "url": "jetson-opencv",
   "version": "0.0.1",
   "arch": null,
   "public": false,

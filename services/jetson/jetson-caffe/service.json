@@ -3,7 +3,7 @@
   "label": "jetson-caffe",
   "description": "Provide Caffe on Jetson TX2 with JetPack v 2.3.3",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-caffe/README.md",
-  "url": "com.github.dcmartin.open-horizon.jetson-caffe",
+  "url": "jetson-caffe",
   "version": "0.0.1",
   "arch": null,
   "public": false,

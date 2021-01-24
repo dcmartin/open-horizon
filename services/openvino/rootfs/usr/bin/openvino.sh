@@ -22,7 +22,7 @@ CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","LOGTO":"'${LOGTO:-}'","LOG_LEVEL":"
 ## initialize service
 service_init ${CONFIG}
 
-hzn.log.notice "Service initialized"
+hzn::log.notice "Service initialized"
 
 # create output file
 OUTPUT_FILE=$(mktemp -t "${0##*/}-XXXXXX")

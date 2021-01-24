@@ -1,0 +1,39 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "pose",
+  "description": "Provide human pose estimation service",
+  "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/pose/README.md",
+  "url": "com.github.dcmartin.open-horizon.pose",
+  "version": "0.2.0",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [],
+  "userInput": [
+    { "name": "POSE_SCALE", "label": "scaling of image; none or WIDTHxHEIGHT", "type": "string", "defaultValue": "none" },
+    { "name": "POSE_THRESHOLD", "label": "minimum threshold percent", "type": "number", "defaultValue": "10" },
+    { "name": "POSE_PERIOD", "label": "seconds between updates", "type": "int", "defaultValue": "30" },
+    { "name": "WEBCAM_DEVICE", "label": "device to capture; default: /dev/video0", "type": "string", "defaultValue": "/dev/video0" },
+    { "name": "WEBCAM_RESOLUTION", "label": "web camera capture resolution; default 384x288", "type": "string", "defaultValue": "384x288" },
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
+  ],
+  "deployment": {
+    "services": {
+      "pose": {
+        "environment": [
+          "SERVICE_LABEL=pose",
+          "SERVICE_VERSION=0.2.0"
+        ],
+        "specific_ports": [],
+        "devices": [
+          "/dev/video0:/dev/video0"
+        ],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "tmpfs": {
+    "size": 8192000
+  }
+}

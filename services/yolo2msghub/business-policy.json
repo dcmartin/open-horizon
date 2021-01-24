@@ -13,16 +13,16 @@
     ]
   },
   "properties": [
-    "com.github.dcmartin.open-horizon.yolo2msghub = true"
+    "yolo2msghub = true"
   ],
   "constraints": [
-    "com.github.dcmartin.open-horizon.startup == true",
-    "com.github.dcmartin.open-horizon.yolo2msghub == true"
+    "startup == true",
+    "yolo2msghub == true"
   ],
   "userInput": [
     {
       "serviceOrgid": "${HZN_ORG_ID}",
-      "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "serviceUrl": "yolo2msghub",
       "serviceVersionRange": "[0.0.0,INFINITY)",
       "inputs": [
         {

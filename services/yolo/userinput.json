@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.yolo",
+      "url": "yolo",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "YOLO_PERIOD": 0,

@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.hotword",
+      "url": "hotword",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "NOIZE_GROUP": "hotword",
@@ -21,7 +21,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.noize",
+      "url": "noize",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "NOIZE_GROUP": "hotword",
@@ -37,7 +37,7 @@
     },
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.mqtt",
+      "url": "mqtt",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "MQTT_HOST": "mqtt",

@@ -15,16 +15,25 @@ if [ -z $(command -v jq) ]; then
   exit 1
 fi
 
-if [ -z "${HZN_EXCHANGE_URL:-}" ]; then HZN_EXCHANGE_URL="http://exchange:3090/v1"; fi
-
-if [ -z "${HZN_EXCHANGE_APIKEY:-}" ] || [ "${HZN_EXCHANGE_APIKEY:-}" == "null" ]; then
-  echo "*** ERROR $0 $$ -- invalid HZN_EXCHANGE_APIKEY" &> /dev/stderr
-  exit 1
+if [ -z "${HZN_EXCHANGE_URL:-}" ]; then
+  HZN_EXCHANGE_URL="http://exchange:3090/v1"
+  if [ -s HZN_EXCHANGE_URL ]; then
+    HZN_EXCHANGE_URL=$(cat HZN_EXCHANGE_URL)
+  fi
 fi
-  
-if [ -z "${HZN_ORG_ID:-}" ] || [ "${HZN_ORG_ID:-}" == "null" ]; then
-  echo "*** ERROR $0 $$ -- invalid HZN_ORG_ID" &> /dev/stderr
-  exit 1
+
+if [ -z "${HZN_EXCHANGE_APIKEY:-}" ]; then
+  HZN_EXCHANGE_APIKEY="whocares"
+  if [ -s HZN_EXCHANGE_APIKEY ]; then
+    HZN_EXCHANGE_APIKEY=$(cat HZN_EXCHANGE_APIKEY)
+  fi
+fi
+
+if [ -z "${HZN_ORG_ID:-}" ]; then
+  HZN_ORG_ID="${USER}"
+  if [ -s HZN_ORG_ID ]; then
+    HZN_ORG_ID=$(cat HZN_ORG_ID)
+  fi
 fi
 
 curl -sL -u "${HZN_ORG_ID}/${HZN_USER_ID:-${USER}}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL%/}/orgs/${HZN_ORG_ID}/business/policies" \

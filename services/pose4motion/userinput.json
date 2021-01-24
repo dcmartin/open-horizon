@@ -1,0 +1,15 @@
+{
+  "global": [],
+  "services": [
+    {
+      "org": "${HZN_ORG_ID}",
+      "url": "pose4motion",
+      "versionRange": "[0.0.0,INFINITY)",
+      "variables": {
+	"MQTT_HOST": "mqtt",
+	"MQTT_USERNAME": "username",
+	"MQTT_PASSWORD":"password"
+      }
+    }
+  ]
+}

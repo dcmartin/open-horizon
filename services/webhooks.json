@@ -1,0 +1,351 @@
+[
+  {
+    "source": "microbadger",
+    "base": "https://hooks.microbadger.com/images",
+    "format": "${BASE}/${USER}/${ARCH}_${ID}/${CODE}",
+    "action": "POST",
+    "services": [
+      {
+        "name": "alpr",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "alpr4motion",
+        "id": "com.github.dcmartin.open-horizon.alpr4motion",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "apache-alpine",
+        "id": "com.github.dcmartin.open-horizon.apache-alpine",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "apache-ubuntu",
+        "id": "com.github.dcmartin.open-horizon.apache-ubuntu",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "base-alpine",
+        "id": "com.github.dcmartin.open-horizon.base-alpine",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "base-ubuntu",
+        "id": "com.github.dcmartin.open-horizon.base-ubuntu",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "cpu",
+        "id": "com.github.dcmartin.open-horizon.cpu",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "face",
+        "id": "com.github.dcmartin.open-horizon.face",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "face4motion",
+        "id": "com.github.dcmartin.open-horizon.face4motion",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "hal",
+        "id": "com.github.dcmartin.open-horizon.hal",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "hznmonitor",
+        "id": "com.github.dcmartin.open-horizon.hznmonitor",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "hznsetup",
+        "id": "com.github.dcmartin.open-horizon.hznsetup",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "motion2mqtt",
+        "id": "com.github.dcmartin.open-horizon.motion2mqtt",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "mqtt",
+        "id": "com.github.dcmartin.open-horizon.mqtt",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "mqtt2mqtt",
+        "id": "com.github.dcmartin.open-horizon.mqtt2mqtt",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "startup",
+        "id": "com.github.dcmartin.open-horizon.startup",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "wan",
+        "id": "com.github.dcmartin.open-horizon.wan",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "yolo",
+        "id": "com.github.dcmartin.open-horizon.yolo",
+        "webhooks": [
+          {
+            "arch": "arm",
+            "code": ""
+          },
+          {
+            "arch": "arm64",
+            "code": ""
+          },
+          {
+            "arch": "amd64",
+            "code": ""
+          }
+        ]
+      },
+      {
+        "name": "yolo4motion",
+        "id": "com.github.dcmartin.open-horizon.yolo4motion",
+        "webhooks": [
+          {
+            "arch": "amd64",
+            "code": "bDwJbEP9kqJlmZBpWhjl2ZrGyOE="
+          },
+          {
+            "arch": "arm",
+            "code": "JMSFBzPsc5TeZ7qBazlRVZvERyU="
+          },
+          {
+            "arch": "arm64",
+            "code": "DS70TIyH-2FKDZ1EADKaRSOcFSw="
+          }
+        ]
+      }
+    ]
+  }
+]

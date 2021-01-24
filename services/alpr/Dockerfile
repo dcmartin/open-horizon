@@ -11,21 +11,21 @@ ENV \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
     TERM="xterm"
 
-RUN apt update -qq -y
-RUN \
-  DEBIAN_FRONTEND=noninteractive \
-  apt install -qq -y --no-install-recommends \
-    apt-utils \
-    bc \
-    build-essential \
-    ca-certificates \
-    curl \
-    fswebcam \
-    git \
-    imagemagick \
-    jq \
-    socat \
-    software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt-get update && apt-get install -qq -y --no-install-recommends \
+  apt-utils \
+  ca-certificates \
+  curl \
+  build-essential \
+  socat \
+  imagemagick \
+  fswebcam \
+  jq \
+  bc \
+  software-properties-common \
+  cmake \
+  build-essential \
+  git
 
 RUN add-apt-repository ppa:alex-p/tesseract-ocr && apt update -qq -y
 
@@ -33,8 +33,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get install -qq -y --no-install-recommends \
   libopencv-dev \
   libtesseract-dev \
-  cmake \
-  build-essential \
   libleptonica-dev
 
 RUN DEBIAN_FRONTEND=noninteractive \
@@ -102,8 +100,8 @@ LABEL \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="alpr" \
-    org.label-schema.description="alpr as a service" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/alpr/" \
+    org.label-schema.description="Automated license plate reader (ALPR) as a service" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/alpr/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

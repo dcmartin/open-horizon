@@ -4,23 +4,21 @@
   "description": "Provides base container with Ubuntu LINUX",
   "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/base-ubuntu/README.md",
   "url": "com.github.dcmartin.open-horizon.base-ubuntu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [],
   "userInput": [
     { "name": "BASE_PERIOD", "label": "periodicity", "type": "int", "defaultValue": "30" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "DEBUG", "label": "debug; true or false", "type": "boolean", "defaultValue": "false" },
-    { "name": "LOGTO", "label": "where to log", "type": "string", "defaultValue": "/dev/stderr" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "str", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
       "base": {
         "environment": [
           "SERVICE_LABEL=base",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.2.0"
         ],
         "specific_ports": [],
         "image": null,

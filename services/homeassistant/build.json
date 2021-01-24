@@ -1,0 +1,9 @@
+{
+  "squash": false,
+  "build_from": { 
+    "arm": "homeassistant/home-assistant:stable",
+    "amd64": "homeassistant/home-assistant:stable",
+    "arm64": "homeassistant/home-assistant:stable"
+  },
+  "args": {}
+}

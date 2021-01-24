@@ -3,7 +3,7 @@
   "label": "jetson-yolo",
   "description": "Provide YOLO on Jetson TX2 with OpenCV, CUDA, and JetPack",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-yolo/README.md",
-  "url": "com.github.dcmartin.open-horizon.jetson-yolo",
+  "url": "jetson-yolo",
   "version": "0.0.1",
   "arch": null,
   "public": false,

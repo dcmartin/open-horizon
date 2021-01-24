@@ -1,49 +1,72 @@
-#!/bin/bash
-
-# TMPDIR
-if [ -d '/tmpfs' ]; then TMPDIR='/tmpfs'; else TMPDIR='/tmp'; fi
+#!/usr/bin/with-contenv bashio
 
 ###
 ### FUNCTIONS
 ###
 
-source ${USRBIN:-/usr/bin}/service-tools.sh
+source /usr/bin/service-tools.sh
+
+hal::loop()
+{
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
+
+  local output_file=$(mktemp)
+
+  # intial update
+  echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${output_file}"
+  hzn::service.update ${output_file}
+
+  while true; do
+    local DATE=$(date +%s)
+    local OUTPUT='{}'
+  
+    for ls in lshw lsusb lscpu lspci lsblk lsdf i2c; do
+      local OUT
+
+      hzn::log.debug "operator: ${ls}"
+      if [ -z "$(command -v ${ls}.sh)" ]; then
+        hzn::log.error "operator: ${ls}; not found"
+        OUT='null'
+      else
+        OUT=$(${ls}.sh | jq '.'${ls}'?' || echo 'null')
+      fi
+      OUTPUT=$(echo "$OUTPUT" | jq '.'${ls}'='"${OUT}")
+    done
+    echo "${OUTPUT}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) > "${output_file}"
+    hzn::service.update "${output_file}"
+    # wait for ..
+    SECONDS=$((HAL_PERIOD - $(($(date +%s) - DATE))))
+    if [ ${SECONDS} -gt 0 ]; then
+      sleep ${SECONDS}
+    fi
+  done
+}
+
+hal::main()
+{
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
+
+  local config='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${SERVICE_LOG_LEVEL:-info}'","period":"'${HAL_PERIOD:-1800}'","services":'"${SERVICES:-null}"'}'
+
+  ## initialize horizon
+  hzn::log.notice "${FUNCNAME[0]}: initializing service: ${SERVICE_LABEL:-}" $(echo "${config}" | jq -c '.' || echo "INVALID: ${config}")
+  hzn::init
+  hzn::service.init "${config}"
+
+  ## loop forever
+  hzn::log.info "${FUNCNAME[0]}: looping forever"
+  hal::loop
+}
 
 ###
 ### MAIN
 ###
 
-## initialize horizon
-hzn_init
+# TMPDIR
+if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${TMPDIR:-/tmp}; fi
 
-## configure service
+hzn::log.notice "Starting ${0} ${*}: ${SERVICE_LABEL:-null}; version: ${SERVICE_VERSION:-null}"
 
-CONFIG='{"timestamp":"'$(date -u +%FT%TZ)'","log_level":"'${LOG_LEVEL:-info}'","debug":'${DEBUG:-false}',"period":"'${HAL_PERIOD:-1800}'","services":'"${SERVICES:-null}"'}'
+hal::main ${*}
 
-## initialize servive
-service_init ${CONFIG}
-
-## initialize
-OUTPUT_FILE="${TMPDIR}/${0##*/}.${SERVICE_LABEL}.$$.json"
-echo '{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)'}' > "${OUTPUT_FILE}"
-
-while true; do
-  DATE=$(date +%s)
-  OUTPUT=$(jq -c '.' "${OUTPUT_FILE}")
-
-  for ls in lshw lsusb lscpu lspci lsblk lsdf i2c; do
-    OUT="$(${ls}.sh | jq '.'${ls}'?')"
-    if [ ${DEBUG:-} == 'true' ]; then echo "${ls} == ${OUT}" &> /dev/stderr; fi
-    if [ -z "${OUT:-}" ]; then OUT=null; fi
-    OUTPUT=$(echo "$OUTPUT" | jq '.'${ls}'='"${OUT}")
-    if [ ${DEBUG:-} == 'true' ]; then echo "OUTPUT == ${OUTPUT}" &> /dev/stderr; fi
-  done
-
-  echo "${OUTPUT}" | jq '.timestamp="'$(date -u +%FT%TZ)'"|.date='$(date +%s) > "${OUTPUT_FILE}"
-  service_update "${OUTPUT_FILE}"
-  # wait for ..
-  SECONDS=$((HAL_PERIOD - $(($(date +%s) - DATE))))
-  if [ ${SECONDS} -gt 0 ]; then
-    sleep ${SECONDS}
-  fi
-done
+exit 1

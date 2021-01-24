@@ -55,14 +55,14 @@ install_linux()
   local platform=$(lsb_release -a 2> /dev/null | egrep 'Distributor ID:' | awk '{ print $3 }' | tr '[:upper:]' '[:lower:]')
   if [ "${platform}" = 'ubuntu' ]; then platform='debian'; fi
   local dist=$(lsb_release -a 2> /dev/null | egrep 'Codename:' | awk '{ print $2 }')
-  if [ "${dist}" = 'focal' ]; then dist='buster'; fi
+  if [ "${dist}" = 'focal' ] || [ "${dist}" = 'bionic' ]; then dist='buster'; fi
   local repo=http://pkg.bluehorizon.network/linux
   local dir=pool/main/h/horizon
   local  packages=()
 
   case ${type:-cli} in
     all)
-      packages=(horizon-cli horizon bluehorizon)
+      packages=(horizon-cli horizon)
       ;;
     cli)
       packages=(horizon-cli)
@@ -74,13 +74,13 @@ install_linux()
   esac
   
   if [ ! -z "$(command -v hzn)" ]; then
-    echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge bluehorizon horizon horizon-cli"' &> /dev/stderr
+    echo 'The "hzn" command is already installed; remove with "sudo dpkg --purge '${packages}'"' &> /dev/stderr
   else
     # download packages
     for p in ${packages[@]}; do
       echo "Downloading ${p} ..." &> /dev/stderr
       if [ ! -s ${p}.deb ]; then
-        if [ "${p}" = 'bluehorizon' ]; then dep=all; else dep=${arch}; fi
+        dep=${arch}
         package=${dir}/${p}
         deb=${repo}/${platform}/${package}_${version}~ppa~${platform}.${dist}_${dep}.deb
         echo "Downloading ${deb} into ${p}.deb ..." &> /dev/stderr
@@ -92,17 +92,10 @@ install_linux()
   fi
   result=$(update_defaults)
   if [ "${result:-1}" -eq 0 ]; then 
-    linux_start
+    agent_start
   fi
 
   echo ${result:-0}
-}
-
-linux_start()
-{
-  if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
-
-  systemctl restart horizon
 }
 
 ## DARWIN
@@ -149,25 +142,28 @@ install_darwin()
     echo "Unable to download certificate; URL: ${crt}" &> /dev/stderr
   fi
   if [ "${result:-1}" -eq 0 ]; then
-    darwin_start
+    agent_start
   fi
   echo ${result:-1}
 }
 
-darwin_start()
+agent_start()
 {
   if [ "${DEBUG:-false}" = 'true' ]; then echo "function: ${FUNCNAME[0]} ${*}" &> /dev/stderr; fi
+
+  if [ -z "$(command -v socat)" ]; then
+    echo 'WARNING: not installed: socat' &> /dev/stderr
+  fi
 
   if [ ! -z "$(docker ps --format '{{.Names}}' | egrep '^horizon')" ]; then
     echo 'Running "horizon-container stop"' &> /dev/stderr
     horizon-container stop &> /dev/stderr
   fi
-  if [ -z "$(command -v socat)" ]; then
-    echo 'Install "socat"; and run "horizon-container start"' &> /dev/stderr
-  else
-    echo 'Running "horizon-container start"' &> /dev/stderr
+
+  echo 'Starting agent; version: ${HZN_AGENT_VERSION}' &> /dev/stderr
+  export HC_DOCKER_TAG=${HZN_AGENT_VERSION:-latest} \
+    && \
     horizon-container start &> /dev/stderr
-  fi
 }
 
 ##
@@ -278,6 +274,8 @@ if [ -s "${CONFIG:-}" ]; then
   else
     HZN_AGENT_VERSION="${VER}"
   fi
+else
+  echo "WARNING: configuration file not found; file: ${CONFIG}" &> /dev/stderr
 fi
 
 if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z "${HZN_AGENT_VERSION:-}" ]; then
@@ -289,5 +287,5 @@ if [ ! -z "${HZN_EXCHANGE_URL:-}" ] && [ ! -z "${HZN_FSS_CSSURL:-}" ] && [ ! -z 
     echo 'Success'
   fi
 else
-  echo 'USAGE: '${0}' [all|cli]'
+  echo 'USAGE: HZN_EXCHANGE_URL=http://exchange:3090/v1 '${0}' [all|cli]'
 fi

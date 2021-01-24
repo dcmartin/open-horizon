@@ -6,28 +6,28 @@ This container may be run locally using Docker, pushed to a Docker registry, and
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/amd64_yolo2msghub "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/amd64_yolo2msghub "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_yolo2msghub
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_yolo2msghub.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm_yolo2msghub "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm_yolo2msghub "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.yolo2msghub.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_yolo2msghub
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_yolo2msghub.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm64_yolo2msghub "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_yolo2msghub.svg)](https://microbadger.com/images/dcmartin/arm64_yolo2msghub "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.yolo2msghub.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_yolo2msghub
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_yolo2msghub.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -35,7 +35,7 @@ This container may be run locally using Docker, pushed to a Docker registry, and
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.yolo2msghub`
++ `url` - `yolo2msghub`
 + `version` - `0.0.11`
 
 ## Service variables 
@@ -87,7 +87,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
   "description": "yolo and friends as a pattern",
   "services": [
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "serviceUrl": "yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [
@@ -97,7 +97,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
       ]
     },
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "serviceUrl": "yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [
@@ -107,7 +107,7 @@ Create a `pattern.json` file containing the services array for the pattern; for 
       ]
     },
     {
-      "serviceUrl": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "serviceUrl": "yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [
@@ -155,7 +155,7 @@ Create a `userinput.json` file containing the environment variables for each ser
  "services": [
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.yolo2msghub",
+     "url": "yolo2msghub",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { 
        "YOLO2MSGHUB_APIKEY": "<YOUR_KAFKA_APIKEY>",
@@ -164,7 +164,7 @@ Create a `userinput.json` file containing the environment variables for each ser
    },
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.yolo",
+     "url": "yolo",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": {
        "YOLO_ENTITY": "person",
@@ -173,19 +173,19 @@ Create a `userinput.json` file containing the environment variables for each ser
    },
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.cpu",
+     "url": "cpu",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { "CPU_PERIOD": 60 }
    },
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.wan",
+     "url": "wan",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { "WAN_PERIOD": 900 }
    },
    {
      "org": "${HZN_ORG_ID}",
-     "url": "com.github.dcmartin.open-horizon.hal",
+     "url": "hal",
      "versionRange": "[0.0.0,INFINITY)",
      "variables": { "HAL_PERIOD": 1800 }
    }
@@ -248,7 +248,7 @@ Verify operation of device as node running pattern of services, for example:
 % hzn services list
 [
   {
-    "url": "com.github.dcmartin.open-horizon.wan",
+    "url": "wan",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.3",
     "arch": "amd64",
@@ -257,7 +257,7 @@ Verify operation of device as node running pattern of services, for example:
     }
   },
   {
-    "url": "com.github.dcmartin.open-horizon.yolo",
+    "url": "yolo",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.8",
     "arch": "amd64",
@@ -268,7 +268,7 @@ Verify operation of device as node running pattern of services, for example:
     }
   },
   {
-    "url": "com.github.dcmartin.open-horizon.yolo2msghub",
+    "url": "yolo2msghub",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.11",
     "arch": "amd64",
@@ -279,7 +279,7 @@ Verify operation of device as node running pattern of services, for example:
     }
   },
   {
-    "url": "com.github.dcmartin.open-horizon.cpu",
+    "url": "cpu",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.3",
     "arch": "amd64",
@@ -288,7 +288,7 @@ Verify operation of device as node running pattern of services, for example:
     }
   },
   {
-    "url": "com.github.dcmartin.open-horizon.hal",
+    "url": "hal",
     "org": "${HZN_ORG_ID}",
     "version": "0.0.3",
     "arch": "amd64",
@@ -430,12 +430,12 @@ make test
 The output of the test:
 
 ```
->>> MAKE -- 11:51:40 -- testing container: yolo2msghub; tag: dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub:0.0.11
-./test.sh "dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub:0.0.11"
+>>> MAKE -- 11:51:40 -- testing container: yolo2msghub; tag: dcmartin/amd64_yolo2msghub:0.0.11
+./test.sh "dcmartin/amd64_yolo2msghub:0.0.11"
 --- INFO -- ./test.sh 65358 -- No host specified; assuming 127.0.0.1
 +++ WARN ./test.sh 65358 -- No port specified; assuming port 8587
 +++ WARN ./test.sh 65358 -- No protocol specified; assuming http
---- INFO -- ./test.sh 65358 -- Testing yolo2msghub in container tagged: dcmartin/amd64_com.github.dcmartin.open-horizon.yolo2msghub:0.0.11 at Wed Apr 3 11:51:40 PDT 2019
+--- INFO -- ./test.sh 65358 -- Testing yolo2msghub in container tagged: dcmartin/amd64_yolo2msghub:0.0.11 at Wed Apr 3 11:51:40 PDT 2019
 {"wan":{"date":"number","speedtest":{"client":{"rating":"string","loggedin":"string","isprating":"string","ispdlavg":"string","ip":"string","isp":"string","lon":"string","ispulavg":"string","country":"string","lat":"string"},"bytes_sent":"number","download":"number","timestamp":"string","share":"null","bytes_received":"number","ping":"number","upload":"number","server":{"latency":"number","name":"string","url":"string","country":"string","lon":"string","cc":"string","host":"string","sponsor":"string","lat":"string","id":"string","d":"number"}}},"cpu":{"date":"number","percent":"number"},"hal":{"date":"number","lshw":{"id":"string","class":"string","claimed":"boolean","handle":"string","description":"string","product":"string","version":"string","serial":"string","width":"number","configuration":{"boot":"string","sku":"string","uuid":"string"},"capabilities":{"0":"","vsyscall32":"string"},"children":["object","object"]},"lsusb":[],"lscpu":{"Architecture":"string","CPU_op_modes":"string","Byte_Order":"string","CPUs":"string","On_line_CPUs_list":"string","Threads_per_core":"string","Cores_per_socket":"string","Sockets":"string","Vendor_ID":"string","CPU_family":"string","Model":"string","Model_name":"string","Stepping":"string","CPU_MHz":"string","BogoMIPS":"string","L1d_cache":"string","L1i_cache":"string","L2_cache":"string","L3_cache":"string","Flags":"string"},"lspci":["object","object","object","object","object","object","object","object","object"],"lsblk":["object","object","object","object"],"lsdf":["object"]},"yolo2msghub":{"date":"number","yolo":{"mock":"string","info":{"type":"string","size":"string","bps":"string","color":"string"},"time":"number","count":"number","detected":["object"],"image":"string","date":"number"}},"date":"number","hzn":{"agreementid":"string","arch":"string","cpus":"number","device_id":"string","exchange_url":"string","host_ips":["string","string","string","string"],"organization":"string","ram":"number","pattern":"null"},"config":{"date":"number","log_level":"string","debug":"boolean","services":["object","object","object"],"period":"number"},"service":{"label":"string","version":"string"}}
 !!! SUCCESS -- ./test.sh 65358 -- test /Volumes/dcmartin/GIT/master/open-horizon/yolo2msghub/test-yolo2msghub.sh returned true
 true
@@ -444,7 +444,7 @@ true
 The resulting status JSON file may also be inspected; it will be named (or something similar):
 
 ```
-test.amd64_com.github.dcmartin.open-horizon.yolo2msghub:0.0.11.json
+test.amd64_yolo2msghub:0.0.11.json
 ```
 
 ### `kafkacat.sh`
@@ -1565,31 +1565,31 @@ The shell script `kafkacat.sh` may be used to listen to the `yolo2msghub` topic;
   "services": [
     {
       "org": "github@dcmartin.com",
-      "url": "com.github.dcmartin.open-horizon.yolo2msghub",
+      "url": "yolo2msghub",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": { "YOLO2MSGHUB_APIKEY": null, "LOG_LEVEL": "info", "DEBUG": false }
     },
     {
       "org": "github@dcmartin.com",
-      "url": "com.github.dcmartin.open-horizon.yolo",
+      "url": "yolo",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": { "YOLO_ENTITY": "person", "YOLO_PERIOD": 60, "YOLO_CONFIG": "tiny", "YOLO_THRESHOLD": 0.25 }
     },
     {
       "org": "github@dcmartin.com",
-      "url": "com.github.dcmartin.open-horizon.cpu",
+      "url": "cpu",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": { "CPU_PERIOD": 60 }
     },
     {
       "org": "github@dcmartin.com",
-      "url": "com.github.dcmartin.open-horizon.wan",
+      "url": "wan",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": { "WAN_PERIOD": 900 }
     },
     {
       "org": "github@dcmartin.com",
-      "url": "com.github.dcmartin.open-horizon.hal",
+      "url": "hal",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": { "HAL_PERIOD": 1800 }
     }

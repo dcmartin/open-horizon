@@ -4,12 +4,12 @@
   "description": "setup nodes automatically",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hznsetup/README.md",
   "url": "com.github.dcmartin.open-horizon.hznsetup",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.hznmonitor", "org": "${HZN_ORG_ID}", "version": "0.1.0", "arch": null }
+    { "url": "hznmonitor", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
     { "name": "HZNSETUP_EXCHANGE_URL", "label": "exchange server", "type": "string", "defaultValue": "http://exchange:3090/v1" },
@@ -25,16 +25,14 @@
     { "name": "HZNSETUP_MASTER", "label": "", "type": "string", "defaultValue": ""},
     { "name": "HZNSETUP_PORT", "label": "", "type": "int", "defaultValue": "3093" },
     { "name": "HZNSETUP_PERIOD", "label": "seconds between watchdog checks", "type": "int", "defaultValue": "30" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
       "hznsetup": {
         "environment": [
           "SERVICE_LABEL=hznsetup",
-          "SERVICE_VERSION=0.1.0",
+          "SERVICE_VERSION=0.2.0",
           "SERVICE_PORT=3092"
         ],
         "specific_ports": [ { "HostPort": "3092:3092/tcp", "HostIP": "0.0.0.0" }, { "HostPort": "3093:3093/tcp", "HostIP": "0.0.0.0" } ],

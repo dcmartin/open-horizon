@@ -4,7 +4,7 @@
   "description": "Horizon monitor Web service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hznmonitor/README.md",
   "url": "com.github.dcmartin.open-horizon.hznmonitor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -15,8 +15,8 @@
     { "name": "APACHE_ADMIN", "label": "", "type": "string", "defaultValue": "root@localhost.local" },
     { "name": "HZNMONITOR_KAFKA_APIKEY", "label": "", "type": "string", "defaultValue": "" },
     { "name": "HZNMONITOR_KAFKA_TOPIC", "label": "", "type": "string", "defaultValue": "startup" },
-    { "name": "HZNMONITOR_KAFKA_ADMIN_URL", "label": "administrative URL", "type": "string", "defaultValue": "https://kafka-admin-prod02.messagehub.services.us-south.bluemix.net:443" },
-    { "name": "HZNMONITOR_KAFKA_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "kafka05-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093" },
+    { "name": "HZNMONITOR_KAFKA_ADMIN_URL", "label": "administrative URL", "type": "string", "defaultValue": "" },
+    { "name": "HZNMONITOR_KAFKA_BROKER", "label": "message hub broker list", "type": "string", "defaultValue": "kafka:9092" },
     { "name": "HZNMONITOR_MQTT_HOST", "label": "", "type": "string", "defaultValue": "mqtt" },
     { "name": "HZNMONITOR_MQTT_TOPIC", "label": "", "type": "string", "defaultValue": "startup" },
     { "name": "HZNMONITOR_MQTT_PORT", "label": "", "type": "int", "defaultValue": "1883" },
@@ -27,16 +27,14 @@
     { "name": "HZNMONITOR_EXCHANGE_USER", "label": "exchange server", "type": "string", "defaultValue": "iamapikey" },
     { "name": "HZNMONITOR_EXCHANGE_APIKEY", "label": "exchange server API key", "type": "string", "defaultValue": "" },
     { "name": "HZNMONITOR_PERIOD", "label": "update interval", "type": "int", "defaultValue": "900" },
-    { "name": "LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" },
-    { "name": "LOGTO", "label": "specify where to log", "type": "string", "defaultValue": "/dev/stderr" },
-    { "name": "DEBUG", "label": "debug on/off", "type": "boolean", "defaultValue": "false" }
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "info" }
   ],
   "deployment": {
     "services": {
       "hznmonitor": {
         "environment": [
           "SERVICE_LABEL=hznmonitor",
-          "SERVICE_VERSION=0.1.0",
+          "SERVICE_VERSION=0.2.0",
           "SERVICE_PORT=3095"
         ],
         "specific_ports": [

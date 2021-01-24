@@ -3,7 +3,7 @@
   "services": [
     {
       "org": "${HZN_ORG_ID}",
-      "url": "com.github.dcmartin.open-horizon.fft",
+      "url": "fft",
       "versionRange": "[0.0.0,INFINITY)",
       "variables": {
         "FFT_INCLUDE_WAV": true,

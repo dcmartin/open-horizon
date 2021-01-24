@@ -5,28 +5,28 @@ Provides hardware information as micro-service; updates periodically (default `6
 ## Status
 
 ![Supports amd64 Architecture][amd64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/amd64_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hal "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/amd64_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/amd64_com.github.dcmartin.open-horizon.hal "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/amd64_hal.svg)](https://microbadger.com/images/dcmartin/amd64_hal "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/amd64_hal.svg)](https://microbadger.com/images/dcmartin/amd64_hal "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-amd64]][docker-amd64]
 
-[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_com.github.dcmartin.open-horizon.hal
-[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_com.github.dcmartin.open-horizon.hal.svg
+[docker-amd64]: https://hub.docker.com/r/dcmartin/amd64_hal
+[pulls-amd64]: https://img.shields.io/docker/pulls/dcmartin/amd64_hal.svg
 
 ![Supports arm Architecture][arm-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hal "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/arm_com.github.dcmartin.open-horizon.hal "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm_hal.svg)](https://microbadger.com/images/dcmartin/arm_hal "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm_hal.svg)](https://microbadger.com/images/dcmartin/arm_hal "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm]][docker-arm]
 
-[docker-arm]: https://hub.docker.com/r/dcmartin/arm_com.github.dcmartin.open-horizon.hal
-[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_com.github.dcmartin.open-horizon.hal.svg
+[docker-arm]: https://hub.docker.com/r/dcmartin/arm_hal
+[pulls-arm]: https://img.shields.io/docker/pulls/dcmartin/arm_hal.svg
 
 ![Supports arm64 Architecture][arm64-shield]
-[![](https://images.microbadger.com/badges/image/dcmartin/arm64_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hal "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/dcmartin/arm64_com.github.dcmartin.open-horizon.hal.svg)](https://microbadger.com/images/dcmartin/arm64_com.github.dcmartin.open-horizon.hal "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/dcmartin/arm64_hal.svg)](https://microbadger.com/images/dcmartin/arm64_hal "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dcmartin/arm64_hal.svg)](https://microbadger.com/images/dcmartin/arm64_hal "Get your own version badge on microbadger.com")
 [![Docker Pulls][pulls-arm64]][docker-arm64]
 
-[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_com.github.dcmartin.open-horizon.hal
-[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_com.github.dcmartin.open-horizon.hal.svg
+[docker-arm64]: https://hub.docker.com/r/dcmartin/arm64_hal
+[pulls-arm64]: https://img.shields.io/docker/pulls/dcmartin/arm64_hal.svg
 
 [arm64-shield]: https://img.shields.io/badge/arm64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
@@ -34,7 +34,7 @@ Provides hardware information as micro-service; updates periodically (default `6
 
 ## Service discovery
 + `org` - `github@dcmartin.com`
-+ `url` - `com.github.dcmartin.open-horizon.hal`
++ `url` - `hal`
 + `version` - `0.0.3`
 
 ## Service variables

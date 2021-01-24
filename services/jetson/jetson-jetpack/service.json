@@ -3,7 +3,7 @@
   "label": "jetson-jetpack",
   "description": "Provide JetsonTX2 JetPack 3.3",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/jetson-jetpack/README.md",
-  "url": "com.github.dcmartin.open-horizon.jetson-jetpack",
+  "url": "jetson-jetpack",
   "version": "0.0.1",
   "arch": null,
   "public": false,

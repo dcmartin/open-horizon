@@ -1,0 +1,58 @@
+{
+  "status": {
+    "connectivity": {
+      "firmware.bluehorizon.network": true,
+      "images.bluehorizon.network": true
+    },
+    "services": [
+      {
+        "agreementId": "dd472c55e61f7d515a7143657da820079732f4a44a1521ccd316fb73b14bddc9",
+        "serviceUrl": "github.com.open-horizon.examples.cpu2msghub",
+        "orgid": "IBM",
+        "version": "1.2.5",
+        "arch": "amd64",
+        "containerStatus": [
+          {
+            "name": "/dd472c55e61f7d515a7143657da820079732f4a44a1521ccd316fb73b14bddc9-cpu2msghub",
+            "image": "openhorizon/amd64_cpu2msghub@sha256:fae4cbf1613d5cdce4097c162b94d36680219a7b43e1535553aa13ee0bd4d807",
+            "created": 1555856320,
+            "state": "running"
+          }
+        ]
+      },
+      {
+        "agreementId": "",
+        "serviceUrl": "github.com.open-horizon.examples.cpu",
+        "orgid": "IBM",
+        "version": "1.2.2",
+        "arch": "amd64",
+        "containerStatus": [
+          {
+            "name": "/IBM_github.com.open-horizon.examples.cpu_1.2.2_e5f393f2-df5a-42ea-9099-83ff6ade6e63-cpu",
+            "image": "openhorizon/amd64_cpu@sha256:7466593d0eedb2d826afcc758dff968d278e13d56d8f7d5e3e78cea3b0514f1e",
+            "created": 1555856318,
+            "state": "running"
+          }
+        ]
+      },
+      {
+        "agreementId": "",
+        "serviceUrl": "github.com.open-horizon.examples.gps",
+        "orgid": "IBM",
+        "version": "2.0.5",
+        "arch": "amd64",
+        "containerStatus": [
+          {
+            "name": "/IBM_github.com.open-horizon.examples.gps_2.0.5_c13e033a-1595-4aef-b408-89e2966a3a1d-gps",
+            "image": "openhorizon/amd64_gps@sha256:dd06dd8281646eb6f65be4c7ab012e457d3fa1d111c27bae88f0040ff1e125a9",
+            "created": 1555856319,
+            "state": "running"
+          }
+        ]
+      }
+    ],
+    "lastUpdated": "2019-04-21T14:18:42.539Z[UTC]"
+  },
+  "org": "github@dcmartin.com",
+  "url": "https://alpha.edge-fabric.com/v1"
+}

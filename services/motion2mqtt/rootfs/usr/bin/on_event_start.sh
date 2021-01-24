@@ -19,7 +19,7 @@ source /usr/bin/motion-tools.sh
 ### MAIN
 ###
 
-hzn.log.trace "started program"
+hzn::log.trace "started program"
 
 CN="${1}"
 EN="${2}"
@@ -34,11 +34,11 @@ TS="${YR}${MO}${DY}${HR}${MN}${SC}"
 # get time
 NOW=$($dateconv -i '%Y%m%d%H%M%S' -f "%s" "$TS")
 
-hzn.log.debug "got timestamp: ${TS} and time: ${NOW}"
+hzn::log.debug "got timestamp: ${TS} and time: ${NOW}"
 
 EJ="${MOTION_DATA_DIR}/${CN}/${TS}-${EN}.json"
 
-hzn.log.debug "making event JSON: ${EJ}"
+hzn::log.debug "making event JSON: ${EJ}"
 
 # make payload
 MOTION_DEVICE=${MOTION_DEVICE:-$(hostname)}
@@ -47,4 +47,4 @@ echo '{"device":"'${MOTION_DEVICE}'","camera":"'${CN}'","event":"'${EN}'","start
 # `event/start`
 mqtt_pub -q 2 -r -t "${MOTION_GROUP}/${MOTION_DEVICE}/${CN}/event/start" -f "$EJ"
 
-hzn.log.trace "completed program"
+hzn::log.trace "completed program"

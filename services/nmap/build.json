@@ -1,7 +1,7 @@
 {
   "build_from": {
-    "amd64": "ubuntu:bionic",
-    "arm": "arm32v7/ubuntu:bionic",
-    "arm64": "arm64v8/ubuntu:bionic"
+    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0",
+    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.base-ubuntu:0.2.0"
   }
 }

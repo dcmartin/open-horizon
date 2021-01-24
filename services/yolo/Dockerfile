@@ -33,6 +33,7 @@ ENV DARKNET_TINYV2_WEIGHTS="${DARKNET}/yolov2-tiny-voc.weights"
 ENV DARKNET_TINYV2_CONFIG="${DARKNET}/cfg/yolov2-tiny-voc.cfg"
 ENV DARKNET_TINYV2_DATA="${DARKNET}/cfg/voc.data"
 ENV DARKNET_TINYV2_NAMES="${DARKNET}/data/voc.names"
+ENV DARKNET_TINYV2_WEIGHTS_URL="http://pjreddie.com/media/files/yolov2-tiny-voc.weights"
 ENV DARKNET_TINYV2_WEIGHTS_URL="https://www.dropbox.com/s/ma1z3lq4xjutyj7/yolov2-tiny-voc.weights"
 ENV DARKNET_TINYV2_WEIGHTS_MD5="fca33deaff44dec1750a34df42d2807e"
 
@@ -40,6 +41,7 @@ ENV DARKNET_TINYV3_WEIGHTS="${DARKNET}/yolov3-tiny.weights"
 ENV DARKNET_TINYV3_CONFIG="${DARKNET}/cfg/yolov3-tiny.cfg"
 ENV DARKNET_TINYV3_DATA="${DARKNET}/cfg/coco.data"
 ENV DARKNET_TINYV3_NAMES="${DARKNET}/data/coco.names"
+ENV DARKNET_TINYV3_WEIGHTS_URL="http://pjreddie.com/media/files/yolov3-tiny.weights"
 ENV DARKNET_TINYV3_WEIGHTS_URL="https://www.dropbox.com/s/iv7114em0cedacv/yolov3-tiny.weights"
 ENV DARKNET_TINYV3_WEIGHTS_MD5="3bcd6b390912c18924b46b26a9e7ff53"
 
@@ -47,19 +49,24 @@ ENV DARKNET_V2_WEIGHTS="${DARKNET}/yolov2.weights"
 ENV DARKNET_V2_CONFIG="${DARKNET}/cfg/yolov2.cfg"
 ENV DARKNET_V2_DATA="${DARKNET}/cfg/coco.data"
 ENV DARKNET_V2_NAMES="${DARKNET}/data/coco.names"
-ENV DARKNET_V2_WEIGHTS_URL="https://www.dropbox.com/s/uz15x6xbudqyweg/yolov2.weights"
+ENV DARKNET_V2_WEIGHTS_URL="https://pjreddie.com/media/files/yolov2.weights"
+ENV DARKNET_V2_WEIGHTS_URL="ihttps://www.dropbox.com/s/uz15x6xbudqyweg/yolov2.weights"
 ENV DARKNET_V2_WEIGHTS_MD5="70d89ba2e180739a1c700a9ff238e354"
 
 ENV DARKNET_V3_WEIGHTS="${DARKNET}/yolov3.weights"
 ENV DARKNET_V3_CONFIG="${DARKNET}/cfg/yolov3.cfg"
 ENV DARKNET_V3_DATA="${DARKNET}/cfg/coco.data"
 ENV DARKNET_V3_NAMES="${DARKNET}/data/coco.names"
+ENV DARKNET_V3_WEIGHTS_URL="https://pjreddie.com/media/files/yolov3.weights"
 ENV DARKNET_V3_WEIGHTS_URL="https://www.dropbox.com/s/xhl17axl9915cj3/yolov3.weights"
 ENV DARKNET_V3_WEIGHTS_MD5="c84e5b99d0e52cd466ae710cadf6d84c"
 
 # Clone openyolo
 RUN mkdir -p ${OPENYOLO} 
 RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
+
+# download `tiny` weights as default/backup
+#RUN curl -sSL ${DARKNET_TINYV2_WEIGHTS_URL} -o ${DARKNET_TINYV2_WEIGHTS}
 
 ARG GPU
 ENV GPU=${GPU}
@@ -95,7 +102,7 @@ LABEL \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="yolo" \
     org.label-schema.description="yolo/darknet as a service" \
-    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/yolo/" \
+    org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/yolo/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
     org.label-schema.vendor="David C Martin <github@dcmartin.com>"

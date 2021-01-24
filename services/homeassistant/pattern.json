@@ -1,0 +1,42 @@
+{
+  "label": "homeassistant",
+  "description": "Home Assistant server",
+  "services": [
+    {
+      "serviceUrl": "startup",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "startup",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "startup",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "homeassistant",
+      "serviceArch": "amd64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "homeassistant",
+      "serviceArch": "arm",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    },
+    {
+      "serviceUrl": "homeassistant",
+      "serviceArch": "arm64",
+      "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
+      "serviceOrgid": "${HZN_ORG_ID}"
+    }
+  ]
+}
