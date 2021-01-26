@@ -15,7 +15,7 @@
   ],
   "deployment": {
     "services": {
-      "yolo4motion": {
+      "labelstudio": {
         "environment": [
           "SERVICE_LABEL=labelstudio",
           "SERVICE_VERSION=0.0.1"
