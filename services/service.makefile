@@ -1,10 +1,12 @@
+SHELL=/bin/bash
+
 ## ARCHITECTURE
 ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 NVER:= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA ?= $(if ${NVER},$(shell echo "${NVER}" | awk '{ print $$2 }'),)
-UNAME := $(shell uname | tr "[:upper:]" "[:lower:]")
+UNAME := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 ifeq ($(UNAME),darwin)
 MULTIARCH := true
