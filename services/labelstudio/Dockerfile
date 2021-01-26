@@ -88,7 +88,7 @@ RUN pip3 install 'attrs>=19.1.0'
 #RUN \
 #  if [ "${BUILD_ARCH}" == 'amd64' ]; then \
 #    pip3 install 'blis==0.4.1'; \
-#  elif [ "${BUILD_ARCH}" == 'aarch64' ]; then \
+#  elif [ "${BUILD_ARCH}" == 'arm64' ]; then \
 #    mkdir -p /tmp/blis \
 #    && \
 #    curl -sSL https://github.com/explosion/cython-blis/archive/v0.4.1.tar.gz | tar zxf - --strip 1 -C /tmp/blis/ \
@@ -150,27 +150,42 @@ RUN pip3 install 'Colorama==0.4.4'
 RUN pip3 install 'boxing==0.1.4'
 RUN pip3 install 'pyyaml>=5.3.1'
 
-RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then \
-    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; \
-  else \
-    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0'  'orjson>=2.0.11' 'blis>=0.4.1' --no-binary=':all:'; \
-  fi
-
-RUN pip3 install 'cymem==2.0.3'
-
 #RUN if [ "${BUILD_ARCH}" == 'armv7' ]; then \
 #  mkdir -p /tmp/rust \
 #  && \
 #  curl -sSL https://static.rust-lang.org/dist/rust-1.49.0-armv7-unknown-linux-gnueabihf.tar.gz | tar zxf - --strip 1 -C /tmp/rust \
 #  && \
-#  cd /tmp/rust && ./install.sh \
-#  && \
+#  cd /tmp/rust && ./install.sh; \
 #  rustup default nightly \
 #  && \
 #  rustup update; \
 #  fi
 #
-#RUN pip3 install 'orjson'
+#RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then \
+#  mkdir -p /tmp/rust \
+#  && \
+#  curl -sSL https://static.rust-lang.org/dist/rust-1.49.0-aarch64-unknown-linux-gnu.tar.gz | tar zxf - --strip 1 -C /tmp/rust \
+#  && \
+#  cd /tmp/rust && ./install.sh \
+#  && \
+#  ${HOME}/.cargo/bin/rustup default nightly \
+#  && \
+#  ${HOME}/.cargo/bin/rustup update; \
+#  fi
+
+RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
+
+RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+
+RUN pip3 install 'cymem==2.0.3'
+
+RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+
+RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then \
+    pip3 install --no-binary ':all:' --no-binary ':maturin:' --no-deps 'orjson>=2.0.11'; \
+  fi
+
 
 ### LABEL-STUDIO
 
