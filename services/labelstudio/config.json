@@ -1,0 +1,55 @@
+{
+  "name": "Label Studio",
+  "version": "0.0.1",
+  "slug": "labelstudio",
+  "description": "LabelStudio",
+  "url": "https://github.com/dcmartin/hassio-addons/tree/master/labelstudio/README.md",
+  "webui": "http://[HOST]:[PORT:8080]",
+  "startup": "application",
+  "boot": "auto",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armv7"
+  ],
+  "ingress": true,
+  "ingress_port": 8080,
+  "panel_admin": true,
+  "panel_icon": "mdi:label",
+  "stage": "experimental",
+  "devices": [],
+  "hassio_api": false,
+  "hassio_role": "default",
+  "host_network": false,
+  "homeassistant_api": false,
+  "privileged": [],
+  "timeout": 90,
+  "tmpfs": "size=256m,uid=0,rw",
+  "map": [],
+  "ports": {
+    "8080/tcp": 8080
+  },
+  "ports_description": {
+    "8080/tcp": "Web interface"
+  },
+  "options": {
+    "log_level": "info",
+    "timezone": "America/Los_Angeles",
+    "workspace": "/data/labelstudio",
+    "project": "MyProject"
+  },
+  "schema": {
+    "log_level": "str",
+    "timezone": "str?",
+    "workspace": "str?",
+    "project": "str?",
+    "username": "str?",
+    "password": "str?",
+    "init": "str?"
+  },
+  "environment": {
+    "LOG_FORMAT": "{LEVEL}: {MESSAGE}"
+  },
+  "image": "dcmartin/{arch}-addon-labelstudio",
+  "watchdog": "http://[HOST]:[PORT:8080]/api/health"
+}
