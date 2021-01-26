@@ -1,5 +1,3 @@
-SHELL=/bin/bash
-
 ## ARCHITECTURE
 ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/'))
 
@@ -81,7 +79,6 @@ DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
 DOCKER_TAG = $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
 
 ## BUILD
-#BUILD_ARCH ?= $(if ${CUDA},$(shell echo '${ARCH}_${CUDA}'),${ARCH})
 BUILD_ARCH ?= ${ARCH}
 BUILD_BASE := $(shell export DOCKER_REGISTRY=$(DOCKER_REGISTRY) DOCKER_NAMESPACE=${DOCKER_NAMESPACE} DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) && jq -r '.build_from|to_entries[]|select(.key=="'${BUILD_ARCH}'").value' build.json | envsubst)
 BUILD_ORG := $(shell echo $(BUILD_BASE) | sed "s|\(.*\)/[^/]*|\1|")
