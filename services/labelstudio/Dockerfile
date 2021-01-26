@@ -61,6 +61,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt install -qq -y --no-install-recommends \
+    python-dev \
+    libpython-dev \
+    python3-dev \
+    libpython3-dev \
     python3.8-dev \
     libpython3.8-dev \
     python3-pip
