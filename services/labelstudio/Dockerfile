@@ -61,7 +61,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt install -qq -y --no-install-recommends \
-    python3.8 \
+    python3.8-dev \
+    libpython3.8-dev \
     python3-pip
 
 RUN  python3 -m pip install --upgrade pip
@@ -107,12 +108,10 @@ RUN pip3 install 'attrs>=19.1.0'
 #    BLIS_ARCH="generic" pip3 install spacy --no-binary blis; \
 #  fi
 
-RUN pip3 install 'blis>=0.4.1'
 
 RUN pip3 install 'certifi==2019.11.28'
 RUN pip3 install 'chardet==3.0.4'
 RUN pip3 install 'click~=7.0'
-RUN pip3 install 'cymem==2.0.3'
 RUN pip3 install 'Flask==1.1.1'
 RUN pip3 install 'idna==2.8'
 RUN pip3 install 'itsdangerous==1.1.0'
@@ -147,11 +146,13 @@ RUN pip3 install 'Colorama==0.4.4'
 RUN pip3 install 'boxing==0.1.4'
 RUN pip3 install 'pyyaml>=5.3.1'
 
-RUN if [ "${BUILD_ARCH}" != 'armv7' ]; then \
-    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11'; \
+RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then \
+    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; \
   else \
-    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0'  'orjson>=2.0.11'  --no-binary=':all:'; \
+    pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0'  'orjson>=2.0.11' 'blis>=0.4.1' --no-binary=':all:'; \
   fi
+
+RUN pip3 install 'cymem==2.0.3'
 
 #RUN if [ "${BUILD_ARCH}" == 'armv7' ]; then \
 #  mkdir -p /tmp/rust \
