@@ -173,19 +173,20 @@ RUN pip3 install 'pyyaml>=5.3.1'
 #  ${HOME}/.cargo/bin/rustup update; \
 #  fi
 
+# AMD64
 RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
 
-RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
-RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+# ARM64
+RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
 
+# ARM
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' --no-binary ':maturin:' --no-deps 'orjson>=2.0.11'; fi
+
+# last package
 RUN pip3 install 'cymem==2.0.3'
-
-RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
-
-RUN if [ "${BUILD_ARCH}" != 'amd64' ]; then \
-    pip3 install --no-binary ':all:' --no-binary ':maturin:' --no-deps 'orjson>=2.0.11'; \
-  fi
-
 
 ### LABEL-STUDIO
 
