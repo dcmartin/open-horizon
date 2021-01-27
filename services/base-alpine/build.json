@@ -1,9 +1,9 @@
 {
   "squash": false,
   "build_from": {
-    "arm64": "arm64v8/alpine:3.12.0",
+    "aarch64": "aarch64v8/alpine:3.12.0",
     "amd64": "amd64/alpine:3.12.0",
-    "arm": "arm32v7/alpine:3.12.0"
+    "armv7": "armv732v7/alpine:3.12.0"
   },
   "args": {}
 }
