@@ -1,0 +1,35 @@
+{
+  "org": "${HZN_ORG_ID}",
+  "label": "labelstudio",
+  "description": "",
+  "documentation": "",
+  "url": "com.github.dcmartin.labelstudio",
+  "version": "0.0.1",
+  "arch": null,
+  "public": false,
+  "sharable": "singleton",
+  "requiredServices": [
+  ],
+  "userInput": [
+    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "debug" }
+  ],
+  "deployment": {
+    "services": {
+      "labelstudio": {
+        "environment": [
+          "SERVICE_LABEL=labelstudio",
+          "SERVICE_VERSION=0.0.1"
+        ],
+        "specific_ports": [{"HostPort":"8080:8080"}],
+        "devices": [],
+        "image": null,
+        "privileged": true
+      }
+    }
+  },
+  "mount": [
+  ],
+  "tmpfs": {
+    "size": 81920000
+  }
+}

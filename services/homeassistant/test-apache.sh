@@ -1,1 +1,0 @@
-sh/test-service.sh

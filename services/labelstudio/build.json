@@ -1,0 +1,8 @@
+{
+  "build_from": {
+    "arm": "hassioaddons/ubuntu-base-armv7:5.2.1",
+    "arm64": "hassioaddons/ubuntu-base-aarch64:5.2.1",
+    "amd64": "hassioaddons/ubuntu-base-amd64:5.2.1"
+  },
+  "args": {}
+}

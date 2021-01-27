@@ -28,14 +28,14 @@ RUN \
     && apk add --no-cache \
         libcrypto1.1=1.1.1g-r0 \
         libssl1.1=1.1.1g-r0 \
-        musl-utils=1.1.24-r9 \
-        musl=1.1.24-r9 \
+        musl-utils \
+        musl \
     \
     && apk add --no-cache \
         bash=5.0.17-r0 \
         curl \
         jq=1.6-r1 \
-        tzdata=2020a-r0
+        tzdata
     
 RUN S6_ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "i386" ]; then S6_ARCH="x86"; fi \
@@ -49,7 +49,7 @@ RUN S6_ARCH="${BUILD_ARCH}" \
     && mkdir -p /etc/services.d \
     \
     && curl -J -L -o /tmp/bashio.tar.gz \
-        "https://github.com/hassio-addons/bashio/archive/v0.9.0.tar.gz" \
+        "https://github.com/hassio-addons/bashio/archive/v0.10.1.tar.gz" \
     && mkdir /tmp/bashio \
     && tar zxvf \
         /tmp/bashio.tar.gz \
