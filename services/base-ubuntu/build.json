@@ -4,10 +4,10 @@
     "amd64": "ubuntu:bionic-20200403",
     "amd64_10.2": "nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04",
     "amd64_11.0": "nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04",
-    "aarch64": "aarch64v8/ubuntu:bionic-20200403",
+    "aarch64": "arm64v8/ubuntu:bionic-20200403",
     "aarch64_10.2": "nvcr.io/nvidia/l4t-base:r32.4.2",
     "aarch64_11.0": "nvcr.io/nvidia/l4t-base:r32.4.2",
-    "armv7": "armv732v7/ubuntu:bionic-20200403"
+    "armv7": "arm32v7/ubuntu:bionic-20200403"
   },
   "args": {}
 }
