@@ -63,9 +63,12 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt install -qq -y --no-install-recommends \
     python-dev \
     libpython-dev \
+    python-pip
     python3-dev \
+    python3-venv \
     libpython3-dev \
     python3.8-dev \
+    python3.8-venv \
     libpython3.8-dev \
     python3-pip
 
@@ -78,39 +81,6 @@ RUN pip3 install 'requests==2.22.0'
 RUN pip3 install 'cython'
 RUN pip3 install 'appdirs==1.4.3'
 RUN pip3 install 'attrs>=19.1.0'
-
-# BLIS ARM architectures.
-# cortexa57:   cortexa57/armv8a (Jetson Nano)
-# cortexa53:   cortexa53/armv8a (RaspberryPi3)
-# cortexa15:   cortexa15/armv7a
-# cortexa9:    cortexa9/armv7a
-
-#RUN \
-#  if [ "${BUILD_ARCH}" == 'amd64' ]; then \
-#    pip3 install 'blis==0.4.1'; \
-#  elif [ "${BUILD_ARCH}" == 'arm64' ]; then \
-#    mkdir -p /tmp/blis \
-#    && \
-#    curl -sSL https://github.com/explosion/cython-blis/archive/v0.4.1.tar.gz | tar zxf - --strip 1 -C /tmp/blis/ \
-#    && \
-#    cd /tmp/blis \
-#    && \
-#    python3 -m venv env3.6 \
-#    && \
-#    source env3.6/bin/activate \
-#    && \
-#    pip3 install -r requirements.txt \
-#    && \
-#    ./bin/generate-make-jsonl linux 'cortexa57' \
-#    && \
-#    BLIS_ARCH='cortexa57' python3 setup.py build_ext --inplace \
-#    && \
-#    BLIS_ARCH='cortexa57' python3 setup.py bdist_wheel \
-#    && \
-#    BLIS_ARCH='cortexa57' pip3 install blis; \
-#  else \
-#    BLIS_ARCH="generic" pip3 install spacy --no-binary blis; \
-#  fi
 
 
 RUN pip3 install 'certifi==2019.11.28'
@@ -160,30 +130,63 @@ RUN pip3 install 'pyyaml>=5.3.1'
 #  && \
 #  rustup update; \
 #  fi
-#
+
 #RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then \
 #  mkdir -p /tmp/rust \
 #  && \
 #  curl -sSL https://static.rust-lang.org/dist/rust-1.49.0-aarch64-unknown-linux-gnu.tar.gz | tar zxf - --strip 1 -C /tmp/rust \
 #  && \
-#  cd /tmp/rust && ./install.sh \
-#  && \
-#  ${HOME}/.cargo/bin/rustup default nightly \
-#  && \
-#  ${HOME}/.cargo/bin/rustup update; \
+#  cd /tmp/rust && ./install.sh; \
 #  fi
 
 # AMD64
 RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
 
-# ARM64
-RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'maturin>=0.9.0,<0.10'; fi
+
+# BLIS ARM architectures.
+# cortexa57:   cortexa57/armv8a (Jetson Nano)
+# cortexa53:   cortexa53/armv8a (RaspberryPi3)
+# cortexa15:   cortexa15/armv7a
+# cortexa9:    cortexa9/armv7a
+
+#RUN \
+#  if [ "${BUILD_ARCH}" == 'amd64' ]; then \
+#    pip3 install 'blis==0.4.1'; \
+#  elif [ "${BUILD_ARCH}" == 'arm64' ]; then \
+#    mkdir -p /tmp/blis \
+#    && \
+#    cd /tmp/blis \
+#    && \
+#    curl -sSL https://github.com/explosion/cython-blis/archive/v0.4.1.tar.gz | tar zxf - --strip 1 -C /tmp/blis/ \
+#    && \
+#    python3 -m venv env3.6 \
+#    && \
+#    source env3.6/bin/activate \
+#    && \
+#    pip install -r requirements.txt \
+#    && \
+#    ./bin/generate-make-jsonl linux 'cortexa57' \
+#    && \
+#    BLIS_ARCH='cortexa57' python setup.py build_ext --inplace \
+#    && \
+#    BLIS_ARCH='cortexa57' python setup.py bdist_wheel \
+#    && \
+#    BLIS_ARCH='cortexa57' pip install --no-binary=blis; \
+#  else \
+#    BLIS_ARCH="generic" pip install spacy --no-binary blis; \
+#  fi
+
+RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then BLIS_ARCH='generic' pip3 install spacy --no-binary blis; fi
+RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'orjson>=2.0.11'; fi
 
 # ARM
 RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
 RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' --no-binary ':maturin:' --no-deps 'orjson>=2.0.11'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary 'maturin' 'maturin>=0.9.0,<0.10'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
 
 # last package
 RUN pip3 install 'cymem==2.0.3'
