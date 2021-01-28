@@ -1,9 +1,9 @@
 {
   "squash": false,
   "build_from": {
-    "armv7": "${DOCKER_REPOSITORY}/armv7_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "aarch64": "${DOCKER_REPOSITORY}/aarch64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0",
-    "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.base-ubuntu:0.1.0"
+    "armv7": "${DOCKER_REPOSITORY}/armv7-addon-base-ubuntu:0.1.0",
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64-addon-base-ubuntu:0.1.0",
+    "amd64": "${DOCKER_REPOSITORY}/amd64-addon-base-ubuntu:0.1.0"
   },
   "args": {}
 }

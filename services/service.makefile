@@ -75,7 +75,7 @@ DOCKER_SERVER := $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY),"docker.io")
 DOCKER_CONFIG := $(if $(wildcard ~/.docker/config.json),$(shell jq -r '.auths|to_entries[]|select(.key|test("'$(DOCKER_SERVER)'"))' ~/.docker/config.json 2> /dev/null),)
 DOCKER_LOGIN ?= $(if $(DOCKER_CONFIG),$(shell echo $(DOCKER_CONFIG) | jq -r '.value.auth' | base64 --decode | awk -F: '${ print $1 }'),)
 DOCKER_PASSWORD ?= $(if $(DOCKER_CONFIG),$(shell echo $(DOCKER_CONFIG) | jq -r '.value.auth' | base64 --decode | awk -F: '${ print $2 }'),)
-DOCKER_NAME = $(BUILD_ARCH)_$(SERVICE_URL)
+DOCKER_NAME = $(BUILD_ARCH)-$(SERVICE_URL)
 DOCKER_TAG = $(DOCKER_REPOSITORY)/$(DOCKER_NAME):$(SERVICE_VERSION)
 
 ## BUILD

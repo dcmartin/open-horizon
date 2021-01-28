@@ -3,7 +3,7 @@
   "label": "startup",
   "description": "The startup service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/startup/README.md",
-  "url": "com.github.dcmartin.open-horizon.startup",
+  "url": "addon-startup",
   "version": "0.2.0",
   "arch": null,
   "public": false,

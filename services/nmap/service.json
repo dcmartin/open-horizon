@@ -1,7 +1,7 @@
 {
   "label": "nmap",
   "org": "${HZN_ORG_ID}",
-  "url": "com.github.dcmartin.open-horizon.nmap",
+  "url": "addon-nmap",
   "version": "0.0.1",
   "arch": "${BUILD_ARCH}",
   "sharable": "singleton",
