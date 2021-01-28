@@ -37,10 +37,11 @@ RUN \
         jq=1.6-r1 \
         tzdata
     
-RUN S6_ARCH="${BUILD_ARCH}" \
+RUN \
+    S6_ARCH="${BUILD_ARCH%%_*}" \
     && if [ "${BUILD_ARCH}" = "i386" ]; then S6_ARCH="x86"; fi \
     && if [ "${BUILD_ARCH}" = "armv7" ] || [ "${BUILD_ARCH}" = 'armhf' ]; then S6_ARCH="arm"; fi \
-    && if [ $(echo "${BUILD_ARCH}" | sed 's/arm64.*/arm64/') = 'arm64' ]; then S6_ARCH="aarch64"; fi \
+    && if [ $(echo "${BUILD_ARCH}" | sed 's/aarch64.*/aarch64/') = 'aarch64' ]; then S6_ARCH="aarch64"; fi \
     \
     && curl -L -s "https://github.com/just-containers/s6-overlay/releases/download/v2.0.0.1/s6-overlay-${S6_ARCH}.tar.gz" \
         | tar zxvf - -C / \
