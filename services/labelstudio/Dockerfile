@@ -42,31 +42,12 @@ RUN DEBIAN_FRONTEND=noninteractive \
     libxslt-dev \
     zlib1g-dev
 
-#RUN \
-#  cd /tmp \
-#  && \
-#  curl -sSL https://www.python.org/ftp/python/3.8.7/Python-3.8.7.tgz -o python.tgz \
-#  && \
-#  tar xzf python.tgz \
-#  && \
-#  cd Python-3.8.7 \
-#  && \
-#  ./configure --enable-optimizations \
-#  && \
-#  make -j 4 \
-#  && \
-#  make install
-
 # PRE-REQUISITES
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt install -qq -y --no-install-recommends \
     python-dev \
-    libpython-dev \
-    python-pip
     python3-dev \
-    python3-venv \
-    libpython3-dev \
     python3.8-dev \
     python3.8-venv \
     libpython3.8-dev \
@@ -77,25 +58,22 @@ RUN  python3 -m pip install --upgrade pip
 # labelstudio requirements
 RUN pip3 install 'wheel'
 RUN pip3 install 'setuptools'
-RUN pip3 install 'requests==2.22.0'
+RUN pip3 install 'requests>=2.22.0'
 RUN pip3 install 'cython'
 RUN pip3 install 'appdirs==1.4.3'
 RUN pip3 install 'attrs>=19.1.0'
-
-
 RUN pip3 install 'certifi==2019.11.28'
 RUN pip3 install 'chardet==3.0.4'
 RUN pip3 install 'click~=7.0'
+RUN pip3 install 'MarkupSafe==1.1.1'
+RUN pip3 install 'Jinja2==2.10.3'
 RUN pip3 install 'Flask==1.1.1'
 RUN pip3 install 'idna==2.8'
 RUN pip3 install 'itsdangerous==1.1.0'
-RUN pip3 install 'Jinja2==2.10.3'
 RUN pip3 install 'lxml>=4.2.5'
-RUN pip3 install 'MarkupSafe==1.1.1'
 RUN pip3 install 'mixpanel==4.4.0'
 RUN pip3 install 'python-dateutil==2.8.1'
 RUN pip3 install 'pytz==2019.3'
-RUN pip3 install 'requests>=2.22.0'
 RUN pip3 install 'six>=1.13.0'
 RUN pip3 install 'srsly>=0.2.0'
 RUN pip3 install 'tqdm>=4.40.2'
@@ -120,73 +98,20 @@ RUN pip3 install 'Colorama==0.4.4'
 RUN pip3 install 'boxing==0.1.4'
 RUN pip3 install 'pyyaml>=5.3.1'
 
-#RUN if [ "${BUILD_ARCH}" == 'armv7' ]; then \
-#  mkdir -p /tmp/rust \
-#  && \
-#  curl -sSL https://static.rust-lang.org/dist/rust-1.49.0-armv7-unknown-linux-gnueabihf.tar.gz | tar zxf - --strip 1 -C /tmp/rust \
-#  && \
-#  cd /tmp/rust && ./install.sh; \
-#  rustup default nightly \
-#  && \
-#  rustup update; \
-#  fi
-
-#RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then \
-#  mkdir -p /tmp/rust \
-#  && \
-#  curl -sSL https://static.rust-lang.org/dist/rust-1.49.0-aarch64-unknown-linux-gnu.tar.gz | tar zxf - --strip 1 -C /tmp/rust \
-#  && \
-#  cd /tmp/rust && ./install.sh; \
-#  fi
-
 # AMD64
-RUN if [ "${BUILD_ARCH}" == 'amd64' ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
+RUN if [ 'amd64' == "${BUILD_ARCH}" ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
 
-RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'maturin>=0.9.0,<0.10'; fi
-
-# BLIS ARM architectures.
-# cortexa57:   cortexa57/armv8a (Jetson Nano)
-# cortexa53:   cortexa53/armv8a (RaspberryPi3)
-# cortexa15:   cortexa15/armv7a
-# cortexa9:    cortexa9/armv7a
-
-#RUN \
-#  if [ "${BUILD_ARCH}" == 'amd64' ]; then \
-#    pip3 install 'blis==0.4.1'; \
-#  elif [ "${BUILD_ARCH}" == 'arm64' ]; then \
-#    mkdir -p /tmp/blis \
-#    && \
-#    cd /tmp/blis \
-#    && \
-#    curl -sSL https://github.com/explosion/cython-blis/archive/v0.4.1.tar.gz | tar zxf - --strip 1 -C /tmp/blis/ \
-#    && \
-#    python3 -m venv env3.6 \
-#    && \
-#    source env3.6/bin/activate \
-#    && \
-#    pip install -r requirements.txt \
-#    && \
-#    ./bin/generate-make-jsonl linux 'cortexa57' \
-#    && \
-#    BLIS_ARCH='cortexa57' python setup.py build_ext --inplace \
-#    && \
-#    BLIS_ARCH='cortexa57' python setup.py bdist_wheel \
-#    && \
-#    BLIS_ARCH='cortexa57' pip install --no-binary=blis; \
-#  else \
-#    BLIS_ARCH="generic" pip install spacy --no-binary blis; \
-#  fi
-
-RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then BLIS_ARCH='generic' pip3 install spacy --no-binary blis; fi
-RUN if [ "${BUILD_ARCH}" == 'arm64' ]; then pip3 install --no-binary ':all:' 'orjson>=2.0.11'; fi
+# ARM64
+RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install spacy --no-binary blis; fi
+RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'orjson>=2.0.11'; fi
 
 # ARM
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary 'maturin' 'maturin>=0.9.0,<0.10'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
-RUN if [ "${BUILD_ARCH}" == 'arm' ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
+RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ 'arm' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
 
 # last package
 RUN pip3 install 'cymem==2.0.3'
@@ -214,7 +139,7 @@ RUN rm -fr \
 
 ARG LABELSTUDIO_PROJECT='MyProject'
 ARG LABELSTUDIO_HOST='0.0.0.0'
-ARG LABELSTUDIO_PORT='8080'
+ARG LABELSTUDIO_PORT='7998'
 ARG LABELSTUDIO_PROTOCOL='http://'
 ARG LABELSTUDIO_USERNAME='username'
 ARG LABELSTUDIO_PASSWORD='password'

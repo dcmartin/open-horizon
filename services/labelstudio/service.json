@@ -3,15 +3,19 @@
   "label": "labelstudio",
   "description": "",
   "documentation": "",
-  "url": "addon-labelstudio",
+  "url": "labelstudio",
   "version": "0.0.1",
   "arch": null,
   "public": false,
   "sharable": "singleton",
-  "requiredServices": [
-  ],
+  "requiredServices": [],
   "userInput": [
-    { "name": "SERVICE_LOG_LEVEL", "label": "specify logging level", "type": "string", "defaultValue": "debug" }
+    {
+      "name": "SERVICE_LOG_LEVEL",
+      "label": "specify logging level",
+      "type": "string",
+      "defaultValue": "debug"
+    }
   ],
   "deployment": {
     "services": {
@@ -20,16 +24,75 @@
           "SERVICE_LABEL=labelstudio",
           "SERVICE_VERSION=0.0.1"
         ],
-        "specific_ports": [{"HostPort":"8080:8080"}],
+        "specific_ports": [
+          {
+            "HostPort": "7998:7998"
+          }
+        ],
         "devices": [],
         "image": null,
         "privileged": true
       }
     }
   },
-  "mount": [
-  ],
+  "mount": [],
   "tmpfs": {
     "size": 81920000
+  },
+  "config": {
+    "name": "Label Studio",
+    "version": "0.0.1",
+    "slug": "labelstudio",
+    "description": "Label Studio from labelstud.io",
+    "url": "https://github.com/dcmartin/hassio-addons/tree/master/labelstudio/README.md",
+    "webui": "http://[HOST]:[PORT:7998]",
+    "startup": "application",
+    "boot": "auto",
+    "arch": [
+      "amd64",
+      "armv7",
+      "aarch64"
+    ],
+    "ingress": false,
+    "ingress_port": 7998,
+    "ingress_entry": "/welcome",
+    "panel_admin": true,
+    "panel_icon": "mdi:label",
+    "stage": "experimental",
+    "devices": [],
+    "hassio_api": false,
+    "hassio_role": "default",
+    "host_network": true,
+    "homeassistant_api": false,
+    "privileged": [],
+    "timeout": 90,
+    "tmpfs": "size=256m,uid=0,rw",
+    "map": [],
+    "ports": {
+      "7998/tcp": 7998
+    },
+    "ports_description": {
+      "7998/tcp": "Web interface"
+    },
+    "options": {
+      "log_level": "info",
+      "timezone": "America/Los_Angeles",
+      "workspace": "/data/labelstudio",
+      "project": "MyProject"
+    },
+    "schema": {
+      "log_level": "str",
+      "timezone": "str?",
+      "workspace": "str?",
+      "project": "str?",
+      "username": "str?",
+      "password": "str?",
+      "init": "str?"
+    },
+    "environment": {
+      "LOG_FORMAT": "{LEVEL}: {MESSAGE}"
+    },
+    "image": "dcmartin/{arch}-labelstudio",
+    "watchdog": "http://[HOST]:[PORT:7998]/api/health"
   }
 }

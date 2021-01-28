@@ -1,7 +1,7 @@
 {
   "label": "nmap",
   "org": "${HZN_ORG_ID}",
-  "url": "addon-nmap",
+  "url": "nmap",
   "version": "0.0.1",
   "arch": "${BUILD_ARCH}",
   "sharable": "singleton",

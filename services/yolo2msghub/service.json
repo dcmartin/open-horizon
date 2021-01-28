@@ -3,7 +3,7 @@
   "label": "yolo2msghub",
   "description": "Sends JSON payloads from yolo service to Kafka",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/yolo2msghub/README.md",
-  "url": "addon-yolo2msghub",
+  "url": "yolo2msghub",
   "version": "0.2.0",
   "arch": null,
   "public": false,

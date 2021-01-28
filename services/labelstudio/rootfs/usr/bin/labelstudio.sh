@@ -38,7 +38,7 @@ main()
 
   # PORT
   VALUE=$(bashio::config "port")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PORT:-'8080'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PORT:-'7998'}; fi
   bashio::log.info "Setting port: ${VALUE}" >&2
   PORT=${VALUE}
 
@@ -97,7 +97,7 @@ main()
   # run forever
   while true; do
     sleep 120
-    bashio::log.debug $(curl -sSL ${USERNAME}:${PASSWORD}@localhost:8080/api/health)
+    bashio::log.debug $(curl -sSL ${USERNAME}:${PASSWORD}@localhost:${PORT}/api/health)
     bashio::log.debug "Sleeping ..."
   done
 }

@@ -3,7 +3,7 @@
   "label": "hznstartup",
   "description": "Web server for startup service/pattern",
   "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/hznstartup/README.md",
-  "url": "addon-hznstartup",
+  "url": "hznstartup",
   "version": "0.2.0",
   "arch": null,
   "public": false,

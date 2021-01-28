@@ -3,7 +3,7 @@
   "label": "hzncli",
   "description": "Provides hardware abstraction layer as service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hzncli/README.md",
-  "url": "addon-hzncli",
+  "url": "hzncli",
   "version": "0.0.3",
   "arch": null,
   "public": false,

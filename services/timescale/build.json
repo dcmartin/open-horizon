@@ -1,9 +1,9 @@
 {
   "squash": false,
   "build_from": { 
-    "amd64": "${DOCKER_REPOSITORY}/amd64-addon-base-ubuntu:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7-addon-base-ubuntu:0.2.0",
-    "aarch64": "${DOCKER_REPOSITORY}/aarch64-addon-base-ubuntu:0.2.0"
+    "amd64": "${DOCKER_REPOSITORY}/amd64-base-ubuntu:0.2.0",
+    "armv7": "${DOCKER_REPOSITORY}/armv7-base-ubuntu:0.2.0",
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64-base-ubuntu:0.2.0"
   },
   "args": {}
 }

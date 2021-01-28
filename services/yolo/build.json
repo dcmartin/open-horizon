@@ -1,11 +1,11 @@
 {
   "squash": false,
   "build_from": {
-    "amd64": "${DOCKER_REPOSITORY}/amd64-addon-base-ubuntu:0.2.0",
-    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0-addon-base-ubuntu:0.2.0",
-    "aarch64": "${DOCKER_REPOSITORY}/aarch64-addon-base-ubuntu:0.2.0",
-    "aarch64_10.2": "${DOCKER_REPOSITORY}/aarch64_10.2-addon-base-ubuntu:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7-addon-base-ubuntu:0.2.0"
+    "amd64": "${DOCKER_REPOSITORY}/amd64-base-ubuntu:0.2.0",
+    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0-base-ubuntu:0.2.0",
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64-base-ubuntu:0.2.0",
+    "aarch64_10.2": "${DOCKER_REPOSITORY}/aarch64_10.2-base-ubuntu:0.2.0",
+    "armv7": "${DOCKER_REPOSITORY}/armv7-base-ubuntu:0.2.0"
   },
   "args": {}
 }
