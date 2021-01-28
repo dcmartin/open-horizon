@@ -77,6 +77,12 @@ RUN \
     \
     && GPU=${GPU} make
 
+# cleanup
+RUN rm -fr \
+      /tmp/* \
+      /var/{cache,log}/* \
+      /var/lib/apt/lists/*
+
 FROM openyolo
 
 # Copy compiled darknet
@@ -86,7 +92,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   python
 
 # Copy usr
-COPY rootfs/usr /usr
+COPY rootfs /
 
 CMD [ "/usr/bin/run.sh" ]
 
