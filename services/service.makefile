@@ -1,5 +1,5 @@
 ## ARCHITECTURE
-ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/aarch64/' -e 's/x86_64.*/amd64/' -e 's/armv7.*/armv7/'))
+ARCH ?= $(if $(wildcard ARCH),$(shell cat ARCH),$(shell uname -m | sed -e 's/aarch64.*/aarch64/' -e 's/x86_64.*/amd64/' -e 's/armv7.*/armv7/' -e 's/armhf.*/armhf/'))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 NVER:= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)

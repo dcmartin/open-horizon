@@ -84,6 +84,7 @@ main()
       --use-gevent \
       "${PROJECT}" \
       -b \
+      --force \
       --host "${HOST}" \
       --port "${PORT}" \
       --protocol "${PROTOCOL}" \
