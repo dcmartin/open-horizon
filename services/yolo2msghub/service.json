@@ -3,16 +3,16 @@
   "label": "yolo2msghub",
   "description": "Sends JSON payloads from yolo service to Kafka",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/yolo2msghub/README.md",
-  "url": "yolo2msghub",
+  "url": "service-yolo2msghub",
   "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "yolo", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
-    { "url": "wan", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
-    { "url": "hal", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
-    { "url": "cpu", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
+    { "url": "service-yolo", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "service-wan", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "service-hal", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null },
+    { "url": "service-cpu", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
   ],
   "userInput": [
     { "name": "YOLO2MSGHUB_APIKEY", "label": "message hub API key", "type": "string", "defaultValue": null },

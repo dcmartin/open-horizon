@@ -3,37 +3,37 @@
   "description": "motion2mqtt as a pattern",
   "services": [
     {
-      "serviceUrl": "motion2mqtt",
+      "serviceUrl": "service-motion2mqtt",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [ { "version": "0.1.0" } ]
     },
     {
-      "serviceUrl": "motion2mqtt",
+      "serviceUrl": "service-motion2mqtt",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [ { "version": "0.1.0" } ]
     },
     {
-      "serviceUrl": "motion2mqtt",
+      "serviceUrl": "service-motion2mqtt",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [ { "version": "0.1.0" } ]
     },
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "amd64",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "arm",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "arm64",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"

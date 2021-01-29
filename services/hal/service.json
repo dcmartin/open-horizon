@@ -3,7 +3,7 @@
   "label": "hal",
   "description": "Provides hardware abstraction layer as service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hal/README.md",
-  "url": "hal",
+  "url": "service-hal",
   "version": "0.2.0",
   "arch": null,
   "public": false,

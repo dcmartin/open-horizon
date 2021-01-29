@@ -1,11 +1,11 @@
 {
   "squash": false,
   "build_from": {
-    "amd64": "${DOCKER_REPOSITORY}/amd64-yolo:0.2.0",
-    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0-yolo:0.2.0",
-    "aarch64": "${DOCKER_REPOSITORY}/aarch64-yolo:0.2.0",
-    "aarch64_10.2": "${DOCKER_REPOSITORY}/aarch64_10.2-yolo:0.2.0",
-    "armv7": "${DOCKER_REPOSITORY}/armv7-yolo:0.2.0"
+    "amd64": "${DOCKER_REPOSITORY}/amd64-service-yolo:0.2.0",
+    "amd64_11.0": "${DOCKER_REPOSITORY}/amd64_11.0-service-yolo:0.2.0",
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64-service-yolo:0.2.0",
+    "aarch64_10.2": "${DOCKER_REPOSITORY}/aarch64_10.2-service-yolo:0.2.0",
+    "armv7": "${DOCKER_REPOSITORY}/armv7-service-yolo:0.2.0"
   },
   "args": {}
 }

@@ -3,7 +3,7 @@
   "label": "labelstudio",
   "description": "",
   "documentation": "",
-  "url": "labelstudio",
+  "url": "addon-labelstudio",
   "version": "0.0.1",
   "arch": null,
   "public": false,
@@ -39,7 +39,7 @@
   "tmpfs": {
     "size": 81920000
   },
-  "config": {
+  "addon": {
     "name": "Label Studio",
     "version": "0.0.1",
     "slug": "labelstudio",
@@ -50,7 +50,6 @@
     "boot": "auto",
     "arch": [
       "amd64",
-      "armv7",
       "aarch64"
     ],
     "ingress": false,

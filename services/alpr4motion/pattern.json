@@ -3,37 +3,37 @@
   "description": "ALPR listening for MQTT images from motion",
   "services": [
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "amd64",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "arm",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "startup",
+      "serviceUrl": "service-startup",
       "serviceArch": "arm64",
       "serviceVersions": [ { "version": "0.1.0", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "alpr4motion",
+      "serviceUrl": "service-alpr4motion",
       "serviceArch": "amd64",
       "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "alpr4motion",
+      "serviceUrl": "service-alpr4motion",
       "serviceArch": "arm",
       "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"
     },
     {
-      "serviceUrl": "alpr4motion",
+      "serviceUrl": "service-alpr4motion",
       "serviceArch": "arm64",
       "serviceVersions": [ { "version": "0.0.1", "priority": {}, "upgradePolicy": {} } ],
       "serviceOrgid": "${HZN_ORG_ID}"

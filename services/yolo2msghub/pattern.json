@@ -3,7 +3,7 @@
   "description": "yolo and friends as a pattern",
   "services": [
     {
-      "serviceUrl": "yolo2msghub",
+      "serviceUrl": "service-yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [
@@ -13,7 +13,7 @@
       ]
     },
     {
-      "serviceUrl": "yolo2msghub",
+      "serviceUrl": "service-yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "serviceUrl": "yolo2msghub",
+      "serviceUrl": "service-yolo2msghub",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [
@@ -32,8 +32,8 @@
         }
       ]
     },
-    { "serviceUrl": "startup", "serviceArch": "amd64", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" },
-    { "serviceUrl": "startup", "serviceArch": "arm", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" },
-    { "serviceUrl": "startup", "serviceArch": "arm64", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" }
+    { "serviceUrl": "service-startup", "serviceArch": "amd64", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" },
+    { "serviceUrl": "service-startup", "serviceArch": "arm", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" },
+    { "serviceUrl": "service-startup", "serviceArch": "arm64", "serviceVersions": [ {"version":"0.1.0"} ], "serviceOrgid": "${HZN_ORG_ID}" }
   ]
 }

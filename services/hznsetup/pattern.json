@@ -3,7 +3,7 @@
   "description": "hznsetup as a pattern",
   "services": [
     {
-      "serviceUrl": "hznsetup",
+      "serviceUrl": "service-hznsetup",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [
@@ -13,7 +13,7 @@
       ]
     },
     {
-      "serviceUrl": "hznsetup",
+      "serviceUrl": "service-hznsetup",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "serviceUrl": "hznsetup",
+      "serviceUrl": "service-hznsetup",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "serviceUrl": "hznmonitor",
+      "serviceUrl": "service-hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "amd64",
       "serviceVersions": [
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "serviceUrl": "hznmonitor",
+      "serviceUrl": "service-hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm",
       "serviceVersions": [
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "serviceUrl": "hznmonitor",
+      "serviceUrl": "service-hznmonitor",
       "serviceOrgid": "${HZN_ORG_ID}",
       "serviceArch": "arm64",
       "serviceVersions": [

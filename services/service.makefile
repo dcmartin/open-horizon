@@ -46,7 +46,7 @@ DOCKER_NAMESPACE ?= $(if $(wildcard ../DOCKER_NAMESPACE),$(shell cat ../DOCKER_N
 ## SERVICE
 SERVICE_LABEL := $(shell jq -r '.deployment.services|to_entries|first|.key' $(SERVICE_JSON))
 SERVICE_LABEL := $(if $(SERVICE_LABEL),$(SERVICE_LABEL),"UNKNOWN_SERVICE")
-SERVICE_NAME = ${SERVICE_LABEL}
+SERVICE_NAME = ${SERVICE_URL}
 SERVICE_VERSION = $(shell jq -r '.version' $(SERVICE_JSON) | envsubst)
 SERVICE_TAG = "${DOCKER_NAMESPACE}/${SERVICE_URL}_${SERVICE_VERSION}_${BUILD_ARCH}"
 SERVICE_URI := $(shell jq -r '.url' $(SERVICE_JSON) | envsubst)
@@ -243,11 +243,11 @@ service-push:
 service-manifest: service-push
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- service-manifest: ${SERVICE_NAME}; architectures: ${SERVICE_ARCH_SUPPORT}""${NC}" > /dev/stderr
 	@for arch in ${SERVICE_ARCH_SUPPORT}; do \
-	  amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}-${SERVICE_ID}:${SERVICE_VERSION}"; \
+	  amendments="$${amendments:-} -a ${DOCKER_NAMESPACE}/$${arch}-${SERVICE_NAME}:${SERVICE_VERSION}"; \
 	done; \
-	echo "${IC}>>> MAKE --" $$(date +%T) "-- service-manifest: ${DOCKER_NAMESPACE}/${SERVICE_ID}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr; \
-	docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_ID}:${SERVICE_VERSION} $${amendments} && \
-	docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_ID}:${SERVICE_VERSION}
+	echo "${IC}>>> MAKE --" $$(date +%T) "-- service-manifest: ${DOCKER_NAMESPACE}/${SERVICE_NAME}:${SERVICE_VERSION}; amend: $${amendments}""${NC}" > /dev/stderr; \
+	docker manifest create ${DOCKER_NAMESPACE}/${SERVICE_NAME}:${SERVICE_VERSION} $${amendments} && \
+	docker manifest push ${DOCKER_NAMESPACE}/${SERVICE_NAME}:${SERVICE_VERSION}
 
 push-service: 
 	-@$(MAKE)  HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH=$(BUILD_ARCH) push

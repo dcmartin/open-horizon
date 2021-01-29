@@ -1,9 +1,7 @@
 {
-  "squash": false,
   "build_from": { 
     "armv7": "homeassistant/home-assistant:stable",
     "amd64": "homeassistant/home-assistant:stable",
     "aarch64": "homeassistant/home-assistant:stable"
-  },
-  "args": {}
+  }
 }

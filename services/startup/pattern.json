@@ -2,8 +2,8 @@
   "label": "startup",
   "description": "startup as a pattern; with hal and wan",
   "services": [
-    { "serviceUrl": "startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.1.0" } ] },
-    { "serviceUrl": "startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.1.0" } ] },
-    { "serviceUrl": "startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.1.0" } ] }
+    { "serviceUrl": "service-startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "amd64", "serviceVersions": [ { "version": "0.1.0" } ] },
+    { "serviceUrl": "service-startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm", "serviceVersions": [ { "version": "0.1.0" } ] },
+    { "serviceUrl": "service-startup", "serviceOrgid": "${HZN_ORG_ID}", "serviceArch": "arm64", "serviceVersions": [ { "version": "0.1.0" } ] }
   ]
 }

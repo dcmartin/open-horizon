@@ -3,13 +3,13 @@
   "label": "mqtt2mqtt",
   "description": "Relay (uni-directional) MQTT topics from one broker to another MQTT broker",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt2mqtt/README.md",
-  "url": "mqtt2mqtt",
+  "url": "service-mqtt2mqtt",
   "version": "0.2.0",
   "arch": null,
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
+    { "url": "service-mqtt", "org": "${HZN_ORG_ID}", "version": "0.2.0", "arch": null }
 ],
   "userInput": [
     { "name": "MQTT_HOST", "label": "host to use", "type": "string", "defaultValue": "mqtt" },

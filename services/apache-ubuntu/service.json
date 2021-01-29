@@ -3,7 +3,7 @@
   "label": "apache",
   "description": "Apache Web server",
   "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/apache-ubuntu/README.md",
-  "url": "apache-ubuntu",
+  "url": "service-apache-ubuntu",
   "version": "0.2.0",
   "arch": null,
   "public": false,

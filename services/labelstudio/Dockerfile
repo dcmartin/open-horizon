@@ -102,16 +102,22 @@ RUN pip3 install 'pyyaml>=5.3.1'
 RUN if [ 'amd64' == "${BUILD_ARCH}" ]; then pip3 install 'numpy>=1.17.4' 'pandas>=0.24.0' 'orjson>=2.0.11' 'blis>=0.4.1'; fi
 
 # ARM64
-RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ 'armv7' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
 RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
 RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install spacy --no-binary blis; fi
 RUN if [ 'arm64' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'orjson>=2.0.11'; fi
 
-# ARM
-RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
-RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
-RUN if [ 'arm' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
-RUN if [ 'arm' == "${BUILD_ARCH}" ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
+# ARMv7
+RUN if [ 'armv7' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ 'armv7' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ 'armv7' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+RUN if [ 'armv7' == "${BUILD_ARCH}" ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
+
+# ARMhf
+RUN if [ 'armhf' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'numpy>=1.17.4'; fi
+RUN if [ 'armhf' == "${BUILD_ARCH}" ]; then pip3 install --no-binary ':all:' 'pandas>=0.24.0'; fi
+RUN if [ 'armhf' == "${BUILD_ARCH}" ]; then BLIS_ARCH='generic' pip3 install --no-binary ':all:' 'blis>=0.4.1'; fi
+RUN if [ 'armhf' == "${BUILD_ARCH}" ]; then pip3 install --no-binary 'orjson' 'orjson>=2.0.11'; fi
 
 # last package
 RUN pip3 install 'cymem==2.0.3'

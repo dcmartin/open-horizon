@@ -1,10 +1,11 @@
 {
   "label": "nmap",
   "org": "${HZN_ORG_ID}",
-  "url": "nmap",
+  "url": "service-nmap",
   "version": "0.0.1",
   "arch": "${BUILD_ARCH}",
   "sharable": "singleton",
+  "requiredServices": [],
   "deployment": {
     "services": {
       "nmap": {
