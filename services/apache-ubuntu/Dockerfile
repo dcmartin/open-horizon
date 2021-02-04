@@ -1,30 +1,30 @@
+# Build arguments
 ARG BUILD_FROM
 
-FROM $BUILD_FROM
+# source to build this container 
+FROM ${BUILD_FROM}
+
+# architecture
+ARG BUILD_ARCH=amd64
 
 # Environment variables
 ENV \
     HOME="/root" \
     LANG="C.UTF-8" \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
-    TERM="xterm"
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    S6_CMD_WAIT_FOR_SERVICES=1 \
+    TERM="xterm-256color"
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update && apt-get install -q -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    build-essential \
-    socat \
-    jq \
-    bc \
-    coreutils \
-    dateutils \
-    findutils \
+# fail on pipe failurs
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN \
+  DEBIAN_FRONTEND="noninteractive" apt update -qq -y \
+  && \
+  DEBIAN_FRONTEND="noninteractive" apt install -qq -y --no-install-recommends \
     apache2 \
     apache2-utils
-
-# Copy rootts
-COPY rootfs /
 
 ## APACHE
 
@@ -47,9 +47,6 @@ ENV APACHE_ADMIN "${APACHE_ADMIN}"
 ENV APACHE_PID_FILE "${APACHE_PID_FILE}"
 ENV APACHE_LOG_DIR "${APACHE_LOG_DIR}"
 ENV APACHE_LOG_LEVEL "${APACHE_LOG_LEVEL}"
-
-# Ports for motion (control and stream)
-EXPOSE ${APACHE_PORT}
 
 # Copy root file-system
 COPY rootfs /
