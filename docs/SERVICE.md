@@ -1384,3 +1384,61 @@ David C Martin (github@dcmartin.com)
 [open-horizon]: http://github.com/open-horizon/
 [repository]: https://github.com/dcmartin/open-horizon
 [setup]: ../setup/README.md
+
+# Example new service
+
+## `couchdb`
+This example shows creation of a new service.  The example service is [CouchDB](http://couchdb.org) as a service in Open Horizon and Home Assistant add-on.
+
+### Copy existing service
+Select from a service from the existing services based on the LINUX distributions available: `ubuntu` and `alpine`.  These distributions are defined as _base_ services:
+
++ `base-alpine`
++ `base-ubuntu`
+
+Each of these _base_ distribution services includes the required software packages to support and provide a limited SDK for the Open Horizon and Home Assistant integrations.
+
++ `base.sh`
++ `hzn-tools.sh`
++ `run.sh`
++ `service`
++ `service-tools.sh`
++ `service.sh`
+
+### Create service directory and files
+
+```
+mkdir couchdb
+cd couchdb/
+ln -s ../sh .
+ln -s ../service.makefile makefile
+ln -s sh/test-service.sh test-couchdb.sh
+cp ../apache-ubuntu/Dockerfile .
+cp ../apache-ubuntu/build.json .
+mkdir -p rootfs/usr/bin
+```
+
+Edit `build.json` file to reflect architectures supported by this service.
+
+```
+{
+  "build_from": { 
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64-service-base-ubuntu:0.2.0",
+    "amd64": "${DOCKER_REPOSITORY}/amd64-service-base-ubuntu:0.2.0"
+  }
+}
+```
+
+Copy the _service_ named script files, typically:
+
++ _`service`_`.sh` - for example: `apache.sh`
++ _`service`_`-tools.sh` - for example: `apache-tools.sh`
+
+And while you're at it, change all the function names and variables from `apache` to `couchdb`, for example:
+
+```
+sed -s 's/apache/couchdb/g' ../apache-ubuntu/rootfs/usr/bin/apache.sh > rootfs/usr/bin/couchdb.sh
+sed -s 's/apache/couchdb/g' ../apache-ubuntu/rootfs/usr/bin/apache-tools.sh > rootfs/usr/bin/couchdb-tools.sh
+```
+
+
