@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bashio
 
-apache::start()
+function apache::start()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -50,7 +50,7 @@ apache::start()
   echo "${PID:-0}"
 }
 
-apache::service.update()
+function apache::service.update()
 { 
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -66,7 +66,7 @@ apache::service.update()
       if [ -s "${APACHE_PID_FILE}" ]; then
         PID=$(cat ${APACHE_PID_FILE})
       else
-        hzn::log.warning "${FUNCNAME[0]}: Apache failed to start"
+        hzn::log.error "${FUNCNAME[0]}: Apache failed to start"
       fi
     else
       hzn::log.error "${FUNCNAME[0]}: APACHE_PID_FILE is undefined"
@@ -81,11 +81,9 @@ apache::service.update()
       local err=$(mktemp)
   
       # request server status
-      hzn::log.notice "${FUNCNAME[0]}: Apache PID: ${PID:-}; requesting Apache server status: http://localhost:${APACHE_PORT:-}/server-status"
       curl -fkqsSL "http://localhost:${APACHE_PORT:-}/server-status" -o ${tmp} 2> ${err}
       # test server output
       if [ -s "${tmp}" ]; then
-        hzn::log.trace "${FUNCNAME[0]}: RECEIVED: server status:" $(cat ${tmp})
         cat "${tmp}" | base64 -w 0 >> ${output}
       else
         hzn::log.warning "${FUNCNAME[0]}: FAILED: no server status; error:" $(cat ${err})
