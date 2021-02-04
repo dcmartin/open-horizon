@@ -9,53 +9,6 @@
 source /usr/bin/service-tools.sh
 source /usr/bin/apache-tools.sh
 
-apache::service.update()
-{
-  local output=${1:-}"
-
-  if [ -z "${output}" ] || [ ! -e "${output}" ]; then
-    hzn::log.error "${FUNCNAME[0]}: no file; output: ${output}"
-  else
-    local PID
-
-    # test for PID file
-    if [ ! -z "${APACHE_PID_FILE:-}" ]; then
-      if [ -s "${APACHE_PID_FILE}" ]; then
-        PID=$(cat ${APACHE_PID_FILE})
-      else
-        hzn::log.warning "${FUNCNAME[0]}: Apache failed to start"
-      fi
-    else
-      hzn::log.error "${FUNCNAME[0]}: APACHE_PID_FILE is undefined"
-    fi
-  
-    # create output
-    echo -n '{"pid":'${PID:-0}',"status":"' > ${output}
-  
-    # get status
-    if [ ${PID:-0} -ne 0 ]; then
-      local tmp=$(mktemp)
-      local err=$(mktemp)
-  
-      # request server status
-      hzn::log.notice "${FUNCNAME[0]}: Apache PID: ${PID:-};requesting Apache server status: http://localhost:${APACHE_PORT:-}/server-status"
-      curl -fkqsSL "http://localhost:${APACHE_PORT:-}/server-status" -o ${tmp} 2> ${err}
-      # test server output
-      if [ -s "${tmp}" ]; then
-        hzn::log.debug "${FUNCNAME[0]}: RECEIVED: server status:" $(cat ${tmp})
-        cat "${tmp}" | base64 -w 0 >> ${output}
-      else
-        hzn::log.warning "${FUNCNAME[0]}: FAILED: no server status; error:" $(cat ${err})
-      fi
-    else
-      hzn::log.error "${FUNCNAME[0]}: No Apache PID"
-    fi
-  
-    # terminate output
-    echo '"}' >> ${output}
-  fi
-}
-
 ###
 ### MAIN
 ###
