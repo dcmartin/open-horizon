@@ -2,7 +2,7 @@
 
 source /usr/bin/service-tools.sh
 
-service()
+function service()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 

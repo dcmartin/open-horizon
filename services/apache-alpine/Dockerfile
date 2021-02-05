@@ -10,12 +10,6 @@ ENV \
     TERM="xterm"
 
 RUN apk add --no-cache \
-  bc \
-  coreutils \
-  curl \
-  jq \
-  dateutils \
-  findutils \
   apache2 \
   apache2-utils
 

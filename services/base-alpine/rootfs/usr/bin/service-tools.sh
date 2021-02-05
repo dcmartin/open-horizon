@@ -4,7 +4,7 @@ source /usr/bin/hzn-tools.sh
 
 ## utility functions
 
-hzn::service.otherServices()
+function hzn::service.otherServices()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -16,21 +16,21 @@ hzn::service.otherServices()
   echo "${OUTPUT}"
 }
 
-hzn::service.label()
+function hzn::service.label()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "${SERVICE_LABEL:-}"
 }
 
-hzn::service.version()
+function hzn::service.version()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "${SERVICE_VERSION:-}"
 }
 
-hzn::service.port()
+function hzn::service.port()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -39,7 +39,7 @@ hzn::service.port()
 
 ## initialization
 
-hzn::service.init()
+function hzn::service.init()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -66,13 +66,13 @@ hzn::service.init()
 
 ## configuration
 
-hzn::service.config.file()
+function hzn::service.config.file()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
   echo "/var/run/horizon.$(hzn::service.label).config.json"
 }
 
-hzn::service.config()
+function hzn::service.config()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -88,7 +88,7 @@ hzn::service.config()
 }
 
 ## output
-hzn::service.output.otherServices()
+function hzn::service.output.otherServices()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -136,7 +136,7 @@ hzn::service.output.otherServices()
 }
 
 ## service output file
-hzn::service.output.file()
+function hzn::service.output.file()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -144,7 +144,7 @@ hzn::service.output.file()
 }
 
 ## provide response in supplied file
-hzn::service.output()
+function hzn::service.output()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -216,7 +216,7 @@ hzn::service.output()
 }
 
 ## update service output
-hzn::service.update()
+function hzn::service.update()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 

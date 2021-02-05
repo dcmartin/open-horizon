@@ -7,7 +7,7 @@ source /usr/bin/hzn-tools.sh
 ### run.sh
 ###
 
-run::main()
+function run::main()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 

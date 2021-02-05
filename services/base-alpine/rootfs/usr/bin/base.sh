@@ -9,7 +9,7 @@
 source /usr/bin/service-tools.sh
 
 ## configuration
-base::main()
+function base::main()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 

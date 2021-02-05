@@ -1,8 +1,14 @@
+# Build arguments
 ARG BUILD_FROM
 
-FROM $BUILD_FROM
+# source to build this container 
+FROM ${BUILD_FROM}
 
-ARG BUILD_ARCH=amd64
+# architecture
+ARG BUILD_ARCH=armv7
+
+# fail on pipe failurs
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
 ENV \
     HOME="/root" \
@@ -12,9 +18,7 @@ ENV \
     S6_CMD_WAIT_FOR_SERVICES=1 \
     TERM="xterm-256color"
 
-# Set shell
-SHELL ["/bin/ash", "-o", "pipefail", "-c"]
-
+# REQUIREMENTS
 RUN \
     set -o pipefail \
     \
@@ -33,6 +37,7 @@ RUN \
     \
     && apk add --no-cache \
         bash=5.0.17-r0 \
+        bc \
         curl \
         jq=1.6-r1 \
         tzdata

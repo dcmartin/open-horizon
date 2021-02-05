@@ -5,7 +5,7 @@
 ###
 
 # hzn::pattern() - find the pattern with the given name; searches HZN_ORGANIZATION only
-hzn::pattern()
+function hzn::pattern()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -31,7 +31,7 @@ hzn::pattern()
 }
 
 # initialize horizon
-hzn::init()
+function hzn::init()
 {
   bashio::log.trace "${FUNCNAME[0]}"
 
@@ -44,7 +44,7 @@ hzn::init()
 }
 
 # get horizon configuration
-hzn::config()
+function hzn::config()
 {
   bashio::log.trace "${FUNCNAME[0]}"
 
@@ -64,7 +64,7 @@ hzn::config()
   echo "${config:-null}"
 }
 
-hzn::config.file()
+function hzn::config.file()
 {
   bashio::log.trace "${FUNCNAME[0]} ${*}"
 
