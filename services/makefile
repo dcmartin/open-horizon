@@ -24,6 +24,8 @@ NVIDIA_RUNTIME := $(shell docker info --format '{{ json . }}' | jq '.DefaultRunt
 BASES ?= base-alpine base-ubuntu apache-alpine apache-ubuntu 
 
 SERVICES ?= \
+	minio \
+	labelstudio \
 	yolo \
 	yolo4motion \
 	hznmonitor \

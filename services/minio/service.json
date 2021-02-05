@@ -1,57 +1,55 @@
 {
   "org": "${HZN_ORG_ID}",
-  "label": "labelstudio",
-  "description": "",
-  "documentation": "",
-  "url": "addon-labelstudio",
+  "label": "minio",
+  "description": "MINIO object storage",
+  "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/minio/README.md",
+  "url": "service-minio",
   "version": "0.0.1",
   "arch": null,
   "public": false,
-  "sharable": "singleton",
+  "sharable": "multiple",
   "requiredServices": [],
   "userInput": [
     {
       "name": "SERVICE_LOG_LEVEL",
       "label": "specify logging level",
       "type": "string",
-      "defaultValue": "debug"
+      "defaultValue": "info"
     }
   ],
   "deployment": {
     "services": {
-      "labelstudio": {
+      "minio": {
         "environment": [
-          "SERVICE_LABEL=labelstudio",
-          "SERVICE_PORT=9002",
-          "SERVICE_VERSION=0.0.1"
+          "SERVICE_LABEL=minio",
+          "SERVICE_VERSION=0.0.1",
+          "SERVICE_PERIOD=30",
+          "SERVICE_PORT=9001"
         ],
         "specific_ports": [
           {
-            "HostPort": "9002:9002/tcp",
+            "HostPort": "9001:9001/tcp",
             "HostIP": "0.0.0.0"
           },
           {
-            "HostPort": "7998:7998/tcp",
+            "HostPort": "9000:9000/tcp",
             "HostIP": "0.0.0.0"
           }
         ],
-        "devices": [],
         "image": null,
         "privileged": true
       }
     }
   },
-  "mount": [],
   "tmpfs": {
-    "size": 81920000
+    "size": 8192000
   },
   "addon": {
-    "name": "Label Studio",
+    "name": "MINIO",
     "version": "0.0.1",
-    "slug": "labelstudio",
-    "description": "Label Studio from labelstud.io",
-    "url": "https://github.com/dcmartin/open-horizon/tree/master/services/labelstudio/README.md",
-    "webui": "http://[HOST]:[PORT:7998]",
+    "slug": "minio",
+    "description": "MINIO from min.io",
+    "url": "https://github.com/dcmartin/open-horizon/tree/master/services/minio/README.md",
     "startup": "application",
     "boot": "auto",
     "arch": [
@@ -59,7 +57,7 @@
       "aarch64"
     ],
     "panel_admin": true,
-    "panel_icon": "mdi:label",
+    "panel_icon": "mdi:store-24-hour",
     "stage": "experimental",
     "devices": [],
     "hassio_api": false,
@@ -71,15 +69,17 @@
     "tmpfs": "size=256m,uid=0,rw",
     "map": [],
     "ports": {
-      "7998/tcp": 7998
+      "9001/tcp": 9001,
+      "9000/tcp": 9000
     },
     "ports_description": {
-      "7998/tcp": "Web interface"
+      "9000/tcp": "MINIO server API",
+      "9001/tcp": "MINIO service API"
     },
     "options": {
       "log_level": "info",
       "timezone": "America/Los_Angeles",
-      "workspace": "/data/labelstudio",
+      "workspace": "/data/minio",
       "project": "MyProject"
     },
     "schema": {
@@ -94,7 +94,7 @@
     "environment": {
       "LOG_FORMAT": "{LEVEL}: {MESSAGE}"
     },
-    "image": "dcmartin/{arch}-labelstudio",
-    "watchdog": "http://[HOST]:[PORT:7998]/api/health"
+    "image": "dcmartin/{arch}-minio",
+    "watchdog": "http://[HOST]:[PORT:9000]/minio/health/live"
   }
 }

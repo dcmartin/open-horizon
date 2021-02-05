@@ -7,7 +7,7 @@
 # hzn::pattern() - find the pattern with the given name; searches HZN_ORGANIZATION only
 function hzn::pattern()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   local pattern=${1:-}
   local json
@@ -16,16 +16,16 @@ function hzn::pattern()
     local ALL=$(curl -sL -u "${HZN_ORGANIZATION}/${HZN_USER_ID:-iamapikey}:${HZN_EXCHANGE_APIKEY}" "${HZN_EXCHANGE_URL}orgs/${HZN_ORGANIZATION}/patterns")
 
     if [ ! -z "${ALL}" ]; then
-      bashio::log.trace "searching for pattern ${pattern} in all patterns ${ALL}"
+      hzn::log.trace "searching for pattern ${pattern} in all patterns ${ALL}"
       json=$(echo "${ALL}" | jq '.patterns|to_entries[]|select(.key=="'${pattern}'")')
     fi
   fi
   if [ ! -z "${pattern}" ]; then 
     if [ -z "${json:-}" ]; then 
-      bashio::log.warning "pattern was not found: ${pattern}"
+      hzn::log.warning "pattern was not found: ${pattern}"
     fi
   else
-    bashio::log.warning "pattern not specified"
+    hzn::log.warning "pattern not specified"
   fi
   echo ${json:-null}
 }
@@ -33,12 +33,12 @@ function hzn::pattern()
 # initialize horizon
 function hzn::init()
 {
-  bashio::log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   local config='{"timestamp":"'$(date -u +%FT%TZ)'","date":'$(date +%s)',"hzn":{"agreementid":"'${HZN_AGREEMENTID:-}'","arch":"'${HZN_ARCH:-}'","cpus":'${HZN_CPUS:-0}',"device_id":"'${HZN_DEVICE_ID:-}'","exchange_url":"'${HZN_EXCHANGE_URL:-}'","host_ips":['$(echo "${HZN_HOST_IPS:-}" | sed 's/,/","/g' | sed 's/\(.*\)/"\1"/')'],"organization":"'${HZN_ORGANIZATION:-}'","ram":'${HZN_RAM:-0}',"pattern":'$(hzn::pattern "${HZN_PATTERN:-}")'}}'
   local file=$(hzn::config.file)
 
-  bashio::log.debug "${FUNCNAME[0]}: writing horizon configuration; file: ${file}; config: ${config}"
+  hzn::log.debug "${FUNCNAME[0]}: writing horizon configuration; file: ${file}; config: ${config}"
 
   echo "${config}" > ${file} && cat ${file} || echo 'null'
 }
@@ -46,7 +46,7 @@ function hzn::init()
 # get horizon configuration
 function hzn::config()
 {
-  bashio::log.trace "${FUNCNAME[0]}"
+  hzn::log.trace "${FUNCNAME[0]}"
 
   local config
   local file=$(hzn::config.file)
@@ -54,22 +54,26 @@ function hzn::config()
   if [ -s ${file} ]; then
     config=$(jq -c '.' ${file})
     if [ "${config:-null}" = 'null' ]; then
-      bashio::log.error "${FUNCNAME[@]}: invalid configuration: ${config:-}; file: ${file}"
+      hzn::log.error "${FUNCNAME[@]}: invalid configuration: ${config:-}; file: ${file}"
     else
-      bashio::log.debug "${FUNCNAME[0]}: valid configuration: ${config:-}; file: ${file}"
+      hzn::log.debug "${FUNCNAME[0]}: valid configuration: ${config:-}; file: ${file}"
     fi
   else
-    bashio::log.error "${FUNCNAME[@]}: zero-length configuration file: ${file}"
+    hzn::log.error "${FUNCNAME[@]}: zero-length configuration file: ${file}"
   fi
   echo "${config:-null}"
 }
 
 function hzn::config.file()
 {
-  bashio::log.trace "${FUNCNAME[0]} ${*}"
+  hzn::log.trace "${FUNCNAME[0]} ${*}"
 
   echo "/var/run/horizon.json"
 }
+
+###
+### LOGGING
+###
 
 function hzn::log.level()
 {

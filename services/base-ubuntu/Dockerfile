@@ -23,9 +23,9 @@ ENV \
 
 RUN \
     DEBIAN_FRONTEND="noninteractive" apt update -qq -y \
-    \
     && \
-    \
+    DEBIAN_FRONTEND="noninteractive" apt upgrade -qq -y \
+    && \
     DEBIAN_FRONTEND="noninteractive" apt install -qq -y --no-install-recommends \
       apt-utils \
       bc \

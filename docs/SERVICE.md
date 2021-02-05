@@ -1412,6 +1412,7 @@ mkdir couchdb
 cd couchdb/
 ln -s ../sh .
 ln -s ../service.makefile makefile
+ln -s ../options.json.tmpl .
 ln -s sh/test-service.sh test-couchdb.sh
 cp ../apache-ubuntu/Dockerfile .
 cp ../apache-ubuntu/build.json .
@@ -1441,4 +1442,9 @@ sed -s 's/apache/couchdb/g' ../apache-ubuntu/rootfs/usr/bin/apache.sh > rootfs/u
 sed -s 's/apache/couchdb/g' ../apache-ubuntu/rootfs/usr/bin/apache-tools.sh > rootfs/usr/bin/couchdb-tools.sh
 ```
 
+Setup the `service.json` file to describe the _service_; copy from the source, for example:
+
+```
+sed -s 's/apache/couchdb/g' ../apache-ubuntu/service.json > service.json
+```
 

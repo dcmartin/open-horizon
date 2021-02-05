@@ -7,9 +7,9 @@ set -o errexit  # Exit script when a command exits with non-zero status
 set -o errtrace # Exit on error inside any functions or sub-shells
 
 source /usr/bin/service-tools.sh
-source /usr/bin/labelstudio-tools.sh
+source /usr/bin/minio-tools.sh
 
-function labelstudio::main()
+function minio::main()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
@@ -23,7 +23,7 @@ function labelstudio::main()
   local USERNAME
   local PASSWORD
   local INIT
-  local PID
+  local PID=0
 
   # TIMEZONE
   VALUE=$(bashio::config "timezone")
@@ -34,49 +34,49 @@ function labelstudio::main()
 
   # WORKSPACE
   VALUE=$(bashio::config "workspace")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_WORKSPACE:-'/data/labelstudio'}; fi
-  hzn::log.info "Setting project: ${VALUE}" >&2
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_WORKSPACE:-'/data/minio'}; fi
+  hzn::log.info "Setting workspace: ${VALUE}" >&2
   WORKSPACE=${VALUE}
 
   # PROJECT
   VALUE=$(bashio::config "project")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PROJECT:-'MyProject'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_PROJECT:-'MyProject'}; fi
   hzn::log.info "Setting project: ${VALUE}" >&2
   PROJECT=${VALUE}
 
   # HOST
   VALUE=$(bashio::config "host")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_HOST:-'0.0.0.0'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_HOST:-'0.0.0.0'}; fi
   hzn::log.info "Setting host: ${VALUE}" >&2
   HOST=${VALUE}
 
   # PORT
   VALUE=$(bashio::config "port")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PORT:-'7998'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_PORT:-'9000'}; fi
   hzn::log.info "Setting port: ${VALUE}" >&2
   PORT=${VALUE}
 
   # PROTOCOL
   VALUE=$(bashio::config "protocol")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PROTOCOL:-'http://'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_PROTOCOL:-'http://'}; fi
   hzn::log.info "Setting protocol: ${VALUE}" >&2
   PROTOCOL=${VALUE}
 
   # USERNAME
   VALUE=$(bashio::config "username")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_USERNAME:-'username'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_USERNAME:-'username'}; fi
   hzn::log.info "Setting username: ${VALUE}" >&2
   USERNAME=${VALUE}
 
   # PASSWORD
   VALUE=$(bashio::config "password")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_PASSWORD:-'password'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_PASSWORD:-'password'}; fi
   hzn::log.info "Setting password: ${VALUE}" >&2
   PASSWORD=${VALUE}
 
   # INIT
   VALUE=$(bashio::config "init")
-  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${LABELSTUDIO_INIT:-'--init'}; fi
+  if [ -z "${VALUE}" ] || [ "${VALUE}" == "null" ]; then VALUE=${MINIO_INIT:-'--init'}; fi
   hzn::log.info "Setting init: ${VALUE}" >&2
   INIT=${VALUE}
 
@@ -88,14 +88,14 @@ function labelstudio::main()
   hzn::log.notice "${FUNCNAME[0]}: initializing service: ${SERVICE_LABEL:-}" $(echo "${config}" | jq -c '.' || echo "INVALID: ${config}")
   hzn::service.init "${config}"
 
-  # start labelstudio
-  PID=$(labelstudio::start ${WORKSPACE} ${PROJECT} ${PROTOCOL} ${HOST} ${PORT} ${USERNAME} ${PASSWORD} ${INIT})
+  # start minio
+  PID=$(minio::start ${WORKSPACE} ${PROJECT} ${PROTOCOL} ${HOST} ${PORT} ${USERNAME} ${PASSWORD} ${INIT})
 
   # loop while node is alive
   while [ true ]; do
 
-    # update labelstudio status
-    labelstudio::service.update ${output}
+    # update minio status
+    minio::service.update ${output}
 
     # update horizon
     if [ -s "${output}" ]; then
@@ -104,7 +104,6 @@ function labelstudio::main()
       hzn::log.warn "${FUNCNAME[0]}: no service update output"
       echo '{"service":"'${SERVICE_LABEL:-}'","error":"no output"}' > ${output}
     fi
-
     hzn::service.update ${output}
 
     # sleep
@@ -123,4 +122,4 @@ hzn::log.notice "${0} ${*}"
 # TMPDIR
 if [ -d '/tmpfs' ]; then export TMPDIR=${TMPDIR:-/tmpfs}; else export TMPDIR=${TMPDIR:-/tmp}; fi
 
-labelstudio::main ${*}
+minio::main ${*}
