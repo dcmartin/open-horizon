@@ -1,14 +1,10 @@
-###
-# Dockerfile
-###
-
-###
-### build
-###
-
+# Build arguments
 ARG BUILD_FROM
-FROM $BUILD_FROM as build
 
+# source to build this container 
+FROM ${BUILD_FROM}
+
+# architecture
 ARG BUILD_ARCH=amd64
 
 # Environment variables
@@ -16,256 +12,41 @@ ENV \
     HOME="/root" \
     LANG="C.UTF-8" \
     PS1="$(whoami)@$(hostname):$(pwd)$ " \
-    TERM="xterm"
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    S6_CMD_WAIT_FOR_SERVICES=1 \
+    TERM="xterm-256color"
 
-# Set shell
+# fail on pipe failurs
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# setup base system
-RUN apt update -qq -y && apt upgrade -qq -y
-
-# minimum
-RUN apt install -qq -y --no-install-recommends \
-  ca-certificates \
-  curl \
-  apt-utils \
-  jq
-
-# python3.7
-RUN apt install -qq -y --no-install-recommends \
-  build-essential \
-  zlib1g-dev \
-  libncurses5-dev \
-  libgdbm-dev \
-  libnss3-dev \
-  libssl-dev \
-  libreadline-dev \
-  libffi-dev \
-  libsqlite3-dev \
-  libbz2-dev
-
 RUN \
-  cd /tmp \
+  DEBIAN_FRONTEND=noninteractive apt update -qq -y \
   && \
-  curl -sSL https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz -o python.tgz \
-  && \
-  tar xzf python.tgz \
-  && \
-  cd Python-3.7.7 \
-  && \
-  ./configure --enable-optimizations \
-  && \
-  make -j $(nproc) \
-  && \
-  make install \
-  && \
-  rm -fr /tmp/Python-3.7.7
-
-# maximum
-RUN apt update -qq -y && apt install -qq -y --no-install-recommends \
-  libgstreamer1.0-0 \
-  gstreamer1.0-plugins-base \
-  gstreamer1.0-plugins-good \
-  gstreamer1.0-plugins-bad \
-  gstreamer1.0-plugins-ugly \
-  gstreamer1.0-libav gstreamer1.0-doc \
-  gstreamer1.0-tools gstreamer1.0-x \
-  gstreamer1.0-alsa \
-  gstreamer1.0-gl gstreamer1.0-gtk3 \
-  gstreamer1.0-pulseaudio \
-  python3-gst-1.0 \
-  python3-gi \
-  python3-numpy \
-  libjpeg-dev \
-  zlib1g-dev \
-  pkg-config \
-  libavdevice-dev \
-  libavfilter-dev \
-  libopus-dev \
-  libvpx-dev \
-  libsrtp2-dev \
-  procps \
-  udev \
-  libusb-1.0-0 \
-  libunwind8 \
-  libgcc1 \
-  git \
-  python3-pip \
-  libx264-dev \
-  libhdf5-dev \
-  software-properties-common
-
-## FFMPEG v4
-
-RUN add-apt-repository ppa:jonathonf/ffmpeg-4
-
-RUN apt update -qq -y \
-  && \
-  apt install -qq -y --no-install-recommends ffmpeg \
-  && \
-  apt upgrade -qq -y
-
-RUN apt update -qq -y && apt upgrade -qq -y && apt install -qq -y --no-install-recommends \
-  libc++1 \
-  libc++abi1 \
-  libcairo2-dev \
-  libgirepository1.0-dev
-
-# cleanup
-RUN apt clean -qq -y && apt autoremove -qq -y && \
-      rm -fr \
-      /tmp/* \
-      /var/{cache,log}/* \
-      /var/lib/apt/lists/*
-
-###
-### prereqs
-###
-
-FROM build as prereqs
-
-# pip
-RUN pip3 install --upgrade pip
-
-# wheel
-RUN pip3 install --upgrade wheel
-
-# cython
-RUN pip3 install --upgrade cython
-
-# setuptools
-RUN pip3 install --upgrade setuptools
-
-RUN pip3 install 'argparse'
-RUN pip3 install dill
-RUN pip3 install fire
-RUN pip3 install matplotlib
-RUN pip3 install numba
-RUN pip3 install psutil
-RUN pip3 install pycocotools
-RUN pip3 install 'requests-oauthlib>=1.0.0'
-RUN pip3 install 'requests>=2.21.0'
-RUN pip3 install scikit-image
-RUN pip3 install scipy
-RUN pip3 install slidingwindow
-RUN pip3 install tqdm
-RUN pip3 install 'numpy>=1.16.2'
-
-###
-### tflite
-###
-
-FROM prereqs as tflite
-
-# tflite
-RUN ARCH=$(uname -m) && pip3 install https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp37-cp37m-linux_${ARCH}.whl
-
-# get TPU
-RUN  curl -sSL https://dl.google.com/coral/edgetpu_api/edgetpu_api_latest.tar.gz -o /tmp/edgetpu_api.tar.gz \
-  && \
-  cd /tmp \
-  && \
-  tar xzf edgetpu_api.tar.gz
-
-RUN \
-  ARCH=$(uname -m) \
-  && \
-  if [ "${ARCH}" = 'armv7l' ]; then \
-    LIBEDGETPU_SUFFIX=arm32 HOST_GNU_TYPE=arm-linux-gnueabihf; \
-  elif [ "${ARCH}" = 'x86_64' ]; then \
-    LIBEDGETPU_SUFFIX=x86_64 HOST_GNU_TYPE=x86_64-linux-gnu; \
-  elif [ "${ARCH}" = 'aarch64' ]; then \
-    LIBEDGETPU_SUFFIX=arm64 HOST_GNU_TYPE=aarch64-linux-gnu; \
-  fi \
-  && \
-  if [ ! -z "${EDGETPU_THROTTLE:-}" ]; then \
-    LIBEDGETPU_SRC="/tmp/edgetpu_api/libedgetpu/libedgetpu_${LIBEDGETPU_SUFFIX}_throttled.so"; \
-  else \
-    LIBEDGETPU_SRC="/tmp/edgetpu_api/libedgetpu/libedgetpu_${LIBEDGETPU_SUFFIX}.so"; \
-  fi \
-  && \
-  LIBEDGETPU_DST="/usr/lib/${HOST_GNU_TYPE}/libedgetpu.so.1.0" \
-    LIBEDGETPU_SRC="/tmp/edgetpu_api/libedgetpu/libedgetpu_${LIBEDGETPU_SUFFIX}_throttled.so" \
-    LIBEDGETPU_DST="/usr/lib/${HOST_GNU_TYPE}/libedgetpu.so.1.0" \
-  && \
-  cp "${LIBEDGETPU_SRC}" "${LIBEDGETPU_DST}" \
-  && \
-  ldconfig
-
-RUN \
-    mkdir -p /etc/udev/rules.d \
-    && \
-    cp /tmp/edgetpu_api/99-edgetpu-accelerator.rules /etc/udev/rules.d/99-edgetpu-accelerator.rules
-
-# Python API.
-RUN pip3 install --no-deps /tmp/edgetpu_api/edgetpu-2.11.1-py3-none-any.whl
-
-# cleanup
-RUN apt clean -qq -y && apt autoremove -qq -y && \
-      rm -fr \
-      /tmp/* \
-      /var/{cache,log}/* \
-      /var/lib/apt/lists/*
-
-###
-### tensorflow
-###
-
-FROM prereqs as tensorflow
-
-RUN pip3 install 'tensorflow==1.15.4'
-
-# cleanup
-RUN apt clean -qq -y && apt autoremove -qq -y && \
-      rm -fr \
-      /tmp/* \
-      /var/{cache,log}/* \
-      /var/lib/apt/lists/*
-
-RUN \
-  cd /root \
-  && \
-  git clone https://github.com/cocodataset/cocoapi \
-  && \
-  cd cocoapi/PythonAPI \
-  && \
-  python3 setup.py build_ext --inplace \
-  && \
-  python3 setup.py build_ext install \
-  && \
-  mkdir /coco \
-  && \
-  cd /coco \
-  && \
-  wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
-  && \
-  unzip annotations_trainval2017.zip \
-  && \
-  rm -rf annotations_trainval2017.zip
-
-#
-#ENTRYPOINT ["python3", "pose_dataworker.py"]
-#
-
-FROM tensorflow as pose
-
-# configure pose
-ARG OPENPOSE=/pose
-ENV OPENPOSE=${OPENPOSE}
-
-ARG OPENPOSE_GIT="http://github.com/dcmartin/openpose.git"
-ENV OPENPOSE_GIT=${OPENPOSE_GIT}
+  DEBIAN_FRONTEND=noninteractive apt upgrade -qq -y
 
 RUN DEBIAN_FRONTEND=noninteractive \
   apt install -qq -y --no-install-recommends \
+    python-dev \
+    python3-dev \
+    python3.8-dev \
+    libpython3.8-dev \
+    python3-pip
+
+RUN  python3 -m pip install --upgrade pip
+
+# requirements
+RUN pip3 install 'protobuf'
+RUN pip3 install 'slidingwindow'
+
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y --no-install-recommends \
+    git \
     cmake \
     build-essential \
     pkg-config \
     zip \
     libjpeg8-dev \
     libtiff5-dev \
-    libjasper-dev \
-    libpng12-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
@@ -274,27 +55,60 @@ RUN DEBIAN_FRONTEND=noninteractive \
     libatlas-base-dev \
     gfortran
 
-# Clone pose
-RUN mkdir -p ${OPENPOSE} 
-RUN cd ${OPENPOSE} && git clone ${OPENPOSE_GIT} .
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y --no-install-recommends \
+    wget \ 
+    unzip
 
-## Build opencv
 RUN \
   mkdir -p /tmp/opencv \
   && \
   cd /tmp/opencv \
   && \
-  git clone https://github.com/Itseez/opencv.git . \
+  VERSION=4.5.0 \
   && \
-  mkdir build \
+  if [ ! -s opencv-${VERSION}.zip ]; then curl -sSL https://github.com/opencv/opencv/archive/${VERSION}.zip -o opencv-${VERSION}.zip; fi \
   && \
-  cd build \
-  && cmake \
+  if [ ! -s opencv_contrib-${VERSION}.zip ]; then curl -sSL https://github.com/opencv/opencv_contrib/archive/${VERSION}.zip -o opencv_contrib-${VERSION}.zip; fi \
+  && \
+  if [ ! -d opencv-${VERSION} ]; then unzip opencv-${VERSION}.zip; fi \
+  && \
+  if [ ! -d opencv_contrib-${VERSION} ]; then unzip opencv_contrib-${VERSION}.zip; fi \
+  && \
+  if [ ! -d opencv-${VERSION}/release ]; then mkdir -p opencv-${VERSION}/release; fi \
+  && \
+  git clone https://github.com/catkin/catkin_simple \
+  && \
+  cd opencv-${VERSION}/release \
+  && \
+  cmake \
+    -D BUILD_EXAMPLES=OFF \
+    -D BUILD_NEW_PYTHON_SUPPORT=ON \
+    -D BUILD_TBB=ON \
+    -D BUILD_TESTS=OFF \
+    -D BUILD_TIFF=ON \
+    -D BUILD_opencv_python3=TRUE \
     -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D INSTALL_PYTHON_EXAMPLES=ON \
-    -D BUILD_opencv_python3=yes \
-    -D PYTHON_EXECUTABLE=/usr/bin/python3 .. \
+    -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D INSTALL_PYTHON_EXAMPLES=OFF \
+    -D WITH_EIGEN=ON \
+    -D OPENCV_ENABLE_NONFREE=ON \
+    -D CMAKE_MODULE_PATH=../ \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${VERSION}/modules \
+    -D OPENCV_GENERATE_PKGCONFIG=ON \
+    -D WITH_FFMPEG=ON \
+    -D WITH_GSTREAMER=ON \
+    -D WITH_LIBV4L=ON \
+    -D WITH_OPENGL=ON \
+    -D WITH_OPENMP=ON \
+    -D WITH_QT=OFF \
+    -D WITH_TBB=ON \
+    -D WITH_V4L=ON \
+    -D PYTHON_EXECUTABLE=/usr/bin/python3 \
+    .. \
   && \
   make -j $(nproc) \
   && \
@@ -302,19 +116,109 @@ RUN \
   && \
   rm -fr /tmp/opencv
 
+#        -D CUDA_ARCH_BIN=5.3 \
+#        -D CUDA_ARCH_PTX="" \
+#        -D CUDA_FAST_MATH=ON \
+#        -D ENABLE_FAST_MATH=ON \
+#        -D ENABLE_NEON=ON \
+#        -D OPENCV_DNN_CUDA=ON \
+#        -D WITH_CUBLAS=ON \
+#        -D WITH_CUDA=ON \
+#        -D WITH_CUDNN=ON \
+
+#RUN \
+#  apt-get update -yq \
+#  && \
+#  apt-get install -yq build-essential cmake git pkg-config wget zip \
+#  && \
+#  apt-get install -yq libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
+#  && \
+#  apt-get install -yq libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
+#  && \
+#  apt-get install -yq libgtk2.0-dev \
+#  && \
+#  apt-get install -yq libatlas-base-dev gfortran \
+#  && \
+#  apt-get install -yq python3 python3-dev python3-pip python3-setuptools python3-tk git \
+#  && \
+#  apt-get remove -yq python-pip python3-pip \
+#  && \
+#  wget https://bootstrap.pypa.io/get-pip.py \
+#  && \
+#  python3 get-pip.py \
+#  && \
+#  pip3 install numpy \
+#  && \
+#  cd ~ \
+#  && \
+#  git clone https://github.com/Itseez/opencv.git \
+#  && \
+#  cd opencv \
+#  && \
+#  mkdir build \
+#  && \
+#  cd build \
+#  && \
+#  cmake -D CMAKE_BUILD_TYPE=RELEASE \
+#        -D CMAKE_INSTALL_PREFIX=/usr/local \
+#        -D INSTALL_PYTHON_EXAMPLES=ON \
+#        -D BUILD_opencv_python3=yes -D PYTHON_EXECUTABLE=/usr/bin/python3 .. \
+#  && \
+#make -j$(nproc) \
+#  && \
+#  make install \
+#  && rm -rf /root/opencv/
+
+
+###
+### POSE
+###
+
+ARG OPENPOSE=/pose
+ENV OPENPOSE=${OPENPOSE}
+ARG OPENPOSE_GIT="http://github.com/dcmartin/openpose.git"
+ENV OPENPOSE_GIT=${OPENPOSE_GIT}
+
+# Clone pose
+RUN mkdir -p ${OPENPOSE} 
+RUN cd ${OPENPOSE} && git clone ${OPENPOSE_GIT} .
+
 ## Build pose
 RUN \
-  cd ${OPENPOSE} && mkdir build && cd build \
+  cd ${OPENPOSE} \
   && \
-  export ARGS="${ARGS:-} -DENABLE_AVX2=OFF" \
-  export ARGS="${ARGS:-} -DENABLE_NEON=OFF" \
+  pip3 install -U setuptools \
   && \
-  cmake ${ARGS:-} .. \
+  pip3 install tensorflow \
   && \
-  make
+  pip3 install -r requirements.txt
 
-FROM pose
+RUN cd /root \
+  && \
+  git clone https://github.com/cocodataset/cocoapi \
+  && \
+  pip3 install cython \
+  && \
+  cd cocoapi/PythonAPI \
+  && \
+  python3 setup.py build_ext --inplace \
+  && \
+  python3 setup.py build_ext install \
+  && \
+  mkdir /coco \
+  && cd /coco \
+  && wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
+  && \
+  unzip annotations_trainval2017.zip \
+  && \
+  rm -rf annotations_trainval2017.zip
 
+# cleanup
+RUN apt clean -qq -y && apt autoremove -qq -y && \
+      rm -fr \
+      /tmp/* \
+      /var/{cache,log}/* \
+      /var/lib/apt/lists/*
 
 ENV OPENPOSE_OPT_WEIGHTS="http://www.mediafire.com/file/1pyjsjl0p93x27c/graph_freeze.pb"
 ENV OPENPOSE_OPT_CONFIG=""
@@ -328,14 +232,8 @@ ENV OPENPOSE_EU_DATA=""
 ENV OPENPOSE_EU_WEIGHTS_URL=""
 ENV OPENPOSE_EU_WEIGHTS_MD5=""
 
-# Copy compiled pose
-COPY --from=pose ${OPENPOSE} ${OPENPOSE}
-
-RUN \
-  cd ${OPENPOSE} && cp ./build/detect-image-demo /usr/local/bin/pose
-
 # Copy usr
-COPY rootfs/usr /usr
+COPY rootfs /
 
 CMD [ "/usr/bin/run.sh" ]
 
@@ -350,7 +248,7 @@ LABEL \
     org.label-schema.build-date="${BUILD_DATE}" \
     org.label-schema.build-arch="${BUILD_ARCH}" \
     org.label-schema.name="pose" \
-    org.label-schema.description="Face detection as a service" \
+    org.label-schema.description="Human pose estimation detection as a service" \
     org.label-schema.vcs-url="http://github.com/dcmartin/open-horizon/tree/master/services/pose/" \
     org.label-schema.vcs-ref="${BUILD_REF}" \
     org.label-schema.version="${BUILD_VERSION}" \
