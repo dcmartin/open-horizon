@@ -1,9 +1,6 @@
 {
-  "squash": false,
-  "build_from": {
-    "armv7": "${DOCKER_REPOSITORY}/armv7-service-base-ubuntu:0.2.0",
+  "build_from": { 
     "aarch64": "${DOCKER_REPOSITORY}/aarch64-service-base-ubuntu:0.2.0",
     "amd64": "${DOCKER_REPOSITORY}/amd64-service-base-ubuntu:0.2.0"
-  },
-  "args": {}
+  }
 }
