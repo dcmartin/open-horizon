@@ -5,6 +5,10 @@ NVCC := $(wildcard /usr/local/cuda/bin/nvcc)
 NVER:= $(if ${NVCC},$(shell ${NVCC} --version | egrep '^Cuda' | awk -F, '{ print $$2 $$3 }'),)
 CUDA ?= $(if ${NVER},$(shell echo "${NVER}" | awk '{ print $$2 }'),)
 UNAME := $(shell uname | tr '[:upper:]' '[:lower:]')
+GPU := $(if $(CUDA),1,0)
+GPU := $(if $(GPU),$(shell echo "$(ARCH)" | sed 's/[^_]*_\([^_]*\).*/\1/'),0)
+GPU := $(subst $(GPU),$(ARCH),)
+GPU := $(if $(GPU),1,0)
 
 ifeq ($(UNAME),darwin)
 MULTIARCH := true
@@ -195,7 +199,7 @@ BUILD_OUT = build.${BUILD_ARCH}_${SERVICE_URL}_${SERVICE_VERSION}.out
 
 build: Dockerfile build.json $(SERVICE_JSON) makefile ${SERVICE_OPTIONS}
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
-	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --progress=tty --build-arg GPU=$(if ${CUDA},1,0) --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" | tee ${BUILD_OUT}
+	@export DOCKER_TAG="${DOCKER_TAG}" && docker build --progress=tty --build-arg GPU=$(GPU) --build-arg BUILD_REF=$$(git rev-parse --short HEAD) --build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg BUILD_ARCH="$(BUILD_ARCH)" --build-arg BUILD_FROM="$(BUILD_FROM)" --build-arg BUILD_VERSION="${SERVICE_VERSION}" . -t "$(DOCKER_TAG)" | tee ${BUILD_OUT}
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
