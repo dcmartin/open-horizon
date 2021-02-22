@@ -126,49 +126,31 @@ RUN \
 #        -D WITH_CUDA=ON \
 #        -D WITH_CUDNN=ON \
 
-#RUN \
-#  apt-get update -yq \
-#  && \
-#  apt-get install -yq build-essential cmake git pkg-config wget zip \
-#  && \
-#  apt-get install -yq libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
-#  && \
-#  apt-get install -yq libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
-#  && \
-#  apt-get install -yq libgtk2.0-dev \
-#  && \
-#  apt-get install -yq libatlas-base-dev gfortran \
-#  && \
-#  apt-get install -yq python3 python3-dev python3-pip python3-setuptools python3-tk git \
-#  && \
-#  apt-get remove -yq python-pip python3-pip \
-#  && \
-#  wget https://bootstrap.pypa.io/get-pip.py \
-#  && \
-#  python3 get-pip.py \
-#  && \
-#  pip3 install numpy \
-#  && \
-#  cd ~ \
-#  && \
-#  git clone https://github.com/Itseez/opencv.git \
-#  && \
-#  cd opencv \
-#  && \
-#  mkdir build \
-#  && \
-#  cd build \
-#  && \
-#  cmake -D CMAKE_BUILD_TYPE=RELEASE \
-#        -D CMAKE_INSTALL_PREFIX=/usr/local \
-#        -D INSTALL_PYTHON_EXAMPLES=ON \
-#        -D BUILD_opencv_python3=yes -D PYTHON_EXECUTABLE=/usr/bin/python3 .. \
-#  && \
-#make -j$(nproc) \
-#  && \
-#  make install \
-#  && rm -rf /root/opencv/
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y autoconf automake libtool curl make g++ unzip \
+  && \
+  git clone https://github.com/google/protobuf.git \
+  && \
+  cd protobuf \
+  && \
+  git submodule update --init --recursive \
+  && \
+  ./autogen.sh \
+  && \
+  ./configure \
+  && \
+  make \
+  && \
+  make check \
+  && \
+  make install \
+  && \
+  ldconfig
 
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y libgoogle-glog-dev
 
 ###
 ### POSE
@@ -187,13 +169,16 @@ RUN cd ${OPENPOSE} && git clone ${OPENPOSE_GIT} .
 RUN \
   cd ${OPENPOSE} \
   && \
-  pip3 install -U setuptools \
+  mkdir build && cd build \
   && \
-  pip3 install tensorflow \
+  cmake -DGPU_MODE=CPU_ONLY -DBUILD_PYTHON=ON .. \
   && \
-  pip3 install -r requirements.txt
+  make -j $(nproc) \
+  && \
+  make install
 
-RUN cd /root \
+RUN \
+  cd ${OPENPOSE} \
   && \
   git clone https://github.com/cocodataset/cocoapi \
   && \
@@ -203,11 +188,14 @@ RUN cd /root \
   && \
   python3 setup.py build_ext --inplace \
   && \
-  python3 setup.py build_ext install \
+  python3 setup.py build_ext install
+
+RUN \
+  cd ${OPENPOSE} \
   && \
-  mkdir /coco \
-  && cd /coco \
-  && wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
+  mkdir coco && cd coco \
+  && \
+  wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
   && \
   unzip annotations_trainval2017.zip \
   && \
