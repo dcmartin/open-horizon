@@ -89,7 +89,7 @@ function labelstudio::main()
   hzn::service.init "${config}"
 
   # start labelstudio
-  PID=$(labelstudio::start ${WORKSPACE} ${PROJECT} ${PROTOCOL} ${HOST} ${PORT} ${USERNAME} ${PASSWORD} ${INIT})
+  PID=$(labelstudio::start "${config}")
 
   # loop while node is alive
   while [ true ]; do
