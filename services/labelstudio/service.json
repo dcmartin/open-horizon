@@ -68,7 +68,7 @@
     "homeassistant_api": false,
     "privileged": [],
     "timeout": 90,
-    "tmpfs": "size=256m,uid=0,rw",
+    "tmpfs": true,
     "map": [],
     "ports": {
       "7998/tcp": 7998
