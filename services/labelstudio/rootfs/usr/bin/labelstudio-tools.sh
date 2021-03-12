@@ -1,17 +1,18 @@
 #!/usr/bin/with-contenv bashio
 
-labelstudio::start()
+function labelstudio::start()
 {
   hzn::log.trace "${FUNCNAME[0]} ${*}"
 
-  local WORKSPACE=${1}
-  local PROJECT=${2}
-  local PROTOCOL=${3}
-  local HOST=${4}
-  local PORT=${5}
-  local USERNAME=${6}
-  local PASSWORD=${7}
-  local INIT=${8}
+  local config="${*}"
+  local WORKSPACE=$(echo "${config:-null}" | jq -r '.labelstudio.workspace'}
+  local PROJECT=$(echo "${config:-null}" | jq -r '.labelstudio.project'}
+  local PROTOCOL=$(echo "${config:-null}" | jq -r '.labelstudio.protocol'}
+  local HOST=$(echo "${config:-null}" | jq -r '.labelstudio.host'}
+  local PORT=$(echo "${config:-null}" | jq -r '.labelstudio.port'}
+  local USERNAME=$(echo "${config:-null}" | jq -r '.labelstudio.username'}
+  local PASSWORD=$(echo "${config:-null}" | jq -r '.labelstudio.password'}
+  local INIT=$(echo "${config:-null}" | jq -r '.labelstudio.init'}
   local PID=0
 
   cd ${LABEL_STUDIO} \

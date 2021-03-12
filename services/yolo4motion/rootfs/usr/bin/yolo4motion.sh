@@ -117,15 +117,19 @@ yolo4motion::loop()
   local dt
   local device
   local camera
-  local topic
   local message
+  local topic
+
+  # build topic from in-coming topic
+  topic="${YOLO4MOTION_TOPIC#*/}" 
+  if [ "${topic:-+}" = '+' ]; then topic=$(hostname -s); fi
+  topic= "service/$(hzn::service.label)/${topic%/*}"
 
   # configure MQTT
   if [ ! -z "${MQTT_USERNAME:-}" ]; then mqtt_args="${mqtt_args} -u ${MQTT_USERNAME}"; fi
   if [ ! -z "${MQTT_PASSWORD:-}" ]; then mqtt_args="${mqtt_args} -P ${MQTT_PASSWORD}"; fi
   
   ## announce service
-  topic="service/$(hzn::service.label)/$(hostname -s)"
   message=$(echo "$(hzn::service.config)" | jq -c '.hostname="'$(hostname -s)'"')
   mosquitto_pub -r -q 2 ${mqtt_args} -t "${topic}" -m "${message}"
   hzn::log.info "${FUNCNAME[0]}: announced; host: ${MQTT_HOST}; topic: ${topic}; message: ${message}"

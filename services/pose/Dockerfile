@@ -194,6 +194,43 @@ RUN \
 RUN \
   rm -fr /tmp/opencv
 
+#        -D CUDA_ARCH_BIN=5.3 \
+#        -D CUDA_ARCH_PTX="" \
+#        -D CUDA_FAST_MATH=ON \
+#        -D ENABLE_FAST_MATH=ON \
+#        -D ENABLE_NEON=ON \
+#        -D OPENCV_DNN_CUDA=ON \
+#        -D WITH_CUBLAS=ON \
+#        -D WITH_CUDA=ON \
+#        -D WITH_CUDNN=ON \
+
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y autoconf automake libtool curl make g++ unzip \
+  && \
+  git clone https://github.com/google/protobuf.git \
+  && \
+  cd protobuf \
+  && \
+  git submodule update --init --recursive \
+  && \
+  ./autogen.sh \
+  && \
+  ./configure \
+  && \
+  make \
+  && \
+  make check \
+  && \
+  make install \
+  && \
+  ldconfig
+
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt install -qq -y libgoogle-glog-dev
+>>>>>>> b65568a6766334e1303579fa114b456fd719a11f
+
 ###
 ### POSE
 ###
@@ -211,13 +248,16 @@ RUN cd ${OPENPOSE} && git clone ${OPENPOSE_GIT} .
 RUN \
   cd ${OPENPOSE} \
   && \
-  pip3 install -U setuptools \
+  mkdir build && cd build \
   && \
-  pip3 install tensorflow \
+  cmake -DGPU_MODE=CPU_ONLY -DBUILD_PYTHON=ON .. \
   && \
-  pip3 install -r requirements.txt
+  make -j $(nproc) \
+  && \
+  make install
 
-RUN cd /root \
+RUN \
+  cd ${OPENPOSE} \
   && \
   git clone https://github.com/cocodataset/cocoapi \
   && \
@@ -227,11 +267,14 @@ RUN cd /root \
   && \
   python3 setup.py build_ext --inplace \
   && \
-  python3 setup.py build_ext install \
+  python3 setup.py build_ext install
+
+RUN \
+  cd ${OPENPOSE} \
   && \
-  mkdir /coco \
-  && cd /coco \
-  && wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
+  mkdir coco && cd coco \
+  && \
+  wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip \
   && \
   unzip annotations_trainval2017.zip \
   && \
