@@ -60,6 +60,54 @@ RUN DEBIAN_FRONTEND=noninteractive \
     wget \ 
     unzip
 
+# GPU
+ARG GPU
+ENV GPU=${GPU}
+
+# FFMPEG CUDA
+RUN \
+  if [ ${GPU:-0} -eq 1 ]; then \
+    apt install -qq -y build-essential yasm cmake libtool libc6 libc6-dev unzip wget libnuma1 libnuma-dev \
+    && \
+    mkdir -p /tmp/ffmpeg-build \
+    && \
+    cd /tmp/ffmpeg-build \
+    && \
+    VERSION=latest \
+    && \
+    NVCH='nv-codec-headers' \
+    && \
+    git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ${NVCH} \
+    && \
+    pushd ${NVCH} \
+    && \
+    make install \
+    && \
+    popd \
+    && \
+    curl -sSL https://ffmpeg.org/releases/ffmpeg-snapshot-git.tar.bz2 -o ffmpeg-${VERSION}.tar.bz2 \
+    && \
+    tar xjvf ffmpeg-${VERSION}.tar.bz2 \
+    && \
+    cd ffmpeg/ \
+    && \
+    DIR=$(pwd -P) \
+    && \
+    export PKG_CONFIG_PATH="${DIR}/ffmpeg_build/lib/pkgconfig" \
+    && \
+    ./configure --enable-cuda --enable-nonfree  --extra-cflags="-I/usr/local/cuda/include" --extra-ldflags="-L/usr/local/cuda/lib" \
+    && \
+    make -j$(nproc) \
+    && \
+    make install; \
+  fi
+
+RUN \
+  if [ ${GPU:-0} -eq 0 ]; then \
+    apt install -qq -y ffmpeg; \
+  fi
+
+# OPENCV CUDA
 RUN \
   mkdir -p /tmp/opencv \
   && \
@@ -77,9 +125,25 @@ RUN \
   && \
   if [ ! -d opencv-${VERSION}/release ]; then mkdir -p opencv-${VERSION}/release; fi \
   && \
-  git clone https://github.com/catkin/catkin_simple \
+  git clone https://github.com/catkin/catkin_simple
+
+RUN \
+  cd /tmp/opencv/opencv-${VERSION}/release \
   && \
-  cd opencv-${VERSION}/release \
+  if [ ${GPU:-0} -eq 1 ]; then \
+    if [ "${BUILD_ARCH:-}" = 'amd64' ]; then \
+      CUDA_ARCH_BIN='-D CUDA_ARCH_BIND=5.3'; \
+      CUDA_FAST_MATH='-D CUDA_ARCH_BIND=5.3'; \
+        CUDA_ARCH_PTX='-D CUDA_ARCH_PTX=""' \
+        CUDA_FAST_MATH='-D CUDA_FAST_MATH=ON' \
+        OPENCV_DNN_CUDA='-D OPENCV_DNN_CUDA=ON' \
+        WITH_CUBLAS'-D WITH_CUBLAS=ON' \
+        WITH_CUDA'-D WITH_CUDA=ON' \
+        WITH_CUDNN'-D WITH_CUDNN=ON' \
+        ENABLE_FAST_MATH='-D ENABLE_FAST_MATH=ON' \
+        ENABLE_NEON='-D ENABLE_NEON=ON' \
+    fi; \
+  fi; \
   && \
   cmake \
     -D BUILD_EXAMPLES=OFF \
@@ -108,67 +172,27 @@ RUN \
     -D WITH_TBB=ON \
     -D WITH_V4L=ON \
     -D PYTHON_EXECUTABLE=/usr/bin/python3 \
-    .. \
+        ${CUDA_ARCH_BIN:-} \
+        ${CUDA_ARCH_PTX:-} \
+        ${CUDA_FAST_MATH:-} \
+        ${OPENCV_DNN_CUDA:-} \
+        ${WITH_CUBLAS:-} \
+        ${WITH_CUDA:-} \
+        ${WITH_CUDNN:-} \
+        ${ENABLE_FAST_MATH:-} \
+        ${ENABLE_NEON:-} \
+    ..; \
+  fi
+
+RUN \
+  cd /tmp/opencv/opencv-${VERSION}/release \
   && \
   make -j $(nproc) \
   && \
   make install \
-  && \
+
+RUN \
   rm -fr /tmp/opencv
-
-#        -D CUDA_ARCH_BIN=5.3 \
-#        -D CUDA_ARCH_PTX="" \
-#        -D CUDA_FAST_MATH=ON \
-#        -D ENABLE_FAST_MATH=ON \
-#        -D ENABLE_NEON=ON \
-#        -D OPENCV_DNN_CUDA=ON \
-#        -D WITH_CUBLAS=ON \
-#        -D WITH_CUDA=ON \
-#        -D WITH_CUDNN=ON \
-
-#RUN \
-#  apt-get update -yq \
-#  && \
-#  apt-get install -yq build-essential cmake git pkg-config wget zip \
-#  && \
-#  apt-get install -yq libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev \
-#  && \
-#  apt-get install -yq libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
-#  && \
-#  apt-get install -yq libgtk2.0-dev \
-#  && \
-#  apt-get install -yq libatlas-base-dev gfortran \
-#  && \
-#  apt-get install -yq python3 python3-dev python3-pip python3-setuptools python3-tk git \
-#  && \
-#  apt-get remove -yq python-pip python3-pip \
-#  && \
-#  wget https://bootstrap.pypa.io/get-pip.py \
-#  && \
-#  python3 get-pip.py \
-#  && \
-#  pip3 install numpy \
-#  && \
-#  cd ~ \
-#  && \
-#  git clone https://github.com/Itseez/opencv.git \
-#  && \
-#  cd opencv \
-#  && \
-#  mkdir build \
-#  && \
-#  cd build \
-#  && \
-#  cmake -D CMAKE_BUILD_TYPE=RELEASE \
-#        -D CMAKE_INSTALL_PREFIX=/usr/local \
-#        -D INSTALL_PYTHON_EXAMPLES=ON \
-#        -D BUILD_opencv_python3=yes -D PYTHON_EXECUTABLE=/usr/bin/python3 .. \
-#  && \
-#make -j$(nproc) \
-#  && \
-#  make install \
-#  && rm -rf /root/opencv/
-
 
 ###
 ### POSE
@@ -176,7 +200,7 @@ RUN \
 
 ARG OPENPOSE=/pose
 ENV OPENPOSE=${OPENPOSE}
-ARG OPENPOSE_GIT="http://github.com/dcmartin/openpose.git"
+ARG OPENPOSE_GIT="http://github.com/dcmartin/openpose-old.git"
 ENV OPENPOSE_GIT=${OPENPOSE_GIT}
 
 # Clone pose
