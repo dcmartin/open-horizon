@@ -4,7 +4,7 @@
   "description": "Provides hardware abstraction layer as service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hal/README.md",
   "url": "com.github.dcmartin.open-horizon.hal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -20,7 +20,7 @@
       "hal": {
         "environment": [
           "SERVICE_LABEL=hal",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.1.1"
         ],
         "image": null,
         "specific_ports": [],

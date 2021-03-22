@@ -4,7 +4,7 @@
   "description": "Relay (uni-directional) MQTT topics from one broker to another MQTT broker",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/mqtt2mqtt/README.md",
   "url": "com.github.dcmartin.open-horizon.mqtt2mqtt",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -33,7 +33,7 @@
       "mqtt2mqtt": {
         "environment": [
           "SERVICE_LABEL=mqtt2mqtt",
-          "SERVICE_VERSION=0.1.0"
+          "SERVICE_VERSION=0.1.1"
         ],
         "specific_ports": [ { "HostPort": "1881:80/tcp", "HostIP": "0.0.0.0" } ],
         "image": null,

@@ -1,17 +1,15 @@
 {
-    "squash": false,
-    "build_from": {
-        "amd64": "ubuntu:bionic",
-        "arm": "arm32v7/ubuntu:bionic",
-        "arm64": "arm64v8/ubuntu:bionic",
-	"386": null,
-	"ppc64": null,
-	"ppc64le": null,
-	"mips64": null,
-	"mips64le": null,
-	"s390x": null,
-	"mips": null,
-	"mipsle": null
-    },
-    "args": {}
+  "build_from": {
+    "386": null,
+    "amd64": "ubuntu:bionic",
+    "arm": "arm32v7/ubuntu:bionic",
+    "aarch64": "arm64v8/ubuntu:bionic",
+    "mips": null,
+    "mips64": null,
+    "mips64le": null,
+    "mipsle": null,
+    "ppc64": null,
+    "ppc64le": null,
+    "s390x": null
+  }
 }

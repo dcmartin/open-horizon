@@ -9,9 +9,9 @@
   "public": false,
   "sharable": "singleton",
   "requiredServices": [
-    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
-    { "url": "com.github.dcmartin.open-horizon.cpu", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null },
-    { "url": "com.github.dcmartin.open-horizon.hal", "org": "${HZN_ORG_ID}", "version": "0.0.3", "arch": null }
+    { "url": "com.github.dcmartin.open-horizon.wan", "org": "${HZN_ORG_ID}", "version": "0.0.5", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.cpu", "org": "${HZN_ORG_ID}", "version": "0.0.5", "arch": null },
+    { "url": "com.github.dcmartin.open-horizon.hal", "org": "${HZN_ORG_ID}", "version": "0.0.5", "arch": null }
   ],
   "userInput": [
     { "name": "STARTUP_SYNC_PERIOD", "label": "", "type": "int", "defaultValue": "10" },

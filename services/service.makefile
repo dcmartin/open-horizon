@@ -1,5 +1,5 @@
 ## ARCHITECTURE
-ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/arm64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/')
+ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/aarch64/' -e 's/x86_64.*/amd64/' -e 's/armv.*/arm/')
 ARCH := $(if $(wildcard ARCH),$(shell cat ARCH),$(ARCH))
 
 NVCC := $(wildcard /usr/local/cuda/bin/nvcc)

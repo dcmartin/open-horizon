@@ -4,7 +4,7 @@
   "description": "Apache Web server",
   "documentation": "https://github.com/dcmartin/open-horizon/blob/master/services/apache-alpine/README.md",
   "url": "com.github.dcmartin.open-horizon.apache-alpine",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "arch": null,
   "public": false,
   "sharable": "multiple",
@@ -26,7 +26,7 @@
       "apache": {
         "environment": [
           "SERVICE_LABEL=apache",
-          "SERVICE_VERSION=0.0.1",
+          "SERVICE_VERSION=0.1.1",
           "SERVICE_PORT=8080"
         ],
         "specific_ports": [

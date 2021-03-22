@@ -4,7 +4,7 @@
   "description": "Horizon monitor Web service",
   "documentation": "https://github.com/dcmartin/open-horizon/tree/master/services/hznmonitor/README.md",
   "url": "com.github.dcmartin.open-horizon.hznmonitor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "arch": null,
   "public": false,
   "sharable": "singleton",
@@ -36,7 +36,7 @@
       "hznmonitor": {
         "environment": [
           "SERVICE_LABEL=hznmonitor",
-          "SERVICE_VERSION=0.1.0",
+          "SERVICE_VERSION=0.1.1",
           "SERVICE_PORT=3095"
         ],
         "specific_ports": [
