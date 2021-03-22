@@ -151,8 +151,9 @@ while true; do
 
   # build topic from in-coming topic
   topic="${YOLO4MOTION_TOPIC#*/}" 
-  if [ "${topic:-+}" = '+' ]; then topic=$(hostname -s); fi
-  topic= "service/$(hzn::service.label)/${topic%/*}"
+  topic="${topic%/*}"
+  if [ "${topic:-}" = '+' ]; then topic=$(hostname -s); fi
+  topic="service/${SERVICE_LABEL}/${topic}"
   
   ## announce service
   ipaddr=$(ip addr | egrep -A4 UP | egrep 'inet ' | egrep -v 'scope host lo' | egrep -v 'scope global docker' | awk '{ print $2 }')
