@@ -12,9 +12,10 @@ ENV \
     TERM="xterm"
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
-    curl \
-    socat \
-    jq \
+  curl \
+  socat \
+  jq \
+  ca-certificates
   \
   && rm -fr \
     /tmp/*
