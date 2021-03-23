@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   curl \
   socat \
   jq \
-  ca-certificates
+  ca-certificates \
   \
   && rm -fr \
     /tmp/*
