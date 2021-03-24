@@ -184,7 +184,7 @@ build: Dockerfile build.json $(SERVICE_JSON) makefile
 
 build-service: build
 	@echo "${MC}>>> MAKE --" $$(date +%T) "-- build-service: ${SERVICE_NAME}; architecture: ${BUILD_ARCH}""${NC}" > /dev/stderr
-	-@export ID="${DOCKER_NAME}" && IMAGES=$$(mktemp) && docker images | egrep "$${ID}" > $${IMAGES} && COUNT=$$(cat $${IMAGES} | wc -l) && LATEST=$$(head -1 $${IMAGES} | awk '{ print $$2,$$3,$$4,$$5,$$6 }') && if [ -z "$${LATEST}" ]; then echo ">>> MAKE --" $$(date +%T) "-- failed; no image found; id: $${ID}"; else echo ">>> MAKE --" $$(date +%T) "-- built; $${COUNT} image(s) found; id: $${ID}; latest: $${LATEST}"; fi
+	-@export ID="${DOCKER_NAME}" && IMAGES=$$(mktemp) && docker images | egrep "$${ID}" > $${IMAGES} && COUNT=$$(cat $${IMAGES} | wc -l) && LATEST=$$(head -1 $${IMAGES} | awk '{ print $$2,$$3,$$4,$$5,$$6 }') && if [ -z "$${LATEST}" ]; then echo ">>> MAKE --" $$(date +%T) "-- failed; no image found; id: $${ID}"; else echo "${GREEN}>>> MAKE --" $$(date +%T) "-- built; $${COUNT} image(s) found; id: $${ID}; latest: $${LATEST}${NC}"; fi
 	-@if [ "$${DEBUG:-}" = 'true' ]; then if [ -s "${BUILD_OUT}" ]; then cat ${BUILD_OUT}; else echo ">>> MAKE --" $$(date +%T) "-- no output: ${BUILD_OUT}" > /dev/stderr; fi; fi
 
 service-build:
@@ -193,7 +193,7 @@ service-build:
 	  cuda=$$(echo "$${arch}" | sed 's/[^-]*-\(.*\)/\1/'); \
 	  base=$$(echo "$${arch}" | sed 's/\([^-]*\)-.*/\1/'); \
 	  if [ "${ARCH}" != "$${base:-}" ] && [ $$(uname -s) != 'Darwin' ]; then \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${arch} not supported: $${base:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${arch} not supported: $${base:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	  elif [ "$${arch}" = "$${cuda:-}" ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; building: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
@@ -201,7 +201,7 @@ service-build:
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} supported: ${CUDA}; building: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" build-service; \
 	  else \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-build: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
           fi; \
 	done
 
@@ -220,7 +220,7 @@ service-push:
 	  cuda=$$(echo "$${arch}" | sed 's/[^-]*-\(.*\)/\1/'); \
 	  base=$$(echo "$${arch}" | sed 's/\([^-]*\)-.*/\1/'); \
 	  if [ "${ARCH}" != "$${base:-}" ] && [ $$(uname -s) != 'Darwin' ]; then \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; $${arch} not supported: $${base:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; $${arch} not supported: $${base:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
 	  elif [ "$${arch}" = "$${cuda:-}" ]; then \
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; pushing: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
@@ -228,7 +228,7 @@ service-push:
 	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; $${cuda} supported: ${CUDA}; pushing: $${arch}""${NC}" > /dev/stderr; \
 	    $(MAKE) TAG=$(TAG) HZN_ORG_ID=$(HZN_ORG_ID) DOCKER_REPOSITORY=$(DOCKER_REPOSITORY) BUILD_ARCH="$${arch}" push-service; \
 	  else \
-	    echo "${MC}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
+	    echo "${RED}>>> MAKE --" $$(date +%T) "-- service-push: ${SERVICE_NAME}; $${cuda} not supported: ${CUDA:-none}; SKIPPING: $${arch}""${NC}" > /dev/stderr; \
           fi; \
 	done
 
