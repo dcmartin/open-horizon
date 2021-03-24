@@ -1,8 +1,10 @@
 ARG BUILD_FROM
+ARG BUILD_ARCH
 
-FROM $BUILD_FROM as openyolo
+FROM ${BUILD_FROM} as openyolo
 
-ARG BUILD_ARCH=amd64
+RUN ls -al /usr/local/cuda/include
+RUN ls -al /usr/include/cublas_v2.h
 
 # Environment variables
 ENV \
@@ -12,14 +14,12 @@ ENV \
     TERM="xterm"
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
-  ca-certificates \
-  curl \
   build-essential \
-  socat \
-  imagemagick \
-  fswebcam \
-  jq \
   git
+
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+  imagemagick \
+  fswebcam
 
 # configure openyolo
 ARG OPENYOLO=/openyolo
@@ -64,16 +64,18 @@ RUN cd ${OPENYOLO} && git clone ${OPENYOLO_GIT} .
 ARG GPU
 ENV GPU=${GPU}
 
-# Build darknet
+ARG CUDA_HOME=/usr/local/cuda
+ENV CUDA_HOME=${CUDA_HOME}
+
 RUN \
     cd ${DARKNET} \
     \
     && GPU=${GPU} make
 
-FROM openyolo
+#FROM openyolo
 
 # Copy compiled darknet
-COPY --from=openyolo ${OPENYOLO} ${OPENYOLO}
+#COPY --from=openyolo ${OPENYOLO} ${OPENYOLO}
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
   python
