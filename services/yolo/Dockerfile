@@ -3,9 +3,6 @@ ARG BUILD_ARCH
 
 FROM ${BUILD_FROM} as openyolo
 
-RUN ls -al /usr/local/cuda/include
-RUN ls -al /usr/include/cublas_v2.h
-
 # Environment variables
 ENV \
     HOME="/root" \
