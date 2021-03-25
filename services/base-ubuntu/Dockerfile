@@ -1,8 +1,7 @@
 ARG BUILD_FROM
+ARG BUILD_ARCH
 
 FROM $BUILD_FROM
-
-ARG BUILD_ARCH=amd64
 
 # Environment variables
 ENV \
@@ -16,6 +15,8 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
   socat \
   jq \
   ca-certificates \
+  apt-utils \
+  software-properties-common \
   \
   && rm -fr \
     /tmp/*
