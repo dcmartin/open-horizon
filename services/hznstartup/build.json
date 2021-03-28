@@ -2,7 +2,7 @@
   "build_from": { 
     "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.apache-alpine:0.1.1",
     "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.apache-alpine:0.1.1",
-    "arm64": "${DOCKER_REPOSITORY}/arm64_com.github.dcmartin.open-horizon.apache-alpine:0.1.1",
+    "aarch64": "${DOCKER_REPOSITORY}/aarch64.github.dcmartin.open-horizon.apache-alpine:0.1.1",
     "386": null,
     "ppc64": null,
     "ppc64le": null,
