@@ -17,6 +17,7 @@ RUN \
   apt-get update && apt-get install -q -y --no-install-recommends \
   bc \
   inotify-tools \
+  iproute2 \
   dateutils \
   mosquitto-clients
 
