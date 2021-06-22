@@ -1,3 +1,5 @@
+*/SERVICE_LOG_LEVEL
+*/rootfs/data
 yolov2.weights
 yolov3-tiny.weights
 yolov3.weights
