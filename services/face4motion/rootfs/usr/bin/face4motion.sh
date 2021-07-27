@@ -131,7 +131,7 @@ while true; do
   MOSQUITTO_ARGS="-h ${MQTT_HOST} -p ${MQTT_PORT}"
   if [ ! -z "${MQTT_USERNAME:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -u ${MQTT_USERNAME}"; fi
   if [ ! -z "${MQTT_PASSWORD:-}" ]; then MOSQUITTO_ARGS="${MOSQUITTO_ARGS} -P ${MQTT_PASSWORD}"; fi
-  hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${YOLO4MOTION_TOPIC}/${YOLO4MOTION_TOPIC_EVENT}"
+  hzn.log.notice "Listening to MQTT host: ${MQTT_HOST}; topic: ${FACE4MOTION_TOPIC}/${FACE4MOTION_TOPIC_EVENT}"
 
   ## announce service
   ipaddr=$(ip addr | egrep -A4 UP | egrep 'inet ' | egrep -v 'scope host lo' | egrep -v 'scope global docker' | awk '{ print $2 }')
