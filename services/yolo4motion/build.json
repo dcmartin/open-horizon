@@ -6,6 +6,7 @@
     "aarch64-11.0": "${DOCKER_REPOSITORY}/aarch64-11.0_com.github.dcmartin.open-horizon.yolo:0.1.5",
     "amd64": "${DOCKER_REPOSITORY}/amd64_com.github.dcmartin.open-horizon.yolo:0.1.5",
     "amd64-11.2": "${DOCKER_REPOSITORY}/amd64-11.2_com.github.dcmartin.open-horizon.yolo:0.1.5",
+    "amd64-11.4": "${DOCKER_REPOSITORY}/amd64-11.4_com.github.dcmartin.open-horizon.yolo:0.1.5",
     "arm": "${DOCKER_REPOSITORY}/arm_com.github.dcmartin.open-horizon.yolo:0.1.5"
   }
 }
